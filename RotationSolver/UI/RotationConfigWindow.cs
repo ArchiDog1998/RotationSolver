@@ -3,7 +3,6 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
-using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
@@ -14,9 +13,12 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
+using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
+using System.ComponentModel;
 using System.Diagnostics;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
@@ -26,26 +28,26 @@ using TargetType = RotationSolver.Basic.Actions.TargetType;
 
 namespace RotationSolver.UI;
 
-public partial class RotationConfigWindow : Window
+public class RotationConfigWindow : ConfigWindow
 {
-    private static float Scale => ImGuiHelpers.GlobalScale;
+    protected override string Punchline => UiString.ConfigWindow_About_Punchline.Local();
 
-    private RotationConfigWindowTab _activeTab;
+    protected override string Description => UiString.ConfigWindow_About_Description.Local();
 
-    private const float MIN_COLUMN_WIDTH = 24;
-    private const float JOB_ICON_WIDTH = 50;
+    public override SearchableCollection AllSearchable { get; } = new(Service.Config, new()
+    {
+        {nameof(Configs.AutoHeal), p => new AutoHealCheckBox(p, Service.Config) }
+    }, new()
+    {
+        {typeof(ConditionBoolean), p => new CheckBoxSearchCondition(p, Service.Config) }
+    });
+
+    public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
 
     public RotationConfigWindow()
-        : base("", ImGuiWindowFlags.NoScrollbar, false)
+        : base("")
     {
-        SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(740f, 490f);
-        SizeConstraints = new WindowSizeConstraints()
-        {
-            MinimumSize = new Vector2(250, 300),
-            MaximumSize = new Vector2(5000, 5000),
-        };
-        RespectCloseHotkey = true;
     }
 
     public override void OnClose()
@@ -53,63 +55,6 @@ public partial class RotationConfigWindow : Window
         Service.Config.Save();
         ActionSequencerUpdater.SaveFiles();
         base.OnClose();
-    }
-
-    public override void Draw()
-    {
-        using var style = ImRaii.PushStyle(ImGuiStyleVar.SelectableTextAlign, new Vector2(0.5f, 0.5f));
-        try
-        {
-            var leftTop = ImGui.GetWindowPos() + ImGui.GetCursorPos();
-            var rightDown = leftTop + ImGui.GetWindowSize();
-            var screenSize = ImGuiHelpers.MainViewport.Size;
-            if ((leftTop.X <= 0 || leftTop.Y <= 0 || rightDown.X >= screenSize.X || rightDown.Y >= screenSize.Y)
-                && !ImGui.GetIO().ConfigFlags.HasFlag(ImGuiConfigFlags.ViewportsEnable))
-            {
-                var str = string.Empty;
-                for (int i = 0; i < 150; i++)
-                {
-                    str += "Move away! Don't crash! ";
-                }
-
-                using var font = ImRaii.PushFont(DrawingExtensions.GetFont(24));
-                using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-                ImGui.TextWrapped(str);
-            }
-            else
-            {
-                using var table = ImRaii.Table("Rotation Config Table", 2, ImGuiTableFlags.Resizable);
-                if (table)
-                {
-                    ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-                    ImGui.TableNextColumn();
-
-                    try
-                    {
-                        DrawSideBar();
-                    }
-                    catch (Exception ex)
-                    {
-                        Svc.Log.Warning(ex, "Something wrong with sideBar");
-                    }
-
-                    ImGui.TableNextColumn();
-
-                    try
-                    {
-                        DrawBody();
-                    }
-                    catch (Exception ex)
-                    {
-                        Svc.Log.Warning(ex, "Something wrong with body");
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Warning(ex, "Something wrong with config window.");
-        }
     }
 
     private static void DrawDutyRotation()
@@ -213,123 +158,6 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private void DrawSideBar()
-    {
-        using var child = ImRaii.Child("Rotation Solver Side bar", -Vector2.One, false, ImGuiWindowFlags.NoScrollbar);
-        if (child)
-        {
-            var wholeWidth = ImGui.GetWindowSize().X;
-
-            DrawHeader(wholeWidth);
-
-            ImGui.Spacing();
-            ImGui.Separator();
-            ImGui.Spacing();
-
-            var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH)) * 0.6f;
-
-            if (wholeWidth > JOB_ICON_WIDTH * Scale)
-            {
-                DrawDutyRotation();
-                DrawConditionSet();
-
-                ImGui.Separator();
-                ImGui.Spacing();
-
-                ImGui.SetNextItemWidth(wholeWidth);
-                SearchingBox();
-
-                ImGui.Spacing();
-            }
-            else
-            {
-                if (IconSet.GetTexture(46, out var icon))
-                {
-                    ImGuiHelper.DrawItemMiddle(() =>
-                    {
-                        using var popup = ImRaii.Popup("Searching Popup");
-                        if (popup)
-                        {
-                            ImGui.SetNextItemWidth(200 * Scale);
-                            SearchingBox();
-                            if (ImGui.IsKeyDown(ImGuiKey.Enter))
-                            {
-                                ImGui.CloseCurrentPopup();
-                            }
-                        }
-
-                        var cursor = ImGui.GetCursorPos();
-                        if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize))
-                        {
-                            ImGui.OpenPopup("Searching Popup");
-                        }
-                        ImGuiHelper.DrawActionOverlay(cursor, iconSize, -1);
-                        ImguiTooltips.HoveredTooltip("Search");
-
-                    }, Math.Max(Scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
-                }
-            }
-
-            foreach (var item in Enum.GetValues<RotationConfigWindowTab>())
-            {
-                if (item.GetAttribute<TabSkipAttribute>() != null) continue;
-
-                if (IconSet.GetTexture(item.GetAttribute<TabIconAttribute>()?.Icon ?? 0, out var icon) && wholeWidth <= JOB_ICON_WIDTH * Scale)
-                {
-                    ImGuiHelper.DrawItemMiddle(() =>
-                    {
-                        var cursor = ImGui.GetCursorPos();
-                        if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * iconSize, item.ToString()))
-                        {
-                            _activeTab = item;
-                            _searchResults = [];
-                        }
-                        ImGuiHelper.DrawActionOverlay(cursor, iconSize, _activeTab == item ? 1 : 0);
-                    }, Math.Max(Scale * MIN_COLUMN_WIDTH, wholeWidth), iconSize);
-
-                    var desc = item.ToString();
-                    var addition = item.Local();
-                    if (!string.IsNullOrEmpty(addition)) desc += "\n \n" + addition;
-                    ImguiTooltips.HoveredTooltip(desc);
-                }
-                else
-                {
-                    if (ImGui.Selectable(item.ToString(), _activeTab == item, ImGuiSelectableFlags.None, new Vector2(0, 20)))
-                    {
-                        _activeTab = item;
-                        _searchResults = [];
-                    }
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-                        var desc = item.Local();
-                        if (!string.IsNullOrEmpty(desc)) ImguiTooltips.ShowTooltip(desc);
-                    }
-                }
-            }
-
-            if (wholeWidth <= 60 * Scale
-                ? IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_s_logo_nolabel.png", out var texture)
-                : IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_bg_tag_dark.png", out texture))
-            {
-                var width = Math.Min(150 * Scale, Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, texture.Width)));
-                var size = new Vector2(width, width * texture.Height / texture.Width);
-                size *= MathF.Max(Scale * MIN_COLUMN_WIDTH / size.Y, 1);
-                var result = false;
-                ImGuiHelper.DrawItemMiddle(() =>
-                {
-                    ImGui.SetCursorPosY(ImGui.GetWindowSize().Y + ImGui.GetScrollY() - size.Y);
-                    result = ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, size, "Donate Plugin");
-                }, wholeWidth, size.X);
-
-                if (result)
-                {
-                    Util.OpenLink("https://ko-fi.com/B0B0IN5DX");
-                }
-            }
-        }
-    }
-
     private const int FRAME_COUNT = 180;
     private static readonly List<string> _loadingList = new(FRAME_COUNT);
     private static readonly Dictionary<string, IDalamudTextureWrap> _logosWrap = new(FRAME_COUNT + 1);
@@ -374,35 +202,27 @@ public partial class RotationConfigWindow : Window
         return _logosWrap.TryGetValue(name, out texture!);
     }
 
-    private void DrawHeader(float wholeWidth)
+
+    protected override bool DrawSubHeader(float wholeWidth)
     {
-        var size = MathF.Max(MathF.Min(wholeWidth, Scale * 128), Scale * MIN_COLUMN_WIDTH);
+        DrawDutyRotation();
+        DrawConditionSet();
 
-        if (IconSet.GetTexture((uint)0, out var overlay))
-        {
-            ImGuiHelper.DrawItemMiddle(() =>
-            {
-                var cursor = ImGui.GetCursorPos();
-                if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, Vector2.One * size,
-                    _activeTab == RotationConfigWindowTab.About, "About Icon"))
-                {
-                    _activeTab = RotationConfigWindowTab.About;
-                    _searchResults = [];
-                }
-                ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_About_Punchline.Local());
+        return true;
+    }
 
-                var frame = Environment.TickCount / 34 % FRAME_COUNT;
-                if (frame <= 0) frame += FRAME_COUNT;
-                if (GetLocalImage(Service.Config.DrawIconAnimation
-                    ? frame.ToString("D4") : "Logo", out var logo))
-                {
-                    ImGui.SetCursorPos(cursor);
-                    ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
-                }
-            }, wholeWidth, size);
+    protected override bool GetLogo(out IDalamudTextureWrap texture)
+    {
+        var frame = Environment.TickCount / 34 % FRAME_COUNT;
+        if (frame <= 0) frame += FRAME_COUNT;
 
-            ImGui.Spacing();
-        }
+        return GetLocalImage(Service.Config.DrawIconAnimation
+                    ? frame.ToString("D4") : "Logo", out texture);
+    }
+
+    protected override void DrawHeader(float wholeWidth, float iconSize)
+    {
+        base.DrawHeader(wholeWidth, iconSize);
 
         var rotation = DataCenter.RightNowRotation;
         if (rotation == null) return;
@@ -422,7 +242,6 @@ public partial class RotationConfigWindow : Window
             rotations = rotations.Where(r => r.GetCustomAttribute<RotationAttribute>()?.Type.HasFlag(CombatType.PvE) ?? false).ToArray();
         }
 
-        var iconSize = Math.Max(Scale * MIN_COLUMN_WIDTH, Math.Min(wholeWidth, Scale * JOB_ICON_WIDTH));
         var comboSize = ImGui.CalcTextSize(rot.Name).X;
 
         const string slash = " - ";
@@ -440,7 +259,7 @@ public partial class RotationConfigWindow : Window
                 DrawRotationIcon(rotation, iconSize);
             }, wholeWidth, iconSize);
 
-            if (Scale * JOB_ICON_WIDTH < wholeWidth)
+            if (MaxIconWidth < wholeWidth)
             {
                 DrawRotationCombo(comboSize, rotations, rotation, gameVersion);
             }
@@ -474,9 +293,9 @@ public partial class RotationConfigWindow : Window
     {
         var cursor = ImGui.GetCursorPos();
         if (rotation.GetTexture(out var jobIcon) && ImGuiHelper.SilenceImageButton(jobIcon.ImGuiHandle,
-            Vector2.One * iconSize, _activeTab == RotationConfigWindowTab.Rotation))
+            Vector2.One * iconSize, _activeTabIndex == 0))
         {
-            _activeTab = RotationConfigWindowTab.Rotation;
+            _activeTabIndex = 0;
             _searchResults = [];
         }
         if (ImGui.IsItemHovered())
@@ -565,80 +384,13 @@ public partial class RotationConfigWindow : Window
         ImguiTooltips.HoveredTooltip(warning);
     }
 
-    private void DrawBody()
+    public abstract class ConfigWindowItemRS : ConfigWindowItem
     {
-        ImGui.SetCursorPos(ImGui.GetCursorPos() + Vector2.One * 8 * Scale);
-        using var child = ImRaii.Child("Rotation Solver Body", -Vector2.One);
-        if (child)
+        public abstract uint Icon { get; }
+
+        public sealed override bool GetIcon(out IDalamudTextureWrap texture)
         {
-            if (_searchResults != null && _searchResults.Length != 0)
-            {
-                using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(18)))
-                {
-                    using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-                    ImGui.TextWrapped(UiString.ConfigWindow_Search_Result.Local());
-                }
-
-                ImGui.Spacing();
-
-                foreach (var searchable in _searchResults)
-                {
-                    searchable?.Draw();
-                }
-            }
-            else
-            {
-                switch (_activeTab)
-                {
-                    case RotationConfigWindowTab.About:
-                        DrawAbout();
-                        break;
-
-                    case RotationConfigWindowTab.Rotation:
-                        DrawRotation();
-                        break;
-
-                    case RotationConfigWindowTab.Actions:
-                        DrawActions();
-                        break;
-
-                    case RotationConfigWindowTab.Rotations:
-                        DrawRotations();
-                        break;
-
-                    case RotationConfigWindowTab.List:
-                        DrawList();
-                        break;
-
-                    case RotationConfigWindowTab.Basic:
-                        DrawBasic();
-                        break;
-
-                    case RotationConfigWindowTab.UI:
-                        DrawUI();
-                        break;
-
-                    case RotationConfigWindowTab.Auto:
-                        DrawAuto();
-                        break;
-
-                    case RotationConfigWindowTab.Target:
-                        DrawTarget();
-                        break;
-
-                    case RotationConfigWindowTab.Timeline:
-                        TimelineDrawer.DrawTimeline();
-                        break;
-
-                    case RotationConfigWindowTab.Extra:
-                        DrawExtra();
-                        break;
-
-                    case RotationConfigWindowTab.Debug:
-                        DrawDebug();
-                        break;
-                }
-            }
+            return IconSet.GetTexture(Icon, out texture);
         }
     }
 
@@ -649,17 +401,9 @@ public partial class RotationConfigWindow : Window
         { 500_000, UiString.ConfigWindow_About_Clicking500k.Local() },
     };
 
-    private static void DrawAbout()
+    protected override void DrawAbout()
     {
-        using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(18)))
-        {
-            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-            ImGui.TextWrapped(UiString.ConfigWindow_About_Punchline.Local());
-        }
-
-        ImGui.Spacing();
-
-        ImGui.TextWrapped(UiString.ConfigWindow_About_Description.Local());
+        base.DrawAbout();
 
         ImGui.Spacing();
         using (var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudOrange)))
@@ -891,476 +635,476 @@ public partial class RotationConfigWindow : Window
     }
     #endregion
 
-    #region Rotation
-    private static void DrawRotation()
+    public class RotationItem : ConfigWindowItemRS
     {
-        var rotation = DataCenter.RightNowRotation;
-        if (rotation == null) return;
+        public override bool IsSkip => true;
 
-        var desc = rotation.Description;
-        if (!string.IsNullOrEmpty(desc))
+        public override uint Icon => 4;
+
+
+        private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
         {
-            using var font = ImRaii.PushFont(DrawingExtensions.GetFont(15));
-            ImGuiEx.TextWrappedCopy(desc);
-        }
+            { () => UiString.ConfigWindow_Rotation_Description.Local(), DrawRotationDescription },
 
-        var wholeWidth = ImGui.GetWindowWidth();
-        var type = rotation.GetType();
-        var info = type.Assembly.GetInfo();
+            { GetRotationStatusHead,  DrawRotationStatus },
 
-        if (!string.IsNullOrEmpty(rotation.WhyNotValid))
+            { () => UiString.ConfigWindow_Rotation_Configuration.Local(), DrawRotationConfiguration },
+            { () =>  UiString.ConfigWindow_Rotation_Rating.Local(), DrawRotationRating },
+
+            { () => UiString.ConfigWindow_Rotation_Information.Local(), DrawRotationInformation },
+        });
+
+        public override void Draw(ConfigWindow window)
         {
-            var author = info.Author;
-            if (string.IsNullOrEmpty(author)) author = "Author";
+            var rotation = DataCenter.RightNowRotation;
+            if (rotation == null) return;
 
-            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DPSRed);
-            ImGui.TextWrapped(string.Format(rotation.WhyNotValid, author));
-        }
-
-        if (!string.IsNullOrEmpty(info.DonateLink))
-        {
-            if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Ko-fi link"))
+            var desc = rotation.Description;
+            if (!string.IsNullOrEmpty(desc))
             {
-                Util.OpenLink(info.DonateLink);
-            }
-        }
-
-        _rotationHeader.Draw();
-    }
-
-    private static readonly uint[] RatingColors =
-    [
-        ImGui.ColorConvertFloat4ToU32(ImGuiColors.TankBlue),
-        ImGui.ColorConvertFloat4ToU32(ImGuiColors.HealerGreen),
-        ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow),
-        ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudOrange),
-        ImGui.ColorConvertFloat4ToU32(ImGuiColors.DPSRed),
-    ];
-    private static uint ChangeAlpha(uint color)
-    {
-        var c = ImGui.ColorConvertU32ToFloat4(color);
-        c.W = 0.55f;
-        return ImGui.ColorConvertFloat4ToU32(c);
-    }
-
-    private static bool DrawRating(float value1, int value2, float max)
-    {
-        var ratio1 = value1 / max;
-        var ratio2 = value2 / max;
-        var count = RatingColors.Length;
-
-        var start = ImGui.GetCursorPos() + ImGui.GetWindowPos();
-
-        var spacing = ImGui.GetStyle().ItemSpacing;
-        ImGui.GetStyle().ItemSpacing = Vector2.Zero;
-
-        var size = Vector2.Zero;
-        using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(16)))
-        {
-            using (var color = ImRaii.PushColor(ImGuiCol.Text, RatingColors[(int)(ratio1 * count)]))
-            {
-                ImGui.Text($"{value1:F2}");
-            }
-            size += ImGui.GetItemRectSize();
-
-            ImGui.SameLine();
-            ImGui.Text("/");
-            size.X += ImGui.GetItemRectSize().X;
-
-            ImGui.SameLine();
-
-            using (var color = ImRaii.PushColor(ImGuiCol.Text, RatingColors[(int)(ratio2 * count)]))
-            {
-                ImGui.Text($"{value2}  ");
+                using var font = ImRaii.PushFont(DrawingExtensions.GetFont(15));
+                ImGuiEx.TextWrappedCopy(desc);
             }
 
-            size.X += ImGui.GetItemRectSize().X;
-        }
-        ImGui.GetStyle().ItemSpacing = spacing;
+            var wholeWidth = ImGui.GetWindowWidth();
+            var type = rotation.GetType();
+            var info = type.Assembly.GetInfo();
 
-        var radius = size.Y * 0.2f;
-        var wholeWidth = ImGui.GetWindowSize().X - size.X - 2 * radius;
-        var step = new Vector2(wholeWidth / count, size.Y);
-        var shift = new Vector2(0, size.Y * 0.2f);
-
-        var result = ImGuiHelperRS.IsInRect(start, new Vector2(ImGui.GetWindowSize().X, size.Y));
-        if (wholeWidth <= 0) return result;
-
-        var veryStart = start += new Vector2(size.X, 0);
-
-        for (var i = 0; i < count; i++)
-        {
-            var isStart = i == 0;
-            var isLast = i == count - 1;
-            var stepThis = step;
-            if (isStart || isLast)
+            if (!string.IsNullOrEmpty(rotation.WhyNotValid))
             {
-                stepThis = step + new Vector2(radius, 0);
+                var author = info.Author;
+                if (string.IsNullOrEmpty(author)) author = "Author";
+
+                using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DPSRed);
+                ImGui.TextWrapped(string.Format(rotation.WhyNotValid, author));
             }
 
-            ImGui.GetWindowDrawList().AddRectFilled(start + shift, start + stepThis - shift, ChangeAlpha(RatingColors[i]), radius,
-               isStart ? ImDrawFlags.RoundCornersLeft : isLast ? ImDrawFlags.RoundCornersRight : ImDrawFlags.RoundCornersNone);
-            start += new Vector2(stepThis.X, 0);
-        }
-
-        ImGui.GetWindowDrawList().AddRect(veryStart + shift, start + new Vector2(0, size.Y) - shift, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudWhite2), radius);
-
-        var linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio1, 0);
-        ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - 2 * shift.Y), uint.MaxValue, 3);
-
-        linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio2, 0);
-        ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - 2 * shift.Y), uint.MaxValue, 3);
-
-        return result;
-    }
-
-    private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
-    {
-        { () => UiString.ConfigWindow_Rotation_Description.Local(), DrawRotationDescription },
-
-        { GetRotationStatusHead,  DrawRotationStatus },
-
-        { () => UiString.ConfigWindow_Rotation_Configuration.Local(), DrawRotationConfiguration },
-        { () =>  UiString.ConfigWindow_Rotation_Rating.Local(), DrawRotationRating },
-
-        { () => UiString.ConfigWindow_Rotation_Information.Local(), DrawRotationInformation },
-    });
-
-    private static void DrawRotationRating()
-    {
-        var rotation = DataCenter.RightNowRotation;
-        if (rotation == null) return;
-
-        ImGui.TextWrapped(UiString.ConfigWindow_Rotation_Rating_Description.Local());
-
-        if (DrawRating((float)rotation.AverageCountOfLastUsing, rotation.MaxCountOfLastUsing, 10))
-        {
-            ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Rotation_Rating_CountOfLastUsing.Local());
-        }
-        if (DrawRating((float)rotation.AverageCountOfCombatTimeUsing, rotation.MaxCountOfCombatTimeUsing, 20))
-        {
-            ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Rotation_Rating_CountOfCombatTimeUsing.Local());
-        }
-    }
-
-    private const float DESC_SIZE = 24;
-    private static void DrawRotationDescription()
-    {
-        var rotation = DataCenter.RightNowRotation;
-        if (rotation == null) return;
-
-        var wholeWidth = ImGui.GetWindowWidth();
-        var type = rotation.GetType();
-
-        var attrs = new List<RotationDescAttribute?> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
-
-        foreach (var m in type.GetAllMethodInfo())
-        {
-            attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));
-        }
-
-        using (var table = ImRaii.Table("Rotation Description", 2, ImGuiTableFlags.Borders
-            | ImGuiTableFlags.Resizable
-            | ImGuiTableFlags.SizingStretchProp))
-        {
-            if (table)
+            if (!string.IsNullOrEmpty(info.DonateLink))
             {
-                foreach (var a in RotationDescAttribute.Merge(attrs))
+                if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Ko-fi link"))
                 {
-                    var attr = RotationDescAttribute.MergeToOne(a);
-                    if (attr == null) continue;
+                    Util.OpenLink(info.DonateLink);
+                }
+            }
 
-                    var allActions = attr.Actions.Select(i => rotation.AllBaseActions
-                    .FirstOrDefault(a => a.ID == (uint)i))
-                    .Where(i => i != null);
+            _rotationHeader.Draw();
+        }
 
-                    bool hasDesc = !string.IsNullOrEmpty(attr.Description);
+        private const float DESC_SIZE = 24;
+        private static void DrawRotationDescription()
+        {
+            var rotation = DataCenter.RightNowRotation;
+            if (rotation == null) return;
 
-                    if (!hasDesc && !allActions.Any()) continue;
+            var wholeWidth = ImGui.GetWindowWidth();
+            var type = rotation.GetType();
 
-                    ImGui.TableNextRow();
-                    ImGui.TableNextColumn();
+            var attrs = new List<RotationDescAttribute?> { RotationDescAttribute.MergeToOne(type.GetCustomAttributes<RotationDescAttribute>()) };
 
-                    if (IconSet.GetTexture(attr.IconID, out var image)) ImGui.Image(image.ImGuiHandle, Vector2.One * DESC_SIZE * Scale);
+            foreach (var m in type.GetAllMethodInfo())
+            {
+                attrs.Add(RotationDescAttribute.MergeToOne(m.GetCustomAttributes<RotationDescAttribute>()));
+            }
 
-                    ImGui.SameLine();
-                    var isOnCommand = attr.IsOnCommand;
-                    if (isOnCommand) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-                    ImGui.Text(" " + attr.Type.Local());
-                    if (isOnCommand) ImGui.PopStyleColor();
-
-                    ImGui.TableNextColumn();
-
-                    if (hasDesc)
+            using (var table = ImRaii.Table("Rotation Description", 2, ImGuiTableFlags.Borders
+                | ImGuiTableFlags.Resizable
+                | ImGuiTableFlags.SizingStretchProp))
+            {
+                if (table)
+                {
+                    foreach (var a in RotationDescAttribute.Merge(attrs))
                     {
-                        ImGui.Text(attr.Description);
-                    }
+                        var attr = RotationDescAttribute.MergeToOne(a);
+                        if (attr == null) continue;
 
-                    bool notStart = false;
-                    var size = DESC_SIZE * Scale;
-                    var y = ImGui.GetCursorPosY() + size * 4 / 82;
-                    foreach (var item in allActions)
-                    {
-                        if (item == null) continue;
+                        var allActions = attr.Actions.Select(i => rotation.AllBaseActions
+                        .FirstOrDefault(a => a.ID == (uint)i))
+                        .Where(i => i != null);
 
-                        if (notStart)
+                        bool hasDesc = !string.IsNullOrEmpty(attr.Description);
+
+                        if (!hasDesc && !allActions.Any()) continue;
+
+                        ImGui.TableNextRow();
+                        ImGui.TableNextColumn();
+
+                        if (IconSet.GetTexture(attr.IconID, out var image)) ImGui.Image(image.ImGuiHandle, Vector2.One * DESC_SIZE * Scale);
+
+                        ImGui.SameLine();
+                        var isOnCommand = attr.IsOnCommand;
+                        if (isOnCommand) ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+                        ImGui.Text(" " + attr.Type.Local());
+                        if (isOnCommand) ImGui.PopStyleColor();
+
+                        ImGui.TableNextColumn();
+
+                        if (hasDesc)
                         {
-                            ImGui.SameLine();
+                            ImGui.Text(attr.Description);
                         }
 
-                        if (item.GetTexture(out var texture))
+                        bool notStart = false;
+                        var size = DESC_SIZE * Scale;
+                        var y = ImGui.GetCursorPosY() + size * 4 / 82;
+                        foreach (var item in allActions)
                         {
-                            ImGui.SetCursorPosY(y);
-                            var cursor = ImGui.GetCursorPos();
-                            ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size);
-                            ImGuiHelper.DrawActionOverlay(cursor, size, 1);
-                            ImguiTooltips.HoveredTooltip(item.Name);
+                            if (item == null) continue;
+
+                            if (notStart)
+                            {
+                                ImGui.SameLine();
+                            }
+
+                            if (item.GetTexture(out var texture))
+                            {
+                                ImGui.SetCursorPosY(y);
+                                var cursor = ImGui.GetCursorPos();
+                                ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * size);
+                                ImGuiHelper.DrawActionOverlay(cursor, size, 1);
+                                ImguiTooltips.HoveredTooltip(item.Name);
+                            }
+                            notStart = true;
                         }
-                        notStart = true;
                     }
                 }
             }
-        }
 
-        var links = type.GetCustomAttributes<LinkDescriptionAttribute>();
+            var links = type.GetCustomAttributes<LinkDescriptionAttribute>();
 
-        foreach (var link in links)
-        {
-            DrawLinkDescription(link.LinkDescription, wholeWidth, true);
-        }
-    }
-
-    internal static void DrawLinkDescription(LinkDescription link, float wholeWidth, bool drawQuestion)
-    {
-        var hasTexture = IconSet.GetTexture(link.Url, out var texture);
-
-        if (hasTexture && ImGuiHelper.TextureButton(texture, wholeWidth, wholeWidth))
-        {
-            Util.OpenLink(link.Url);
-        }
-
-        ImGui.TextWrapped(link.Description);
-
-        if (drawQuestion && !hasTexture && !string.IsNullOrEmpty(link.Url))
-        {
-            if (ImGuiEx.IconButton(FontAwesomeIcon.Question, link.Description))
+            foreach (var link in links)
             {
-                Util.OpenLink(link.Url);
+                DrawLinkDescription(link.LinkDescription, wholeWidth, true);
             }
         }
-    }
 
-    private static string GetRotationStatusHead()
-    {
-        var rotation = DataCenter.RightNowRotation;
-        var status = UiString.ConfigWindow_Rotation_Status.Local();
-        if (Service.Config.InDebug)
+        private static string GetRotationStatusHead()
         {
+            var rotation = DataCenter.RightNowRotation;
+            var status = UiString.ConfigWindow_Rotation_Status.Local();
+            if (Service.Config.InDebug)
+            {
+                return status;
+            }
+            if (rotation == null || !rotation.ShowStatus) return string.Empty;
             return status;
         }
-        if (rotation == null || !rotation.ShowStatus) return string.Empty;
-        return status;
-    }
 
-    private static void DrawRotationStatus()
-    {
-        DataCenter.RightNowRotation?.DisplayStatus();
-    }
-
-    private static string ToCommandStr(OtherCommandType type, string str, string extra = "")
-    {
-        var result = Service.COMMAND + " " + type.ToString() + " " + str;
-        if (!string.IsNullOrEmpty(extra)) result += " " + extra;
-        return result;
-    }
-    private static void DrawRotationConfiguration()
-    {
-        var rotation = DataCenter.RightNowRotation;
-        if (rotation == null) return;
-
-        var enable = rotation.IsEnabled;
-        if (ImGui.Checkbox(rotation.Name, ref enable))
+        private static void DrawRotationStatus()
         {
-            rotation.IsEnabled = enable;
+            DataCenter.RightNowRotation?.DisplayStatus();
         }
-        if (!enable) return;
 
-        var set = rotation.Configs;
-
-        if (set.Any()) ImGui.Separator();
-
-        foreach (var config in set.Configs)
+        private static void DrawRotationConfiguration()
         {
-            if (DataCenter.IsPvP)
+            var rotation = DataCenter.RightNowRotation;
+            if (rotation == null) return;
+
+            var enable = rotation.IsEnabled;
+            if (ImGui.Checkbox(rotation.Name, ref enable))
             {
-                if (!config.Type.HasFlag(CombatType.PvP)) continue;
+                rotation.IsEnabled = enable;
             }
-            else
+            if (!enable) return;
+
+            var set = rotation.Configs;
+
+            if (set.Any()) ImGui.Separator();
+
+            foreach (var config in set.Configs)
             {
-                if (!config.Type.HasFlag(CombatType.PvE)) continue;
-            }
-
-            var key = rotation.GetType().FullName ?? rotation.GetType().Name + "." + config.Name;
-            var name = $"##{config.GetHashCode()}_{(key + ".Name").Local(config.Name)}";
-            string command = ToCommandStr(OtherCommandType.Rotations, config.Name, config.DefaultValue);
-            void Reset() => config.Value = config.DefaultValue;
-
-            ImGuiHelper.PrepareGroup(key, command, Reset);
-
-            if (config is RotationConfigCombo c)
-            {
-                var val = int.Parse(c.Value);
-                ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.Items[val]).X + 50 * Scale);
-                var openCombo = ImGui.BeginCombo(name, c.Items[val]);
-                ImGuiHelper.ReactPopup(key, command, Reset);
-                if (openCombo)
+                if (DataCenter.IsPvP)
                 {
-                    for (int comboIndex = 0; comboIndex < c.Items.Length; comboIndex++)
-                    {
-                        if (ImGui.Selectable(c.Items[comboIndex]))
-                        {
-                            config.Value = comboIndex.ToString();
-                        }
-                    }
-                    ImGui.EndCombo();
-                }
-            }
-            else if (config is RotationConfigBoolean b)
-            {
-                bool val = bool.Parse(config.Value);
-
-                if (ImGui.Checkbox(name, ref val))
-                {
-                    config.Value = val.ToString();
-                }
-                ImGuiHelper.ReactPopup(key, command, Reset);
-            }
-            else if (config is RotationConfigFloat f)
-            {
-                float val = float.Parse(config.Value);
-                ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
-
-                if (f.UnitType == ConfigUnitType.Percent)
-                {
-                    if (ImGui.SliderFloat(name, ref val, f.Min, f.Max, $"{val * 100:F1}{f.UnitType.ToSymbol()}"))
-                    {
-                        config.Value = val.ToString();
-                    }
+                    if (!config.Type.HasFlag(CombatType.PvP)) continue;
                 }
                 else
                 {
-                    if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max, $"{val:F2}{f.UnitType.ToSymbol()}"))
+                    if (!config.Type.HasFlag(CombatType.PvE)) continue;
+                }
+
+                var key = rotation.GetType().FullName ?? rotation.GetType().Name + "." + config.Name;
+                var name = $"##{config.GetHashCode()}_{(key + ".Name").Local(config.Name)}";
+                string command = ToCommandStr(OtherCommandType.Rotations, config.Name, config.DefaultValue);
+                void Reset() => config.Value = config.DefaultValue;
+
+                ImGuiHelper.PrepareGroup(key, command, Reset);
+
+                if (config is RotationConfigCombo c)
+                {
+                    var val = int.Parse(c.Value);
+                    ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.Items[val]).X + 50 * Scale);
+                    var openCombo = ImGui.BeginCombo(name, c.Items[val]);
+                    ImGuiHelper.ReactPopup(key, command, Reset);
+                    if (openCombo)
+                    {
+                        for (int comboIndex = 0; comboIndex < c.Items.Length; comboIndex++)
+                        {
+                            if (ImGui.Selectable(c.Items[comboIndex]))
+                            {
+                                config.Value = comboIndex.ToString();
+                            }
+                        }
+                        ImGui.EndCombo();
+                    }
+                }
+                else if (config is RotationConfigBoolean b)
+                {
+                    bool val = bool.Parse(config.Value);
+
+                    if (ImGui.Checkbox(name, ref val))
                     {
                         config.Value = val.ToString();
                     }
+                    ImGuiHelper.ReactPopup(key, command, Reset);
                 }
-                ImguiTooltips.HoveredTooltip(f.UnitType.Local());
-
-                ImGuiHelper.ReactPopup(key, command, Reset);
-            }
-            else if (config is RotationConfigString s)
-            {
-                string val = config.Value;
-
-                ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
-                if (ImGui.InputTextWithHint(name, config.DisplayName, ref val, 128))
+                else if (config is RotationConfigFloat f)
                 {
-                    config.Value = val;
-                }
-                ImGuiHelper.ReactPopup(key, command, Reset);
-                continue;
-            }
-            else if (config is RotationConfigInt i)
-            {
-                int val = int.Parse(config.Value);
-                ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
-                if (ImGui.DragInt(name, ref val, i.Speed, i.Min, i.Max))
-                {
-                    config.Value = val.ToString();
-                }
-                ImGuiHelper.ReactPopup(key, command, Reset);
-            }
-            else continue;
+                    float val = float.Parse(config.Value);
+                    ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
 
-            ImGui.SameLine();
-            ImGui.TextWrapped((key + ".DisplayName").Local(config.DisplayName));
-            ImGuiHelper.ReactPopup(key, command, Reset, false);
+                    if (f.UnitType == ConfigUnitType.Percent)
+                    {
+                        if (ImGui.SliderFloat(name, ref val, f.Min, f.Max, $"{val * 100:F1}{f.UnitType.ToSymbol()}"))
+                        {
+                            config.Value = val.ToString();
+                        }
+                    }
+                    else
+                    {
+                        if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max, $"{val:F2}{f.UnitType.ToSymbol()}"))
+                        {
+                            config.Value = val.ToString();
+                        }
+                    }
+                    ImguiTooltips.HoveredTooltip(f.UnitType.Local());
+
+                    ImGuiHelper.ReactPopup(key, command, Reset);
+                }
+                else if (config is RotationConfigString s)
+                {
+                    string val = config.Value;
+
+                    ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
+                    if (ImGui.InputTextWithHint(name, config.DisplayName, ref val, 128))
+                    {
+                        config.Value = val;
+                    }
+                    ImGuiHelper.ReactPopup(key, command, Reset);
+                    continue;
+                }
+                else if (config is RotationConfigInt i)
+                {
+                    int val = int.Parse(config.Value);
+                    ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
+                    if (ImGui.DragInt(name, ref val, i.Speed, i.Min, i.Max))
+                    {
+                        config.Value = val.ToString();
+                    }
+                    ImGuiHelper.ReactPopup(key, command, Reset);
+                }
+                else continue;
+
+                ImGui.SameLine();
+                ImGui.TextWrapped((key + ".DisplayName").Local(config.DisplayName));
+                ImGuiHelper.ReactPopup(key, command, Reset, false);
+            }
+        }
+
+        private static void DrawRotationRating()
+        {
+            var rotation = DataCenter.RightNowRotation;
+            if (rotation == null) return;
+
+            ImGui.TextWrapped(UiString.ConfigWindow_Rotation_Rating_Description.Local());
+
+            if (DrawRating((float)rotation.AverageCountOfLastUsing, rotation.MaxCountOfLastUsing, 10))
+            {
+                ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Rotation_Rating_CountOfLastUsing.Local());
+            }
+            if (DrawRating((float)rotation.AverageCountOfCombatTimeUsing, rotation.MaxCountOfCombatTimeUsing, 20))
+            {
+                ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Rotation_Rating_CountOfCombatTimeUsing.Local());
+            }
+
+            static bool DrawRating(float value1, int value2, float max)
+            {
+                var ratio1 = value1 / max;
+                var ratio2 = value2 / max;
+                var count = RatingColors.Length;
+
+                var start = ImGui.GetCursorPos() + ImGui.GetWindowPos();
+
+                var spacing = ImGui.GetStyle().ItemSpacing;
+                ImGui.GetStyle().ItemSpacing = Vector2.Zero;
+
+                var size = Vector2.Zero;
+                using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(16)))
+                {
+                    using (var color = ImRaii.PushColor(ImGuiCol.Text, RatingColors[(int)(ratio1 * count)]))
+                    {
+                        ImGui.Text($"{value1:F2}");
+                    }
+                    size += ImGui.GetItemRectSize();
+
+                    ImGui.SameLine();
+                    ImGui.Text("/");
+                    size.X += ImGui.GetItemRectSize().X;
+
+                    ImGui.SameLine();
+
+                    using (var color = ImRaii.PushColor(ImGuiCol.Text, RatingColors[(int)(ratio2 * count)]))
+                    {
+                        ImGui.Text($"{value2}  ");
+                    }
+
+                    size.X += ImGui.GetItemRectSize().X;
+                }
+                ImGui.GetStyle().ItemSpacing = spacing;
+
+                var radius = size.Y * 0.2f;
+                var wholeWidth = ImGui.GetWindowSize().X - size.X - 2 * radius;
+                var step = new Vector2(wholeWidth / count, size.Y);
+                var shift = new Vector2(0, size.Y * 0.2f);
+
+                var result = ImGuiHelperRS.IsInRect(start, new Vector2(ImGui.GetWindowSize().X, size.Y));
+                if (wholeWidth <= 0) return result;
+
+                var veryStart = start += new Vector2(size.X, 0);
+
+                for (var i = 0; i < count; i++)
+                {
+                    var isStart = i == 0;
+                    var isLast = i == count - 1;
+                    var stepThis = step;
+                    if (isStart || isLast)
+                    {
+                        stepThis = step + new Vector2(radius, 0);
+                    }
+
+                    ImGui.GetWindowDrawList().AddRectFilled(start + shift, start + stepThis - shift, ChangeAlpha(RatingColors[i]), radius,
+                       isStart ? ImDrawFlags.RoundCornersLeft : isLast ? ImDrawFlags.RoundCornersRight : ImDrawFlags.RoundCornersNone);
+                    start += new Vector2(stepThis.X, 0);
+                }
+
+                ImGui.GetWindowDrawList().AddRect(veryStart + shift, start + new Vector2(0, size.Y) - shift, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudWhite2), radius);
+
+                var linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio1, 0);
+                ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - 2 * shift.Y), uint.MaxValue, 3);
+
+                linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio2, 0);
+                ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - 2 * shift.Y), uint.MaxValue, 3);
+
+                return result;
+            }
+
+
+        }
+
+        private static float _groupWidth = 100;
+        private static void DrawRotationInformation()
+        {
+            var rotation = DataCenter.RightNowRotation;
+            if (rotation == null) return;
+
+            var youtubeLink = rotation.GetType().GetCustomAttribute<YoutubeLinkAttribute>()?.ID;
+
+            var wholeWidth = ImGui.GetWindowWidth();
+            if (!string.IsNullOrEmpty(youtubeLink))
+            {
+                ImGui.NewLine();
+                if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Youtube Link"))
+                {
+                    Util.OpenLink("https://www.youtube.com/watch?v=" + youtubeLink);
+                }
+            }
+
+            var assembly = rotation.GetType().Assembly;
+            var info = assembly.GetInfo();
+
+            if (info != null)
+            {
+                ImGui.NewLine();
+
+                var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
+                if (link != null)
+                {
+                    var userName = info.GitHubUserName;
+                    var repository = info.GitHubRepository;
+
+                    if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(repository) && !string.IsNullOrEmpty(link.Path))
+                    {
+                        DrawGitHubBadge(userName, repository, link.Path, $"https://github.com/{userName}/{repository}/blob/{link.Path}", center: true);
+                    }
+                }
+                ImGui.NewLine();
+
+                ImGuiHelper.DrawItemMiddle(() =>
+                {
+                    using var group = ImRaii.Group();
+                    if (group)
+                    {
+                        if (ImGui.Button(info.Name))
+                        {
+                            Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
+                        }
+
+                        var version = assembly.GetName().Version;
+                        if (version != null)
+                        {
+                            ImGui.Text(" v " + version.ToString());
+                        }
+                        ImGui.Text(" - " + info.Author);
+                    }
+
+                }, wholeWidth, _groupWidth);
+
+                _groupWidth = ImGui.GetItemRectSize().X;
+            }
+        }
+
+        private static readonly uint[] RatingColors =
+        [
+            ImGui.ColorConvertFloat4ToU32(ImGuiColors.TankBlue),
+            ImGui.ColorConvertFloat4ToU32(ImGuiColors.HealerGreen),
+            ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow),
+            ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudOrange),
+            ImGui.ColorConvertFloat4ToU32(ImGuiColors.DPSRed),
+        ];
+
+        internal static void DrawLinkDescription(LinkDescription link, float wholeWidth, bool drawQuestion)
+        {
+            var hasTexture = IconSet.GetTexture(link.Url, out var texture);
+
+            if (hasTexture && ImGuiHelper.TextureButton(texture, wholeWidth, wholeWidth))
+            {
+                Util.OpenLink(link.Url);
+            }
+
+            ImGui.TextWrapped(link.Description);
+
+            if (drawQuestion && !hasTexture && !string.IsNullOrEmpty(link.Url))
+            {
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Question, link.Description))
+                {
+                    Util.OpenLink(link.Url);
+                }
+            }
         }
     }
 
-    private static void DrawRotationInformation()
+    [Description("Actions")]
+    public class ActionsItem : ConfigWindowItemRS
     {
-        var rotation = DataCenter.RightNowRotation;
-        if (rotation == null) return;
+        public override uint Icon => 4;
 
-        var youtubeLink = rotation.GetType().GetCustomAttribute<YoutubeLinkAttribute>()?.ID;
+        public override string Description => UiString.Item_Actions.Local();
 
-        var wholeWidth = ImGui.GetWindowWidth();
-        if (!string.IsNullOrEmpty(youtubeLink))
+        public override unsafe void Draw(ConfigWindow window)
         {
-            ImGui.NewLine();
-            if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Youtube Link"))
-            {
-                Util.OpenLink("https://www.youtube.com/watch?v=" + youtubeLink);
-            }
-        }
+            ImGui.TextWrapped(UiString.ConfigWindow_Actions_Description.Local());
 
-        var assembly = rotation.GetType().Assembly;
-        var info = assembly.GetInfo();
+            using var table = ImRaii.Table("Rotation Solver Actions", 2, ImGuiTableFlags.Resizable);
 
-        if (info != null)
-        {
-            ImGui.NewLine();
-
-            var link = rotation.GetType().GetCustomAttribute<SourceCodeAttribute>();
-            if (link != null)
-            {
-                var userName = info.GitHubUserName;
-                var repository = info.GitHubRepository;
-
-                if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(repository) && !string.IsNullOrEmpty(link.Path))
-                {
-                    DrawGitHubBadge(userName, repository, link.Path, $"https://github.com/{userName}/{repository}/blob/{link.Path}", center: true);
-                }
-            }
-            ImGui.NewLine();
-
-            ImGuiHelper.DrawItemMiddle(() =>
-            {
-                using var group = ImRaii.Group();
-                if (group)
-                {
-                    if (ImGui.Button(info.Name))
-                    {
-                        Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
-                    }
-
-                    var version = assembly.GetName().Version;
-                    if (version != null)
-                    {
-                        ImGui.Text(" v " + version.ToString());
-                    }
-                    ImGui.Text(" - " + info.Author);
-                }
-
-            }, wholeWidth, _groupWidth);
-
-            _groupWidth = ImGui.GetItemRectSize().X;
-        }
-    }
-
-    private static float _groupWidth = 100;
-    #endregion
-
-    #region Actions
-    private static unsafe void DrawActions()
-    {
-        ImGui.TextWrapped(UiString.ConfigWindow_Actions_Description.Local());
-
-        using var table = ImRaii.Table("Rotation Solver Actions", 2, ImGuiTableFlags.Resizable);
-
-        if (table)
-        {
+            if (!table) return;
             ImGui.TableSetupColumn("Action Column", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 2);
             ImGui.TableNextColumn();
 
@@ -1423,327 +1167,1664 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TextWrapped(UiString.ConfigWindow_Actions_ConditionDescription.Local());
             _sequencerList?.Draw();
-        }
 
-        static void DrawConfigsOfAction()
-        {
-            if (_activeAction == null) return;
-
-            var enable = _activeAction.IsEnabled;
-            if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
+            static void DrawConfigsOfAction()
             {
-                _activeAction.IsEnabled = enable;
-            }
+                if (_activeAction == null) return;
 
-            const string key = "Action Enable Popup";
-            var cmd = ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString()!);
-            ImGuiHelper.DrawHotKeysPopup(key, cmd);
-            ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
-
-            enable = _activeAction.IsInCooldown;
-            if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_ShowOnCDWindow.Local()}##{_activeAction.Name}InCooldown", ref enable))
-            {
-                _activeAction.IsInCooldown = enable;
-            }
-
-            if (_activeAction is IBaseAction a)
-            {
-                DrawConfigsOfBaseAction(a);
-            }
-
-            ImGui.Separator();
-
-            static void DrawConfigsOfBaseAction(IBaseAction a)
-            {
-                var config = a.Config;
-
-                if (Service.Config.MistakeRatio > 0
-                    && !a.Setting.IsFriendly
-                    && a.Setting.TargetType != TargetType.Move)
+                var enable = _activeAction.IsEnabled;
+                if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
                 {
-                    var enable = config.IsInMistake;
-                    if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_IsInMistake.Local()}##{a.Name}InMistake", ref enable))
-                    {
-                        config.IsInMistake = enable;
-                    }
+                    _activeAction.IsEnabled = enable;
+                }
+
+                const string key = "Action Enable Popup";
+                var cmd = ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString()!);
+                ImGuiHelper.DrawHotKeysPopup(key, cmd);
+                ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
+
+                enable = _activeAction.IsInCooldown;
+                if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_ShowOnCDWindow.Local()}##{_activeAction.Name}InCooldown", ref enable))
+                {
+                    _activeAction.IsInCooldown = enable;
+                }
+
+                if (_activeAction is IBaseAction a)
+                {
+                    DrawConfigsOfBaseAction(a);
                 }
 
                 ImGui.Separator();
 
-                var ttk = config.TimeToKill;
-                ImGui.SetNextItemWidth(Scale * 150);
-                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTK.Local()}##{a}",
-                    ref ttk, 0.1f, 0, 120, $"{ttk:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
+                static void DrawConfigsOfBaseAction(IBaseAction a)
                 {
-                    config.TimeToKill = ttk;
-                }
-                ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
+                    var config = a.Config;
 
-                var ttu = config.TimeToUntargetable;
-                ImGui.SetNextItemWidth(Scale * 150);
-                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTU.Local()}##{a}",
-                    ref ttu, 0.1f, 0, 120, $"{ttu:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
-                {
-                    config.TimeToUntargetable = ttu;
-                }
-                ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
-
-                if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
-                {
-                    var shouldStatus = config.ShouldCheckStatus;
-                    if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_CheckStatus.Local()}##{a}", ref shouldStatus))
+                    if (Service.Config.MistakeRatio > 0
+                        && !a.Setting.IsFriendly
+                        && a.Setting.TargetType != TargetType.Move)
                     {
-                        config.ShouldCheckStatus = shouldStatus;
+                        var enable = config.IsInMistake;
+                        if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_IsInMistake.Local()}##{a.Name}InMistake", ref enable))
+                        {
+                            config.IsInMistake = enable;
+                        }
                     }
 
-                    if (shouldStatus)
+                    ImGui.Separator();
+
+                    var ttk = config.TimeToKill;
+                    ImGui.SetNextItemWidth(Scale * 150);
+                    if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTK.Local()}##{a}",
+                        ref ttk, 0.1f, 0, 120, $"{ttk:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
                     {
-                        var statusGcdCount = (int)config.StatusGcdCount;
-                        ImGui.SetNextItemWidth(Scale * 150);
-                        if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_GcdCount.Local()}##{a}",
-                            ref statusGcdCount, 0.05f, 1, 10))
+                        config.TimeToKill = ttk;
+                    }
+                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
+
+                    var ttu = config.TimeToUntargetable;
+                    ImGui.SetNextItemWidth(Scale * 150);
+                    if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_TTU.Local()}##{a}",
+                        ref ttu, 0.1f, 0, 120, $"{ttu:F2}{ConfigUnitType.Seconds.ToSymbol()}"))
+                    {
+                        config.TimeToUntargetable = ttu;
+                    }
+                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
+
+                    if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
+                    {
+                        var shouldStatus = config.ShouldCheckStatus;
+                        if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_CheckStatus.Local()}##{a}", ref shouldStatus))
                         {
-                            config.StatusGcdCount = (byte)statusGcdCount;
+                            config.ShouldCheckStatus = shouldStatus;
+                        }
+
+                        if (shouldStatus)
+                        {
+                            var statusGcdCount = (int)config.StatusGcdCount;
+                            ImGui.SetNextItemWidth(Scale * 150);
+                            if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_GcdCount.Local()}##{a}",
+                                ref statusGcdCount, 0.05f, 1, 10))
+                            {
+                                config.StatusGcdCount = (byte)statusGcdCount;
+                            }
+                        }
+                    }
+
+                    if (!a.TargetInfo.IsSingleTarget)
+                    {
+                        var aoeCount = (int)config.AoeCount;
+                        ImGui.SetNextItemWidth(Scale * 150);
+                        if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_AoeCount.Local()}##{a}",
+                            ref aoeCount, 0.05f, 1, 10))
+                        {
+                            config.AoeCount = (byte)aoeCount;
+                        }
+                    }
+
+                    var ratio = config.AutoHealRatio;
+                    ImGui.SetNextItemWidth(Scale * 150);
+                    if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_HealRatio.Local()}##{a}",
+                        ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
+                    {
+                        config.AutoHealRatio = ratio;
+                    }
+                    ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.Local());
+
+                }
+            }
+
+            static void DrawActionDebug()
+            {
+                if (!Service.Config.InDebug) return;
+
+                if (_activeAction is IBaseAction action)
+                {
+
+                    try
+                    {
+                        ImGui.Text("ID: " + action.Info.ID.ToString());
+
+#if DEBUG
+                        ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
+                        ImGui.Text("Resources: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->CheckActionResources(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
+                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
+                        ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
+                        ImGui.Text("MP: " + action.Info.MPNeed.ToString());
+#endif
+                        ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
+                        ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
+                        ImGui.Text("Has One:" + action.Cooldown.HasOneCharge.ToString());
+                        ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
+                        ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
+                        ImGui.Text($"Charges: {action.Cooldown.CurrentCharges} / {action.Cooldown.MaxCharges}");
+
+                        ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
+                        ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
+                        ImGui.Text("Target Name: " + action.Target.Target?.Name ?? string.Empty);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                else if (_activeAction is IBaseItem item)
+                {
+                    try
+                    {
+                        ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID).ToString());
+                        ImGui.Text("Status HQ: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID + 1000000).ToString());
+                        var remain = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTime(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID) - FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTimeElapsed(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID);
+                        ImGui.Text("remain: " + remain.ToString());
+                        ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
+
+                        if (item is HpPotionItem healPotionItem)
+                        {
+                            ImGui.Text("MaxHP:" + healPotionItem.MaxHp.ToString());
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+        }
+
+        private static IAction? _activeAction;
+
+        private static readonly CollapsingHeaderGroup _actionsList = new()
+        {
+            HeaderSize = FontSize.Forth,
+        };
+
+        private static readonly CollapsingHeaderGroup _sequencerList = new(new()
+        {
+            { () => UiString.ConfigWindow_Actions_ForcedConditionSet.Local(), () =>
+            {
+                ImGui.TextWrapped(UiString.ConfigWindow_Actions_ForcedConditionSet_Description.Local());
+
+                var rotation = DataCenter.RightNowRotation;
+                var set = DataCenter.RightSet;
+
+                if (set == null || _activeAction == null || rotation == null) return;
+                set.GetCondition(_activeAction.ID)?.DrawMain(rotation);
+            } },
+
+            { () => UiString.ConfigWindow_Actions_DisabledConditionSet.Local(), () =>
+            {
+                ImGui.TextWrapped(UiString.ConfigWindow_Actions_DisabledConditionSet_Description.Local());
+
+                var rotation = DataCenter.RightNowRotation;
+                var set = DataCenter.RightSet;
+
+                if (set == null || _activeAction == null || rotation == null) return;
+                set.GetDisabledCondition(_activeAction.ID)?.DrawMain(rotation);
+            } },
+        })
+        {
+            HeaderSize = FontSize.Forth,
+        };
+    }
+
+    [Description("Rotations")]
+    public class RotationsItem : ConfigWindowItemRS
+    {
+        private CollapsingHeaderGroup? _rotationsHeader;
+
+        public override uint Icon => 47;
+
+        public override string Description => UiString.Item_Rotations.Local();
+
+        public override void Draw(ConfigWindow window)
+        {
+            var width = ImGui.GetWindowWidth();
+
+            var text = UiString.ConfigWindow_Rotations_Download.Local();
+            var textWidth = ImGuiHelpers.GetButtonSize(text).X;
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                if (ImGui.Button(text))
+                {
+                    Task.Run(async () =>
+                    {
+                        await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
+                    });
+                }
+            }, width, textWidth);
+
+            text = UiString.ConfigWindow_Rotations_Links.Local();
+            textWidth = ImGuiHelpers.GetButtonSize(text).X;
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                if (ImGui.Button(text))
+                {
+                    Util.OpenLink($"https://github.com/{Service.USERNAME}/{Service.REPO}/blob/main/RotationsLink.md");
+                }
+            }, width, textWidth);
+
+            _rotationsHeader ??= new(new()
+            {
+                {  () => UiString.ConfigWindow_Rotations_Settings.Local(), () => DrawRotationsSettings(window)},
+                {  () => UiString.ConfigWindow_Rotations_Loaded.Local(), DrawRotationsLoaded},
+                {  () => UiString.ConfigWindow_Rotations_GitHub.Local(), DrawRotationsGitHub},
+                {  () => UiString.ConfigWindow_Rotations_Libraries.Local(), DrawRotationsLibraries},
+            });
+
+            _rotationsHeader?.Draw();
+        }
+
+        private static void DrawRotationsSettings(ConfigWindow window)
+        {
+            window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Rotations_Settings);
+        }
+
+        private static void DrawRotationsLoaded()
+        {
+            var assemblyGrps = RotationUpdater.CustomRotationsDict
+                .SelectMany(d => d.Value)
+                .SelectMany(g => g.Rotations)
+                .GroupBy(r => r.Assembly);
+
+            using var table = ImRaii.Table("Rotation Solver AssemblyTable", 3, ImGuiTableFlags.BordersInner
+                | ImGuiTableFlags.Resizable
+                | ImGuiTableFlags.SizingStretchProp);
+
+            if (table)
+            {
+                ImGui.TableSetupScrollFreeze(0, 1);
+                ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader("Information");
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader("Rotations");
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader("Links");
+
+                foreach (var grp in assemblyGrps)
+                {
+                    ImGui.TableNextRow();
+
+                    var assembly = grp.Key;
+
+                    var info = assembly.GetInfo();
+                    ImGui.TableNextColumn();
+
+                    if (ImGui.Button(info.Name))
+                    {
+                        Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
+                    }
+
+                    var version = assembly.GetName().Version;
+                    if (version != null)
+                    {
+                        ImGui.Text(" v " + version.ToString());
+                    }
+
+                    ImGui.Text(" - " + info.Author);
+
+                    ImGui.TableNextColumn();
+
+                    var lastRole = JobRole.None;
+                    foreach (var jobs in grp.GroupBy(r => r.GetCustomAttribute<JobsAttribute>()!.Jobs[0]).OrderBy(g => Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)g.Key)!.GetJobRole()))
+                    {
+                        var role = Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)jobs.Key)!.GetJobRole();
+                        if (lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
+                        lastRole = role;
+
+                        if (IconSet.GetTexture(IconSet.GetJobIcon(jobs.Key, IconType.Framed), out var texture, 62574))
+                            ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
+
+                        ImguiTooltips.HoveredTooltip(string.Join('\n', jobs.Select(t => t.GetCustomAttribute<UIAttribute>()?.Name ?? t.Name)));
+                    }
+
+                    ImGui.TableNextColumn();
+
+                    if (!string.IsNullOrEmpty(info.GitHubUserName) && !string.IsNullOrEmpty(info.GitHubRepository) && !string.IsNullOrEmpty(info.FilePath))
+                    {
+                        DrawGitHubBadge(info.GitHubUserName, info.GitHubRepository, info.FilePath);
+                    }
+
+                    if (!string.IsNullOrEmpty(info.DonateLink)
+                        && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon)
+                        && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height / icon.Width) * MathF.Min(250, icon.Width) * Scale, info.FilePath ?? string.Empty))
+                    {
+                        Util.OpenLink(info.DonateLink);
+                    }
+                }
+            }
+        }
+
+        private static void DrawRotationsGitHub()
+        {
+            if (!Service.Config.GitHubLibs.Any(s => string.IsNullOrEmpty(s) || s == "||"))
+            {
+                Service.Config.GitHubLibs = [.. Service.Config.GitHubLibs, "||"];
+            }
+
+            ImGui.Spacing();
+
+            foreach (var gitHubLink in DownloadHelper.LinkLibraries ?? [])
+            {
+                var strs = gitHubLink.Split('|');
+                var userName = strs.FirstOrDefault() ?? string.Empty;
+                var repository = strs.Length > 1 ? strs[1] : string.Empty;
+                var fileName = strs.LastOrDefault() ?? string.Empty;
+
+                DrawGitHubBadge(userName, repository, fileName, center: true);
+                ImGui.Spacing();
+                ImGui.Separator();
+            }
+
+            int removeIndex = -1;
+            for (int i = 0; i < Service.Config.GitHubLibs.Length; i++)
+            {
+                var strs = Service.Config.GitHubLibs[i].Split('|');
+                var userName = strs.FirstOrDefault() ?? string.Empty;
+                var repository = strs.Length > 1 ? strs[1] : string.Empty;
+                var fileName = strs.LastOrDefault() ?? string.Empty;
+
+                DrawGitHubBadge(userName, repository, fileName, center: true);
+
+                var changed = false;
+
+                var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X * 3 - 10 * Scale;
+                width /= 3;
+
+                ImGui.SetNextItemWidth(width);
+                changed |= ImGui.InputTextWithHint($"##GitHubLib{i}UserName", UiString.ConfigWindow_Rotations_UserName.Local(), ref userName, 1024);
+                ImGui.SameLine();
+
+                ImGui.SetNextItemWidth(width);
+                changed |= ImGui.InputTextWithHint($"##GitHubLib{i}Repository", UiString.ConfigWindow_Rotations_Repository.Local(), ref repository, 1024);
+                ImGui.SameLine();
+
+                ImGui.SetNextItemWidth(width);
+                changed |= ImGui.InputTextWithHint($"##GitHubLib{i}FileName", UiString.ConfigWindow_Rotations_FileName.Local(), ref fileName, 1024);
+                ImGui.SameLine();
+
+                if (changed)
+                {
+                    Service.Config.GitHubLibs[i] = $"{userName}|{repository}|{fileName}";
+                }
+
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove GitHubLibs{i}"))
+                {
+                    removeIndex = i;
+                }
+            }
+            if (removeIndex > -1)
+            {
+                var list = Service.Config.GitHubLibs.ToList();
+                list.RemoveAt(removeIndex);
+                Service.Config.GitHubLibs = [.. list];
+            }
+        }
+
+        private static void DrawRotationsLibraries()
+        {
+            if (!Service.Config.OtherLibs.Any(string.IsNullOrEmpty))
+            {
+                Service.Config.OtherLibs = [.. Service.Config.OtherLibs, string.Empty];
+            }
+
+            ImGui.Spacing();
+
+            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
+
+            int removeIndex = -1;
+            for (int i = 0; i < Service.Config.OtherLibs.Length; i++)
+            {
+                ImGui.SetNextItemWidth(width);
+                ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", UiString.ConfigWindow_Rotations_Library.Local(), ref Service.Config.OtherLibs[i], 1024);
+                ImGui.SameLine();
+
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
+                {
+                    removeIndex = i;
+                }
+            }
+            if (removeIndex > -1)
+            {
+                var list = Service.Config.OtherLibs.ToList();
+                list.RemoveAt(removeIndex);
+                Service.Config.OtherLibs = [.. list];
+            }
+        }
+    }
+
+    private static Status[]? _allDispelStatus = null;
+    internal static Status[] AllDispelStatus
+        => _allDispelStatus ??= Service.GetSheet<Status>()
+                    .Where(s => s.CanDispel)
+                    .ToArray();
+
+
+    private static Status[]? _allStatus = null;
+    internal static Status[] AllStatus
+        => _allStatus ??= Service.GetSheet<Status>()
+                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff
+                        && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
+                    .ToArray();
+
+    private static GAction[]? _allActions = null;
+    internal static GAction[] AllActions
+        => _allActions ??= Service.GetSheet<GAction>()
+                    .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction
+                    && a.ClassJob.Value == null && a.Cast100ms > 0)
+                    .ToArray();
+    private static Status[]? _badStatus = null;
+    internal static Status[] BadStatus
+        => _badStatus ??= Service.GetSheet<Status>()
+                    .Where(s => s.StatusCategory == 2 && s.Icon != 0)
+                    .ToArray();
+    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100, float size = 32)
+    {
+        using var popup = ImRaii.Popup(popupId);
+        if (popup)
+        {
+            ImGui.SetNextItemWidth(200 * Scale);
+            ImGui.InputTextWithHint("##Searching the status", UiString.ConfigWindow_List_StatusNameOrId.Local(), ref searching, 128);
+
+            ImGui.Spacing();
+
+            using var child = ImRaii.Child("Rotation Solver Add Status", new Vector2(-1, 400 * Scale));
+            if (child)
+            {
+                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * Scale + ImGui.GetStyle().ItemSpacing.X)));
+                var index = 0;
+
+                var searchingKey = searching;
+                foreach (var status in allStatus.OrderByDescending(s => SearchableCollection.Similarity(s.Name + " " + s.RowId.ToString(), searchingKey)))
+                {
+                    if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
+                    {
+                        if (index++ % count != 0)
+                        {
+                            ImGui.SameLine();
+                        }
+                        if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(size * 3 / 4, size) * Scale, "Adding" + status.RowId.ToString()))
+                        {
+                            clicked?.Invoke(status);
+                            ImGui.CloseCurrentPopup();
+                        }
+                        ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
+                    }
+                }
+            }
+        }
+    }
+
+
+    [Description("List")]
+    public class ListItem : ConfigWindowItemRS
+    {
+        private CollapsingHeaderGroup? _idsHeader;
+
+        public override uint Icon => 21;
+        public override string Description => UiString.Item_List.Local();
+
+        public override void Draw(ConfigWindow window)
+        {
+            ImGui.TextWrapped(UiString.ConfigWindow_List_Description.Local());
+
+            _idsHeader ??= new(new()
+            {
+                { () => UiString.ConfigWindow_List_Statuses.Local(), DrawListStatuses},
+                { () => Service.Config.UseDefenseAbility ? UiString.ConfigWindow_List_Actions.Local() : string.Empty,
+                    () => DrawListActions(window)},
+                {() =>  UiString.ConfigWindow_List_Territories.Local(), DrawListTerritories},
+            });
+            _idsHeader?.Draw();
+        }
+
+        #region List
+
+        private static void DrawListStatuses()
+        {
+            ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
+            ImGui.InputTextWithHint("##Searching the action", UiString.ConfigWindow_List_StatusNameOrId.Local(), ref _statusSearching, 128);
+
+            using var table = ImRaii.Table("Rotation Solver List Statuses", 4, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+            if (table)
+            {
+                ImGui.TableSetupScrollFreeze(0, 1);
+                ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_Invincibility.Local());
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_Priority.Local());
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_DangerousStatus.Local());
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_NoCastingStatus.Local());
+
+                ImGui.TableNextRow();
+
+                ImGui.TableNextColumn();
+
+                ImGui.TextWrapped(UiString.ConfigWindow_List_InvincibilityDesc.Local());
+                DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, AllStatus);
+
+                ImGui.TableNextColumn();
+
+                ImGui.TextWrapped(UiString.ConfigWindow_List_PriorityDesc.Local());
+                DrawStatusList(nameof(OtherConfiguration.PriorityStatus), OtherConfiguration.PriorityStatus, AllStatus);
+
+                ImGui.TableNextColumn();
+
+                ImGui.TextWrapped(UiString.ConfigWindow_List_DangerousStatusDesc.Local());
+                DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, AllDispelStatus);
+
+                ImGui.TableNextColumn();
+
+                ImGui.TextWrapped(UiString.ConfigWindow_List_NoCastingStatusDesc.Local());
+                DrawStatusList(nameof(OtherConfiguration.NoCastingStatus), OtherConfiguration.NoCastingStatus, BadStatus);
+
+            }
+        }
+
+        private static void FromClipBoardButton(HashSet<uint> items)
+        {
+            if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
+            {
+                try
+                {
+                    ImGui.SetClipboardText(JsonConvert.SerializeObject(items));
+                }
+                catch (Exception ex)
+                {
+                    Svc.Log.Warning(ex, "Failed to copy the values to the clipboard.");
+                }
+            }
+
+            ImGui.SameLine();
+
+            if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
+            {
+                try
+                {
+                    foreach (var aId in JsonConvert.DeserializeObject<uint[]>(ImGui.GetClipboardText())!)
+                    {
+                        items.Add(aId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Svc.Log.Warning(ex, "Failed to copy the values from the clipboard.");
+                }
+                finally
+                {
+                    OtherConfiguration.Save();
+                    ImGui.CloseCurrentPopup();
+                }
+            }
+        }
+
+        static string _statusSearching = string.Empty;
+        private static void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
+        {
+            using var id = ImRaii.PushId(name);
+            FromClipBoardButton(statuses);
+
+            uint removeId = 0;
+            uint notLoadId = 10100;
+
+            var popupId = "Rotation Solver Popup" + name;
+
+            StatusPopUp(popupId, allStatus, ref _statusSearching, status =>
+            {
+                statuses.Add(status.RowId);
+                OtherConfiguration.Save();
+            }, notLoadId);
+
+            var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * Scale + ImGui.GetStyle().ItemSpacing.X)));
+            var index = 0;
+
+            if (IconSet.GetTexture(16220, out var text))
+            {
+                if (index++ % count != 0)
+                {
+                    ImGui.SameLine();
+                }
+                if (ImGuiHelper.NoPaddingNoColorImageButton(text.ImGuiHandle, new Vector2(24, 32) * Scale, name))
+                {
+                    if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
+                }
+                ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_List_AddStatus.Local());
+            }
+
+            foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
+                .Where(a => a != null)
+                .OrderByDescending(s => SearchableCollection.Similarity(s!.Name + " " + s.RowId.ToString(), _statusSearching)))
+            {
+                void Delete() => removeId = status.RowId;
+
+                var key = "Status" + status!.RowId.ToString();
+
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]));
+
+                if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
+                {
+                    if (index++ % count != 0)
+                    {
+                        ImGui.SameLine();
+                    }
+                    ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * Scale, "Status" + status.RowId.ToString());
+
+                    ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false,
+                        (Delete, [VirtualKey.DELETE]));
+                }
+            }
+
+            if (removeId != 0)
+            {
+                statuses.Remove(removeId);
+                OtherConfiguration.Save();
+            }
+        }
+
+        private static void DrawListActions(ConfigWindow window)
+        {
+            ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
+            ImGui.InputTextWithHint("##Searching the action", UiString.ConfigWindow_List_ActionNameOrId.Local(), ref _actionSearching, 128);
+
+            using var table = ImRaii.Table("Rotation Solver List Actions", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+            if (table)
+            {
+                ImGui.TableSetupScrollFreeze(0, 1);
+                ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingTank.Local());
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingArea.Local());
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingKnockback.Local());
+
+                ImGui.TableNextRow();
+
+                ImGui.TableNextColumn();
+                ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingTankDesc.Local());
+                DrawActionsList(nameof(OtherConfiguration.HostileCastingTank), OtherConfiguration.HostileCastingTank);
+
+                ImGui.TableNextColumn();
+                window.AllSearchable.DrawItems((int)UiString.ConfigWindow_List_HostileCastingArea);
+                ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingAreaDesc.Local());
+                DrawActionsList(nameof(OtherConfiguration.HostileCastingArea), OtherConfiguration.HostileCastingArea);
+
+                ImGui.TableNextColumn();
+                window.AllSearchable.DrawItems((int)UiString.ConfigWindow_List_HostileCastingKnockback);
+                ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingKnockbackDesc.Local());
+                DrawActionsList(nameof(OtherConfiguration.HostileCastingKnockback), OtherConfiguration.HostileCastingKnockback);
+            }
+        }
+
+        private static string _actionSearching = string.Empty;
+        private static void DrawActionsList(string name, HashSet<uint> actions)
+        {
+            using var id = ImRaii.PushId(name);
+
+            uint removeId = 0;
+
+            var popupId = "Rotation Solver Action Popup" + name;
+
+            if (ImGui.Button(UiString.ConfigWindow_List_AddAction.Local() + "##" + name))
+            {
+                if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
+            }
+
+            ImGui.SameLine();
+            FromClipBoardButton(actions);
+
+            ImGui.Spacing();
+
+            foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
+                .Where(a => a != null)
+                .OrderByDescending(s => SearchableCollection.Similarity(s!.Name + " " + s.RowId.ToString(), _actionSearching)))
+            {
+                void Reset() => removeId = action.RowId;
+
+                var key = "Action" + action!.RowId.ToString();
+
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Reset, ["Delete"]));
+
+                ImGui.Selectable($"{action.Name} ({action.RowId})");
+
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [VirtualKey.DELETE]));
+            }
+
+            if (removeId != 0)
+            {
+                actions.Remove(removeId);
+                OtherConfiguration.Save();
+            }
+
+            using var popup = ImRaii.Popup(popupId);
+            if (popup)
+            {
+                ImGui.SetNextItemWidth(200 * Scale);
+                ImGui.InputTextWithHint("##Searching the action pop up", UiString.ConfigWindow_List_ActionNameOrId.Local(), ref _actionSearching, 128);
+
+                ImGui.Spacing();
+
+                using var child = ImRaii.Child("Rotation Solver Add action", new Vector2(-1, 400 * Scale));
+                if (child)
+                {
+                    foreach (var action in AllActions.OrderByDescending(s => SearchableCollection.Similarity(s.Name + " " + s.RowId.ToString(), _actionSearching)))
+                    {
+                        var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
+                        if (ImGui.IsItemHovered())
+                        {
+                            ImguiTooltips.ShowTooltip($"{action.Name} ({action.RowId})");
+                            if (selected)
+                            {
+                                actions.Add(action.RowId);
+                                OtherConfiguration.Save();
+                                ImGui.CloseCurrentPopup();
+                            }
                         }
                     }
                 }
-
-                if (!a.TargetInfo.IsSingleTarget)
-                {
-                    var aoeCount = (int)config.AoeCount;
-                    ImGui.SetNextItemWidth(Scale * 150);
-                    if (ImGui.DragInt($"{UiString.ConfigWindow_Actions_AoeCount.Local()}##{a}",
-                        ref aoeCount, 0.05f, 1, 10))
-                    {
-                        config.AoeCount = (byte)aoeCount;
-                    }
-                }
-
-                var ratio = config.AutoHealRatio;
-                ImGui.SetNextItemWidth(Scale * 150);
-                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_HealRatio.Local()}##{a}",
-                    ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
-                {
-                    config.AutoHealRatio = ratio;
-                }
-                ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.Local());
-
             }
         }
 
-        static void DrawActionDebug()
+        private static void DrawListTerritories()
         {
-            if (!Service.Config.InDebug) return;
+            if (Svc.ClientState == null) return;
 
-            if (_activeAction is IBaseAction action)
+            var territoryId = Svc.ClientState.TerritoryType;
+
+            using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(21)))
             {
+                using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
 
-                try
+                const int iconSize = 32;
+                var contentFinder = DataCenter.ContentFinder;
+                var territoryName = DataCenter.TerritoryName;
+                if (contentFinder != null && !string.IsNullOrEmpty(contentFinder.Name))
                 {
-                    ImGui.Text("ID: " + action.Info.ID.ToString());
-
-#if DEBUG
-                    ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
-                    ImGui.Text("Resources: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->CheckActionResources(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
-                    ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
-                    ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
-                    ImGui.Text("MP: " + action.Info.MPNeed.ToString());
-#endif
-                    ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
-                    ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
-                    ImGui.Text("Has One:" + action.Cooldown.HasOneCharge.ToString());
-                    ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
-                    ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
-                    ImGui.Text($"Charges: {action.Cooldown.CurrentCharges} / {action.Cooldown.MaxCharges}");
-
-                    ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
-                    ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
-                    ImGui.Text("Target Name: " + action.Target.Target?.Name ?? string.Empty);
+                    territoryName += $" ({DataCenter.ContentFinderName})";
                 }
-                catch
+                var icon = DataCenter.ContentFinder?.ContentType?.Value?.Icon ?? 23;
+                if (icon == 0) icon = 23;
+                var getIcon = IconSet.GetTexture(icon, out var texture);
+                ImGuiHelper.DrawItemMiddle(() =>
                 {
-
-                }
-            }
-            else if (_activeAction is IBaseItem item)
-            {
-                try
-                {
-                    ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID).ToString());
-                    ImGui.Text("Status HQ: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID + 1000000).ToString());
-                    var remain = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTime(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID) - FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTimeElapsed(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID);
-                    ImGui.Text("remain: " + remain.ToString());
-                    ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
-
-                    if (item is HpPotionItem healPotionItem)
+                    if (getIcon)
                     {
-                        ImGui.Text("MaxHP:" + healPotionItem.MaxHp.ToString());
+                        ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * Scale);
+                        ImGui.SameLine();
                     }
-                }
-                catch
-                {
-
-                }
+                    ImGui.Text(territoryName);
+                }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
             }
-        }
-    }
 
-    private static IAction? _activeAction;
+            DrawContentFinder(DataCenter.ContentFinder);
 
-    private static readonly CollapsingHeaderGroup _actionsList = new()
-    {
-        HeaderSize = XIVConfigUI.FontSize.Forth,
-    };
-
-    private static readonly CollapsingHeaderGroup _sequencerList = new(new()
-    {
-        { () => UiString.ConfigWindow_Actions_ForcedConditionSet.Local(), () =>
-        {
-            ImGui.TextWrapped(UiString.ConfigWindow_Actions_ForcedConditionSet_Description.Local());
-
-            var rotation = DataCenter.RightNowRotation;
-            var set = DataCenter.RightSet;
-
-            if (set == null || _activeAction == null || rotation == null) return;
-            set.GetCondition(_activeAction.ID)?.DrawMain(rotation);
-        } },
-
-        { () => UiString.ConfigWindow_Actions_DisabledConditionSet.Local(), () =>
-        {
-            ImGui.TextWrapped(UiString.ConfigWindow_Actions_DisabledConditionSet_Description.Local());
-
-            var rotation = DataCenter.RightNowRotation;
-            var set = DataCenter.RightSet;
-
-            if (set == null || _activeAction == null || rotation == null) return;
-            set.GetDisabledCondition(_activeAction.ID)?.DrawMain(rotation);
-        } },
-    })
-    {
-        HeaderSize = XIVConfigUI.FontSize.Forth,
-    };
-    #endregion
-
-    #region Rotations
-    private static void DrawRotations()
-    {
-        var width = ImGui.GetWindowWidth();
-
-        var text = UiString.ConfigWindow_Rotations_Download.Local();
-        var textWidth = ImGuiHelpers.GetButtonSize(text).X;
-
-        ImGuiHelper.DrawItemMiddle(() =>
-        {
-            if (ImGui.Button(text))
+            using var table = ImRaii.Table("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+            if (table)
             {
-                Task.Run(async () =>
-                {
-                    await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
-                });
-            }
-        }, width, textWidth);
+                ImGui.TableSetupScrollFreeze(0, 1);
+                ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
 
-        text = UiString.ConfigWindow_Rotations_Links.Local();
-        textWidth = ImGuiHelpers.GetButtonSize(text).X;
-        ImGuiHelper.DrawItemMiddle(() =>
-        {
-            if (ImGui.Button(text))
-            {
-                Util.OpenLink($"https://github.com/{Service.USERNAME}/{Service.REPO}/blob/main/RotationsLink.md");
-            }
-        }, width, textWidth);
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_NoHostile.Local());
 
-        _rotationsHeader?.Draw();
-    }
-    private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
-    {
-        {  () => UiString.ConfigWindow_Rotations_Settings.Local(), DrawRotationsSettings},
-        {  () => UiString.ConfigWindow_Rotations_Loaded.Local(), DrawRotationsLoaded},
-        {  () => UiString.ConfigWindow_Rotations_GitHub.Local(), DrawRotationsGitHub},
-        {  () => UiString.ConfigWindow_Rotations_Libraries.Local(), DrawRotationsLibraries},
-    });
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_NoProvoke.Local());
 
-    private static void DrawRotationsSettings()
-    {
-        _allSearchable.DrawItems((int)UiString.ConfigWindow_Rotations_Settings);
-    }
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_List_BeneficialPositions.Local());
 
-    private static void DrawRotationsLoaded()
-    {
-        var assemblyGrps = RotationUpdater.CustomRotationsDict
-            .SelectMany(d => d.Value)
-            .SelectMany(g => g.Rotations)
-            .GroupBy(r => r.Assembly);
-
-        using var table = ImRaii.Table("Rotation Solver AssemblyTable", 3, ImGuiTableFlags.BordersInner
-            | ImGuiTableFlags.Resizable
-            | ImGuiTableFlags.SizingStretchProp);
-
-        if (table)
-        {
-            ImGui.TableSetupScrollFreeze(0, 1);
-            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Information");
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Rotations");
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader("Links");
-
-            foreach (var grp in assemblyGrps)
-            {
                 ImGui.TableNextRow();
 
-                var assembly = grp.Key;
-
-                var info = assembly.GetInfo();
                 ImGui.TableNextColumn();
 
-                if (ImGui.Button(info.Name))
+                ImGui.TextWrapped(UiString.ConfigWindow_List_NoHostileDesc.Local());
+
+                var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
+
+                if (!OtherConfiguration.NoHostileNames.TryGetValue(territoryId, out var libs))
                 {
-                    Process.Start("explorer.exe", "/select, \"" + info.FilePath + "\"");
+                    OtherConfiguration.NoHostileNames[territoryId] = libs = [];
                 }
 
-                var version = assembly.GetName().Version;
-                if (version != null)
+                //Add one.
+                if (!libs.Any(string.IsNullOrEmpty))
                 {
-                    ImGui.Text(" v " + version.ToString());
+                    OtherConfiguration.NoHostileNames[territoryId] = [.. libs, string.Empty];
                 }
 
-                ImGui.Text(" - " + info.Author);
+                int removeIndex = -1;
+                for (int i = 0; i < libs.Length; i++)
+                {
+                    ImGui.SetNextItemWidth(width);
+                    if (ImGui.InputTextWithHint($"##Rotation Solver Territory Target Name {i}", UiString.ConfigWindow_List_NoHostilesName.Local(), ref libs[i], 1024))
+                    {
+                        OtherConfiguration.NoHostileNames[territoryId] = libs;
+                        OtherConfiguration.SaveNoHostileNames();
+                    }
+                    ImGui.SameLine();
+
+                    if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Target Name {i}"))
+                    {
+                        removeIndex = i;
+                    }
+                }
+                if (removeIndex > -1)
+                {
+                    var list = libs.ToList();
+                    list.RemoveAt(removeIndex);
+                    OtherConfiguration.NoHostileNames[territoryId] = [.. list];
+                    OtherConfiguration.SaveNoHostileNames();
+                }
+                ImGui.TableNextColumn();
+
+                ImGui.TextWrapped(UiString.ConfigWindow_List_NoProvokeDesc.Local());
+
+                width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
+
+                if (!OtherConfiguration.NoProvokeNames.TryGetValue(territoryId, out libs))
+                {
+                    OtherConfiguration.NoProvokeNames[territoryId] = libs = [];
+                }
+                //Add one.
+                if (!libs.Any(string.IsNullOrEmpty))
+                {
+                    OtherConfiguration.NoProvokeNames[territoryId] = [.. libs, string.Empty];
+                }
+                removeIndex = -1;
+                for (int i = 0; i < libs.Length; i++)
+                {
+                    ImGui.SetNextItemWidth(width);
+                    if (ImGui.InputTextWithHint($"##Rotation Solver Territory Provoke Name {i}", UiString.ConfigWindow_List_NoProvokeName.Local(), ref libs[i], 1024))
+                    {
+                        OtherConfiguration.NoProvokeNames[territoryId] = libs;
+                        OtherConfiguration.SaveNoProvokeNames();
+                    }
+                    ImGui.SameLine();
+
+                    if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Provoke Name {i}"))
+                    {
+                        removeIndex = i;
+                    }
+                }
+                if (removeIndex > -1)
+                {
+                    var list = libs.ToList();
+                    list.RemoveAt(removeIndex);
+                    OtherConfiguration.NoProvokeNames[territoryId] = [.. list];
+                    OtherConfiguration.SaveNoProvokeNames();
+                }
 
                 ImGui.TableNextColumn();
 
-                var lastRole = JobRole.None;
-                foreach (var jobs in grp.GroupBy(r => r.GetCustomAttribute<JobsAttribute>()!.Jobs[0]).OrderBy(g => Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)g.Key)!.GetJobRole()))
+                if (!OtherConfiguration.BeneficialPositions.TryGetValue(territoryId, out var pts))
                 {
-                    var role = Svc.Data.GetExcelSheet<ClassJob>()!.GetRow((uint)jobs.Key)!.GetJobRole();
-                    if (lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
-                    lastRole = role;
-
-                    if (IconSet.GetTexture(IconSet.GetJobIcon(jobs.Key, IconType.Framed), out var texture, 62574))
-                        ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
-
-                    ImguiTooltips.HoveredTooltip(string.Join('\n', jobs.Select(t => t.GetCustomAttribute<UIAttribute>()?.Name ?? t.Name)));
+                    OtherConfiguration.BeneficialPositions[territoryId] = pts = [];
                 }
 
-                ImGui.TableNextColumn();
+                if (ImGui.Button(UiString.ConfigWindow_List_AddPosition.Local()) && Player.Available) unsafe
+                    {
+                        var point = Player.Object.Position;
+                        int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
 
-                if(!string.IsNullOrEmpty(info.GitHubUserName) && !string.IsNullOrEmpty(info.GitHubRepository) && !string.IsNullOrEmpty(info.FilePath))
+                        RaycastHit hit = default;
+
+                        OtherConfiguration.BeneficialPositions[territoryId]
+                        =
+                        [
+                            .. pts,
+                        FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
+                            ->RaycastEx(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
+                        ];
+                        OtherConfiguration.SaveBeneficialPositions();
+                    }
+
+                HoveredPosition = Vector3.Zero;
+                removeIndex = -1;
+                for (int i = 0; i < pts.Length; i++)
                 {
-                    DrawGitHubBadge(info.GitHubUserName, info.GitHubRepository, info.FilePath);
+                    void Reset() => removeIndex = i;
+
+                    var key = "Beneficial Positions" + i.ToString();
+
+                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Reset, ["Delete"]));
+
+                    ImGui.Selectable(pts[i].ToString());
+
+                    if (ImGui.IsItemHovered())
+                    {
+                        HoveredPosition = pts[i];
+                    }
+
+                    ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [VirtualKey.DELETE]));
                 }
-
-                if (!string.IsNullOrEmpty(info.DonateLink)
-                    && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon)
-                    && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height / icon.Width) * MathF.Min(250, icon.Width) * Scale, info.FilePath ?? string.Empty))
+                if (removeIndex > -1)
                 {
-                    Util.OpenLink(info.DonateLink);
+                    var list = pts.ToList();
+                    list.RemoveAt(removeIndex);
+                    OtherConfiguration.BeneficialPositions[territoryId] = [.. list];
+                    OtherConfiguration.SaveBeneficialPositions();
                 }
             }
+        }
+        #endregion
+
+    }
+
+    [Description("Basic")]
+    public class BasicItem : ConfigWindowItemRS
+    {
+        public override uint Icon => 14;
+        public override string Description => UiString.Item_Basic.Local();
+        private CollapsingHeaderGroup? _baseHeader;
+        public override void Draw(ConfigWindow window)
+        {
+            _baseHeader = new(new()
+            {
+                { () => UiString.ConfigWindow_Basic_Timer.Local(), () => DrawBasicTimer(window) },
+                { () => UiString.ConfigWindow_Basic_AutoSwitch.Local(), () => DrawBasicAutoSwitch(window) },
+                { () => UiString.ConfigWindow_Basic_NamedConditions.Local(), DrawBasicNamedConditions },
+                { () => UiString.ConfigWindow_Basic_Others.Local(), () => DrawBasicOthers(window) },
+            });
+            _baseHeader?.Draw();
+        }
+
+        private static readonly uint PING_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedGreen);
+        private static readonly uint LOCK_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedBlue);
+        private static readonly uint WEAPON_DELAY_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedGold);
+        private static readonly uint IDEAL_CLICK_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0f, 0f, 1f));
+        private static readonly uint CLICK_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedPink);
+        private static readonly uint ADVANCE_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow);
+        private static readonly uint ADVANCE_ABILITY_TIME_COLOR = ImGui.ColorConvertFloat4ToU32(ImGuiColors.ParsedOrange);
+        const float gcdSize = 50, ogcdSize = 40, pingHeight = 12, spacingHeight = 8;
+
+        private static void AddPingLockTime(ImDrawListPtr drawList, Vector2 lineStart, float sizePerTime, float ping, float animationLockTime, float advanceTime, uint color, float clickTime)
+        {
+            var size = new Vector2(ping * sizePerTime, pingHeight);
+            drawList.AddRectFilled(lineStart, lineStart + size, ChangeAlpha(PING_COLOR));
+            if (ImGuiHelperRS.IsInRect(lineStart, size))
+            {
+                ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Basic_Ping.Local());
+            }
+
+            var rectStart = lineStart + new Vector2(ping * sizePerTime, 0);
+            size = new Vector2(animationLockTime * sizePerTime, pingHeight);
+            drawList.AddRectFilled(rectStart, rectStart + size, ChangeAlpha(LOCK_TIME_COLOR));
+            if (ImGuiHelperRS.IsInRect(rectStart, size))
+            {
+                ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Basic_AnimationLockTime.Local());
+            }
+
+            drawList.AddLine(lineStart - new Vector2(0, spacingHeight), lineStart + new Vector2(0, pingHeight * 2 + spacingHeight / 2), IDEAL_CLICK_TIME_COLOR, 1.5f);
+
+            rectStart = lineStart + new Vector2(-advanceTime * sizePerTime, pingHeight);
+            size = new Vector2(advanceTime * sizePerTime, pingHeight);
+            drawList.AddRectFilled(rectStart, rectStart + size, ChangeAlpha(color));
+            if (ImGuiHelperRS.IsInRect(rectStart, size))
+            {
+                ImguiTooltips.ShowTooltip(() =>
+                {
+                    ImGui.TextWrapped(UiString.ConfigWindow_Basic_ClickingDuration.Local());
+
+                    ImGui.Separator();
+
+                    ImGui.TextColored(ImGui.ColorConvertU32ToFloat4(IDEAL_CLICK_TIME_COLOR),
+                        UiString.ConfigWindow_Basic_IdealClickingTime.Local());
+
+                    ImGui.TextColored(ImGui.ColorConvertU32ToFloat4(CLICK_TIME_COLOR),
+                        UiString.ConfigWindow_Basic_RealClickingTime.Local());
+                });
+            }
+
+            float time = 0;
+            while (time < advanceTime)
+            {
+                var start = lineStart + new Vector2((time - advanceTime) * sizePerTime, 0);
+                drawList.AddLine(start + new Vector2(0, pingHeight), start + new Vector2(0, pingHeight * 2 + spacingHeight), CLICK_TIME_COLOR, 2.5f);
+
+                time += clickTime;
+            }
+        }
+        private static void DrawBasicTimer(ConfigWindow window)
+        {
+            var gcdTime = DataCenter.WeaponTotal;
+            if (gcdTime == 0) gcdTime = 2.5f;
+            var wholeWidth = ImGui.GetWindowWidth();
+            var ping = DataCenter.Ping;
+
+            ImGui.PushFont(DrawingExtensions.GetFont(14));
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
+            var infoText = $"GCD: {gcdTime:F2}s Ping: {ping:F2}s";
+            var infoSize = ImGui.CalcTextSize(infoText);
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.Text(infoText);
+            }, wholeWidth, infoSize.X);
+            ImGui.PopStyleColor();
+            ImGui.PopFont();
+
+            var actionAhead = Service.Config.ActionAhead;
+            var minAbilityAhead = Service.Config.MinLastAbilityAdvanced;
+            var animationLockTime = DataCenter.MinAnimationLock;
+            var weaponDelay = (Service.Config.WeaponDelay.X + Service.Config.WeaponDelay.Y) / 2;
+            var clickingDelay = (Service.Config.ClickingDelay.X + Service.Config.ClickingDelay.Y) / 2;
+
+            var drawList = ImGui.GetWindowDrawList();
+            ImGui.Spacing();
+            var startCursorPt = ImGui.GetCursorPos();
+            var windowsPos = ImGui.GetWindowPos();
+
+            var sizePerTime = (wholeWidth - gcdSize) / (gcdTime + weaponDelay + actionAhead);
+
+            var lineStart = windowsPos + startCursorPt + new Vector2(sizePerTime * actionAhead, gcdSize + spacingHeight);
+            ImGuiHelper.DrawActionOverlay(startCursorPt + new Vector2(sizePerTime * actionAhead, 0), gcdSize, 0);
+            ImGuiHelper.DrawActionOverlay(startCursorPt + new Vector2(wholeWidth - gcdSize, 0), gcdSize, 0);
+
+            AddPingLockTime(drawList, lineStart, sizePerTime, ping, animationLockTime, actionAhead, ADVANCE_TIME_COLOR, clickingDelay);
+            var start = lineStart + new Vector2(gcdTime * sizePerTime, 0);
+            var rectSize = new Vector2(weaponDelay * sizePerTime, pingHeight);
+            drawList.AddRectFilled(start, start + rectSize, WEAPON_DELAY_COLOR);
+            drawList.AddRect(start, start + rectSize, uint.MaxValue, 0, ImDrawFlags.Closed, 2);
+            if (ImGuiHelperRS.IsInRect(start, rectSize))
+            {
+                ImguiTooltips.ShowTooltip(typeof(Configs).GetProperty(nameof(Configs.WeaponDelay))!.Local());
+            }
+            drawList.AddLine(lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, -spacingHeight), lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime,
+                pingHeight * 2 + spacingHeight), IDEAL_CLICK_TIME_COLOR, 2);
+
+            ImGui.PushFont(DrawingExtensions.GetFont(20));
+            const string gcdText = "GCD";
+            var size = ImGui.CalcTextSize(gcdText);
+            ImGui.SetCursorPos(startCursorPt + new Vector2(sizePerTime * actionAhead + (gcdSize - size.X) / 2, (gcdSize - size.Y) / 2));
+            ImGui.Text(gcdText);
+            ImGui.SetCursorPos(startCursorPt + new Vector2(wholeWidth - gcdSize + (gcdSize - size.X) / 2, (gcdSize - size.Y) / 2));
+            ImGui.Text(gcdText);
+            ImGui.PopFont();
+
+            ImGui.PushFont(DrawingExtensions.GetFont(14));
+            const string ogcdText = "Off-\nGCD";
+            size = ImGui.CalcTextSize(ogcdText);
+            ImGui.PopFont();
+
+            var timeStep = ping + animationLockTime;
+            var time = timeStep;
+            while (time < gcdTime - timeStep)
+            {
+                var isLast = time + 2 * timeStep > gcdTime;
+                if (isLast)
+                {
+                    time = gcdTime - timeStep;
+                }
+
+                ImGuiHelper.DrawActionOverlay(startCursorPt + new Vector2(sizePerTime * (actionAhead + time), 0), ogcdSize, 0);
+                ImGui.SetCursorPos(startCursorPt + new Vector2(sizePerTime * (actionAhead + time) + (ogcdSize - size.X) / 2, (ogcdSize - size.Y) / 2));
+
+                ImGui.PushFont(DrawingExtensions.GetFont(14));
+                ImGui.Text(ogcdText);
+                ImGui.PopFont();
+
+                var ogcdStart = lineStart + new Vector2(time * sizePerTime, 0);
+                AddPingLockTime(drawList, ogcdStart, sizePerTime, ping, animationLockTime,
+                    isLast ? MathF.Max(minAbilityAhead, actionAhead) : actionAhead, isLast ? ADVANCE_ABILITY_TIME_COLOR : ADVANCE_TIME_COLOR, clickingDelay);
+
+                time += timeStep;
+            }
+
+            ImGui.SetCursorPosY(startCursorPt.Y + gcdSize + pingHeight * 2 + 2 * spacingHeight + ImGui.GetStyle().ItemSpacing.Y);
+
+            ImGui.Spacing();
+
+            window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Basic_Timer);
+        }
+
+        private static readonly CollapsingHeaderGroup _autoSwitch = new(new()
+        {
+            {
+                () => UiString.ConfigWindow_Basic_SwitchCancelConditionSet.Local(),
+                () => DataCenter.RightSet.SwitchCancelConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+            {
+                () => UiString.ConfigWindow_Basic_SwitchManualConditionSet.Local(),
+                () => DataCenter.RightSet.SwitchManualConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+            {
+               () =>  UiString.ConfigWindow_Basic_SwitchAutoConditionSet.Local(),
+                () => DataCenter.RightSet.SwitchAutoConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+        })
+        {
+            HeaderSize = FontSize.Forth,
+        };
+        private static void DrawBasicAutoSwitch(ConfigWindow window)
+        {
+            window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Basic_AutoSwitch);
+            _autoSwitch?.Draw();
+        }
+
+        private static readonly Dictionary<int, bool> _isOpen = [];
+        private static void DrawBasicNamedConditions()
+        {
+            if (!DataCenter.RightSet.NamedConditions.Any(c => string.IsNullOrEmpty(c.Name)))
+            {
+                DataCenter.RightSet.NamedConditions = [.. DataCenter.RightSet.NamedConditions, (string.Empty, new ConditionSet())];
+            }
+
+            ImGui.Spacing();
+
+            int removeIndex = -1;
+            for (int i = 0; i < DataCenter.RightSet.NamedConditions.Length; i++)
+            {
+                var value = _isOpen.TryGetValue(i, out var open) && open;
+
+                var toggle = value ? FontAwesomeIcon.ArrowUp : FontAwesomeIcon.ArrowDown;
+                var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X
+                    - ImGuiEx.CalcIconSize(toggle).X - ImGui.GetStyle().ItemSpacing.X * 2 - 20 * Scale;
+
+                ImGui.SetNextItemWidth(width);
+                ImGui.InputTextWithHint($"##Rotation Solver Named Condition{i}", UiString.ConfigWindow_Condition_ConditionName.Local(),
+                    ref DataCenter.RightSet.NamedConditions[i].Name, 1024);
+
+                ImGui.SameLine();
+
+                if (ImGuiEx.IconButton(toggle, $"##Rotation Solver Toggle Named Condition{i}"))
+                {
+                    _isOpen[i] = value = !value;
+                }
+
+                ImGui.SameLine();
+
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Named Condition{i}"))
+                {
+                    removeIndex = i;
+                }
+
+                if (value && DataCenter.RightNowRotation != null)
+                {
+                    DataCenter.RightSet.NamedConditions[i].Condition?.DrawMain(DataCenter.RightNowRotation);
+                }
+            }
+            if (removeIndex > -1)
+            {
+                var list = DataCenter.RightSet.NamedConditions.ToList();
+                list.RemoveAt(removeIndex);
+                DataCenter.RightSet.NamedConditions = [.. list];
+            }
+        }
+
+        private static void DrawBasicOthers(ConfigWindow window)
+        {
+            window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Basic_Others);
+
+            if (Service.Config.SayHelloToAll)
+            {
+                var str = Player.Object.EncryptString();
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
+                ImGui.InputText("That is your HASH:", ref str, 100);
+
+                if (!DataCenter.ContributorsHash.Contains(str)
+                    && !DownloadHelper.UsersHash.Contains(str)
+                    && !DataCenter.AuthorHashes.ContainsKey(str))
+                {
+                    if (ImGui.Button("DM your Hash to ArchiTed for being greeted."))
+                    {
+                        ImGui.SetClipboardText(str);
+                        Notify.Success($"Your hash \"{str}\" copied to clipboard.");
+                        Util.OpenLink("https://discord.com/users/1007293294100877322");
+                    }
+                }
+            }
+            else
+            {
+                ImGui.TextColored(ImGuiColors.DalamudRed, "The author of RS loves being greeted by you!");
+            }
+        }
+    }
+
+    [Description("UI")]
+    public class UIItem : ConfigWindowItemRS
+    {
+        private CollapsingHeaderGroup? _UIHeader;
+
+        public override uint Icon => 42;
+        public override string Description => UiString.Item_UI.Local();
+
+        public override void Draw(ConfigWindow window)
+        {
+            _UIHeader ??= window.AllSearchable.GetGroups<UiString>([
+                    UiString.ConfigWindow_UI_Information,
+                    UiString.ConfigWindow_UI_Overlay,
+                    UiString.ConfigWindow_UI_Windows,
+                ]);
+            _UIHeader?.Draw();
+        }
+    }
+
+    [Description("Auto")]
+    public class AutoItem : ConfigWindowItemRS
+    {
+        private CollapsingHeaderGroup? _autoHeader;
+        public override uint Icon => 29;
+        public override string Description => UiString.Item_Auto.Local();
+
+        public override void Draw(ConfigWindow window)
+        {
+            ImGui.TextWrapped(UiString.ConfigWindow_Auto_Description.Local());
+            _autoHeader ??= new(new()
+            {
+                {  () => UiString.ConfigWindow_Auto_ActionUsage.Local(), () =>
+                    {
+                        ImGui.TextWrapped(UiString.ConfigWindow_Auto_ActionUsage_Description
+                            .Local());
+                        ImGui.Separator();
+
+                        window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Auto_ActionUsage);
+                    }
+                },
+                {  () => UiString.ConfigWindow_Auto_ActionCondition.Local(), () => DrawAutoActionCondition(window) },
+                {  () => UiString.ConfigWindow_Auto_StateCondition.Local(), () => _autoState?.Draw() },
+            });
+
+            _autoHeader?.Draw();
+        }
+     
+        private static readonly CollapsingHeaderGroup _autoState = new(new()
+        {
+            {
+                () => UiString.ConfigWindow_Auto_HealAreaConditionSet.Local(),
+                () => DataCenter.RightSet.HealAreaConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () => UiString.ConfigWindow_Auto_HealSingleConditionSet.Local(),
+                () => DataCenter.RightSet.HealSingleConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () => UiString.ConfigWindow_Auto_DefenseAreaConditionSet.Local(),
+                () => DataCenter.RightSet.DefenseAreaConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () => UiString.ConfigWindow_Auto_DefenseSingleConditionSet.Local(),
+                () => DataCenter.RightSet.DefenseSingleConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () =>  UiString.ConfigWindow_Auto_DispelStancePositionalConditionSet.Local(),
+                () => DataCenter.RightSet.DispelStancePositionalConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () =>  UiString.ConfigWindow_Auto_RaiseShirkConditionSet.Local(),
+                () => DataCenter.RightSet.RaiseShirkConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () => UiString.ConfigWindow_Auto_MoveForwardConditionSet.Local(),
+                () => DataCenter.RightSet.MoveForwardConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () => UiString.ConfigWindow_Auto_MoveBackConditionSet.Local(),
+                () => DataCenter.RightSet.MoveBackConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () => UiString.ConfigWindow_Auto_AntiKnockbackConditionSet.Local(),
+                () => DataCenter.RightSet.AntiKnockbackConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () => UiString.ConfigWindow_Auto_SpeedConditionSet.Local(),
+                () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+
+            {
+                () => UiString.ConfigWindow_Auto_LimitBreakConditionSet.Local(),
+                () => DataCenter.RightSet.LimitBreakConditionSet?.DrawMain(DataCenter.RightNowRotation)
+            },
+        })
+        {
+            HeaderSize = FontSize.Forth,
+        };
+
+        private static void DrawAutoActionCondition(ConfigWindow window)
+        {
+            ImGui.TextWrapped(UiString.ConfigWindow_Auto_ActionCondition_Description.Local());
+            ImGui.Separator();
+
+            window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Auto_ActionCondition);
+        }
+    }
+
+    [Description("Target")] //TODO: Extract the list thing to imguihelper.
+    public class TargetItem : ConfigWindowItemRS
+    {
+        private CollapsingHeaderGroup? _targetHeader;
+        public override uint Icon => 16;
+        public override string Description => UiString.Item_Target.Local();
+
+        public override void Draw(ConfigWindow window)
+        {
+            _targetHeader ??= new(new()
+            {
+                {  () =>UiString.ConfigWindow_Target_Config.Local(), () => DrawTargetConfig(window) },
+                {  () =>UiString.ConfigWindow_List_Hostile.Local(), DrawTargetHostile },
+            });
+            _targetHeader?.Draw();
+        }
+
+        private static void DrawTargetConfig(ConfigWindow window)
+        {
+            window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Target_Config);
+        }
+
+        private static void DrawTargetHostile()
+        {
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "Add Hostile"))
+            {
+                Service.Config.TargetingTypes.Add(TargetingType.Big);
+            }
+            ImGui.SameLine();
+            ImGui.TextWrapped(UiString.ConfigWindow_Param_HostileDesc.Local());
+
+            for (int i = 0; i < Service.Config.TargetingTypes.Count; i++)
+            {
+                var targetType = Service.Config.TargetingTypes[i];
+
+                void Delete()
+                {
+                    Service.Config.TargetingTypes.RemoveAt(i);
+                };
+
+                void Up()
+                {
+                    Service.Config.TargetingTypes.RemoveAt(i);
+                    Service.Config.TargetingTypes.Insert(Math.Max(0, i - 1), targetType);
+                };
+                void Down()
+                {
+                    Service.Config.TargetingTypes.RemoveAt(i);
+                    Service.Config.TargetingTypes.Insert(Math.Min(Service.Config.TargetingTypes.Count - 1, i + 1), targetType);
+                }
+
+                var key = $"Targeting Type Pop Up: {i}";
+
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
+                    (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
+                    (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
+                    (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]));
+
+                var names = Enum.GetNames(typeof(TargetingType));
+                var targingType = (int)Service.Config.TargetingTypes[i];
+                var text = UiString.ConfigWindow_Param_HostileCondition.Local();
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(text).X + 30 * Scale);
+                if (ImGui.Combo(text + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
+                {
+                    Service.Config.TargetingTypes[i] = (TargetingType)targingType;
+                }
+
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+                    (Delete, [VirtualKey.DELETE]),
+                    (Up, [VirtualKey.UP]),
+                    (Down, [VirtualKey.DOWN]));
+            }
+        }
+    }
+
+    [Description("Timeline")]
+    public class TimelineItem : ConfigWindowItemRS
+    {
+        public override uint Icon => 73;
+        public override string Description => UiString.Item_Timeline.Local();
+
+        public override void Draw(ConfigWindow window)
+        {
+            TimelineDrawer.DrawTimeline();
+        }
+    }
+
+    [Description("Extra")]
+    public class ExtraItem : ConfigWindowItemRS
+    {
+        private CollapsingHeaderGroup? _extraHeader;
+        public override uint Icon => 51;
+        public override string Description => UiString.Item_Extra.Local();
+
+        public override void Draw(ConfigWindow window)
+        {
+            _extraHeader ??= new(new()
+            {
+                {   () =>UiString.ConfigWindow_EventItem.Local(), DrawEventTab },
+                {
+                    () =>UiString.ConfigWindow_Extra_Others.Local(),
+                    () => window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Extra_Others)
+                },
+            });
+            ImGui.TextWrapped(UiString.ConfigWindow_Extra_Description.Local());
+            _extraHeader?.Draw();
+        }
+
+        private static void DrawEventTab()
+        {
+            if (ImGui.Button(UiString.ConfigWindow_Events_AddEvent.Local()))
+            {
+                Service.Config.Events.Add(new ActionEventInfo());
+            }
+            ImGui.SameLine();
+
+            ImGui.TextWrapped(UiString.ConfigWindow_Events_Description.Local());
+
+            ImGui.Text(UiString.ConfigWindow_Events_DutyStart.Local());
+            ImGui.SameLine();
+            Service.Config.DutyStart.DisplayMacro();
+
+            ImGui.Text(UiString.ConfigWindow_Events_DutyEnd.Local());
+            ImGui.SameLine();
+            Service.Config.DutyEnd.DisplayMacro();
+
+            ImGui.Separator();
+
+            ActionEventInfo? remove = null;
+            foreach (var eve in Service.Config.Events)
+            {
+                eve.DisplayEvent();
+
+                ImGui.SameLine();
+
+                if (ImGui.Button($"{UiString.ConfigWindow_Events_RemoveEvent.Local()}##RemoveEvent{eve.GetHashCode()}"))
+                {
+                    remove = eve;
+                }
+                ImGui.Separator();
+            }
+            if (remove != null)
+            {
+                Service.Config.Events.Remove(remove);
+            }
+        }
+    }
+
+    [Description("Debug")]
+    public class DebutItem : ConfigWindowItemRS
+    {
+        public override uint Icon => 5;
+        public override void Draw(ConfigWindow window)
+        {
+            window.AllSearchable.DrawItems(-1);
+
+            if (!Player.Available || !Service.Config.InDebug) return;
+
+            _debugHeader?.Draw();
+        }
+
+        private static readonly CollapsingHeaderGroup _debugHeader = new(new()
+    {
+        {() => DataCenter.RightNowRotation != null ? "Rotation" : string.Empty, DrawDebugRotationStatus},
+        {() =>"Status", DrawStatus },
+        {() =>"Party", DrawParty },
+        {() =>"Target Data", DrawTargetData },
+        {() =>"Next Action", DrawNextAction },
+        {() =>"Last Action", DrawLastAction },
+        {() =>"Others", DrawOthers },
+        {() =>"Effect",  () =>
+            {
+                ImGui.Text(Watcher.ShowStrSelf);
+                ImGui.Separator();
+                ImGui.Text(DataCenter.Role.ToString());
+            } },
+        });
+
+        private static void DrawDebugRotationStatus()
+        {
+            DataCenter.RightNowRotation?.DisplayStatus();
+        }
+
+        private static unsafe void DrawStatus()
+        {
+            if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
+            {
+                ImGui.Text("Fate: " + DataCenter.FateId.ToString());
+            }
+            ImGui.Text("Height: " + Player.Character->CalculateHeight().ToString());
+            ImGui.Text("Moving: " + DataCenter.IsMoving.ToString());
+            ImGui.Text("Stop Moving: " + DataCenter.StopMovingRaw.ToString());
+
+            ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
+            ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
+            ImGui.Text("TimeToNext: " + DataCenter.NextAbilityToNextGCD.ToString());
+            ImGui.Text("WeaponElapsed: " + DataCenter.WeaponElapsed.ToString());
+            ImGui.Text("AnimationLock: " + DataCenter.AnimationLocktime.ToString());
+
+            ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
+            ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
+            ImGui.Text("Hostile Near Count Max Range: " + DataCenter.NumberOfHostilesInMaxRange.ToString());
+            ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
+            ImGui.Text("Ping: " + DataCenter.Ping.ToString());
+            ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
+            ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
+            ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
+
+            foreach (var status in Player.Object.StatusList)
+            {
+                var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+                ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
+            }
+        }
+        private static unsafe void DrawParty()
+        {
+            ImGui.Text("Party: " + DataCenter.PartyMembers.Length.ToString());
+            ImGui.Text("Alliance: " + DataCenter.AllianceMembers.Length.ToString());
+
+            ImGui.Text("PartyMembersAverHP: " + DataCenter.PartyMembersAverHP.ToString());
+
+            ImGui.Text($"Your combat state: {DataCenter.InCombat}");
+            ImGui.Text($"Your character combat: {Player.Object.InCombat()}");
+            foreach (var p in Svc.Party)
+            {
+                if (p.GameObject is not BattleChara b) continue;
+                ImGui.Text($"In Combat: {b.InCombat()}");
+            }
+        }
+
+        private static unsafe void DrawTargetData()
+        {
+            if (Svc.Targets.Target != null)
+            {
+                ImGui.Text("Height: " + Svc.Targets.Target.Struct()->Height.ToString());
+                ImGui.Text("Kind: " + Svc.Targets.Target.GetObjectKind().ToString());
+                ImGui.Text("SubKind: " + Svc.Targets.Target.GetBattleNPCSubKind().ToString());
+                var owner = Svc.Objects.SearchById(Svc.Targets.Target.OwnerId);
+                if (owner != null)
+                {
+                    ImGui.Text("Owner: " + owner.Name.ToString());
+                }
+            }
+            if (Svc.Targets.Target is BattleChara b)
+            {
+                ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
+                ImGui.Text("Is Boss TTK: " + b.IsBossFromTTK().ToString());
+                ImGui.Text("Is Boss Icon: " + b.IsBossFromIcon().ToString());
+                ImGui.Text("Rank: " + b.GetObjectNPC()?.Rank.ToString() ?? string.Empty);
+                ImGui.Text("Has Positional: " + b.HasPositional().ToString());
+                ImGui.Text("Is Dying: " + b.IsDying().ToString());
+                ImGui.Text("EventType: " + b.GetEventType().ToString());
+                ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
+                ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
+                ImGui.Text("InView: " + Svc.GameGui.WorldToScreen(b.Position, out _).ToString());
+                ImGui.Text("Name Id: " + b.NameId.ToString());
+                ImGui.Text("Data Id: " + b.DataId.ToString());
+                ImGui.Text("Targetable: " + b.Struct()->Character.GameObject.TargetableStatus.ToString());
+
+                var npc = b.GetObjectNPC();
+                if (npc != null)
+                {
+                    ImGui.Text("Unknown12: " + npc.Unknown12.ToString());
+
+                    //ImGui.Text("Unknown15: " + npc.Unknown15.ToString());
+                    //ImGui.Text("Unknown18: " + npc.Unknown18.ToString());
+                    //ImGui.Text("Unknown19: " + npc.Unknown19.ToString());
+                    //ImGui.Text("Unknown20: " + npc.Unknown20.ToString());
+                    //ImGui.Text("Unknown21: " + npc.Unknown21.ToString());
+                }
+
+                foreach (var status in b.StatusList)
+                {
+                    var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+                    ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
+                }
+            }
+
+            ImGui.Text("All: " + DataCenter.AllTargets.Count().ToString());
+            ImGui.Text("Hostile: " + DataCenter.AllHostileTargets.Length.ToString());
+            foreach (var item in DataCenter.AllHostileTargets)
+            {
+                ImGui.Text(item.Name.ToString());
+            }
+        }
+
+        private static void DrawNextAction()
+        {
+            ImGui.Text(DataCenter.RightNowRotation?.GetType().GetCustomAttribute<RotationAttribute>()!.Name);
+            ImGui.Text(DataCenter.SpecialType.ToString());
+
+            ImGui.Text(ActionUpdater.NextAction?.Name ?? "null");
+            ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
+            ImGui.Text("Action Remain: " + DataCenter.AnimationLocktime.ToString());
+            ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
+        }
+
+        private static void DrawLastAction()
+        {
+            DrawAction(DataCenter.LastAction, nameof(DataCenter.LastAction));
+            DrawAction(DataCenter.LastAbility, nameof(DataCenter.LastAbility));
+            DrawAction(DataCenter.LastGCD, nameof(DataCenter.LastGCD));
+            DrawAction(DataCenter.LastComboAction, nameof(DataCenter.LastComboAction));
+        }
+
+        private static unsafe void DrawOthers()
+        {
+            ImGui.Text("Combat Time: " + (DataCenter.CombatTimeRaw).ToString());
+            ImGui.Text("Limit Break: " + CustomRotation.LimitBreakLevel.ToString());
+        }
+
+        private static void DrawAction(ActionID id, string type)
+        {
+            ImGui.Text($"{type}: {id}");
         }
     }
 
@@ -1803,616 +2884,12 @@ public partial class RotationConfigWindow : Window
         style.ItemSpacing = spacing;
     }
 
-    private static void DrawRotationsGitHub()
+    private static string ToCommandStr(OtherCommandType type, string str, string extra = "")
     {
-        if (!Service.Config.GitHubLibs.Any(s => string.IsNullOrEmpty(s) || s == "||"))
-        {
-            Service.Config.GitHubLibs = [.. Service.Config.GitHubLibs, "||"];
-        }
-
-        ImGui.Spacing();
-
-        foreach (var gitHubLink in DownloadHelper.LinkLibraries ?? [])
-        {
-            var strs = gitHubLink.Split('|');
-            var userName = strs.FirstOrDefault() ?? string.Empty;
-            var repository = strs.Length > 1 ? strs[1] : string.Empty;
-            var fileName = strs.LastOrDefault() ?? string.Empty;
-
-            DrawGitHubBadge(userName, repository, fileName, center: true);
-            ImGui.Spacing();
-            ImGui.Separator();
-        }
-
-        int removeIndex = -1;
-        for (int i = 0; i < Service.Config.GitHubLibs.Length; i++)
-        {
-            var strs = Service.Config.GitHubLibs[i].Split('|');
-            var userName = strs.FirstOrDefault() ?? string.Empty;
-            var repository = strs.Length > 1 ? strs[1] : string.Empty;
-            var fileName = strs.LastOrDefault() ?? string.Empty;
-
-            DrawGitHubBadge(userName, repository, fileName, center: true);
-
-            var changed = false;
-
-            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X * 3 - 10 * Scale;
-            width /= 3;
-
-            ImGui.SetNextItemWidth(width);
-            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}UserName", UiString.ConfigWindow_Rotations_UserName.Local(), ref userName, 1024);
-            ImGui.SameLine();
-
-            ImGui.SetNextItemWidth(width);
-            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}Repository", UiString.ConfigWindow_Rotations_Repository.Local(), ref repository, 1024);
-            ImGui.SameLine();
-
-            ImGui.SetNextItemWidth(width);
-            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}FileName", UiString.ConfigWindow_Rotations_FileName.Local(), ref fileName, 1024);
-            ImGui.SameLine();
-
-            if (changed)
-            {
-                Service.Config.GitHubLibs[i] = $"{userName}|{repository}|{fileName}";
-            }
-
-            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove GitHubLibs{i}"))
-            {
-                removeIndex = i;
-            }
-        }
-        if (removeIndex > -1)
-        {
-            var list = Service.Config.GitHubLibs.ToList();
-            list.RemoveAt(removeIndex);
-            Service.Config.GitHubLibs = [.. list];
-        }
+        var result = Service.COMMAND + " " + type.ToString() + " " + str;
+        if (!string.IsNullOrEmpty(extra)) result += " " + extra;
+        return result;
     }
-
-    private static void DrawRotationsLibraries()
-    {
-        if (!Service.Config.OtherLibs.Any(string.IsNullOrEmpty))
-        {
-            Service.Config.OtherLibs = [.. Service.Config.OtherLibs, string.Empty];
-        }
-
-        ImGui.Spacing();
-
-        var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
-
-        int removeIndex = -1;
-        for (int i = 0; i < Service.Config.OtherLibs.Length; i++)
-        {
-            ImGui.SetNextItemWidth(width);
-            ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", UiString.ConfigWindow_Rotations_Library.Local(), ref Service.Config.OtherLibs[i], 1024);
-            ImGui.SameLine();
-
-            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
-            {
-                removeIndex = i;
-            }
-        }
-        if (removeIndex > -1)
-        {
-            var list = Service.Config.OtherLibs.ToList();
-            list.RemoveAt(removeIndex);
-            Service.Config.OtherLibs = [.. list];
-        }
-    }
-    #endregion 
-
-    #region List
-    private static Status[]? _allDispelStatus = null;
-    internal static Status[] AllDispelStatus
-        => _allDispelStatus ??= Service.GetSheet<Status>()
-                    .Where(s => s.CanDispel)
-                    .ToArray();
-
-
-    private static Status[]? _allStatus = null;
-    internal static Status[] AllStatus
-        => _allStatus ??= Service.GetSheet<Status>()
-                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff
-                        && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
-                    .ToArray();
-
-    private static GAction[]? _allActions = null;
-    internal static GAction[] AllActions
-        => _allActions ??= Service.GetSheet<GAction>()
-                    .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction
-                    && a.ClassJob.Value == null && a.Cast100ms > 0)
-                    .ToArray();
-    private static Status[]? _badStatus = null;
-    internal static Status[] BadStatus
-        => _badStatus ??= Service.GetSheet<Status>()
-                    .Where(s => s.StatusCategory == 2 && s.Icon != 0)
-                    .ToArray();
-    private static void DrawList()
-    {
-        ImGui.TextWrapped(UiString.ConfigWindow_List_Description.Local());
-        _idsHeader?.Draw();
-    }
-    private static readonly CollapsingHeaderGroup _idsHeader = new(new()
-    {
-        { () => UiString.ConfigWindow_List_Statuses.Local(), DrawListStatuses},
-        { () => Service.Config.UseDefenseAbility ? UiString.ConfigWindow_List_Actions.Local() : string.Empty, DrawListActions},
-        {() =>  UiString.ConfigWindow_List_Territories.Local(), DrawListTerritories},
-    });
-    private static void DrawListStatuses()
-    {
-        ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
-        ImGui.InputTextWithHint("##Searching the action", UiString.ConfigWindow_List_StatusNameOrId.Local(), ref _statusSearching, 128);
-
-        using var table = ImRaii.Table("Rotation Solver List Statuses", 4, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
-        if (table)
-        {
-            ImGui.TableSetupScrollFreeze(0, 1);
-            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_Invincibility.Local());
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_Priority.Local());
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_DangerousStatus.Local());
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_NoCastingStatus.Local());
-
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-
-            ImGui.TextWrapped(UiString.ConfigWindow_List_InvincibilityDesc.Local());
-            DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, AllStatus);
-
-            ImGui.TableNextColumn();
-
-            ImGui.TextWrapped(UiString.ConfigWindow_List_PriorityDesc.Local());
-            DrawStatusList(nameof(OtherConfiguration.PriorityStatus), OtherConfiguration.PriorityStatus, AllStatus);
-
-            ImGui.TableNextColumn();
-
-            ImGui.TextWrapped(UiString.ConfigWindow_List_DangerousStatusDesc.Local());
-            DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, AllDispelStatus);
-
-            ImGui.TableNextColumn();
-
-            ImGui.TextWrapped(UiString.ConfigWindow_List_NoCastingStatusDesc.Local());
-            DrawStatusList(nameof(OtherConfiguration.NoCastingStatus), OtherConfiguration.NoCastingStatus, BadStatus);
-
-        }
-    }
-
-    private static void FromClipBoardButton(HashSet<uint> items)
-    {
-        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
-        {
-            try
-            {
-                ImGui.SetClipboardText(JsonConvert.SerializeObject(items));
-            }
-            catch (Exception ex)
-            {
-                Svc.Log.Warning(ex, "Failed to copy the values to the clipboard.");
-            }
-        }
-
-        ImGui.SameLine();
-
-        if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
-        {
-            try
-            {
-                foreach (var aId in JsonConvert.DeserializeObject<uint[]>(ImGui.GetClipboardText())!)
-                {
-                    items.Add(aId);
-                }
-            }
-            catch (Exception ex)
-            {
-                Svc.Log.Warning(ex, "Failed to copy the values from the clipboard.");
-            }
-            finally
-            {
-                OtherConfiguration.Save();
-                ImGui.CloseCurrentPopup();
-            }
-        }
-    }
-
-    static string _statusSearching = string.Empty;
-    private static void DrawStatusList(string name, HashSet<uint> statuses, Status[] allStatus)
-    {
-        using var id = ImRaii.PushId(name);
-        FromClipBoardButton(statuses);
-
-        uint removeId = 0;
-        uint notLoadId = 10100;
-
-        var popupId = "Rotation Solver Popup" + name;
-
-        StatusPopUp(popupId, allStatus, ref _statusSearching, status =>
-        {
-            statuses.Add(status.RowId);
-            OtherConfiguration.Save();
-        }, notLoadId);
-
-        var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * Scale + ImGui.GetStyle().ItemSpacing.X)));
-        var index = 0;
-
-        if (IconSet.GetTexture(16220, out var text))
-        {
-            if (index++ % count != 0)
-            {
-                ImGui.SameLine();
-            }
-            if (ImGuiHelper.NoPaddingNoColorImageButton(text.ImGuiHandle, new Vector2(24, 32) * Scale, name))
-            {
-                if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
-            }
-            ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_List_AddStatus.Local());
-        }
-
-        foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
-            .Where(a => a != null)
-            .OrderByDescending(s => SearchableCollection.Similarity(s!.Name + " " + s.RowId.ToString(), _statusSearching)))
-        {
-            void Delete() => removeId = status.RowId;
-
-            var key = "Status" + status!.RowId.ToString();
-
-            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]));
-
-            if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
-            {
-                if (index++ % count != 0)
-                {
-                    ImGui.SameLine();
-                }
-                ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * Scale, "Status" + status.RowId.ToString());
-
-                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, $"{status.Name} ({status.RowId})", false,
-                    (Delete, [VirtualKey.DELETE]));
-            }
-        }
-
-        if (removeId != 0)
-        {
-            statuses.Remove(removeId);
-            OtherConfiguration.Save();
-        }
-    }
-
-    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100, float size = 32)
-    {
-        using var popup = ImRaii.Popup(popupId);
-        if (popup)
-        {
-            ImGui.SetNextItemWidth(200 * Scale);
-            ImGui.InputTextWithHint("##Searching the status", UiString.ConfigWindow_List_StatusNameOrId.Local(), ref searching, 128);
-
-            ImGui.Spacing();
-
-            using var child = ImRaii.Child("Rotation Solver Add Status", new Vector2(-1, 400 * Scale));
-            if (child)
-            {
-                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * Scale + ImGui.GetStyle().ItemSpacing.X)));
-                var index = 0;
-
-                var searchingKey = searching;
-                foreach (var status in allStatus.OrderByDescending(s => SearchableCollection.Similarity(s.Name + " " + s.RowId.ToString(), searchingKey)))
-                {
-                    if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
-                    {
-                        if (index++ % count != 0)
-                        {
-                            ImGui.SameLine();
-                        }
-                        if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(size * 3 / 4, size) * Scale, "Adding" + status.RowId.ToString()))
-                        {
-                            clicked?.Invoke(status);
-                            ImGui.CloseCurrentPopup();
-                        }
-                        ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
-                    }
-                }
-            }
-        }
-    }
-
-    private static void DrawListActions()
-    {
-        ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
-        ImGui.InputTextWithHint("##Searching the action", UiString.ConfigWindow_List_ActionNameOrId.Local(), ref _actionSearching, 128);
-
-        using var table = ImRaii.Table("Rotation Solver List Actions", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
-        if (table)
-        {
-            ImGui.TableSetupScrollFreeze(0, 1);
-            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingTank.Local());
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingArea.Local());
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_HostileCastingKnockback.Local());
-
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-            ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingTankDesc.Local());
-            DrawActionsList(nameof(OtherConfiguration.HostileCastingTank), OtherConfiguration.HostileCastingTank);
-
-            ImGui.TableNextColumn();
-            _allSearchable.DrawItems((int)UiString.ConfigWindow_List_HostileCastingArea);
-            ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingAreaDesc.Local());
-            DrawActionsList(nameof(OtherConfiguration.HostileCastingArea), OtherConfiguration.HostileCastingArea);
-
-            ImGui.TableNextColumn();
-            _allSearchable.DrawItems((int)UiString.ConfigWindow_List_HostileCastingKnockback);
-            ImGui.TextWrapped(UiString.ConfigWindow_List_HostileCastingKnockbackDesc.Local());
-            DrawActionsList(nameof(OtherConfiguration.HostileCastingKnockback), OtherConfiguration.HostileCastingKnockback);
-        }
-    }
-
-    private static string _actionSearching = string.Empty;
-    private static void DrawActionsList(string name, HashSet<uint> actions)
-    {
-        using var id = ImRaii.PushId(name);
-
-        uint removeId = 0;
-
-        var popupId = "Rotation Solver Action Popup" + name;
-
-        if (ImGui.Button(UiString.ConfigWindow_List_AddAction.Local() + "##" + name))
-        {
-            if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
-        }
-
-        ImGui.SameLine();
-        FromClipBoardButton(actions);
-
-        ImGui.Spacing();
-
-        foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
-            .Where(a => a != null)
-            .OrderByDescending(s => SearchableCollection.Similarity(s!.Name + " " + s.RowId.ToString(), _actionSearching)))
-        {
-            void Reset() => removeId = action.RowId;
-
-            var key = "Action" + action!.RowId.ToString();
-
-            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Reset, ["Delete"]));
-
-            ImGui.Selectable($"{action.Name} ({action.RowId})");
-
-            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [VirtualKey.DELETE]));
-        }
-
-        if (removeId != 0)
-        {
-            actions.Remove(removeId);
-            OtherConfiguration.Save();
-        }
-
-        using var popup = ImRaii.Popup(popupId);
-        if (popup)
-        {
-            ImGui.SetNextItemWidth(200 * Scale);
-            ImGui.InputTextWithHint("##Searching the action pop up", UiString.ConfigWindow_List_ActionNameOrId.Local(), ref _actionSearching, 128);
-
-            ImGui.Spacing();
-
-            using var child = ImRaii.Child("Rotation Solver Add action", new Vector2(-1, 400 * Scale));
-            if (child)
-            {
-                foreach (var action in AllActions.OrderByDescending(s => SearchableCollection.Similarity(s.Name + " " + s.RowId.ToString(), _actionSearching)))
-                {
-                    var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImguiTooltips.ShowTooltip($"{action.Name} ({action.RowId})");
-                        if (selected)
-                        {
-                            actions.Add(action.RowId);
-                            OtherConfiguration.Save(); 
-                            ImGui.CloseCurrentPopup();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
-    private static void DrawListTerritories()
-    {
-        if (Svc.ClientState == null) return;
-
-        var territoryId = Svc.ClientState.TerritoryType;
-
-        using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(21)))
-        {
-            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-
-            const int iconSize = 32;
-            var contentFinder = DataCenter.ContentFinder;
-            var territoryName = DataCenter.TerritoryName;
-            if (contentFinder != null && !string.IsNullOrEmpty(contentFinder.Name))
-            {
-                territoryName += $" ({DataCenter.ContentFinderName})";
-            }
-            var icon = DataCenter.ContentFinder?.ContentType?.Value?.Icon ?? 23;
-            if (icon == 0) icon = 23;
-            var getIcon = IconSet.GetTexture(icon, out var texture);
-            ImGuiHelper.DrawItemMiddle(() =>
-            {
-                if (getIcon)
-                {
-                    ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * Scale);
-                    ImGui.SameLine();
-                }
-                ImGui.Text(territoryName);
-            }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
-        }
-
-        DrawContentFinder(DataCenter.ContentFinder);
-
-        using var table = ImRaii.Table("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
-        if (table)
-        {
-            ImGui.TableSetupScrollFreeze(0, 1);
-            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_NoHostile.Local());
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_NoProvoke.Local());
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_BeneficialPositions.Local());
-
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-
-            ImGui.TextWrapped(UiString.ConfigWindow_List_NoHostileDesc.Local());
-
-            var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
-
-            if (!OtherConfiguration.NoHostileNames.TryGetValue(territoryId, out var libs))
-            {
-                OtherConfiguration.NoHostileNames[territoryId] = libs = [];
-            }
-
-            //Add one.
-            if (!libs.Any(string.IsNullOrEmpty))
-            {
-                OtherConfiguration.NoHostileNames[territoryId] = [.. libs, string.Empty];
-            }
-
-            int removeIndex = -1;
-            for (int i = 0; i < libs.Length; i++)
-            {
-                ImGui.SetNextItemWidth(width);
-                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Target Name {i}", UiString.ConfigWindow_List_NoHostilesName.Local(), ref libs[i], 1024))
-                {
-                    OtherConfiguration.NoHostileNames[territoryId] = libs;
-                    OtherConfiguration.SaveNoHostileNames();
-                }
-                ImGui.SameLine();
-
-                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Target Name {i}"))
-                {
-                    removeIndex = i;
-                }
-            }
-            if (removeIndex > -1)
-            {
-                var list = libs.ToList();
-                list.RemoveAt(removeIndex);
-                OtherConfiguration.NoHostileNames[territoryId] = [.. list];
-                OtherConfiguration.SaveNoHostileNames();
-            }
-            ImGui.TableNextColumn();
-
-            ImGui.TextWrapped(UiString.ConfigWindow_List_NoProvokeDesc.Local());
-
-            width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
-
-            if (!OtherConfiguration.NoProvokeNames.TryGetValue(territoryId, out libs))
-            {
-                OtherConfiguration.NoProvokeNames[territoryId] = libs = [];
-            }
-            //Add one.
-            if (!libs.Any(string.IsNullOrEmpty))
-            {
-                OtherConfiguration.NoProvokeNames[territoryId] = [.. libs, string.Empty];
-            }
-            removeIndex = -1;
-            for (int i = 0; i < libs.Length; i++)
-            {
-                ImGui.SetNextItemWidth(width);
-                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Provoke Name {i}", UiString.ConfigWindow_List_NoProvokeName.Local(), ref libs[i], 1024))
-                {
-                    OtherConfiguration.NoProvokeNames[territoryId] = libs;
-                    OtherConfiguration.SaveNoProvokeNames();
-                }
-                ImGui.SameLine();
-
-                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Provoke Name {i}"))
-                {
-                    removeIndex = i;
-                }
-            }
-            if (removeIndex > -1)
-            {
-                var list = libs.ToList();
-                list.RemoveAt(removeIndex);
-                OtherConfiguration.NoProvokeNames[territoryId] = [.. list];
-                OtherConfiguration.SaveNoProvokeNames();
-            }
-
-            ImGui.TableNextColumn();
-
-            if (!OtherConfiguration.BeneficialPositions.TryGetValue(territoryId, out var pts))
-            {
-                OtherConfiguration.BeneficialPositions[territoryId] = pts = [];
-            }
-
-            if (ImGui.Button(UiString.ConfigWindow_List_AddPosition.Local()) && Player.Available) unsafe
-                {
-                    var point = Player.Object.Position;
-                    int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
-
-                    RaycastHit hit = default;
-
-                    OtherConfiguration.BeneficialPositions[territoryId]
-                    =
-                    [
-                        .. pts,
-                        FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
-                            ->RaycastEx(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
-                    ];
-                    OtherConfiguration.SaveBeneficialPositions();
-                }
-
-            HoveredPosition = Vector3.Zero;
-            removeIndex = -1;
-            for (int i = 0; i < pts.Length; i++)
-            {
-                void Reset() => removeIndex = i;
-
-                var key = "Beneficial Positions" + i.ToString();
-
-                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Reset, ["Delete"]));
-
-                ImGui.Selectable(pts[i].ToString());
-
-                if (ImGui.IsItemHovered())
-                {
-                    HoveredPosition = pts[i];
-                }
-
-                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [VirtualKey.DELETE]));
-            }
-            if (removeIndex > -1)
-            {
-                var list = pts.ToList();
-                list.RemoveAt(removeIndex);
-                OtherConfiguration.BeneficialPositions[territoryId] = [.. list];
-                OtherConfiguration.SaveBeneficialPositions();
-            }
-        }
-    }
-    #endregion
 
     internal static void DrawContentFinder(ContentFinderCondition? content)
     {
@@ -2430,195 +2907,10 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    #region Debug
-    private static void DrawDebug()
+    private static uint ChangeAlpha(uint color)
     {
-        _allSearchable.DrawItems(-1);
-
-        if (!Player.Available || !Service.Config.InDebug) return;
-
-        _debugHeader?.Draw();
+        var c = ImGui.ColorConvertU32ToFloat4(color);
+        c.W = 0.55f;
+        return ImGui.ColorConvertFloat4ToU32(c);
     }
-    private static readonly CollapsingHeaderGroup _debugHeader = new(new()
-    {
-        {() => DataCenter.RightNowRotation != null ? "Rotation" : string.Empty, DrawDebugRotationStatus},
-        {() =>"Status", DrawStatus },
-        {() =>"Party", DrawParty },
-        {() =>"Target Data", DrawTargetData },
-        {() =>"Next Action", DrawNextAction },
-        {() =>"Last Action", DrawLastAction },
-        {() =>"Others", DrawOthers },
-        {() =>"Effect",  () =>
-            {
-                ImGui.Text(Watcher.ShowStrSelf);
-                ImGui.Separator();
-                ImGui.Text(DataCenter.Role.ToString());
-            } },
-        });
-
-    private static void DrawDebugRotationStatus()
-    {
-        DataCenter.RightNowRotation?.DisplayStatus();
-    }
-
-    private static unsafe void DrawStatus()
-    {
-        if ((IntPtr)FateManager.Instance() != IntPtr.Zero)
-        {
-            ImGui.Text("Fate: " + DataCenter.FateId.ToString());
-        }
-        ImGui.Text("Height: " + Player.Character->CalculateHeight().ToString());
-        ImGui.Text("Moving: " + DataCenter.IsMoving.ToString());
-        ImGui.Text("Stop Moving: " + DataCenter.StopMovingRaw.ToString());
-
-        ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
-        ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
-        ImGui.Text("TimeToNext: " + DataCenter.NextAbilityToNextGCD.ToString());
-        ImGui.Text("WeaponElapsed: " + DataCenter.WeaponElapsed.ToString());
-        ImGui.Text("AnimationLock: " + DataCenter.AnimationLocktime.ToString());
-
-        ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
-        ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
-        ImGui.Text("Hostile Near Count Max Range: " + DataCenter.NumberOfHostilesInMaxRange.ToString());
-        ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
-        ImGui.Text("Ping: " + DataCenter.Ping.ToString());
-        ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
-        ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
-        ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
-
-        foreach (var status in Player.Object.StatusList)
-        {
-            var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
-            ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
-        }
-    }
-    private static unsafe void DrawParty()
-    {
-        ImGui.Text("Party: " + DataCenter.PartyMembers.Length.ToString());
-        ImGui.Text("Alliance: " + DataCenter.AllianceMembers.Length.ToString());
-
-        ImGui.Text("PartyMembersAverHP: " + DataCenter.PartyMembersAverHP.ToString());
-
-        ImGui.Text($"Your combat state: {DataCenter.InCombat}");
-        ImGui.Text($"Your character combat: {Player.Object.InCombat()}");
-        foreach (var p in Svc.Party)
-        {
-            if (p.GameObject is not BattleChara b) continue;
-            ImGui.Text($"In Combat: {b.InCombat()}");
-        }
-    }
-
-    private static unsafe void DrawTargetData()
-    {
-        if (Svc.Targets.Target != null)
-        {
-            ImGui.Text("Height: " + Svc.Targets.Target.Struct()->Height.ToString());
-            ImGui.Text("Kind: " + Svc.Targets.Target.GetObjectKind().ToString());
-            ImGui.Text("SubKind: " + Svc.Targets.Target.GetBattleNPCSubKind().ToString());
-            var owner = Svc.Objects.SearchById(Svc.Targets.Target.OwnerId);
-            if (owner != null)
-            {
-                ImGui.Text("Owner: " + owner.Name.ToString());
-            }
-        }
-        if (Svc.Targets.Target is BattleChara b)
-        {
-            ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
-            ImGui.Text("Is Boss TTK: " + b.IsBossFromTTK().ToString());
-            ImGui.Text("Is Boss Icon: " + b.IsBossFromIcon().ToString());
-            ImGui.Text("Rank: " + b.GetObjectNPC()?.Rank.ToString() ?? string.Empty);
-            ImGui.Text("Has Positional: " + b.HasPositional().ToString());
-            ImGui.Text("Is Dying: " + b.IsDying().ToString());
-            ImGui.Text("EventType: " + b.GetEventType().ToString());
-            ImGui.Text("NamePlate: " + b.GetNamePlateIcon().ToString());
-            ImGui.Text("StatusFlags: " + b.StatusFlags.ToString());
-            ImGui.Text("InView: " + Svc.GameGui.WorldToScreen(b.Position, out _).ToString());
-            ImGui.Text("Name Id: " + b.NameId.ToString());
-            ImGui.Text("Data Id: " + b.DataId.ToString());
-            ImGui.Text("Targetable: " + b.Struct()->Character.GameObject.TargetableStatus.ToString());
-
-            var npc = b.GetObjectNPC();
-            if (npc != null)
-            {
-                ImGui.Text("Unknown12: " + npc.Unknown12.ToString());
-
-                //ImGui.Text("Unknown15: " + npc.Unknown15.ToString());
-                //ImGui.Text("Unknown18: " + npc.Unknown18.ToString());
-                //ImGui.Text("Unknown19: " + npc.Unknown19.ToString());
-                //ImGui.Text("Unknown20: " + npc.Unknown20.ToString());
-                //ImGui.Text("Unknown21: " + npc.Unknown21.ToString());
-            }
-
-            foreach (var status in b.StatusList)
-            {
-                var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
-                ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
-            }
-        }
-
-        ImGui.Text("All: " + DataCenter.AllTargets.Count().ToString());
-        ImGui.Text("Hostile: " + DataCenter.AllHostileTargets.Length.ToString());
-        foreach (var item in DataCenter.AllHostileTargets)
-        {
-            ImGui.Text(item.Name.ToString());
-        }
-    }
-
-    private static void DrawNextAction()
-    {
-        ImGui.Text(DataCenter.RightNowRotation?.GetType().GetCustomAttribute<RotationAttribute>()!.Name);
-        ImGui.Text(DataCenter.SpecialType.ToString());
-
-        ImGui.Text(ActionUpdater.NextAction?.Name ?? "null");
-        ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
-        ImGui.Text("Action Remain: " + DataCenter.AnimationLocktime.ToString());
-        ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
-    }
-
-    private static void DrawLastAction()
-    {
-        DrawAction(DataCenter.LastAction, nameof(DataCenter.LastAction));
-        DrawAction(DataCenter.LastAbility, nameof(DataCenter.LastAbility));
-        DrawAction(DataCenter.LastGCD, nameof(DataCenter.LastGCD));
-        DrawAction(DataCenter.LastComboAction, nameof(DataCenter.LastComboAction));
-    }
-
-    private static unsafe void DrawOthers()
-    {
-        ImGui.Text("Combat Time: " + (DataCenter.CombatTimeRaw).ToString());
-        ImGui.Text("Limit Break: " + CustomRotation.LimitBreakLevel.ToString());
-    }
-
-    private static void DrawAction(ActionID id, string type)
-    {
-        ImGui.Text($"{type}: {id}");
-    }
-    #endregion
-
-    #region Child
-    private static bool BeginChild(string str_id, Vector2 size)
-    {
-        if (IsFailed()) return false;
-        return ImGui.BeginChild(str_id, size);
-    }
-
-    private static bool BeginChild(string str_id, Vector2 size, bool border, ImGuiWindowFlags flags)
-    {
-        if (IsFailed()) return false;
-        return ImGui.BeginChild(str_id, size, border, flags);
-    }
-
-    private static bool IsFailed()
-    {
-        var style = ImGui.GetStyle();
-        var min = style.WindowPadding.X + style.WindowBorderSize;
-        var columnWidth = ImGui.GetColumnWidth();
-        var windowSize = ImGui.GetWindowSize();
-        var cursor = ImGui.GetCursorPos();
-
-        return columnWidth > 0 && columnWidth <= min
-            || windowSize.Y - cursor.Y <= min
-            || windowSize.X - cursor.X <= min;
-    }
-    #endregion
 }

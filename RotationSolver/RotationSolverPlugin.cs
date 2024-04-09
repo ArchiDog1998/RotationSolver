@@ -24,7 +24,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 {
     private readonly WindowSystem windowSystem;
 
-    static RotationConfigWindow? _rotationConfigWindow;
+    internal static RotationConfigWindow? _rotationConfigWindow;
     static ControlWindow? _controlWindow;
     static NextActionWindow? _nextActionWindow;
     static CooldownWindow? _cooldownWindow;

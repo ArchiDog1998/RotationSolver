@@ -3,7 +3,6 @@ using ECommons.GameFunctions;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using XIVDrawer;
 using XIVDrawer.Vfx;
-using XIVPainter.Vfx;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;

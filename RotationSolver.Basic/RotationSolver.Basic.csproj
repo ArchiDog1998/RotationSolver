@@ -72,10 +72,6 @@
 
 	  <ProjectReference Include="..\XIVDrawer\XIVDrawer\XIVDrawer.csproj" />
 
-	  <ProjectReference Include="..\XIVPainter\XIVPainter\XIVDrawer.csproj">
-		  <PrivateAssets>all</PrivateAssets>
-	  </ProjectReference>
-
 	  <PackageReference Include="Svg" Version="3.4.7" />
 
 	  <None Include="..\COPYING.LESSER">

@@ -7,8 +7,7 @@ using RotationSolver.Updaters;
 using XIVDrawer;
 using XIVDrawer.Element3D;
 using XIVDrawer.ElementSpecial;
-using XIVPainter.Element3D;
-using XIVPainter.Vfx;
+using XIVDrawer.Vfx;
 
 namespace RotationSolver.UI;
 

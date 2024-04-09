@@ -31,9 +31,6 @@ internal enum UiString
     [Description("Click to switch rotations")]
     ConfigWindow_Helper_SwitchRotation,
 
-    [Description("Search Result")]
-    ConfigWindow_Search_Result,
-
     [Description("Well, you must be a lazy player!")]
     ConfigWindow_About_Clicking100k,
 
@@ -208,10 +205,10 @@ internal enum UiString
     [Description("No Casting debuffs")]
     ConfigWindow_List_NoCastingStatus,
 
-    [Description("Ignores target if it has one of this statuses")]
+    [Description("Ignores target if it has one of these statuses")]
     ConfigWindow_List_InvincibilityDesc,
 
-    [Description("Attacks the target first if it has one of this statuses")]
+    [Description("Attacks the target first if it has one of these statuses")]
     ConfigWindow_List_PriorityDesc,
 
     [Description("Dispellable debuffs list")]
@@ -324,9 +321,6 @@ internal enum UiString
 
     [Description("Move")]
     InfoWindowMove,
-
-    [Description("Search... ")]
-    ConfigWindow_Searching,
 
     [Description("Timer")]
     ConfigWindow_Basic_Timer,
@@ -723,4 +717,31 @@ internal enum UiString
 
     [Description("The duration of this action.")]
     TimelineItemDuration,
+
+    [Description("The abilities and custom conditions that your selected job has.")]
+    Item_Actions,
+
+    [Description("All rotations that RS has loaded.")]
+    Item_Rotations,
+
+    [Description("Some things that have to be lists.")]
+    Item_List,
+
+    [Description("Basic settings")]
+    Item_Basic,
+
+    [Description("Settings about the user interface.")]
+    Item_UI,
+
+    [Description("About some general actions usage and conditions.")]
+    Item_Auto,
+
+    [Description("The way to find the targets, hostiles or friends.")]
+    Item_Target,
+
+    [Description("Your custom time line about the specific duty.")]
+    Item_Timeline,
+
+    [Description("Some features that shouldn't be included in RS but help you.")]
+    Item_Extra,
 }

@@ -3,7 +3,7 @@
 #nullable enable
 namespace RotationSolver.Basic.Data;
 /// <summary> The TerritoryContentType </summary>
-[global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.5.0")]
+[global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
 public enum TerritoryContentType : byte
 {
     /// <summary/>

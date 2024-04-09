@@ -109,7 +109,7 @@ internal static class TimelineDrawer
         ImGui.SameLine();
         ImGui.Text(UiString.TimelineRaidTime.Local() + ": " + TimeSpan.FromSeconds(DataCenter.RaidTimeRaw).ToString("hh\\:mm\\:ss\\.f"));
 
-        RotationConfigWindow._allSearchable.DrawItems((int)UiString.TimelineRaidTime);
+        RotationSolverPlugin._rotationConfigWindow?.AllSearchable.DrawItems((int)UiString.TimelineRaidTime);
 
         using var table = ImRaii.Table("Rotation Solver List Timeline", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)
@@ -678,7 +678,7 @@ internal static class TimelineDrawer
     static readonly string[] _omenShowNames = _omenInfo
         .Select(f => f.Name).ToArray();
 
-    static readonly IEnumerable<FieldInfo> _actorInfo = typeof(ActorOmen).GetRuntimeFields();
+    static readonly IEnumerable<FieldInfo> _actorInfo = typeof(LockOnOmen).GetRuntimeFields().Union(typeof(Channeling).GetRuntimeFields());
     static readonly string[] _actorNames = _actorInfo
         .Select(f => f.GetValue(null))
         .OfType<string>().ToArray();

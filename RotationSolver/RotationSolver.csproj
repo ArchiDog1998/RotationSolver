@@ -5,6 +5,9 @@
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="UI\RotationConfigWindow.cs~RF2075126f.TMP" />
+  </ItemGroup>
 
   <ItemGroup>
 	  <Reference Include="Dalamud">

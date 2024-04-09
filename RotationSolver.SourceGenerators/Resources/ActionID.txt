@@ -3,7 +3,7 @@
 #nullable enable
 namespace RotationSolver.Basic.Data;
 /// <summary> The id of the action </summary>
-[global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.5.0")]
+[global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
 public enum ActionID : uint
 {
     /// <summary/>
@@ -9419,11 +9419,11 @@ public enum ActionID : uint
     /// <summary>
 /// <see href="https://garlandtools.org/db/#action/29067"><strong>Holy Sheltron</strong></see>-<i>PvP</i> (PLD) [29067] [Ability]
 /// <para>Grants Holy Sheltron and Knight's Resolve.</para>
-/// <para>Holy Sheltron Effect: Creates a barrier around self that absorbs damage equivalent to a heal of 8,000 potency</para>
-/// <para>Duration: 4s</para>
-/// <para>If the barrier is not absorbed and the effect duration expires, deals unaspected damage to all nearby enemies with a potency equal to 150% of the barrier's remaining potency.</para>
+/// <para>Holy Sheltron Effect: Creates a barrier around self that absorbs damage equivalent to a heal of 12,000 potency</para>
+/// <para>Duration: 5s</para>
+/// <para>If the barrier is not absorbed and the effect duration expires, deals unaspected damage to all nearby enemies with a potency equal to the barrier's remaining potency.</para>
 /// <para>Knight's Resolve Effect: Reduces damage taken by 20%</para>
-/// <para>Duration: 8s</para>
+/// <para>Duration: 10s</para>
 /// <para>Additional Effect: Heavy +75%</para>
 /// <para>Duration: 5s</para>
 /// </summary>
@@ -9445,7 +9445,7 @@ public enum ActionID : uint
     PhalanxPvP = 29069,
     /// <summary>
 /// <see href="https://garlandtools.org/db/#action/29070"><strong>Confiteor</strong></see>-<i>PvP</i> (PLD) [29070] [Spell]
-/// <para>Deals unaspected damage with a potency of 12,000 to target and all enemies nearby it.</para>
+/// <para>Deals unaspected damage with a potency of 8,000 to target and all enemies nearby it.</para>
 /// <para>Additional Effect: Afflicts target with Sacred Claim</para>
 /// <para>Sacred Claim Effect: Restores HP when successfully landing an attack on targets under this effect</para>
 /// <para>Cure Potency: 3,000</para>
@@ -9455,7 +9455,7 @@ public enum ActionID : uint
     ConfiteorPvP = 29070,
     /// <summary>
 /// <see href="https://garlandtools.org/db/#action/29071"><strong>Blade of Faith</strong></see>-<i>PvP</i> (PLD) [29071] [Spell]
-/// <para>Deals unaspected damage with a potency of 7,000 to target and all enemies nearby it.</para>
+/// <para>Deals unaspected damage with a potency of 6,000 to target and all enemies nearby it.</para>
 /// <para>Additional Effect: Potency is increased by 50% when target is under the effect of Sacred Claim</para>
 /// <para>Additional Effect: Afflicts target with Sacred Claim</para>
 /// <para>Sacred Claim Effect: Restores HP when successfully landing an attack on targets under this effect</para>
@@ -9469,7 +9469,7 @@ public enum ActionID : uint
     BladeOfFaithPvP = 29071,
     /// <summary>
 /// <see href="https://garlandtools.org/db/#action/29072"><strong>Blade of Truth</strong></see>-<i>PvP</i> (PLD) [29072] [Spell]
-/// <para>Deals unaspected damage with a potency of 8,000 to target and all enemies nearby it.</para>
+/// <para>Deals unaspected damage with a potency of 7,000 to target and all enemies nearby it.</para>
 /// <para>Additional Effect: Potency is increased by 50% when target is under the effect of Sacred Claim</para>
 /// <para>Combo Action: Blade of Faith</para>
 /// <para>Additional Effect: Afflicts target with Sacred Claim</para>
@@ -9483,7 +9483,7 @@ public enum ActionID : uint
     BladeOfTruthPvP = 29072,
     /// <summary>
 /// <see href="https://garlandtools.org/db/#action/29073"><strong>Blade of Valor</strong></see>-<i>PvP</i> (PLD) [29073] [Spell]
-/// <para>Deals unaspected damage with a potency of 9,000 to target and all enemies nearby it.</para>
+/// <para>Deals unaspected damage with a potency of 8,000 to target and all enemies nearby it.</para>
 /// <para>Additional Effect: Potency is increased by 50% when target is under the effect of Sacred Claim</para>
 /// <para>Combo Action: Blade of Truth</para>
 /// <para>Additional Effect: Afflicts target with Sacred Claim</para>
@@ -10790,11 +10790,11 @@ public enum ActionID : uint
 /// <para>Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.</para>
 /// <para>Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.</para>
 /// <para>Potency of both the attack and barrier doubles when targets are within 5 yalms.</para>
-/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency</para>
-/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
-/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
-/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
-/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
+/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
+/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
+/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency</para>
 /// <para>Duration: 10s</para>
 /// <para>Honing Dance effect expires upon execution.</para>
 /// <para></para>
@@ -10806,11 +10806,11 @@ public enum ActionID : uint
 /// <para>Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.</para>
 /// <para>Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.</para>
 /// <para>Potency of both the attack and barrier doubles when targets are within 5 yalms.</para>
-/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency</para>
-/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
-/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
-/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
-/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
+/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
+/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
+/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency</para>
 /// <para>Duration: 10s</para>
 /// <para>Honing Dance effect expires upon execution.</para>
 /// <para></para>
@@ -10822,11 +10822,11 @@ public enum ActionID : uint
 /// <para>Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.</para>
 /// <para>Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.</para>
 /// <para>Potency of both the attack and barrier doubles when targets are within 5 yalms.</para>
-/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency</para>
-/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
-/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
-/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
-/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
+/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
+/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
+/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency</para>
 /// <para>Duration: 10s</para>
 /// <para>Honing Dance effect expires upon execution.</para>
 /// <para></para>
@@ -10838,11 +10838,11 @@ public enum ActionID : uint
 /// <para>Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.</para>
 /// <para>Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.</para>
 /// <para>Potency of both the attack and barrier doubles when targets are within 5 yalms.</para>
-/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency</para>
-/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
-/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
-/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
-/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
+/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
+/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
+/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency</para>
 /// <para>Duration: 10s</para>
 /// <para>Honing Dance effect expires upon execution.</para>
 /// <para></para>
@@ -10854,11 +10854,11 @@ public enum ActionID : uint
 /// <para>Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.</para>
 /// <para>Potency of both the attack and barrier varies with the number of stacks of Acclaim accumulated at time of execution.</para>
 /// <para>Potency of both the attack and barrier doubles when targets are within 5 yalms.</para>
-/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency</para>
-/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
-/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
-/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
-/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
+/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
+/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
+/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency</para>
 /// <para>Duration: 10s</para>
 /// <para>Honing Dance effect expires upon execution.</para>
 /// <para></para>
@@ -10919,11 +10919,11 @@ public enum ActionID : uint
 /// <para>Delivers an attack to nearby enemies and erects a magicked barrier around nearby party members.</para>
 /// <para>Potency of both the attack and barrier varies with the number of stacks of Acclaim available at time of execution.</para>
 /// <para>Potency of both the attack and barrier doubles when targets are within 5 yalms.</para>
-/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 1,000 potency</para>
-/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
-/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
-/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
-/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>0 Stacks: 2,000 attack potency, and barrier equivalent to a heal of 2,000 potency</para>
+/// <para>1 Stack: 3,000 attack potency, and barrier equivalent to a heal of 3,000 potency</para>
+/// <para>2 Stacks: 4,000 attack potency, and barrier equivalent to a heal of 4,000 potency</para>
+/// <para>3 Stacks: 5,000 attack potency, and barrier equivalent to a heal of 5,000 potency</para>
+/// <para>4 Stacks: 6,000 attack potency, and barrier equivalent to a heal of 6,000 potency</para>
 /// <para>Duration: 10s</para>
 /// <para>Honing Dance effect expires upon execution.</para>
 /// <para></para>
@@ -12534,47 +12534,6 @@ public enum ActionID : uint
 /// </summary>
     VariantRampartPvE_33864 = 33864,
     /// <summary>
-/// <see href="https://garlandtools.org/db/#action/33987"><strong>Dodge</strong></see>-<i>PvE</i> (All Classes) [33987] [Ability]
-/// <para>Take evasive action in the selected direction.</para>
-/// <para>Additional Effect: Grants Precision upon successfully executing a precision dodge</para>
-/// <para>Duration: 10s</para>
-/// </summary>
-    DodgePvE = 33987,
-    /// <summary>
-/// <see href="https://garlandtools.org/db/#action/33988"><strong>Dodge</strong></see>-<i>PvE</i> (All Classes) [33988] [Ability]
-/// <para>Take evasive action in the selected direction.</para>
-/// <para>Additional Effect: Grants Precision upon successfully executing a precision dodge</para>
-/// <para>Duration: 10s</para>
-/// </summary>
-    DodgePvE_33988 = 33988,
-    /// <summary>
-/// <see href="https://garlandtools.org/db/#action/33989"><strong>Dodge</strong></see>-<i>PvE</i> (All Classes) [33989] [Ability]
-/// <para>Take evasive action in the selected direction.</para>
-/// <para>Additional Effect: Grants Precision upon successfully executing a precision dodge</para>
-/// <para>Duration: 10s</para>
-/// </summary>
-    DodgePvE_33989 = 33989,
-    /// <summary>
-/// <see href="https://garlandtools.org/db/#action/33990"><strong>Dodge</strong></see>-<i>PvE</i> (All Classes) [33990] [Ability]
-/// <para>Take evasive action in the selected direction.</para>
-/// <para>Additional Effect: Grants Precision upon successfully executing a precision dodge</para>
-/// <para>Duration: 10s</para>
-/// </summary>
-    DodgePvE_33990 = 33990,
-    /// <summary>
-/// <see href="https://garlandtools.org/db/#action/33997"><strong>Dodge</strong></see>-<i>PvE</i> (All Classes) [33997] [Ability]
-/// <para>Take evasive action in the selected direction.</para>
-/// <para>Additional Effect: Applies Precision upon successfully executing a precision dodge</para>
-/// <para>Duration: 5s</para>
-/// </summary>
-    DodgePvE_33997 = 33997,
-    /// <summary>
-/// <see href="https://garlandtools.org/db/#action/34515"><strong>Precision Strike</strong></see>-<i>PvE</i> (All Classes) [34515] [Ability]
-/// <para>Closes in on target while delivering an attack.</para>
-/// <para>Can only be executed while Precision is active.</para>
-/// </summary>
-    PrecisionStrikePvE = 34515,
-    /// <summary>
 /// <see href="https://garlandtools.org/db/#action/34563"><strong>Goblin Punch</strong></see>-<i>PvE</i> (BLU) [34563] [Spell]
 /// <para>Deals physical damage with a potency of 120.</para>
 /// <para>220 when executed in front of a target.</para>
@@ -12734,10 +12693,5 @@ public enum ActionID : uint
 /// <para></para>
 /// <para>※This action cannot be assigned to a hotbar.</para>
 /// </summary>
-    GuillotinePvP = 34786,
-    /// <summary>
-/// <see href="https://garlandtools.org/db/#action/34790"><strong>Rising Flames</strong></see>-<i>PvE</i> (All Classes) [34790] [Ability]
-/// <para>Closes in on target while delivering an attack.</para>
-/// </summary>
-    RisingFlamesPvE = 34790
+    GuillotinePvP = 34786
 }
