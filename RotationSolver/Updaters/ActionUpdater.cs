@@ -279,10 +279,8 @@ internal static class ActionUpdater
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Player.Object.CurrentHp == 0) return false;
 
-        var maxAhead = ActionManagerHelper.GetCurrentAnimationLock();
-
         //GCD
-        var canUseGCD = DataCenter.WeaponRemain <= maxAhead;
+        var canUseGCD = DataCenter.WeaponRemain <= 0;
         if (_GCDDelay.Delay(canUseGCD))
         {
             return RSCommands.CanDoAnAction(true);
@@ -296,7 +294,7 @@ internal static class ActionUpdater
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return false;
 
         //The last one.
-        if (maxAhead <= DataCenter.WeaponRemain)
+        if (ActionManagerHelper.GetCurrentAnimationLock() <= 0)
         {
             return RSCommands.CanDoAnAction(false);
         }
