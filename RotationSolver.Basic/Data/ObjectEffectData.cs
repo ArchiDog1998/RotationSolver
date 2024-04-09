@@ -2,7 +2,7 @@
 
 namespace RotationSolver.Basic.Data;
 
-internal readonly struct ObjectEffectData
+public readonly struct ObjectEffectData
 {
     public readonly uint ObjectId;
 

@@ -4,7 +4,6 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Plugin.Services;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using RotationSolver.Basic.Configuration;
 
 namespace RotationSolver.Basic.Rotations;
 partial class CustomRotation
@@ -197,30 +196,7 @@ partial class CustomRotation
     public static bool MobsTime => DataCenter.MobsTime;
     #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
-    [Description("Can heal area ability")]
-    public virtual bool CanHealAreaAbility => true;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Description("Can heal area spell")]
-    public virtual bool CanHealAreaSpell => true;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Description("Can heal single ability")]
-    public virtual bool CanHealSingleAbility => true;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Description("Can heal single area")]
-    public virtual bool CanHealSingleSpell => true;
-
+    #region Others
     /// <summary>
     /// True for On, false for off.
     /// </summary>
@@ -232,24 +208,6 @@ partial class CustomRotation
     /// </summary>
     [Description("The state of manual. True for manual.")]
     public static bool IsManual => DataCenter.IsManual;
-
-    #region GCD
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected static float WeaponRemain => DataCenter.WeaponRemain;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected static float WeaponTotal => DataCenter.WeaponTotal;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected static float WeaponElapsed => DataCenter.WeaponElapsed;
-    #endregion
 
     /// <summary>
     /// 
@@ -284,6 +242,55 @@ partial class CustomRotation
     /// </summary>
     [Description("Time from next ability to next GCD")]
     public static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
+
+    public static IEnumerable<MapEffectData> MapEffects => DataCenter.MapEffects.Reverse();
+    public static IEnumerable<ObjectEffectData> ObjectEffects => DataCenter.ObjectEffects.Reverse();
+    public static IEnumerable<VfxNewData> VfxNewData => DataCenter.VfxNewData.Reverse();
+    #endregion
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Description("Can heal area ability")]
+    public virtual bool CanHealAreaAbility => true;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Description("Can heal area spell")]
+    public virtual bool CanHealAreaSpell => true;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Description("Can heal single ability")]
+    public virtual bool CanHealSingleAbility => true;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Description("Can heal single area")]
+    public virtual bool CanHealSingleSpell => true;
+
+    #region GCD
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected static float WeaponRemain => DataCenter.WeaponRemain;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected static float WeaponTotal => DataCenter.WeaponTotal;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected static float WeaponElapsed => DataCenter.WeaponElapsed;
+    #endregion
+
+
 
     /// <summary>
     /// 

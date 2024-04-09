@@ -3,7 +3,7 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Authors>ArchiTed</Authors>
-		<Version>4.2.6.2</Version>
+		<Version>4.2.6.3</Version>
 		<PlatformTarget>x64</PlatformTarget>
 		<Platforms>AnyCPU</Platforms>
 		<LangVersion>latest</LangVersion>

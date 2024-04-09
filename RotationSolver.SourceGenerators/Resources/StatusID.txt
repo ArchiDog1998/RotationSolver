@@ -17018,6 +17018,16 @@ public enum StatusID : ushort
 /// </summary>
     Spectator = 3708,
     /// <summary>
+/// <see href="https://garlandtools.org/db/#status/3709"><strong>Drop and Roll</strong></see> ↑ (All Classes)
+/// <para>Prepared to dodge certain attacks.</para>
+/// </summary>
+    DropAndRoll = 3709,
+    /// <summary>
+/// <see href="https://garlandtools.org/db/#status/3710"><strong>Precision</strong></see> ↑ (All Classes)
+/// <para>A precision dodge has created an opening, enabling use of the duty action Precision Strike.</para>
+/// </summary>
+    Precision = 3710,
+    /// <summary>
 /// <see href="https://garlandtools.org/db/#status/3712"><strong>Breath of Magic</strong></see> ↓ (All Classes)
 /// <para>Sustaining damage over time.</para>
 /// </summary>
@@ -17203,6 +17213,11 @@ public enum StatusID : ushort
 /// </summary>
     HeatWave = 3754,
     /// <summary>
+/// <see href="https://garlandtools.org/db/#status/3755"><strong>Fetters</strong></see> ↓ (All Classes)
+/// <para>Unable to execute actions.</para>
+/// </summary>
+    Fetters_3755 = 3755,
+    /// <summary>
 /// <see href="https://garlandtools.org/db/#status/3756"><strong>Damage Up</strong></see> ↑ (All Classes)
 /// <para>Damage dealt is greatly increased.</para>
 /// </summary>
@@ -17267,6 +17282,16 @@ public enum StatusID : ushort
 /// <para>Area of effect for actions is expanded.</para>
 /// </summary>
     AreaOfInfluenceUp_3768 = 3768,
+    /// <summary>
+/// <see href="https://garlandtools.org/db/#status/3770"><strong>Towering Flame</strong></see> ↑ (All Classes)
+/// <para>Rising flames are increasing damage dealt. Unable to execute Rising Flames.</para>
+/// </summary>
+    ToweringFlame = 3770,
+    /// <summary>
+/// <see href="https://garlandtools.org/db/#status/3771"><strong>Infernal Shroud</strong></see> ↑ (All Classes)
+/// <para>Bolstered by the power of flame.</para>
+/// </summary>
+    InfernalShroud = 3771,
     /// <summary>
 /// <see href="https://garlandtools.org/db/#status/3776"><strong>Bind</strong></see> ↓ (All Classes)
 /// <para>Unable to move.</para>

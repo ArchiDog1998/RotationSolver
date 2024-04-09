@@ -503,5 +503,6 @@
   "RotationSolver.Basic.Configuration.ConfigsDescription.RotationSolver.Basic.Configuration.ConditionBoolean MoveTowardsScreenCenter": "Use movement actions towards the closest object from the center of the screen, otherwise toward your current facing direction.",
   "RotationSolver.Basic.Configuration.ConfigsDescription.RotationSolver.Basic.Configuration.ConditionBoolean MoveAreaActionFarthest": "Moves to the furthest possible position that can be targeted with movement actions.",
   "RotationSolver.Basic.Configuration.ConfigsDescription.Single MoveTargetAngle": "If the selection mode is based on character facing, i.e., targets within the character's viewpoint are moveable targets. \nIf the selection mode is screen-centered, i.e., targets within a sector drawn upward from the character's point are movable targets.",
-  "XIVConfigUI.ConfigUnitType.Degree": "Angle Unit, in degrees."
+  "XIVConfigUI.ConfigUnitType.Degree": "Angle Unit, in degrees.",
+  "RotationSolver.Basic.Configuration.ConfigsName.RotationSolver.Basic.Configuration.ConditionBoolean InDebug": "Debug Mode."
 }

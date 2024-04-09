@@ -1,6 +1,6 @@
 ﻿namespace RotationSolver.Basic.Data;
 
-internal readonly struct MapEffectData
+public readonly struct MapEffectData
 {
     public readonly uint Position;
 

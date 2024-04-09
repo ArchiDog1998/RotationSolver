@@ -4,7 +4,7 @@
 namespace RotationSolver.Basic.Rotations.Duties;
 /// <summary>
 /// The Custom Rotation.
-/// <br>Number of Actions: 388</br>
+/// <br>Number of Actions: 395</br>
 /// </summary>
 [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
 public abstract partial class DutyRotation
@@ -7380,4 +7380,137 @@ public abstract partial class DutyRotation
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.VariantRampartPvE_33864"/>
     [global::RotationSolver.Basic.Attributes.ID(33864U)]
     public global::RotationSolver.Basic.Actions.IBaseAction VariantRampartPvE_33864 => _VariantRampartPvE_33864Creator.Value;
+
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DodgePvECreator = new(() =>
+    {
+        global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DodgePvE, true);
+        CustomRotation.LoadActionSetting(ref action);
+        var setting = action.Setting;
+        ModifyDodgePvE(ref setting);
+        action.Setting = setting;
+        return action;
+    });
+    /// <summary>
+/// Modify <inheritdoc cref="DodgePvE"/>
+/// </summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    static partial void ModifyDodgePvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
+    /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DodgePvE"/>
+    [global::RotationSolver.Basic.Attributes.ID(33987U)]
+    public global::RotationSolver.Basic.Actions.IBaseAction DodgePvE => _DodgePvECreator.Value;
+
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DodgePvE_33988Creator = new(() =>
+    {
+        global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DodgePvE_33988, true);
+        CustomRotation.LoadActionSetting(ref action);
+        var setting = action.Setting;
+        ModifyDodgePvE_33988(ref setting);
+        action.Setting = setting;
+        return action;
+    });
+    /// <summary>
+/// Modify <inheritdoc cref="DodgePvE_33988"/>
+/// </summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    static partial void ModifyDodgePvE_33988(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
+    /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DodgePvE_33988"/>
+    [global::RotationSolver.Basic.Attributes.ID(33988U)]
+    public global::RotationSolver.Basic.Actions.IBaseAction DodgePvE_33988 => _DodgePvE_33988Creator.Value;
+
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DodgePvE_33989Creator = new(() =>
+    {
+        global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DodgePvE_33989, true);
+        CustomRotation.LoadActionSetting(ref action);
+        var setting = action.Setting;
+        ModifyDodgePvE_33989(ref setting);
+        action.Setting = setting;
+        return action;
+    });
+    /// <summary>
+/// Modify <inheritdoc cref="DodgePvE_33989"/>
+/// </summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    static partial void ModifyDodgePvE_33989(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
+    /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DodgePvE_33989"/>
+    [global::RotationSolver.Basic.Attributes.ID(33989U)]
+    public global::RotationSolver.Basic.Actions.IBaseAction DodgePvE_33989 => _DodgePvE_33989Creator.Value;
+
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DodgePvE_33990Creator = new(() =>
+    {
+        global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DodgePvE_33990, true);
+        CustomRotation.LoadActionSetting(ref action);
+        var setting = action.Setting;
+        ModifyDodgePvE_33990(ref setting);
+        action.Setting = setting;
+        return action;
+    });
+    /// <summary>
+/// Modify <inheritdoc cref="DodgePvE_33990"/>
+/// </summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    static partial void ModifyDodgePvE_33990(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
+    /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DodgePvE_33990"/>
+    [global::RotationSolver.Basic.Attributes.ID(33990U)]
+    public global::RotationSolver.Basic.Actions.IBaseAction DodgePvE_33990 => _DodgePvE_33990Creator.Value;
+
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DodgePvE_33997Creator = new(() =>
+    {
+        global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DodgePvE_33997, true);
+        CustomRotation.LoadActionSetting(ref action);
+        var setting = action.Setting;
+        ModifyDodgePvE_33997(ref setting);
+        action.Setting = setting;
+        return action;
+    });
+    /// <summary>
+/// Modify <inheritdoc cref="DodgePvE_33997"/>
+/// </summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    static partial void ModifyDodgePvE_33997(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
+    /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DodgePvE_33997"/>
+    [global::RotationSolver.Basic.Attributes.ID(33997U)]
+    public global::RotationSolver.Basic.Actions.IBaseAction DodgePvE_33997 => _DodgePvE_33997Creator.Value;
+
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PrecisionStrikePvECreator = new(() =>
+    {
+        global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PrecisionStrikePvE, true);
+        CustomRotation.LoadActionSetting(ref action);
+        var setting = action.Setting;
+        ModifyPrecisionStrikePvE(ref setting);
+        action.Setting = setting;
+        return action;
+    });
+    /// <summary>
+/// Modify <inheritdoc cref="PrecisionStrikePvE"/>
+/// </summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    static partial void ModifyPrecisionStrikePvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
+    /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PrecisionStrikePvE"/>
+    [global::RotationSolver.Basic.Attributes.ID(34515U)]
+    public global::RotationSolver.Basic.Actions.IBaseAction PrecisionStrikePvE => _PrecisionStrikePvECreator.Value;
+
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _RisingFlamesPvECreator = new(() =>
+    {
+        global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.RisingFlamesPvE, true);
+        CustomRotation.LoadActionSetting(ref action);
+        var setting = action.Setting;
+        ModifyRisingFlamesPvE(ref setting);
+        action.Setting = setting;
+        return action;
+    });
+    /// <summary>
+/// Modify <inheritdoc cref="RisingFlamesPvE"/>
+/// </summary>
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    static partial void ModifyRisingFlamesPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
+    /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.RisingFlamesPvE"/>
+    [global::RotationSolver.Basic.Attributes.ID(34790U)]
+    public global::RotationSolver.Basic.Actions.IBaseAction RisingFlamesPvE => _RisingFlamesPvECreator.Value;
 }

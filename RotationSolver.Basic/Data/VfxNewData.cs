@@ -2,7 +2,7 @@
 
 namespace RotationSolver.Basic.Data;
 
-internal readonly struct VfxNewData(uint objectId, string path)
+public readonly struct VfxNewData(uint objectId, string path)
 {
     public readonly uint ObjectId = objectId;
     public readonly string Path = path;
