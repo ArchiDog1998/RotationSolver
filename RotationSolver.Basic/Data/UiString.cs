@@ -1,8 +1,9 @@
-﻿using System.ComponentModel;
+﻿namespace RotationSolver.Data;
 
-namespace RotationSolver.Data;
 internal enum UiString
 {
+    None,
+
     [Description("The condition set you chose, click to modify.")]
     ConfigWindow_ConditionSetDesc,
 
