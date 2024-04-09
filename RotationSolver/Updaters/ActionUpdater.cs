@@ -282,7 +282,7 @@ internal static class ActionUpdater
         var maxAhead = Math.Max(DataCenter.Ping, 0.08f);
 
         //GCD
-        var canUseGCD = DataCenter.WeaponRemain <= maxAhead;
+        var canUseGCD = DataCenter.WeaponRemain <= ahead;
         if (_GCDDelay.Delay(canUseGCD))
         {
             return RSCommands.CanDoAnAction(true);
@@ -291,6 +291,8 @@ internal static class ActionUpdater
 
         var nextAction = NextAction;
         if (nextAction == null) return false;
+
+        var timeToNext = DataCenter.ActionRemain;
 
         //Skip when casting
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return false;

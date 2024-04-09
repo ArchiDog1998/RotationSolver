@@ -204,16 +204,16 @@ internal enum UiString
     [Description("No Casting debuffs")]
     ConfigWindow_List_NoCastingStatus,
 
-    [Description("Ignores target if it has one of this statuses")]
+    [Description("Ignores target if it has one of these statuses")]
     ConfigWindow_List_InvincibilityDesc,
 
-    [Description("Attacks the target first if it has one of this statuses")]
+    [Description("Attacks the target first if it has one of these statuses")]
     ConfigWindow_List_PriorityDesc,
 
     [Description("Dispellable debuffs list")]
     ConfigWindow_List_DangerousStatusDesc,
 
-    [Description("No Casting debuffs List")]
+    [Description("Do no action if you have one of these debuffs")]
     ConfigWindow_List_NoCastingStatusDesc,
 
     [Description("Copy to Clipboard")]
@@ -429,7 +429,7 @@ internal enum UiString
     [Description("Hostile")]
     ConfigWindow_List_Hostile,
 
-    [Description("Enemy targetting logic. Adding more options cycles them when using /rotation Auto.")]
+    [Description("Enemy targeting logic. Adding more options cycles them when using /rotation Auto.")]
     ConfigWindow_Param_HostileDesc,
 
     [Description("Move Up")]
