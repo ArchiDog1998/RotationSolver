@@ -279,10 +279,10 @@ internal static class ActionUpdater
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Player.Object.CurrentHp == 0) return false;
 
-        var maxAhead = Math.Max(DataCenter.Ping, 0.08f);
+        var maxAhead = Service.Config.OverrideActionAheadTimer ? Service.Config.Action4Head : Math.Max(DataCenter.Ping, 0.08f);
 
         //GCD
-        var canUseGCD = DataCenter.WeaponRemain <= ahead;
+        var canUseGCD = DataCenter.WeaponRemain <= maxAhead;
         if (_GCDDelay.Delay(canUseGCD))
         {
             return RSCommands.CanDoAnAction(true);
@@ -291,8 +291,6 @@ internal static class ActionUpdater
 
         var nextAction = NextAction;
         if (nextAction == null) return false;
-
-        var timeToNext = DataCenter.ActionRemain;
 
         //Skip when casting
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return false;

@@ -328,7 +328,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _useAOEAction = true;
 
     [ConditionBool, UI("Use single target AoE actions in manual mode.", Parent = nameof(UseAoeAction))]
-    private static readonly bool _useAOEWhenManual = true;
+    private static readonly bool _useAOEWhenManual = false;
 
     [ConditionBool, UI("Automatically trigger dps burst phase.", Filter = AutoActionCondition)]
     private static readonly bool _autoBurst = true;
@@ -424,6 +424,10 @@ internal partial class Configs : IPluginConfiguration
         Filter = TimelineFilter)]
     private static readonly bool _enableTimelineMovement = false;
 
+    [JobConfig, UI("Override Action Ahead Timer",
+        Filter = BasicTimer)]
+    private static readonly bool _overrideActionAheadTimer = false;
+
 
     [UI("Use additional conditions", Filter = BasicParams)]
     public bool UseAdditionalConditions { get; set; } = false;
@@ -491,7 +495,7 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 3, ConfigUnitType.Seconds)]
     public Vector2 TargetDelay { get; set; } = new(1, 2);
 
-    [UI("Action Execution Delay. (RSR will not take actions during window).",
+    [UI("Action Execution Delay.\n(RSR will not take actions during window).",
         Filter = BasicTimer)]
     [Range(0, 1, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 WeaponDelay { get; set; } = new(0, 0);
@@ -708,9 +712,9 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Tank)]
     private readonly float _healthForAutoDefense = 1;
 
-    [JobConfig, Range(0, 0.1f, ConfigUnitType.Seconds)]
-    [UI("Action Ahead (How far ahead of a GCD use does RSR starts to try to use the GCD)", Filter = BasicTimer)]
-    private readonly float _actionAhead = 0.10f;
+    [JobConfig, Range(0, 0.5f, ConfigUnitType.Seconds)]
+    [UI("Action Ahead (How far in advance of GCD being available RSR will try to queue an ability)", Parent = nameof(OverrideActionAheadTimer))]
+    private readonly float _action4head = 0.08f;
 
     [JobConfig, UI("Engage settings", Filter = TargetConfig, PvPFilter = JobFilterType.NoJob)]
     private readonly TargetHostileType _hostileType = TargetHostileType.AllTargetsWhenSolo;
