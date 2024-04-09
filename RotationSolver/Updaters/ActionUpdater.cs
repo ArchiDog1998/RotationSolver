@@ -279,8 +279,10 @@ internal static class ActionUpdater
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Player.Object.CurrentHp == 0) return false;
 
+        var maxAhead = Math.Max(DataCenter.Ping, 0.08f);
+
         //GCD
-        var canUseGCD = DataCenter.WeaponRemain <= 0;
+        var canUseGCD = DataCenter.WeaponRemain <= maxAhead;
         if (_GCDDelay.Delay(canUseGCD))
         {
             return RSCommands.CanDoAnAction(true);
