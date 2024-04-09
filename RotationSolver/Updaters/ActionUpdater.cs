@@ -5,7 +5,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using RotationSolver.Commands;
-using XIVPainter.Vfx;
+using XIVDrawer.Vfx;
 
 namespace RotationSolver.Updaters;
 

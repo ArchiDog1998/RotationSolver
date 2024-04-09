@@ -10,7 +10,7 @@ using RotationSolver.Helpers;
 using RotationSolver.UI.SearchableConfigs;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
-using XIVPainter;
+using XIVDrawer;
 
 namespace RotationSolver.UI;
 

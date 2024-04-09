@@ -1,4 +1,4 @@
-﻿using XIVPainter.Element3D;
+﻿using XIVDrawer.Element3D;
 
 namespace RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 internal class TextDrawing

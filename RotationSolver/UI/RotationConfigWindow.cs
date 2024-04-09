@@ -20,7 +20,7 @@ using RotationSolver.Updaters;
 using System.Diagnostics;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
-using XIVPainter;
+using XIVDrawer;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
 

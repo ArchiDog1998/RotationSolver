@@ -4,9 +4,10 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
-using XIVPainter;
+using XIVDrawer;
+using XIVDrawer.Element3D;
+using XIVDrawer.ElementSpecial;
 using XIVPainter.Element3D;
-using XIVPainter.ElementSpecial;
 using XIVPainter.Vfx;
 
 namespace RotationSolver.UI;
@@ -46,7 +47,7 @@ internal static class PainterManager
 
     public static void Init()
     {
-        XIVPainterMain.Init(Svc.PluginInterface, "RotationSolverOverlay");
+        XIVDrawerMain.Init(Svc.PluginInterface, "RotationSolverOverlay");
         for (int i = 0; i < TargetTexts.Length; i++)
         {
             TargetTexts[i] = new Drawing3DText(string.Empty, default);
@@ -143,9 +144,9 @@ internal static class PainterManager
 
     public static void UpdateSettings()
     {
-        XIVPainterMain.SampleLength = Service.Config.SampleLength;
-        XIVPainterMain.UseTaskToAccelerate = Service.Config.UseTasksForOverlay;
-        XIVPainterMain.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
+        XIVDrawerMain.SampleLength = Service.Config.SampleLength;
+        XIVDrawerMain.UseTaskToAccelerate = Service.Config.UseTasksForOverlay;
+        XIVDrawerMain.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
 
         UpdateTargetTexts();
         UpdateTarget();
@@ -279,6 +280,6 @@ internal static class PainterManager
 
     public static void Dispose()
     {
-        XIVPainterMain.Dispose();
+        XIVDrawerMain.Dispose();
     }
 }

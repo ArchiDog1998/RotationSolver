@@ -1,7 +1,8 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
-using XIVPainter;
+using XIVDrawer;
+using XIVDrawer.Vfx;
 using XIVPainter.Vfx;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
@@ -41,7 +42,7 @@ internal class ActionDrawingGetter : BaseDrawingGetter
 
         var x = X != 0 ? X : (action.XAxisModifier > 0 ? action.XAxisModifier / 2 : action.EffectRange);
         var y = Y != 0 ? Y : action.EffectRange;
-        var scale = new Vector3(x, XIVPainterMain.HeightScale, y);
+        var scale = new Vector3(x, XIVDrawerMain.HeightScale, y);
 
         if (action.TargetArea)
         {

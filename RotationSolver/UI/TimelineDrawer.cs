@@ -13,8 +13,8 @@ using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.Data;
 using RotationSolver.Updaters;
 using XIVConfigUI;
-using XIVPainter;
-using XIVPainter.Vfx;
+using XIVDrawer;
+using XIVDrawer.Vfx;
 
 namespace RotationSolver.UI;
 internal static class TimelineDrawer
