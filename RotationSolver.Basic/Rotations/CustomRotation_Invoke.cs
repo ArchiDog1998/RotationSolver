@@ -170,8 +170,7 @@ partial class CustomRotation
 
         if (gcdAction != null)
         {
-            if (DataCenter.NextAbilityToNextGCD < DataCenter.MinAnimationLock + DataCenter.Ping
-                || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
+            if (ActionHelper.CanUseGCD) return gcdAction;
 
             if (Ability(gcdAction, out var ability)) return ability;
 

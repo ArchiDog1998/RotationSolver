@@ -712,9 +712,11 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Tank)]
     private readonly float _healthForAutoDefense = 1;
 
-    [JobConfig, Range(0, 0.5f, ConfigUnitType.Seconds)]
-    [UI("Action Ahead (How far in advance of GCD being available RSR will try to queue an ability)", Parent = nameof(OverrideActionAheadTimer))]
-    private readonly float _action4head = 0.08f;
+    [JobConfig, Range(0, 1.0f, ConfigUnitType.Seconds)]
+    [UI("Action Ahead (How far in advance of GCD being available RSR will try to queue the next GCD)", 
+        Description = "This setting controls how many oGCDs RSR will try to fit in a single GCD window\nLower numbers mean more oGCDs, but potentially more GCD clipping", 
+        Parent = nameof(OverrideActionAheadTimer))]
+    private readonly float _action4head = 0.4f;
 
     [JobConfig, UI("Engage settings", Filter = TargetConfig, PvPFilter = JobFilterType.NoJob)]
     private readonly TargetHostileType _hostileType = TargetHostileType.AllTargetsWhenSolo;
