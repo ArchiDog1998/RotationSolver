@@ -13,10 +13,10 @@ internal static partial class TargetUpdater
     static readonly ObjectListDelay<BattleChara> 
         _raisePartyTargets = new(() => Service.Config.RaiseDelay),
         _raiseAllTargets = new(() => Service.Config.RaiseDelay);
+
     internal unsafe static void UpdateTarget()
     {
         var battles = Svc.Objects.OfType<BattleChara>();
-
         DataCenter.AllTargets.Delay(battles.GetObjectInRadius(30));
         UpdateHostileTargets(DataCenter.AllTargets);
         UpdateFriends(DataCenter.AllTargets
@@ -24,6 +24,20 @@ internal static partial class TargetUpdater
             && b.IsTargetable //Removed the one can't target.
             ));
         UpdateNamePlate(battles);
+    }
+
+    private static GameObject[] _lastObjs = [];
+    private static void UpdateNewCharactors()
+    {
+        foreach (var obj in Svc.Objects.Except(_lastObjs))
+        {
+#if DEBUG
+            Svc.Log.Debug($"Find a new object {obj.Name.TextValue}");
+#endif
+            DataCenter.RightNowDutyRotation?.OnNewActor(obj);
+        }
+
+        _lastObjs = [.. Svc.Objects];
     }
 
     private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;

@@ -7,7 +7,6 @@ using Dalamud.Plugin.Services;
 using ECommons.Hooks.ActionEffectTypes;
 
 namespace RotationSolver.Basic.Rotations.Duties;
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 partial class DutyRotation : IDisposable
 {
@@ -406,6 +405,11 @@ partial class DutyRotation : IDisposable
         }
     }
 
+    public virtual void OnNewActor(GameObject actor)
+    {
+
+    }
+
     public virtual void OnActorVfxNew(in VfxNewData data)
     {
 
@@ -445,4 +449,3 @@ partial class DutyRotation : IDisposable
         }
     }
 }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
