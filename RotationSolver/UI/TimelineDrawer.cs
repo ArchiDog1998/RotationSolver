@@ -273,7 +273,7 @@ internal static class TimelineDrawer
                 var popUpKey = $"Action Finder{timeLineItem.GetHashCode()}";
                 ConditionDrawer.ActionSelectorPopUp(popUpKey, _timelineActionsList, DataCenter.RightNowRotation, item => actionItem.ID = (ActionID)item.ID);
 
-                if (actionItem.ID.GetTexture(out var icon) || IconSet.GetTexture(4, out icon))
+                if (actionItem.ID.GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
                 {
                     ImGui.SameLine();
                     var cursor = ImGui.GetCursorPos();
@@ -345,7 +345,7 @@ internal static class TimelineDrawer
                     (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
                     (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]));
 
-                if (IconSet.GetTexture(10, out var texture))
+                if (ImageLoader.GetTexture(10, out var texture))
                 {
                     if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, ConditionDrawer.IconSize * Vector2.One, "Position " + moveItem.GetHashCode() + i))
                     {
@@ -436,7 +436,7 @@ internal static class TimelineDrawer
                 (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
                 (UiString.ConfigWindow_Actions_Copy.Local(), Copy, ["Ctrl"]));
 
-            if (IconSet.GetTexture(30, out var texture))
+            if (ImageLoader.GetTexture(30, out var texture))
             {
                 if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, false, $"Icon :{item.GetHashCode()}"))
                 {
@@ -916,7 +916,7 @@ internal static class TimelineDrawer
 
         var key = "Status PopUp" + getter.GetHashCode();
         var status = Svc.Data.GetExcelSheet<Status>()?.GetRow(getter.Status);
-        if (IconSet.GetTexture(getter.Status == 0 ? 16220 : status?.Icon ?? 10100, out var texture, 10100))
+        if (ImageLoader.GetTexture(getter.Status == 0 ? 16220 : status?.Icon ?? 10100, out var texture, 10100))
         {
             if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(24, 32) * Scale, "Status" + getter.Status.ToString()))
             {
@@ -936,7 +936,7 @@ internal static class TimelineDrawer
 
                 var size = Vector2.One * 24 * Scale;
 
-                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_tank.png", out var overlay))
+                if (ImageLoader.GetTexture("https://xivapi.com/cj/misc/clear_tank.png", out var overlay))
                 {
                     if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Tank, "Tank##" + getter.GetHashCode()))
@@ -947,7 +947,7 @@ internal static class TimelineDrawer
 
                 ImGui.SameLine();
 
-                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_healer.png", out overlay))
+                if (ImageLoader.GetTexture("https://xivapi.com/cj/misc/clear_healer.png", out overlay))
                 {
                     if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Healer, "Healer##" + getter.GetHashCode()))
@@ -958,7 +958,7 @@ internal static class TimelineDrawer
 
                 ImGui.SameLine();
 
-                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_dps.png", out overlay))
+                if (ImageLoader.GetTexture("https://xivapi.com/cj/misc/clear_dps.png", out overlay))
                 {
                     if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Melee, "Melee##" + getter.GetHashCode()))
@@ -969,7 +969,7 @@ internal static class TimelineDrawer
 
                 ImGui.SameLine();
 
-                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_ranged.png", out overlay))
+                if (ImageLoader.GetTexture("https://xivapi.com/cj/misc/clear_ranged.png", out overlay))
                 {
                     if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Range, "Range##" + getter.GetHashCode()))
@@ -980,7 +980,7 @@ internal static class TimelineDrawer
 
                 ImGui.SameLine();
 
-                if (IconSet.GetTexture("https://xivapi.com/cj/misc/clear_dps_magic.png", out overlay))
+                if (ImageLoader.GetTexture("https://xivapi.com/cj/misc/clear_dps_magic.png", out overlay))
                 {
                     if (ImGuiHelper.SilenceImageButton(overlay.ImGuiHandle, size,
                         getter.Caster, "Caster##" + getter.GetHashCode()))

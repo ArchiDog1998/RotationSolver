@@ -16,9 +16,6 @@ internal enum UiString
     [Description("Load From folder.")]
     ActionSequencer_Load,
 
-    [Description("Analyses PvE combat information in every frame and finds the best action.")]
-    ConfigWindow_About_Punchline,
-
     [Description("Game")]
     ConfigWindow_Helper_GameVersion,
 
@@ -36,9 +33,6 @@ internal enum UiString
 
     [Description("You're tiring RS out, give it a break!")]
     ConfigWindow_About_Clicking500k,
-
-    [Description("This means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.\n\nThen, it will highlight the best action on the hot bar, or help you to click on it.")]
-    ConfigWindow_About_Description,
 
     [Description("It is designed for GENERAL COMBAT, not for savage or ultimate. Use it carefully.")]
     ConfigWindow_About_Warning,

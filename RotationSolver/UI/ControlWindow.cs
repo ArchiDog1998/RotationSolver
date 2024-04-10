@@ -305,7 +305,7 @@ internal class ControlWindow : CtrlWindow
 
     static void DrawCommandAction(uint iconId, SpecialCommandType command, Vector4 color)
     {
-        if (IconSet.GetTexture(iconId, out var texture)) DrawCommandAction(texture, command, color);
+        if (ImageLoader.GetTexture(iconId, out var texture)) DrawCommandAction(texture, command, color);
     }
 
     static void DrawCommandAction(IDalamudTextureWrap texture, SpecialCommandType command, Vector4 color, string helpAddition = "")
@@ -375,12 +375,11 @@ internal class ControlWindow : CtrlWindow
                 var help = command.Local();
                 string baseId = "ImgButton" + command.ToString();
 
-                if (IconSet.GetTexture(iconId, out var texture))
+                if (ImageLoader.GetTexture(iconId, out var texture))
                 {
                     ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
                     DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
                 }
-
             }
         }
 

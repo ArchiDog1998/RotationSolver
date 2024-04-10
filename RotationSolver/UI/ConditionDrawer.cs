@@ -34,7 +34,7 @@ internal static class ConditionDrawer
         float size = IconSize * (1 + 8 / 82);
         if (!tag.HasValue)
         {
-            if (IconSet.GetTexture("ui/uld/image2.tex", out var texture, true) || IconSet.GetTexture(0u, out texture))
+            if (ImageLoader.GetTexture("ui/uld/image2.tex", out var texture) || IconSet.GetTexture(0u, out texture))
             {
                 if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size, false, id))
                 {
@@ -46,7 +46,7 @@ internal static class ConditionDrawer
         }
         else
         {
-            if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture, true))
+            if (ImageLoader.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
             {
                 if (ImGuiHelper.SilenceImageButton(texture.ImGuiHandle, Vector2.One * size,
                     new Vector2(tag.Value ? 0 : 0.5f, 0),
@@ -65,14 +65,14 @@ internal static class ConditionDrawer
 
         if (!tag.HasValue)
         {
-            if (IconSet.GetTexture("ui/uld/image2.tex", out var texture, true) || IconSet.GetTexture(0u, out texture))
+            if (ImageLoader.GetTexture("ui/uld/image2.tex", out var texture) || IconSet.GetTexture(0u, out texture))
             {
                 ImGui.Image(texture.ImGuiHandle, Vector2.One * size);
             }
         }
         else
         {
-            if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture, true))
+            if (ImageLoader.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
             {
                 ImGui.Image(texture.ImGuiHandle, Vector2.One * size,
                     new Vector2(tag.Value ? 0 : 0.5f, 0),
@@ -360,7 +360,7 @@ internal static class ConditionDrawer
             }
         }
 
-        if (traitCondition._trait?.GetTexture(out var icon) ?? false || IconSet.GetTexture(4, out icon))
+        if (traitCondition._trait?.GetTexture(out var icon) ?? false || ImageLoader.GetTexture(4, out icon))
         {
             var cursor = ImGui.GetCursorPos();
             if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, traitCondition.GetHashCode().ToString()))
@@ -394,7 +394,7 @@ internal static class ConditionDrawer
 
         ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => actionCondition.ID = (ActionID)item.ID);
 
-        if ((actionCondition._action?.GetTexture(out var icon) ?? false) || IconSet.GetTexture(4, out icon))
+        if ((actionCondition._action?.GetTexture(out var icon) ?? false) || ImageLoader.GetTexture(4, out icon))
         {
             var cursor = ImGui.GetCursorPos();
             if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, actionCondition.GetHashCode().ToString()))
@@ -645,7 +645,7 @@ internal static class ConditionDrawer
 
                 ActionSelectorPopUp(popUpKey, _actionsList, rotation, item => rotationCondition.ID = (ActionID)item.ID);
 
-                if (rotationCondition._action?.GetTexture(out var icon) ?? false || IconSet.GetTexture(4, out icon))
+                if (rotationCondition._action?.GetTexture(out var icon) ?? false || ImageLoader.GetTexture(4, out icon))
                 {
                     var cursor = ImGui.GetCursorPos();
                     if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, rotationCondition.GetHashCode().ToString()))
@@ -705,8 +705,8 @@ internal static class ConditionDrawer
             }
         });
 
-        if (targetCondition._action != null ? targetCondition._action.GetTexture(out var icon) || IconSet.GetTexture(4, out icon)
-            : IconSet.GetTexture(targetCondition.TargetType switch
+        if (targetCondition._action != null ? targetCondition._action.GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon)
+            : ImageLoader.GetTexture(targetCondition.TargetType switch
             {
                 TargetType.Target => 16u,
                 TargetType.HostileTarget => 15u,
@@ -739,8 +739,8 @@ internal static class ConditionDrawer
 
         void DrawStatusIcon()
         {
-            if (IconSet.GetTexture(targetCondition.Status?.Icon ?? 16220, out var icon)
-                || IconSet.GetTexture(16220, out icon))
+            if (ImageLoader.GetTexture(targetCondition.Status?.Icon ?? 16220, out var icon)
+                || ImageLoader.GetTexture(16220, out icon))
             {
                 if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(IconSize * 3 / 4, IconSize) * ImGuiHelpers.GlobalScale, targetCondition.GetHashCode().ToString()))
                 {

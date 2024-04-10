@@ -3,8 +3,6 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
-using Svg;
-using System.Drawing.Imaging;
 using XIVConfigUI;
 
 namespace RotationSolver.Basic.Data;
@@ -81,59 +79,12 @@ public enum IconType : byte
 public static class IconSet
 {
     /// <summary>
-    /// Init for svg rendering.
-    /// </summary>
-    public static void InIt()
-    {
-        ThreadLoadImageHandler.AddConversionToBitmap(SvgToPng);
-    }
-
-    private static byte[] SvgToPng(byte[] data)
-    {
-        using var stream = new MemoryStream(data);
-        using var outStream = new MemoryStream();
-        var svgDocument = SvgDocument.Open<SvgDocument>(stream);
-        using var bitmap = svgDocument.Draw();
-        bitmap.Save(outStream, ImageFormat.Png);
-        return outStream.ToArray();
-    }
-
-    /// <summary>
     /// 
     /// </summary>
     /// <param name="text"></param>
     /// <param name="texture"></param>
     /// <returns></returns>
-    public static bool GetTexture(this ITexture text, out IDalamudTextureWrap texture) => GetTexture(text?.IconID ?? 0, out texture);
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="texture"></param>
-    /// <param name="default"></param>
-    /// <returns></returns>
-    public static bool GetTexture(uint id, out IDalamudTextureWrap texture, uint @default = 0)
-        => ThreadLoadImageHandler.TryGetIconTextureWrap(id, true, out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(id, false, out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, true, out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(@default, false, out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(0, true, out texture);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="path"></param>
-    /// <param name="texture"></param>
-    /// <param name="loadingIcon"></param>
-    /// <returns></returns>
-    public static bool GetTexture(string path, out IDalamudTextureWrap texture, bool loadingIcon = false)
-        => ThreadLoadImageHandler.TryGetTextureWrap(path, out texture)
-        || loadingIcon && ThreadLoadImageHandler.TryGetTextureWrap("ui/uld/image2.tex", out texture)
-        || ThreadLoadImageHandler.TryGetIconTextureWrap(0, false, out texture); // loading pics.
-
-    private static readonly Dictionary<ActionID, uint> _actionIcons = [];
+    public static bool GetTexture(this ITexture text, out IDalamudTextureWrap texture) => ImageLoader.GetTexture(text?.IconID ?? 0, out texture);
 
     /// <summary>
     /// 
@@ -150,7 +101,7 @@ public static class IconSet
         }
         else
         {
-            return GetTexture(action?.IconID ?? 0, out texture, 0);
+            return ImageLoader.GetTexture(action?.IconID ?? 0, out texture, 0);
         }
     }
 
@@ -160,7 +111,7 @@ public static class IconSet
     /// <param name="actionID"></param>
     /// <param name="texture"></param>
     /// <returns></returns>
-    public static bool GetTexture(this ActionID actionID, out IDalamudTextureWrap texture) => XIVConfigUIMain.GetTextureAction((uint)actionID, out texture);
+    public static bool GetTexture(this ActionID actionID, out IDalamudTextureWrap texture) => ImageLoader.GetTextureAction((uint)actionID, out texture);
 
 
     private static readonly Dictionary<IconType, uint[]> _icons = new()

@@ -525,7 +525,7 @@ internal static partial class RaidTimeUpdater
                     windowMax = float.Parse(windowStrs.Last(), CultureInfo.InvariantCulture);
                 }
 
-                result.Add(new (time, name, type, item, lang, jumpTime, windowMin, windowMax));
+                result.Add(new(time, name, type, item, lang, jumpTime, windowMin, windowMax));
             }
             catch (Exception ex)
             {

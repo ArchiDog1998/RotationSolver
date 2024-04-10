@@ -70,10 +70,6 @@
 
 	  <ProjectReference Include="..\XIVDrawer\XIVDrawer\XIVDrawer.csproj" />
 
-	  <PackageReference Include="Svg" Version="3.4.7" >
-		  <PrivateAssets>all</PrivateAssets>
-	  </PackageReference>
-
       <None Include="..\Images\Logo.png">
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>

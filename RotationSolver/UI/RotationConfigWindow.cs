@@ -30,10 +30,6 @@ namespace RotationSolver.UI;
 
 public class RotationConfigWindow : ConfigWindow
 {
-    protected override string Punchline => UiString.ConfigWindow_About_Punchline.Local();
-
-    protected override string Description => UiString.ConfigWindow_About_Description.Local();
-
     public override SearchableCollection AllSearchable { get; } = new(Service.Config, new()
     {
         {nameof(Configs.AutoHeal), p => new AutoHealCheckBox(p, Service.Config) }
@@ -311,7 +307,7 @@ public class RotationConfigWindow : ConfigWindow
             });
         }
 
-        if (IconSet.GetTexture(rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.GetIcon(), out var texture))
+        if (ImageLoader.GetTexture(rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.GetIcon(), out var texture))
         {
             ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
 
@@ -342,7 +338,7 @@ public class RotationConfigWindow : ConfigWindow
                 {
                     var rAttr = r.GetCustomAttribute<RotationAttribute>()!;
 
-                    if (IconSet.GetTexture(rAttr.Type.GetIcon(), out var texture))
+                    if (ImageLoader.GetTexture(rAttr.Type.GetIcon(), out var texture))
                     {
                         ImGui.Image(texture.ImGuiHandle, Vector2.One * 20 * Scale);
                         if (ImGui.IsItemHovered())
@@ -390,7 +386,7 @@ public class RotationConfigWindow : ConfigWindow
 
         public sealed override bool GetIcon(out IDalamudTextureWrap texture)
         {
-            return IconSet.GetTexture(Icon, out texture);
+            return ImageLoader.GetTexture(Icon, out texture);
         }
     }
 
@@ -550,7 +546,7 @@ public class RotationConfigWindow : ConfigWindow
                 var icon = item.Icon;
                 if (string.IsNullOrEmpty(icon)) icon = "https://raw.githubusercontent.com/goatcorp/DalamudAssets/master/UIRes/defaultIcon.png";
 
-                if (IconSet.GetTexture(icon, out var texture))
+                if (ImageLoader.GetTexture(icon, out var texture))
                 {
                     if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, Vector2.One * iconSize))
                     {
@@ -602,12 +598,12 @@ public class RotationConfigWindow : ConfigWindow
     {
         var width = ImGui.GetWindowWidth();
 
-        if (IconSet.GetTexture("https://GitHub-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
+        if (ImageLoader.GetTexture("https://GitHub-readme-stats.vercel.app/api/pin/?username=ArchiDog1998&repo=RotationSolver&theme=dark", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
             Util.OpenLink($"https://GitHub.com/{Service.USERNAME}/{Service.REPO}");
         }
 
-        if (IconSet.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out icon) && ImGuiHelper.TextureButton(icon, width, width))
+        if (ImageLoader.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out icon) && ImGuiHelper.TextureButton(icon, width, width))
         {
             Util.OpenLink("https://crowdin.com/project/rotationsolver");
         }
@@ -681,7 +677,7 @@ public class RotationConfigWindow : ConfigWindow
 
             if (!string.IsNullOrEmpty(info.DonateLink))
             {
-                if (IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Ko-fi link"))
+                if (ImageLoader.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Ko-fi link"))
                 {
                     Util.OpenLink(info.DonateLink);
                 }
@@ -728,7 +724,7 @@ public class RotationConfigWindow : ConfigWindow
                         ImGui.TableNextRow();
                         ImGui.TableNextColumn();
 
-                        if (IconSet.GetTexture(attr.IconID, out var image)) ImGui.Image(image.ImGuiHandle, Vector2.One * DESC_SIZE * Scale);
+                        if (ImageLoader.GetTexture(attr.IconID, out var image)) ImGui.Image(image.ImGuiHandle, Vector2.One * DESC_SIZE * Scale);
 
                         ImGui.SameLine();
                         var isOnCommand = attr.IsOnCommand;
@@ -1011,7 +1007,7 @@ public class RotationConfigWindow : ConfigWindow
             if (!string.IsNullOrEmpty(youtubeLink))
             {
                 ImGui.NewLine();
-                if (IconSet.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Youtube Link"))
+                if (ImageLoader.GetTexture("https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg", out var icon) && ImGuiHelper.TextureButton(icon, wholeWidth, 250 * Scale, "Youtube Link"))
                 {
                     Util.OpenLink("https://www.youtube.com/watch?v=" + youtubeLink);
                 }
@@ -1072,7 +1068,7 @@ public class RotationConfigWindow : ConfigWindow
 
         internal static void DrawLinkDescription(LinkDescription link, float wholeWidth, bool drawQuestion)
         {
-            var hasTexture = IconSet.GetTexture(link.Url, out var texture);
+            var hasTexture = ImageLoader.GetTexture(link.Url, out var texture);
 
             if (hasTexture && ImGuiHelper.TextureButton(texture, wholeWidth, wholeWidth))
             {
@@ -1138,7 +1134,7 @@ public class RotationConfigWindow : ConfigWindow
                                 }
                                 ImGuiHelper.DrawActionOverlay(cursor, size, _activeAction == item ? 1 : 0);
 
-                                if (IconSet.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
+                                if (ImageLoader.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
                                 {
                                     var offset = new Vector2(1 / 12f, 1 / 6f);
                                     ImGui.SetCursorPos(cursor + new Vector2(0.6f, 0.7f) * size);
@@ -1477,7 +1473,7 @@ public class RotationConfigWindow : ConfigWindow
                         if (lastRole == role && lastRole != JobRole.None) ImGui.SameLine();
                         lastRole = role;
 
-                        if (IconSet.GetTexture(IconSet.GetJobIcon(jobs.Key, IconType.Framed), out var texture, 62574))
+                        if (ImageLoader.GetTexture(IconSet.GetJobIcon(jobs.Key, IconType.Framed), out var texture, 62574))
                             ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
 
                         ImguiTooltips.HoveredTooltip(string.Join('\n', jobs.Select(t => t.GetCustomAttribute<UIAttribute>()?.Name ?? t.Name)));
@@ -1491,7 +1487,7 @@ public class RotationConfigWindow : ConfigWindow
                     }
 
                     if (!string.IsNullOrEmpty(info.DonateLink)
-                        && IconSet.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon)
+                        && ImageLoader.GetTexture("https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png", out var icon)
                         && ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(1, (float)icon.Height / icon.Width) * MathF.Min(250, icon.Width) * Scale, info.FilePath ?? string.Empty))
                     {
                         Util.OpenLink(info.DonateLink);
@@ -1642,7 +1638,7 @@ public class RotationConfigWindow : ConfigWindow
                 var searchingKey = searching;
                 foreach (var status in allStatus.OrderByDescending(s => SearchableCollection.Similarity(s.Name + " " + s.RowId.ToString(), searchingKey)))
                 {
-                    if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
+                    if (ImageLoader.GetTexture(status.Icon, out var texture, notLoadId))
                     {
                         if (index++ % count != 0)
                         {
@@ -1790,7 +1786,7 @@ public class RotationConfigWindow : ConfigWindow
             var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * Scale + ImGui.GetStyle().ItemSpacing.X)));
             var index = 0;
 
-            if (IconSet.GetTexture(16220, out var text))
+            if (ImageLoader.GetTexture(16220, out var text))
             {
                 if (index++ % count != 0)
                 {
@@ -1813,7 +1809,7 @@ public class RotationConfigWindow : ConfigWindow
 
                 ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]));
 
-                if (IconSet.GetTexture(status.Icon, out var texture, notLoadId))
+                if (ImageLoader.GetTexture(status.Icon, out var texture, notLoadId))
                 {
                     if (index++ % count != 0)
                     {
@@ -1959,7 +1955,7 @@ public class RotationConfigWindow : ConfigWindow
                 }
                 var icon = DataCenter.ContentFinder?.ContentType?.Value?.Icon ?? 23;
                 if (icon == 0) icon = 23;
-                var getIcon = IconSet.GetTexture(icon, out var texture);
+                var getIcon = ImageLoader.GetTexture(icon, out var texture);
                 ImGuiHelper.DrawItemMiddle(() =>
                 {
                     if (getIcon)
@@ -2837,16 +2833,16 @@ public class RotationConfigWindow : ConfigWindow
 
         link = string.IsNullOrEmpty(link) ? $"https://GitHub.com/{userName}/{repository}" : link;
 
-        if (IconSet.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
+        if (ImageLoader.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
             && (center ? ImGuiHelper.TextureButton(icon, wholeWidth, icon.Width, id)
             : ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height), id)))
         {
             Util.OpenLink(link);
         }
 
-        var hasDate = IconSet.GetTexture($"https://img.shields.io/github/release-date/{userName}/{repository}?style=for-the-badge", out var releaseDate);
+        var hasDate = ImageLoader.GetTexture($"https://img.shields.io/github/release-date/{userName}/{repository}?style=for-the-badge", out var releaseDate);
 
-        var hasCount = IconSet.GetTexture($"https://img.shields.io/github/downloads/{userName}/{repository}/latest/total?style=for-the-badge&label=", out var downloadCount);
+        var hasCount = ImageLoader.GetTexture($"https://img.shields.io/github/downloads/{userName}/{repository}/latest/total?style=for-the-badge&label=", out var downloadCount);
 
         var style = ImGui.GetStyle();
         var spacing = style.ItemSpacing;
@@ -2896,7 +2892,7 @@ public class RotationConfigWindow : ConfigWindow
     {
         var badge = content?.Image;
         if (badge != null && badge.Value != 0
-            && IconSet.GetTexture(badge.Value, out var badgeTexture))
+            && ImageLoader.GetTexture(badge.Value, out var badgeTexture))
         {
             var wholeWidth = ImGui.GetWindowWidth();
             var size = new Vector2(badgeTexture.Width, badgeTexture.Height) * MathF.Min(1, MathF.Min(480, wholeWidth) / badgeTexture.Width);

@@ -4,6 +4,7 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
+using XIVConfigUI;
 using XIVDrawer;
 using XIVDrawer.Element3D;
 using XIVDrawer.ElementSpecial;
@@ -127,7 +128,7 @@ internal static class PainterManager
 
                 if (DataCenter.State && Service.Config.ShowStateIcon)
                 {
-                    if (IconSet.GetTexture(61516, out var texture))
+                    if (ImageLoader.GetTexture(61516, out var texture))
                     {
                         _stateImage.Image = texture;
                         _stateImage.Size = Service.Config.StateIconSize;
@@ -227,7 +228,7 @@ internal static class PainterManager
             return;
         }
 
-        if (!IconSet.GetTexture(61510, out var hostileIcon)) return;
+        if (!ImageLoader.GetTexture(61510, out var hostileIcon)) return;
 
         for (int i = 0; i < Math.Min(TargetsDrawings.Length, DataCenter.AllHostileTargets.Length); i++)
         {

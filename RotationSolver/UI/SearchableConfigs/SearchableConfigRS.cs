@@ -2,7 +2,6 @@
 using Dalamud.Interface.Utility;
 using ECommons.ExcelServices;
 using RotationSolver.Data;
-using System.IO;
 using XIVConfigUI;
 
 namespace RotationSolver.UI.SearchableConfigs;
@@ -50,17 +49,10 @@ internal class SearchableConfigRS : SearchableConfig
     {
         ImGui.SameLine();
 
-        if (IconSet.GetTexture(IconSet.GetJobIcon(job, IconType.Framed), out var texture))
+        if (ImageLoader.GetTexture(IconSet.GetJobIcon(job, IconType.Framed), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
             ImguiTooltips.HoveredTooltip(UiString.JobConfigTip.Local());
         }
     }
-
-    public override bool GetTexture(string path, out IDalamudTextureWrap texture, bool loadingIcon = false)
-    => IconSet.GetTexture(path, out texture, loadingIcon);
-
-    public override bool GetTexture(uint id, out IDalamudTextureWrap texture, uint @default = 0)
-    => IconSet.GetTexture(id, out texture, @default);
-
 }
