@@ -1,5 +1,4 @@
-﻿using Dalamud.Interface.Internal;
-using Dalamud.Interface.Utility;
+﻿using Dalamud.Interface.Utility;
 using ECommons.ExcelServices;
 using RotationSolver.Data;
 using XIVConfigUI;

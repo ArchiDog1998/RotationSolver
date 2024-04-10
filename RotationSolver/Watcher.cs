@@ -62,6 +62,7 @@ public static class Watcher
 #if DEBUG
             Svc.Log.Debug(effect.ToString());
 #endif
+            DataCenter.RightNowDutyRotation?.OnMapEffect(effect);
         });
     }
 
@@ -98,8 +99,8 @@ public static class Watcher
 #if DEBUG
                 Svc.Log.Debug(effect.ToString());
 #endif
+                DataCenter.RightNowDutyRotation?.OnActorVfxNew(effect);
             }
-
 
         }
         catch (Exception e)
@@ -136,6 +137,7 @@ public static class Watcher
 #if DEBUG
             Svc.Log.Debug(effect.ToString());
 #endif
+            DataCenter.RightNowDutyRotation?.OnObjectEffect(effect);
         }
         catch (Exception e)
         {
@@ -176,6 +178,15 @@ public static class Watcher
         if (battle is PlayerCharacter) return;
         if (battle.SubKind == 9) return; //Friend!
         if (Svc.Objects.SearchById(battle.ObjectId) is PlayerCharacter) return;
+
+        try
+        {
+            DataCenter.RightNowDutyRotation?.OnActionFromEnemy(set);
+        }
+        catch(Exception e)
+        {
+            Svc.Log.Warning(e, "Failed to act on the duty rotation about acion on enemy.");
+        }
 
         var damageRatio = set.TargetEffects
             .Where(e => e.TargetID == Player.Object.ObjectId)

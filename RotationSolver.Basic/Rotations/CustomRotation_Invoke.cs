@@ -14,6 +14,7 @@ partial class CustomRotation
         try
         {
             UpdateInfo();
+            DataCenter.RightNowDutyRotation?.UpdateInfo();
 
             IBaseAction.ActionPreview = true;
             UpdateActions(Role);
