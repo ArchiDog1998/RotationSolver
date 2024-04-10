@@ -140,11 +140,6 @@ internal class SocialUpdater
     private static readonly ChatEntityComparer _comparer = new();
     private static async void SayHelloToUsers()
     {
-        if (!Service.Config.SayHelloToAll)
-        {
-            return;
-        }
-
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
             .Where(c => c.ObjectId != Player.Object.ObjectId)
             .Select(player => (player, player.EncryptString()))
@@ -164,12 +159,9 @@ internal class SocialUpdater
             .Where(p => DataCenter.ContributorsHash.Contains(p.Item2))
             .Select(p => new ContributorChatEntity(p.player)), _comparer);
 
-        if (Service.Config.SayHelloToUsers)
-        {
-            entities = entities.Union(players
-                .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
-                .Select(p => new UserChatEntity(p.player)), _comparer);
-        }
+        entities = entities.Union(players
+            .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
+            .Select(p => new UserChatEntity(p.player)), _comparer);
 
         foreach (var entity in entities)
         {
@@ -179,7 +171,11 @@ internal class SocialUpdater
             }
 
             Svc.Targets.Target = entity.player;
-            ECommons.Automation.Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
+
+            if (Service.Config.SayHelloToAll)
+            {
+                ECommons.Automation.Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
+            }
 
             Svc.Chat.Print(new Dalamud.Game.Text.XivChatEntry()
             {

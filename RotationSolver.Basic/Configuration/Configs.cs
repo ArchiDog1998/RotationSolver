@@ -399,13 +399,9 @@ internal partial class Configs : IPluginConfiguration
         (int)UiString.ConfigWindow_Auto_ActionCondition, Section = 1)]
     public ConditionBoolean HealWhenNothingTodo { get; private set; } = new(true, nameof(HealWhenNothingTodo));
 
-    [UI("Say hello to all other users of Rotation Solver.",
-        (int)UiString.ConfigWindow_Basic_Others)]
+    [UI("Say hello to all other users of Rotation Solver.", (int)UiString.ConfigWindow_Basic_Others, 
+        Description = "If you want to be greeted by other users, please DM ArchiTed with your Hash!", Section = 1)]
     public ConditionBoolean SayHelloToAll { get; private set; } = new(true, nameof(SayHelloToAll));
-
-    [UI("Say hello to the users of Rotation Solver.", Description = "It can only be disabled for users, not authors and contributors.\nIf you want to be greeted by other users, please DM ArchiTed with your Hash!",
-        Parent =nameof(SayHelloToAll))]
-    public ConditionBoolean SayHelloToUsers { get; private set; } = new(true, nameof(SayHelloToUsers));
 
     [UI("Say hello only one time to the same user.",
         Parent = nameof(SayHelloToAll))]
