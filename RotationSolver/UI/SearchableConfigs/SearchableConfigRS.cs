@@ -1,12 +1,22 @@
 ﻿using Dalamud.Interface.Utility;
 using ECommons.ExcelServices;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using XIVConfigUI;
+using XIVConfigUI.SearchableConfigs;
 
 namespace RotationSolver.UI.SearchableConfigs;
 internal class SearchableConfigRS : SearchableConfig
 {
-    public override bool ShowTooltip => Service.Config.ShowTooltips;
+    public override Dictionary<string, Func<PropertyInfo, Searchable>> PropertyNameCreaters { get; } = new()
+    {
+        {nameof(Configs.AutoHeal), p => new AutoHealCheckBox(p, Service.Config) }
+    };
+
+    public override Dictionary<Type, Func<PropertyInfo, Searchable>> PropertyTypeCreaters { get; } = new()
+    {
+        {typeof(ConditionBoolean), p => new CheckBoxSearchCondition(p, Service.Config) }
+    };
 
     public override bool IsPropertyValid(PropertyInfo property)
     {

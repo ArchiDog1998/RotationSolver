@@ -69,8 +69,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
         PainterManager.Init();
-        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + "Config",
-            new SearchableConfigRS());
+        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + "Config");
+        XIVConfigUIMain.ShowTooltip = () => Service.Config.ShowTooltips;
+
         LocalManager.LanguageChanged += ChangeUITranslation;
         MajorUpdater.Enable();
         Watcher.Enable();
@@ -120,6 +121,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     public async void Dispose()
     {
+        DataCenter.RightNowDutyRotation?.Dispose();
+        DataCenter.RightNowRotation?.Dispose();
+
         RSCommands.Disable();
         Watcher.Disable();
 

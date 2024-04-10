@@ -1,11 +1,59 @@
-﻿using ECommons.DalamudServices;
+﻿using Dalamud.Interface.Utility;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
+using XIVConfigUI;
+using XIVConfigUI.Attributes;
+using XIVConfigUI.SearchableConfigs;
 
 namespace RotationSolver.Basic.Rotations;
 
+[Command("Rotation")]
 partial class CustomRotation : ICustomRotation
 {
+    private class RotationSearchableConfig : SearchableConfig //TODO : better info.
+    {
+        public override bool IsPropertyValid(PropertyInfo property)
+        {
+            var attr = property.GetCustomAttribute<RotationConfigAttribute>()?.Type ?? CombatType.Both;
+
+            switch(attr)
+            {
+                case CombatType.PvP when !DataCenter.IsPvP:
+                case CombatType.PvE when DataCenter.IsPvP:
+                    return false;
+            }
+            return true;
+        }
+
+        public override void PreNameDrawing(PropertyInfo property)
+        {
+            var attr = property.GetCustomAttribute<RotationConfigAttribute>()?.Type ?? CombatType.Both;
+
+            if (ImageLoader.GetTexture(attr.GetIcon(), out var texture))
+            {
+                ImGui.SameLine();
+                ImGui.Image(texture.ImGuiHandle, Vector2.One * 20 * ImGuiHelpers.GlobalScale);
+
+                //TODO, tooltip drawing...
+            }
+        }
+
+        public override void PropertyInvalidTooltip(PropertyInfo property)
+        {
+            //TODO, tooltip drawing...
+        }
+
+        public override void AfterConfigChange(Searchable item)
+        {
+            if (item._property.GetValue(item._obj)?.ToString() is string s)
+            {
+                Service.Config.RotationConfigurations[item._property.Name] = s;
+            }
+            base.AfterConfigChange(item);
+        }
+    }
+
     private Job? _job = null;
 
     /// <inheritdoc/>
@@ -50,10 +98,10 @@ partial class CustomRotation : ICustomRotation
     /// <inheritdoc/>
     public uint IconID { get; }
 
-    private readonly IRotationConfigSet _configs;
+    private readonly SearchableCollection _configs;
 
     /// <inheritdoc/>
-    IRotationConfigSet ICustomRotation.Configs => _configs;
+    SearchableCollection ICustomRotation.Configs => _configs;
 
     /// <inheritdoc/>
     public static Vector3? MoveTarget { get; internal set; }
@@ -135,7 +183,18 @@ partial class CustomRotation : ICustomRotation
     private protected CustomRotation()
     {
         IconID = IconSet.GetJobIcon(this.Job);
-        _configs = new RotationConfigSet(this);
+        
+        _configs = new SearchableCollection(this, new RotationSearchableConfig());
+
+        //Load from config.
+        var savedConfigs = Service.Config.RotationConfigurations;
+        foreach (var item in _configs)
+        {
+            if (savedConfigs.TryGetValue(item._property.Name, out var value))
+            {
+                item.OnCommand(value);
+            }
+        }
     }
 
     /// <inheritdoc/>
@@ -158,4 +217,11 @@ partial class CustomRotation : ICustomRotation
     /// The things on territory changed.
     /// </summary>
     public virtual void OnTerritoryChanged() { }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        //TODO: save the config.
+    }
 }

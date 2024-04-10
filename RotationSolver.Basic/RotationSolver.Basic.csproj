@@ -53,7 +53,6 @@
 	  <Using Include="RotationSolver.Basic" />
 	  <Using Include="RotationSolver.Basic.Actions" />
 	  <Using Include="RotationSolver.Basic.Attributes" />
-	  <Using Include="RotationSolver.Basic.Configuration.RotationConfig" />
 	  <Using Include="RotationSolver.Basic.Data" />
 	  <Using Include="RotationSolver.Basic.Helpers" />
 	  <Using Include="RotationSolver.Basic.Rotations" />
@@ -62,7 +61,7 @@
 	  <Using Include="Dalamud.Interface" />
 	  <Using Include="ImGuiNET" />
 	  <Using Include="Newtonsoft.Json" />
-	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj"/>
+	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
 	  
 	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj" OutputItemType="Analyzer" ExcludeAssets="All" ReferenceOutputAssembly="false" />
 

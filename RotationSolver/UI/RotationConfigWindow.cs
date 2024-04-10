@@ -30,15 +30,14 @@ namespace RotationSolver.UI;
 
 public class RotationConfigWindow : ConfigWindow
 {
-    public override SearchableCollection AllSearchable { get; } = new(Service.Config, new()
-    {
-        {nameof(Configs.AutoHeal), p => new AutoHealCheckBox(p, Service.Config) }
-    }, new()
-    {
-        {typeof(ConditionBoolean), p => new CheckBoxSearchCondition(p, Service.Config) }
-    });
+    public override SearchableCollection AllSearchable { get; } = new(Service.Config,
+            new SearchableConfigRS());
 
     public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
+
+    protected override string Kofi => "B0B0IN5DX";
+
+    public override IEnumerable<Searchable> Searchables => [.. base.Searchables, ..DataCenter.RightNowRotation?.Configs];
 
     public RotationConfigWindow()
         : base("")
@@ -806,103 +805,7 @@ public class RotationConfigWindow : ConfigWindow
 
             if (set.Any()) ImGui.Separator();
 
-            foreach (var config in set.Configs)
-            {
-                if (DataCenter.IsPvP)
-                {
-                    if (!config.Type.HasFlag(CombatType.PvP)) continue;
-                }
-                else
-                {
-                    if (!config.Type.HasFlag(CombatType.PvE)) continue;
-                }
-
-                var key = rotation.GetType().FullName ?? rotation.GetType().Name + "." + config.Name;
-                var name = $"##{config.GetHashCode()}_{(key + ".Name").Local(config.Name)}";
-                string command = ToCommandStr(OtherCommandType.Rotations, config.Name, config.DefaultValue);
-                void Reset() => config.Value = config.DefaultValue;
-
-                ImGuiHelper.PrepareGroup(key, command, Reset);
-
-                if (config is RotationConfigCombo c)
-                {
-                    var val = int.Parse(c.Value);
-                    ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.Items[val]).X + 50 * Scale);
-                    var openCombo = ImGui.BeginCombo(name, c.Items[val]);
-                    ImGuiHelper.ReactPopup(key, command, Reset);
-                    if (openCombo)
-                    {
-                        for (int comboIndex = 0; comboIndex < c.Items.Length; comboIndex++)
-                        {
-                            if (ImGui.Selectable(c.Items[comboIndex]))
-                            {
-                                config.Value = comboIndex.ToString();
-                            }
-                        }
-                        ImGui.EndCombo();
-                    }
-                }
-                else if (config is RotationConfigBoolean b)
-                {
-                    bool val = bool.Parse(config.Value);
-
-                    if (ImGui.Checkbox(name, ref val))
-                    {
-                        config.Value = val.ToString();
-                    }
-                    ImGuiHelper.ReactPopup(key, command, Reset);
-                }
-                else if (config is RotationConfigFloat f)
-                {
-                    float val = float.Parse(config.Value);
-                    ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
-
-                    if (f.UnitType == ConfigUnitType.Percent)
-                    {
-                        if (ImGui.SliderFloat(name, ref val, f.Min, f.Max, $"{val * 100:F1}{f.UnitType.ToSymbol()}"))
-                        {
-                            config.Value = val.ToString();
-                        }
-                    }
-                    else
-                    {
-                        if (ImGui.DragFloat(name, ref val, f.Speed, f.Min, f.Max, $"{val:F2}{f.UnitType.ToSymbol()}"))
-                        {
-                            config.Value = val.ToString();
-                        }
-                    }
-                    ImguiTooltips.HoveredTooltip(f.UnitType.Local());
-
-                    ImGuiHelper.ReactPopup(key, command, Reset);
-                }
-                else if (config is RotationConfigString s)
-                {
-                    string val = config.Value;
-
-                    ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
-                    if (ImGui.InputTextWithHint(name, config.DisplayName, ref val, 128))
-                    {
-                        config.Value = val;
-                    }
-                    ImGuiHelper.ReactPopup(key, command, Reset);
-                    continue;
-                }
-                else if (config is RotationConfigInt i)
-                {
-                    int val = int.Parse(config.Value);
-                    ImGui.SetNextItemWidth(Scale * Searchable.DRAG_WIDTH);
-                    if (ImGui.DragInt(name, ref val, i.Speed, i.Min, i.Max))
-                    {
-                        config.Value = val.ToString();
-                    }
-                    ImGuiHelper.ReactPopup(key, command, Reset);
-                }
-                else continue;
-
-                ImGui.SameLine();
-                ImGui.TextWrapped((key + ".DisplayName").Local(config.DisplayName));
-                ImGuiHelper.ReactPopup(key, command, Reset, false);
-            }
+            set.DrawItems(0);
         }
 
         private static void DrawRotationRating()
@@ -1636,7 +1539,7 @@ public class RotationConfigWindow : ConfigWindow
                 var index = 0;
 
                 var searchingKey = searching;
-                foreach (var status in allStatus.OrderByDescending(s => SearchableCollection.Similarity(s.Name + " " + s.RowId.ToString(), searchingKey)))
+                foreach (var status in allStatus.OrderByDescending(s => Searchable.Similarity(s.Name + " " + s.RowId.ToString(), searchingKey)))
                 {
                     if (ImageLoader.GetTexture(status.Icon, out var texture, notLoadId))
                     {
@@ -1801,7 +1704,7 @@ public class RotationConfigWindow : ConfigWindow
 
             foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
                 .Where(a => a != null)
-                .OrderByDescending(s => SearchableCollection.Similarity(s!.Name + " " + s.RowId.ToString(), _statusSearching)))
+                .OrderByDescending(s => Searchable.Similarity(s!.Name + " " + s.RowId.ToString(), _statusSearching)))
             {
                 void Delete() => removeId = status.RowId;
 
@@ -1888,7 +1791,7 @@ public class RotationConfigWindow : ConfigWindow
 
             foreach (var action in actions.Select(a => Service.GetSheet<GAction>().GetRow(a))
                 .Where(a => a != null)
-                .OrderByDescending(s => SearchableCollection.Similarity(s!.Name + " " + s.RowId.ToString(), _actionSearching)))
+                .OrderByDescending(s => Searchable.Similarity(s!.Name + " " + s.RowId.ToString(), _actionSearching)))
             {
                 void Reset() => removeId = action.RowId;
 
@@ -1918,7 +1821,7 @@ public class RotationConfigWindow : ConfigWindow
                 using var child = ImRaii.Child("Rotation Solver Add action", new Vector2(-1, 400 * Scale));
                 if (child)
                 {
-                    foreach (var action in AllActions.OrderByDescending(s => SearchableCollection.Similarity(s.Name + " " + s.RowId.ToString(), _actionSearching)))
+                    foreach (var action in AllActions.OrderByDescending(s => Searchable.Similarity(s.Name + " " + s.RowId.ToString(), _actionSearching)))
                     {
                         var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
                         if (ImGui.IsItemHovered())

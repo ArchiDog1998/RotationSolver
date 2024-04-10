@@ -504,6 +504,7 @@ internal static class RotationUpdater
             var rotation = GetChosenRotation(group);
             if (rotation != DataCenter.RightNowRotation?.GetType())
             {
+                DataCenter.RightNowRotation?.Dispose();
                 var instance = GetRotation(rotation);
                 instance?.OnTerritoryChanged();
                 DataCenter.RightNowRotation = instance;
@@ -514,6 +515,7 @@ internal static class RotationUpdater
         }
 
         CustomRotation.MoveTarget = null;
+        DataCenter.RightNowRotation?.Dispose();
         DataCenter.RightNowRotation = null;
         RightRotationActions = [];
         DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;

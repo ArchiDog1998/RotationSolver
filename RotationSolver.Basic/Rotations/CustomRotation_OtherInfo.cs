@@ -290,8 +290,6 @@ partial class CustomRotation
     protected static float WeaponElapsed => DataCenter.WeaponElapsed;
     #endregion
 
-
-
     /// <summary>
     /// 
     /// </summary>

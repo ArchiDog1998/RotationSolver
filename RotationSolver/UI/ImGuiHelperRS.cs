@@ -7,6 +7,7 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using XIVConfigUI;
+using XIVConfigUI.SearchableConfigs;
 
 namespace RotationSolver.UI;
 
@@ -109,7 +110,7 @@ internal static class ImGuiHelperRS
         var searchingKey = searchTxt;
 
         var members = items.Select(m => (m, getSearchName(m)))
-            .OrderByDescending(s => SearchableCollection.Similarity(s.Item2, searchingKey));
+            .OrderByDescending(s => Searchable.Similarity(s.Item2, searchingKey));
 
         ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
         ImGui.InputTextWithHint("##Searching the member", searchingHint, ref searchTxt, 128);

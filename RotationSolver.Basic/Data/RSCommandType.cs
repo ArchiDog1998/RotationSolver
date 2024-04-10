@@ -122,11 +122,6 @@ public enum OtherCommandType : byte
     /// <summary>
     /// 
     /// </summary>
-    Rotations,
-
-    /// <summary>
-    /// 
-    /// </summary>
     DoActions,
 
     /// <summary>

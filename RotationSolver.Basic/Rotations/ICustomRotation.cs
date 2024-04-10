@@ -1,13 +1,14 @@
 ﻿using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Traits;
+using XIVConfigUI;
 
 namespace RotationSolver.Basic.Rotations;
 
 /// <summary>
 /// The custom rotation.
 /// </summary>
-public interface ICustomRotation : ITexture
+public interface ICustomRotation : ITexture, IDisposable
 {
     /// <summary>
     /// The average count of not recommend members using.
@@ -54,7 +55,7 @@ public interface ICustomRotation : ITexture
     /// </summary>
     JobRole Role { get; }
 
-    internal IRotationConfigSet Configs { get; }
+    internal SearchableCollection Configs { get; }
 
     /// <summary>
     /// The type of medicine.

@@ -11,9 +11,4 @@ public class RotationConfigAttribute(CombatType type) : Attribute
     /// The type of this config.
     /// </summary>
     public CombatType Type => type;
-
-    /// <summary>
-    /// The display name for this config.
-    /// </summary>
-    public string Name { get; set; } = string.Empty;
 }
