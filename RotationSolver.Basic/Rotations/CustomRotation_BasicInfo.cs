@@ -13,6 +13,8 @@ partial class CustomRotation : ICustomRotation
 {
     private class RotationSearchableConfig : SearchableConfig //TODO : better info.
     {
+        public override bool GeneratDefault => false;
+
         public override bool IsPropertyValid(PropertyInfo property)
         {
             var attr = property.GetCustomAttribute<RotationConfigAttribute>()?.Type ?? CombatType.Both;
@@ -190,6 +192,7 @@ partial class CustomRotation : ICustomRotation
         var savedConfigs = Service.Config.RotationConfigurations;
         foreach (var item in _configs)
         {
+            item._default = item._property.GetValue(this)!;
             if (savedConfigs.TryGetValue(item._property.Name, out var value))
             {
                 item.OnCommand(value);
@@ -222,6 +225,6 @@ partial class CustomRotation : ICustomRotation
     public void Dispose()
     {
         GC.SuppressFinalize(this);
-        //TODO: save the config.
+        _configs.Dispose();
     }
 }

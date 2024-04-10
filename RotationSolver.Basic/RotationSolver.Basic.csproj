@@ -61,7 +61,9 @@
 	  <Using Include="Dalamud.Interface" />
 	  <Using Include="ImGuiNET" />
 	  <Using Include="Newtonsoft.Json" />
-	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+	  <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" >
+		  <PrivateAssets>all</PrivateAssets>
+	  </ProjectReference>
 	  
 	  <ProjectReference Include="..\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj" OutputItemType="Analyzer" ExcludeAssets="All" ReferenceOutputAssembly="false" />
 

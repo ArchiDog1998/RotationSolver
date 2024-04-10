@@ -37,7 +37,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
-        ThreadLoadImageHandler.TryGetIconTextureWrap(0, true, out _);
+        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + "Config");
+        XIVConfigUIMain.ShowTooltip = () => Service.Config.ShowTooltips;
 
         _dis.Add(new Service());
         try
@@ -69,8 +70,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
         PainterManager.Init();
-        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + "Config");
-        XIVConfigUIMain.ShowTooltip = () => Service.Config.ShowTooltips;
 
         LocalManager.LanguageChanged += ChangeUITranslation;
         MajorUpdater.Enable();

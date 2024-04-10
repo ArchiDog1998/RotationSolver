@@ -34,9 +34,6 @@ internal enum UiString
     [Description("You're tiring RS out, give it a break!")]
     ConfigWindow_About_Clicking500k,
 
-    [Description("It is designed for GENERAL COMBAT, not for savage or ultimate. Use it carefully.")]
-    ConfigWindow_About_Warning,
-
     [Description("Rotation Solver helped you by clicking actions {0:N0} times.")]
     ConfigWindow_About_ClickingCount,
 

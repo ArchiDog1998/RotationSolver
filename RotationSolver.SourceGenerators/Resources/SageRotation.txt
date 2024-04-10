@@ -10,7 +10,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 /// </summary>
 public abstract partial class SageRotation : global::RotationSolver.Basic.Rotations.CustomRotation
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DosisPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DosisPvE, false);
@@ -23,13 +23,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="DosisPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyDosisPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DosisPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction DosisPvE => _DosisPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DiagnosisPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DiagnosisPvE, false);
@@ -42,13 +42,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="DiagnosisPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyDiagnosisPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DiagnosisPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction DiagnosisPvE => _DiagnosisPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _KardiaPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.KardiaPvE, false);
@@ -61,13 +61,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="KardiaPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyKardiaPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.KardiaPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction KardiaPvE => _KardiaPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PrognosisPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PrognosisPvE, false);
@@ -80,13 +80,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PrognosisPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPrognosisPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PrognosisPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PrognosisPvE => _PrognosisPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _EgeiroPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.EgeiroPvE, false);
@@ -99,13 +99,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="EgeiroPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyEgeiroPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.EgeiroPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction EgeiroPvE => _EgeiroPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PhysisPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PhysisPvE, false);
@@ -118,13 +118,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PhysisPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPhysisPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PhysisPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PhysisPvE => _PhysisPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PhlegmaPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PhlegmaPvE, false);
@@ -137,13 +137,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PhlegmaPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPhlegmaPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PhlegmaPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PhlegmaPvE => _PhlegmaPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _EukrasiaPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.EukrasiaPvE, false);
@@ -156,13 +156,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="EukrasiaPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyEukrasiaPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.EukrasiaPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction EukrasiaPvE => _EukrasiaPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _EukrasianDiagnosisPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.EukrasianDiagnosisPvE, false);
@@ -175,13 +175,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="EukrasianDiagnosisPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyEukrasianDiagnosisPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.EukrasianDiagnosisPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction EukrasianDiagnosisPvE => _EukrasianDiagnosisPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _EukrasianPrognosisPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.EukrasianPrognosisPvE, false);
@@ -194,13 +194,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="EukrasianPrognosisPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyEukrasianPrognosisPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.EukrasianPrognosisPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction EukrasianPrognosisPvE => _EukrasianPrognosisPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _EukrasianDosisPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.EukrasianDosisPvE, false);
@@ -213,13 +213,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="EukrasianDosisPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyEukrasianDosisPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.EukrasianDosisPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction EukrasianDosisPvE => _EukrasianDosisPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _SoteriaPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.SoteriaPvE, false);
@@ -232,13 +232,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="SoteriaPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifySoteriaPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.SoteriaPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction SoteriaPvE => _SoteriaPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _IcarusPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.IcarusPvE, false);
@@ -251,13 +251,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="IcarusPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyIcarusPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.IcarusPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction IcarusPvE => _IcarusPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DruocholePvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DruocholePvE, false);
@@ -270,13 +270,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="DruocholePvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyDruocholePvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DruocholePvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction DruocholePvE => _DruocholePvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DyskrasiaPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DyskrasiaPvE, false);
@@ -289,13 +289,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="DyskrasiaPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyDyskrasiaPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DyskrasiaPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction DyskrasiaPvE => _DyskrasiaPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _KeracholePvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.KeracholePvE, false);
@@ -308,13 +308,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="KeracholePvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyKeracholePvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.KeracholePvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction KeracholePvE => _KeracholePvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _IxocholePvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.IxocholePvE, false);
@@ -327,13 +327,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="IxocholePvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyIxocholePvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.IxocholePvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction IxocholePvE => _IxocholePvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _ZoePvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.ZoePvE, false);
@@ -346,13 +346,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="ZoePvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyZoePvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.ZoePvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction ZoePvE => _ZoePvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PepsisPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PepsisPvE, false);
@@ -365,13 +365,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PepsisPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPepsisPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PepsisPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PepsisPvE => _PepsisPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PhysisIiPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PhysisIiPvE, false);
@@ -384,13 +384,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PhysisIiPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPhysisIiPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PhysisIiPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PhysisIiPvE => _PhysisIiPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _TaurocholePvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.TaurocholePvE, false);
@@ -403,13 +403,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="TaurocholePvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyTaurocholePvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.TaurocholePvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction TaurocholePvE => _TaurocholePvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _ToxikonPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.ToxikonPvE, false);
@@ -422,13 +422,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="ToxikonPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyToxikonPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.ToxikonPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction ToxikonPvE => _ToxikonPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _HaimaPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.HaimaPvE, false);
@@ -441,13 +441,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="HaimaPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyHaimaPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.HaimaPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction HaimaPvE => _HaimaPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DosisIiPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DosisIiPvE, false);
@@ -460,13 +460,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="DosisIiPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyDosisIiPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DosisIiPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction DosisIiPvE => _DosisIiPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PhlegmaIiPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PhlegmaIiPvE, false);
@@ -479,13 +479,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PhlegmaIiPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPhlegmaIiPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PhlegmaIiPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PhlegmaIiPvE => _PhlegmaIiPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _EukrasianDosisIiPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.EukrasianDosisIiPvE, false);
@@ -498,13 +498,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="EukrasianDosisIiPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyEukrasianDosisIiPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.EukrasianDosisIiPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction EukrasianDosisIiPvE => _EukrasianDosisIiPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _RhizomataPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.RhizomataPvE, false);
@@ -517,13 +517,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="RhizomataPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyRhizomataPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.RhizomataPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction RhizomataPvE => _RhizomataPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _HolosPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.HolosPvE, false);
@@ -536,13 +536,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="HolosPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyHolosPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.HolosPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction HolosPvE => _HolosPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PanhaimaPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PanhaimaPvE, false);
@@ -555,13 +555,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PanhaimaPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPanhaimaPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PanhaimaPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PanhaimaPvE => _PanhaimaPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DosisIiiPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DosisIiiPvE, false);
@@ -574,13 +574,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="DosisIiiPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyDosisIiiPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DosisIiiPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction DosisIiiPvE => _DosisIiiPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PhlegmaIiiPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PhlegmaIiiPvE, false);
@@ -593,13 +593,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PhlegmaIiiPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPhlegmaIiiPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PhlegmaIiiPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PhlegmaIiiPvE => _PhlegmaIiiPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _EukrasianDosisIiiPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.EukrasianDosisIiiPvE, false);
@@ -612,13 +612,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="EukrasianDosisIiiPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyEukrasianDosisIiiPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.EukrasianDosisIiiPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction EukrasianDosisIiiPvE => _EukrasianDosisIiiPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DyskrasiaIiPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DyskrasiaIiPvE, false);
@@ -631,13 +631,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="DyskrasiaIiPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyDyskrasiaIiPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DyskrasiaIiPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction DyskrasiaIiPvE => _DyskrasiaIiPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _ToxikonIiPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.ToxikonIiPvE, false);
@@ -650,13 +650,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="ToxikonIiPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyToxikonIiPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.ToxikonIiPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction ToxikonIiPvE => _ToxikonIiPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _KrasisPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.KrasisPvE, false);
@@ -669,13 +669,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="KrasisPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyKrasisPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.KrasisPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction KrasisPvE => _KrasisPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PneumaPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PneumaPvE, false);
@@ -688,13 +688,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PneumaPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPneumaPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PneumaPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PneumaPvE => _PneumaPvECreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _DosisIiiPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.DosisIiiPvP, false);
@@ -707,13 +707,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="DosisIiiPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyDosisIiiPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.DosisIiiPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction DosisIiiPvP => _DosisIiiPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _EukrasianDosisIiiPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.EukrasianDosisIiiPvP, false);
@@ -726,13 +726,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="EukrasianDosisIiiPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyEukrasianDosisIiiPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.EukrasianDosisIiiPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction EukrasianDosisIiiPvP => _EukrasianDosisIiiPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _EukrasiaPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.EukrasiaPvP, false);
@@ -745,13 +745,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="EukrasiaPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyEukrasiaPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.EukrasiaPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction EukrasiaPvP => _EukrasiaPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PhlegmaIiiPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PhlegmaIiiPvP, false);
@@ -764,13 +764,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PhlegmaIiiPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPhlegmaIiiPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PhlegmaIiiPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PhlegmaIiiPvP => _PhlegmaIiiPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _PneumaPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.PneumaPvP, false);
@@ -783,13 +783,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="PneumaPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyPneumaPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.PneumaPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction PneumaPvP => _PneumaPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _IcarusPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.IcarusPvP, false);
@@ -802,13 +802,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="IcarusPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyIcarusPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.IcarusPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction IcarusPvP => _IcarusPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _ToxikonPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.ToxikonPvP, false);
@@ -821,13 +821,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="ToxikonPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyToxikonPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.ToxikonPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction ToxikonPvP => _ToxikonPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _ToxikonIiPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.ToxikonIiPvP, false);
@@ -840,13 +840,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="ToxikonIiPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyToxikonIiPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.ToxikonIiPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction ToxikonIiPvP => _ToxikonIiPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _KardiaPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.KardiaPvP, false);
@@ -859,13 +859,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="KardiaPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyKardiaPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.KardiaPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction KardiaPvP => _KardiaPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _MesotesPvPCreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.MesotesPvP, false);
@@ -878,13 +878,13 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="MesotesPvP"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyMesotesPvP(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.MesotesPvP"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction MesotesPvP => _MesotesPvPCreator.Value;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _MesotesPvP_29267Creator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.MesotesPvP_29267, false);
@@ -897,10 +897,10 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="MesotesPvP_29267"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyMesotesPvP_29267(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.MesotesPvP_29267"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     public global::RotationSolver.Basic.Actions.IBaseAction MesotesPvP_29267 => _MesotesPvP_29267Creator.Value;
     /// <summary>
 /// <see href="https://garlandtools.org/db/#action/50368"><strong>Maim and Mend</strong></see> (SGE) [368]
@@ -966,16 +966,16 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
 /// </summary>
     public static global::RotationSolver.Basic.Traits.IBaseTrait PhysisMasteryTrait { get; } = new global::RotationSolver.Basic.Traits.BaseTrait(510U);
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.5")]
     private global::RotationSolver.Basic.Traits.IBaseTrait[]? _AllTraits = null;
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.5")]
     /// <inheritdoc/>
     public override global::RotationSolver.Basic.Traits.IBaseTrait[] AllTraits => _AllTraits ??= [MaimAndMendTrait, MaimAndMendIiTrait, AddersgallTrait, SomanouticOathTrait, SomanouticOathIiTrait, AdderstingTrait, OffensiveMagicMasteryTrait, EnhancedKeracholeTrait, OffensiveMagicMasteryIiTrait, EnhancedHealingMagicTrait, EnhancedZoeTrait, PhysisMasteryTrait, ..base.AllTraits];
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.5")]
     static global::Dalamud.Game.ClientState.JobGauge.Types.SGEGauge JobGauge => global::ECommons.DalamudServices.Svc.Gauges.Get<global::Dalamud.Game.ClientState.JobGauge.Types.SGEGauge>();
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _HealingWindPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.HealingWindPvE, false);
@@ -988,17 +988,17 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="HealingWindPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyHealingWindPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.HealingWindPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private global::RotationSolver.Basic.Actions.IBaseAction HealingWindPvE => _HealingWindPvECreator.Value;
 
     /// <inheritdoc cref="HealingWindPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.5")]
     private sealed protected override global::RotationSolver.Basic.Actions.IBaseAction LimitBreak1 => HealingWindPvE;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _BreathOfTheEarthPvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.BreathOfTheEarthPvE, false);
@@ -1011,17 +1011,17 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="BreathOfTheEarthPvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyBreathOfTheEarthPvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.BreathOfTheEarthPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private global::RotationSolver.Basic.Actions.IBaseAction BreathOfTheEarthPvE => _BreathOfTheEarthPvECreator.Value;
 
     /// <inheritdoc cref="BreathOfTheEarthPvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.5")]
     private sealed protected override global::RotationSolver.Basic.Actions.IBaseAction LimitBreak2 => BreathOfTheEarthPvE;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private readonly global::System.Lazy<global::RotationSolver.Basic.Actions.IBaseAction> _TechneMakrePvECreator = new(() =>
     {
         global::RotationSolver.Basic.Actions.IBaseAction action = new global::RotationSolver.Basic.Actions.BaseAction(global::RotationSolver.Basic.Data.ActionID.TechneMakrePvE, false);
@@ -1034,19 +1034,19 @@ public abstract partial class SageRotation : global::RotationSolver.Basic.Rotati
     /// <summary>
 /// Modify <inheritdoc cref="TechneMakrePvE"/>
 /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     static partial void ModifyTechneMakrePvE(ref global::RotationSolver.Basic.Actions.ActionSetting setting);
     /// <inheritdoc cref="global::RotationSolver.Basic.Data.ActionID.TechneMakrePvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.SyntaxHelper", "4.2.6.5")]
     private global::RotationSolver.Basic.Actions.IBaseAction TechneMakrePvE => _TechneMakrePvECreator.Value;
 
     /// <inheritdoc cref="TechneMakrePvE"/>
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.5")]
     private sealed protected override global::RotationSolver.Basic.Actions.IBaseAction LimitBreak3 => TechneMakrePvE;
 
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.5")]
     private global::RotationSolver.Basic.Actions.IBaseAction[]? _AllBaseActions = null;
-    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("RotationSolver.GameData.CodeGenerator", "4.2.6.5")]
     /// <inheritdoc/>
     public override global::RotationSolver.Basic.Actions.IBaseAction[] AllBaseActions => _AllBaseActions ??= [DosisPvE, DiagnosisPvE, KardiaPvE, PrognosisPvE, EgeiroPvE, PhysisPvE, PhlegmaPvE, EukrasiaPvE, EukrasianDiagnosisPvE, EukrasianPrognosisPvE, EukrasianDosisPvE, SoteriaPvE, IcarusPvE, DruocholePvE, DyskrasiaPvE, KeracholePvE, IxocholePvE, ZoePvE, PepsisPvE, PhysisIiPvE, TaurocholePvE, ToxikonPvE, HaimaPvE, DosisIiPvE, PhlegmaIiPvE, EukrasianDosisIiPvE, RhizomataPvE, HolosPvE, PanhaimaPvE, DosisIiiPvE, PhlegmaIiiPvE, EukrasianDosisIiiPvE, DyskrasiaIiPvE, ToxikonIiPvE, KrasisPvE, PneumaPvE, DosisIiiPvP, EukrasianDosisIiiPvP, EukrasiaPvP, PhlegmaIiiPvP, PneumaPvP, IcarusPvP, ToxikonPvP, ToxikonIiPvP, KardiaPvP, MesotesPvP, LimitBreak1, LimitBreak2, LimitBreak3, ..base.AllBaseActions];
 }

@@ -400,12 +400,6 @@ public class RotationConfigWindow : ConfigWindow
     {
         base.DrawAbout();
 
-        ImGui.Spacing();
-        using (var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudOrange)))
-        {
-            ImGui.TextWrapped(UiString.ConfigWindow_About_Warning.Local());
-        }
-
         var width = ImGui.GetWindowWidth();
         //if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
         //{

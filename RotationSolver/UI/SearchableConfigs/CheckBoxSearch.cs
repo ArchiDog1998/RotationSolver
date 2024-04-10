@@ -107,7 +107,7 @@ internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params
 
     public override void OnCommand(string value)
     {
-        if(!bool.TryParse(value, out var b)) 
+        if (!bool.TryParse(value, out var b)) 
         {
             b = !Condition.Value;
         }

@@ -198,6 +198,11 @@ partial class CustomRotation
 
     #region Others
     /// <summary>
+    /// Log
+    /// </summary>
+    public static IPluginLog Log => Svc.Log;
+
+    /// <summary>
     /// True for On, false for off.
     /// </summary>
     [Description("The state of auto. True for on.")]
