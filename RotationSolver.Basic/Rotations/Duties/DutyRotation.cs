@@ -367,7 +367,9 @@ partial class DutyRotation : IDisposable
     /// </summary>
     [Description("Time from next ability to next GCD")]
     public static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
+    #endregion
 
+    #region Duty
     /// <summary>
     /// The map effects.
     /// </summary>
@@ -382,9 +384,7 @@ partial class DutyRotation : IDisposable
     /// The vfx effects.
     /// </summary>
     public static IEnumerable<VfxNewData> VfxNewData => DataCenter.VfxNewData.Reverse();
-    #endregion
 
-    #region Duty
     /// <summary>
     /// The timeline Items.
     /// </summary>

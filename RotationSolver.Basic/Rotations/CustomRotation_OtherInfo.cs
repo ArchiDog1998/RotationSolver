@@ -247,10 +247,6 @@ partial class CustomRotation
     /// </summary>
     [Description("Time from next ability to next GCD")]
     public static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
-
-    public static IEnumerable<MapEffectData> MapEffects => DataCenter.MapEffects.Reverse();
-    public static IEnumerable<ObjectEffectData> ObjectEffects => DataCenter.ObjectEffects.Reverse();
-    public static IEnumerable<VfxNewData> VfxNewData => DataCenter.VfxNewData.Reverse();
     #endregion
 
     /// <summary>
