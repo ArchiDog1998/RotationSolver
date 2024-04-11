@@ -355,5 +355,9 @@
   "RotationSolver.Data.UiString.ConfigWindow_Events_ShareMacro": "Is Shared",
   "RotationSolver.Data.UiString.ConfigWindow_Events_DutyEnd": "Duty End: ",
   "RotationSolver.Basic.Configuration.ConfigsDescription.PoslockModifier": "RB is for gamepad player",
-  "RotationSolver.Basic.Configuration.ConfigsName.InDebug": "Debug Mode."
+  "RotationSolver.Basic.Configuration.ConfigsName.InDebug": "Debug Mode.",
+  "RotationSolver.Data.UiString.SpecialCommandType_Smart": "Auto Target ",
+  "RotationSolver.Data.UiString.SpecialCommandType_EndSpecial": "End Special",
+  "RotationSolver.Data.UiString.SpecialCommandType_Off": "Off",
+  "RotationSolver.Data.UiString.SpecialCommandType_Cancel": "Cancel"
 }

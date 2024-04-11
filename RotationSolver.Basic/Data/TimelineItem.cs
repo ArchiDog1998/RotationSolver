@@ -4,23 +4,55 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace RotationSolver.Basic.Data;
-internal enum TimelineType : byte
+
+/// <summary>
+/// The timeline type.
+/// </summary>
+public enum TimelineType : byte
 {
+    /// <summary/>
     Unknown,
+
+    /// <summary/>
     InCombat,
+
+    /// <summary/>
     GameLog,
+
+    /// <summary/>
     Ability,
+
+    /// <summary/>
     StartsUsing,
+
+    /// <summary/>
     SystemLogMessage,
+
+    /// <summary/>
     ActorControl,
+
+    /// <summary/>
     AddedCombatant,
 }
 
-internal class TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
+/// <summary>
+/// The timeline item on cactbot.
+/// </summary>
+public class TimelineItem
 {
     private uint[]? ids = null;
+    private readonly RaidLangs _langs;
+    private readonly float? _jumpTime;
+    private readonly JObject? _object;
 
-    public uint LastActionID { get; set; }
+    /// <summary>
+    /// The last used action id.
+    /// </summary>
+    public uint LastActionID { get; internal set; }
+
+    /// <summary>
+    /// The action Ids in this item.
+    /// </summary>
     public uint[] ActionIDs => ids ??= GetActionIds();
     private uint[] GetActionIds()
     {
@@ -76,34 +108,66 @@ internal class TimelineItem(float time, string name, TimelineType type, JObject?
                 _ => "",
             };
 
-            if (langs.langs.TryGetValue(key, out var lang)) return lang;
+            if (_langs.langs.TryGetValue(key, out var lang)) return lang;
             return new RaidLangs.Lang();
         }
     }
-    public TimelineType Type => type;
 
-    public float Time => time;
+    /// <summary>
+    /// The type of this timeline.
+    /// </summary>
+    public TimelineType Type { get; }
 
-    public float WindowMin => windowMin;
-    public float WindowMax => windowMax;
-    public JObject? Object => obj;
+    /// <summary>
+    /// The time it set.
+    /// </summary>
+    public float Time { get; }
 
+    /// <summary>
+    /// The window value min.
+    /// </summary>
+    public float WindowMin { get; }
+
+    /// <summary>
+    /// The window value max.
+    /// </summary>
+    public float WindowMax { get; }
+
+    private readonly string _name;
+    /// <summary>
+    /// The display name.
+    /// </summary>
     public string Name
     {
         get
         {
-            if (Lang.replaceText.TryGetValue(name, out var lang)) return lang;
-            return name;
+            if (Lang.replaceText.TryGetValue(_name, out var lang)) return lang;
+            return _name;
         }
     }
 
+    /// <summary>
+    /// Is now in the window.
+    /// </summary>
     public bool IsInWindow => DataCenter.RaidTimeRaw >= Time - WindowMin && DataCenter.RaidTimeRaw <= Time + WindowMax;
 
-    public bool IsShown => Name is not "--Reset--" and not "--sync--";
+    internal bool IsShown => Name is not "--Reset--" and not "--sync--";
 
+    /// <summary>
+    /// Is property matched.
+    /// </summary>
+    /// <param name="propertyName"></param>
+    /// <param name="matchValue"></param>
+    /// <returns></returns>
     public bool this[string propertyName, uint matchValue]
         => this[propertyName, matchValue.ToString("X")];
 
+    /// <summary>
+    /// Is property matched.
+    /// </summary>
+    /// <param name="propertyName"></param>
+    /// <param name="matchString"></param>
+    /// <returns></returns>
     public bool this[string propertyName, string matchString]
     {
         get
@@ -125,13 +189,18 @@ internal class TimelineItem(float time, string name, TimelineType type, JObject?
         }
     }
 
+    /// <summary>
+    /// Get the properties.
+    /// </summary>
+    /// <param name="propertyName"></param>
+    /// <returns></returns>
     public string[] this[string propertyName]
     {
         get
         {
             string[] strings = [];
 
-            var strRelay = Object?[propertyName];
+            var strRelay = _object?[propertyName];
 
             if (strRelay == null) return [];
 
@@ -161,7 +230,19 @@ internal class TimelineItem(float time, string name, TimelineType type, JObject?
         }
     }
 
-    public TimelineItem(float time, string name, string type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
+    internal TimelineItem(float time, string name, TimelineType type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
+    {
+        _name = name;
+        Type = type;
+        Time = time;
+        WindowMax = windowMax;
+        WindowMin = windowMin;
+        _object = obj;
+        _langs = langs;
+        _jumpTime = jumpTime;
+    }
+
+    internal TimelineItem(float time, string name, string type, JObject? obj, RaidLangs langs, float? jumpTime, float windowMin, float windowMax)
         : this(time, name, GetTypeFromName(type), obj, langs, jumpTime, windowMin, windowMax)
     {
         
@@ -204,7 +285,7 @@ internal class TimelineItem(float time, string name, TimelineType type, JObject?
         }
     }
 
-    public void UpdateRaidTimeOffset()
+    internal void UpdateRaidTimeOffset()
     {
         if (Name == "--Reset--")
         {
@@ -219,17 +300,18 @@ internal class TimelineItem(float time, string name, TimelineType type, JObject?
             var timeOffset = Time - DataCenter.RaidTimeRaw;
             Svc.Log.Debug($"Set the {nameof(DataCenter.RaidTimeRaw)} to {Time}, added {timeOffset}s");
 #endif
-            DataCenter.RaidTimeRaw = jumpTime ?? Time;
+            DataCenter.RaidTimeRaw = _jumpTime ?? Time;
         }
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"""
             IsShown: {IsShown},
-            Time: {Time}, JumpTime: {jumpTime ?? -1},
+            Time: {Time}, JumpTime: {_jumpTime ?? -1},
             Name: {Name}, Type: {Type},
-            Window: {windowMin}, {windowMax},
+            Window: {WindowMin}, {WindowMax},
             Ids: {string.Join(", ", this["id"])}
             """;
     }

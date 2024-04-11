@@ -30,7 +30,7 @@ namespace RotationSolver.UI;
 
 public class RotationConfigWindow : ConfigWindow
 {
-    public override SearchableCollection AllSearchable { get; } = new(Service.Config,
+    public SearchableCollection AllSearchable { get; } = new(Service.Config,
             new SearchableConfigRS());
 
     public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
@@ -1272,6 +1272,8 @@ public class RotationConfigWindow : ConfigWindow
 
         public override void Draw(ConfigWindow window)
         {
+            var rsWindow = (RotationConfigWindow)window;
+
             var width = ImGui.GetWindowWidth();
 
             var text = UiString.ConfigWindow_Rotations_Download.Local();
@@ -1300,7 +1302,7 @@ public class RotationConfigWindow : ConfigWindow
 
             _rotationsHeader ??= new(new()
             {
-                {  () => UiString.ConfigWindow_Rotations_Settings.Local(), () => DrawRotationsSettings(window)},
+                {  () => UiString.ConfigWindow_Rotations_Settings.Local(), () => DrawRotationsSettings(rsWindow)},
                 {  () => UiString.ConfigWindow_Rotations_Loaded.Local(), DrawRotationsLoaded},
                 {  () => UiString.ConfigWindow_Rotations_GitHub.Local(), DrawRotationsGitHub},
                 {  () => UiString.ConfigWindow_Rotations_Libraries.Local(), DrawRotationsLibraries},
@@ -1309,7 +1311,7 @@ public class RotationConfigWindow : ConfigWindow
             _rotationsHeader?.Draw();
         }
 
-        private static void DrawRotationsSettings(ConfigWindow window)
+        private static void DrawRotationsSettings(RotationConfigWindow window)
         {
             window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Rotations_Settings);
         }
@@ -1564,13 +1566,15 @@ public class RotationConfigWindow : ConfigWindow
 
         public override void Draw(ConfigWindow window)
         {
+            var rsWindow = (RotationConfigWindow)window;
+
             ImGui.TextWrapped(UiString.ConfigWindow_List_Description.Local());
 
             _idsHeader ??= new(new()
             {
                 { () => UiString.ConfigWindow_List_Statuses.Local(), DrawListStatuses},
                 { () => Service.Config.UseDefenseAbility ? UiString.ConfigWindow_List_Actions.Local() : string.Empty,
-                    () => DrawListActions(window)},
+                    () => DrawListActions(rsWindow)},
                 {() =>  UiString.ConfigWindow_List_Territories.Local(), DrawListTerritories},
             });
             _idsHeader?.Draw();
@@ -1726,7 +1730,7 @@ public class RotationConfigWindow : ConfigWindow
             }
         }
 
-        private static void DrawListActions(ConfigWindow window)
+        private static void DrawListActions(RotationConfigWindow window)
         {
             ImGui.SetNextItemWidth(ImGui.GetWindowWidth());
             ImGui.InputTextWithHint("##Searching the action", UiString.ConfigWindow_List_ActionNameOrId.Local(), ref _actionSearching, 128);
@@ -2026,12 +2030,14 @@ public class RotationConfigWindow : ConfigWindow
         private CollapsingHeaderGroup? _baseHeader;
         public override void Draw(ConfigWindow window)
         {
+            var rsWindow = (RotationConfigWindow)window;
+
             _baseHeader ??= new(new()
             {
-                { () => UiString.ConfigWindow_Basic_Timer.Local(), () => DrawBasicTimer(window) },
-                { () => UiString.ConfigWindow_Basic_AutoSwitch.Local(), () => DrawBasicAutoSwitch(window) },
+                { () => UiString.ConfigWindow_Basic_Timer.Local(), () => DrawBasicTimer(rsWindow) },
+                { () => UiString.ConfigWindow_Basic_AutoSwitch.Local(), () => DrawBasicAutoSwitch(rsWindow) },
                 { () => UiString.ConfigWindow_Basic_NamedConditions.Local(), DrawBasicNamedConditions },
-                { () => UiString.ConfigWindow_Basic_Others.Local(), () => DrawBasicOthers(window) },
+                { () => UiString.ConfigWindow_Basic_Others.Local(), () => DrawBasicOthers(rsWindow) },
             });
             _baseHeader?.Draw();
         }
@@ -2092,7 +2098,7 @@ public class RotationConfigWindow : ConfigWindow
                 time += clickTime;
             }
         }
-        private static void DrawBasicTimer(ConfigWindow window)
+        private static void DrawBasicTimer(RotationConfigWindow window)
         {
             var gcdTime = DataCenter.WeaponTotal;
             if (gcdTime == 0) gcdTime = 2.5f;
@@ -2203,7 +2209,7 @@ public class RotationConfigWindow : ConfigWindow
         {
             HeaderSize = FontSize.Forth,
         };
-        private static void DrawBasicAutoSwitch(ConfigWindow window)
+        private static void DrawBasicAutoSwitch(RotationConfigWindow window)
         {
             window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Basic_AutoSwitch);
             _autoSwitch?.Draw();
@@ -2259,7 +2265,7 @@ public class RotationConfigWindow : ConfigWindow
             }
         }
 
-        private static void DrawBasicOthers(ConfigWindow window)
+        private static void DrawBasicOthers(RotationConfigWindow window)
         {
             window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Basic_Others);
 
@@ -2298,7 +2304,8 @@ public class RotationConfigWindow : ConfigWindow
 
         public override void Draw(ConfigWindow window)
         {
-            _UIHeader ??= window.AllSearchable.GetGroups<UiString>([
+            var rsWindow = (RotationConfigWindow)window;
+            _UIHeader ??= rsWindow.AllSearchable.GetGroups<UiString>([
                     UiString.ConfigWindow_UI_Information,
                     UiString.ConfigWindow_UI_Overlay,
                     UiString.ConfigWindow_UI_Windows,
@@ -2316,6 +2323,8 @@ public class RotationConfigWindow : ConfigWindow
 
         public override void Draw(ConfigWindow window)
         {
+            var rsWindow = (RotationConfigWindow)window;
+
             ImGui.TextWrapped(UiString.ConfigWindow_Auto_Description.Local());
             _autoHeader ??= new(new()
             {
@@ -2325,10 +2334,10 @@ public class RotationConfigWindow : ConfigWindow
                             .Local());
                         ImGui.Separator();
 
-                        window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Auto_ActionUsage);
+                        rsWindow.AllSearchable.DrawItems((int)UiString.ConfigWindow_Auto_ActionUsage);
                     }
                 },
-                {  () => UiString.ConfigWindow_Auto_ActionCondition.Local(), () => DrawAutoActionCondition(window) },
+                {  () => UiString.ConfigWindow_Auto_ActionCondition.Local(), () => DrawAutoActionCondition(rsWindow) },
                 {  () => UiString.ConfigWindow_Auto_StateCondition.Local(), () => _autoState?.Draw() },
             });
 
@@ -2396,7 +2405,7 @@ public class RotationConfigWindow : ConfigWindow
             HeaderSize = FontSize.Forth,
         };
 
-        private static void DrawAutoActionCondition(ConfigWindow window)
+        private static void DrawAutoActionCondition(RotationConfigWindow window)
         {
             ImGui.TextWrapped(UiString.ConfigWindow_Auto_ActionCondition_Description.Local());
             ImGui.Separator();
@@ -2414,15 +2423,17 @@ public class RotationConfigWindow : ConfigWindow
 
         public override void Draw(ConfigWindow window)
         {
+            var rsWindow = (RotationConfigWindow)window;
+
             _targetHeader ??= new(new()
             {
-                {  () =>UiString.ConfigWindow_Target_Config.Local(), () => DrawTargetConfig(window) },
+                {  () =>UiString.ConfigWindow_Target_Config.Local(), () => DrawTargetConfig(rsWindow) },
                 {  () =>UiString.ConfigWindow_List_Hostile.Local(), DrawTargetHostile },
             });
             _targetHeader?.Draw();
         }
 
-        private static void DrawTargetConfig(ConfigWindow window)
+        private static void DrawTargetConfig(RotationConfigWindow window)
         {
             window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Target_Config);
         }
@@ -2501,12 +2512,14 @@ public class RotationConfigWindow : ConfigWindow
 
         public override void Draw(ConfigWindow window)
         {
+            var rsWindow = (RotationConfigWindow)window;
+
             _extraHeader ??= new(new()
             {
                 {   () =>UiString.ConfigWindow_EventItem.Local(), DrawEventTab },
                 {
                     () =>UiString.ConfigWindow_Extra_Others.Local(),
-                    () => window.AllSearchable.DrawItems((int)UiString.ConfigWindow_Extra_Others)
+                    () => rsWindow.AllSearchable.DrawItems((int)UiString.ConfigWindow_Extra_Others)
                 },
             });
             ImGui.TextWrapped(UiString.ConfigWindow_Extra_Description.Local());
@@ -2559,7 +2572,9 @@ public class RotationConfigWindow : ConfigWindow
         public override uint Icon => 5;
         public override void Draw(ConfigWindow window)
         {
-            window.AllSearchable.DrawItems(-1);
+            var rsWindow = (RotationConfigWindow)window;
+
+            rsWindow.AllSearchable.DrawItems(-1);
 
             if (!Player.Available || !Service.Config.InDebug) return;
 

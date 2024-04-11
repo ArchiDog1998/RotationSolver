@@ -1,15 +1,17 @@
-﻿using Dalamud.Game.ClientState.Conditions;
-using Dalamud;
+﻿using Dalamud;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using ECommons.DalamudServices;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Dalamud.Plugin.Services;
+using ECommons.DalamudServices;
 using ECommons.Hooks.ActionEffectTypes;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 
 namespace RotationSolver.Basic.Rotations.Duties;
 
 partial class DutyRotation : IDisposable
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
     #region GCD
     public virtual bool EmergencyGCD(out IAction? act)
     {
@@ -124,6 +126,7 @@ partial class DutyRotation : IDisposable
     }
 
     #endregion
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     #region Player
     /// <summary>
@@ -365,17 +368,44 @@ partial class DutyRotation : IDisposable
     [Description("Time from next ability to next GCD")]
     public static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
 
+    /// <summary>
+    /// The map effects.
+    /// </summary>
     public static IEnumerable<MapEffectData> MapEffects => DataCenter.MapEffects.Reverse();
+
+    /// <summary>
+    /// The object Effects.
+    /// </summary>
     public static IEnumerable<ObjectEffectData> ObjectEffects => DataCenter.ObjectEffects.Reverse();
+
+    /// <summary>
+    /// The vfx effects.
+    /// </summary>
     public static IEnumerable<VfxNewData> VfxNewData => DataCenter.VfxNewData.Reverse();
     #endregion
 
+    #region Duty
+    /// <summary>
+    /// The timeline Items.
+    /// </summary>
+    public static TimelineItem[] TimelineItems => DataCenter.TimelineItems;
+
+    /// <summary>
+    /// The Raid Time.
+    /// </summary>
+    public static float RaidTimeRaw => DataCenter.RaidTimeRaw;
+    #endregion
+
     #region Drawing
+    /// <summary>
+    /// When anyone casting this, what should do.
+    /// </summary>
     protected virtual Dictionary<(float time, uint actionId), Action> CastingAction { get; } = [];
     private readonly Dictionary<(float time, uint actionId), DateTime> _usedTime = [];
     internal void UpdateInfo()
     {
         UpdateCasting();
+        UpdateDrawing();
     }
 
     private void UpdateCasting()
@@ -410,34 +440,72 @@ partial class DutyRotation : IDisposable
         }
     }
 
+    /// <summary>
+    /// Update every frame for drawings
+    /// </summary>
+    public virtual void UpdateDrawing()
+    {
+
+    }
+
+    /// <summary>
+    /// When a new actor showned.
+    /// </summary>
+    /// <param name="actor"></param>
     public virtual void OnNewActor(GameObject actor)
     {
 
     }
 
+    /// <summary>
+    /// When a new actor effect is created.
+    /// </summary>
+    /// <param name="data"></param>
     public virtual void OnActorVfxNew(in VfxNewData data)
     {
 
     }
 
+    /// <summary>
+    /// When on the object effect
+    /// </summary>
+    /// <param name="data"></param>
     public virtual void OnObjectEffect(in ObjectEffectData data)
     {
 
     }
 
+    /// <summary>
+    /// When on the map effect.
+    /// </summary>
+    /// <param name="data"></param>
     public virtual void OnMapEffect(in MapEffectData data)
     {
 
     }
 
+    /// <summary>
+    /// Any actions from the enemy to us.
+    /// </summary>
+    /// <param name="data"></param>
     public virtual void OnActionFromEnemy(in ActionEffectSet data)
+    {
+
+    }
+
+    /// <summary>
+    /// To destroy all drawing.
+    /// </summary>
+    public virtual void DestroyAllDrawing()
     {
 
     }
     #endregion
 
+    /// <inheritdoc/>
     public void Dispose()
     {
+        DestroyAllDrawing();
         GC.SuppressFinalize(this);
     }
 
