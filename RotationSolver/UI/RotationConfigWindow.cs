@@ -36,6 +36,7 @@ public class RotationConfigWindow : ConfigWindow
     public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
 
     protected override string Kofi => "B0B0IN5DX";
+    protected override string Crowdin => "rotationsolver";
 
     public override IEnumerable<Searchable> Searchables => [.. base.Searchables, ..DataCenter.RightNowRotation?.Configs];
 
@@ -590,11 +591,6 @@ public class RotationConfigWindow : ConfigWindow
     private static void DrawAboutLinks()
     {
         var width = ImGui.GetWindowWidth();
-
-        if (ImageLoader.GetTexture("https://badges.crowdin.net/badge/light/crowdin-on-dark.png", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
-        {
-            Util.OpenLink("https://crowdin.com/project/rotationsolver");
-        }
 
         var text = "My story about FFXIV and Rotation Solver\n - ArchiTed / Youtube";
         var textWidth = ImGuiHelpers.GetButtonSize(text).X;

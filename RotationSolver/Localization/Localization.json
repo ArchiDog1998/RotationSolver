@@ -357,5 +357,16 @@
   "RotationSolver.Data.UiString.SpecialCommandType_Smart": "Auto Target ",
   "RotationSolver.Data.UiString.SpecialCommandType_EndSpecial": "End Special",
   "RotationSolver.Data.UiString.SpecialCommandType_Off": "Off",
-  "RotationSolver.Data.UiString.SpecialCommandType_Cancel": "Cancel"
+  "RotationSolver.Data.UiString.SpecialCommandType_Cancel": "Cancel",
+  "DescriptionAboutCommand": "Open config window.",
+  "RotationSolver.Data.UiString.Timeline_OpenLink": "Open the timeline link",
+  "RotationSolver.Data.UiString.AddTimelineButton": "Add a timeline item.",
+  "RotationSolver.Basic.Configuration.Timeline.ActionTimelineItem": "Action Timeline",
+  "RotationSolver.Basic.Configuration.Timeline.StateTimelineItem": "State Timeline",
+  "RotationSolver.Basic.Configuration.Timeline.DrawingTimeline": "Drawing Timeline",
+  "RotationSolver.Basic.Configuration.Timeline.MacroTimelineItem": "Macro Time line",
+  "RotationSolver.Basic.Configuration.Timeline.MoveTimelineItem": "Move Time line",
+  "RotationSolver.Data.UiString.TimelineExecute": "Execute",
+  "RotationSolver.Data.UiString.TimelineItemCondition": "Click to toggle the timeline item condition.",
+  "RotationSolver.Data.UiString.TimelineItemTime": "The time before this action."
 }

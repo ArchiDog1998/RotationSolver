@@ -32,8 +32,7 @@ internal static class SpeechHelper
         {
             _stop?.Invoke(_manager, []);
 
-            _say?.Invoke(_textToTalk, [null, new SeString(new TextPayload("Rotation Solver")), XivChatType.SystemMessage,
-                    text, 2]);
+            _say?.Invoke(_textToTalk, [null, new SeString(new TextPayload("Rotation Solver")), text, 2]);
         }
         catch (Exception ex)
         {
