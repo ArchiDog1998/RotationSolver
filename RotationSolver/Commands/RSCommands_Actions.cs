@@ -4,7 +4,6 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
-using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
 using XIVConfigUI;

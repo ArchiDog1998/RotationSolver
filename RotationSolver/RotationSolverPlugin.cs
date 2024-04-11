@@ -5,7 +5,6 @@ using Dalamud.Plugin;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
@@ -14,7 +13,6 @@ using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.UI;
-using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 
@@ -37,7 +35,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
-        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND + "Config");
+        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND, "Open config window.", RSCommands.DoOneCommand);
         XIVConfigUIMain.ShowTooltip = () => Service.Config.ShowTooltips;
 
         _dis.Add(new Service());
@@ -71,11 +69,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         PainterManager.Init();
 
-        LocalManager.LanguageChanged += ChangeUITranslation;
         MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();
-        ChangeUITranslation();
 
         OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
         {
@@ -109,21 +105,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         windowSystem.Draw();
     }
 
-    internal static void ChangeUITranslation()
-    {
-        _rotationConfigWindow!.WindowName = UiString.ConfigWindowHeader.Local()
-            + typeof(RotationConfigWindow).Assembly.GetName().Version?.ToString() ?? "?.?.?";
-
-        RSCommands.Disable();
-        RSCommands.Enable();
-    }
-
     public async void Dispose()
     {
         DataCenter.RightNowDutyRotation?.Dispose();
         DataCenter.RightNowRotation?.Dispose();
 
-        RSCommands.Disable();
         Watcher.Disable();
 
         Svc.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
@@ -134,8 +120,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             item.Dispose();
         }
         _dis?.Clear();
-
-        LocalManager.LanguageChanged -= ChangeUITranslation;
 
         MajorUpdater.Dispose();
         PainterManager.Dispose();

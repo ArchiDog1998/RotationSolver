@@ -616,12 +616,6 @@ internal enum UiString
     [Description("Off")]
     SpecialCommandType_Off,
 
-    [Description("Open config window.")]
-    Commands_Rotation,
-
-    [Description("Rotation Solver Settings v")]
-    ConfigWindowHeader,
-
     [Description("This config is job specific")]
     JobConfigTip,
 

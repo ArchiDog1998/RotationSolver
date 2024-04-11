@@ -8,7 +8,6 @@ using XIVConfigUI.Attributes;
 
 namespace RotationSolver.Basic.Configuration;
 
-[Command("Settings")]
 internal partial class Configs : IPluginConfiguration
 {
     public int Version { get; set; } = 8;

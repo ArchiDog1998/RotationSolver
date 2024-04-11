@@ -13,7 +13,6 @@ using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.Data;
 using RotationSolver.Updaters;
 using XIVConfigUI;
-using XIVConfigUI.Attributes;
 using XIVDrawer;
 using XIVDrawer.Vfx;
 
@@ -110,7 +109,7 @@ internal static class TimelineDrawer
         ImGui.SameLine();
         ImGui.Text(UiString.TimelineRaidTime.Local() + ": " + TimeSpan.FromSeconds(DataCenter.RaidTimeRaw).ToString("hh\\:mm\\:ss\\.f"));
 
-        RotationSolverPlugin._rotationConfigWindow?.AllSearchable.DrawItems((int)UiString.TimelineRaidTime);
+        RotationSolverPlugin._rotationConfigWindow?.Collection.DrawItems((int)UiString.TimelineRaidTime);
 
         using var table = ImRaii.Table("Rotation Solver List Timeline", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)

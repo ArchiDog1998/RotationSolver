@@ -1,27 +1,8 @@
-﻿using Dalamud.Game.Command;
-using ECommons.DalamudServices;
-using RotationSolver.Data;
-using XIVConfigUI;
-
-namespace RotationSolver.Commands;
+﻿namespace RotationSolver.Commands;
 
 public static partial class RSCommands
 {
-    internal static void Enable()
-        => Svc.Commands.AddHandler(Service.COMMAND, new CommandInfo(OnCommand)
-        {
-            HelpMessage = UiString.Commands_Rotation.Local(),
-            ShowInHelp = true,
-        });
-
-    internal static void Disable() => Svc.Commands.RemoveHandler(Service.COMMAND);
-
-    private static void OnCommand(string command, string arguments)
-    {
-        DoOneCommand(arguments);
-    }
-
-    private static void DoOneCommand(string str)
+    internal static void DoOneCommand(string str)
     {
         if (TryGetOneEnum<StateCommandType>(str, out var stateType))
         {
