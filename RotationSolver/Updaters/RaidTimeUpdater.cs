@@ -9,6 +9,7 @@ using RotationSolver.UI;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using XIVConfigUI;
 
 namespace RotationSolver.Updaters;
 internal static partial class RaidTimeUpdater
@@ -101,7 +102,7 @@ internal static partial class RaidTimeUpdater
         try
         {
             using var client = new HttpClient();
-            var str = client.GetStringAsync($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/Timelines/{id}.json").Result;
+            var str = client.GetStringAsync($"https://raw.githubusercontent.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/main/Resources/Timelines/{id}.json").Result;
 
             Service.Config.Timeline[id] = JsonConvert.DeserializeObject<Dictionary<float, List<BaseTimelineItem>>>(str,
                     new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())!;

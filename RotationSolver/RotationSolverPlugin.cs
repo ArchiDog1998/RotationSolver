@@ -35,7 +35,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
-        XIVConfigUIMain.Init(pluginInterface, Service.USERNAME, Service.REPO, Service.COMMAND, "Open config window.", RSCommands.DoOneCommand);
+        XIVConfigUIMain.Init(pluginInterface, Service.COMMAND, "Open config window.", RSCommands.DoOneCommand);
         XIVConfigUIMain.ShowTooltip = () => Service.Config.ShowTooltips;
 
         _dis.Add(new Service());

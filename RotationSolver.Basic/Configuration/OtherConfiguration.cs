@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using XIVConfigUI;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -175,7 +176,7 @@ internal class OtherConfiguration
             try
             {
                 using var client = new HttpClient();
-                var str = client.GetStringAsync($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/{name}.json").Result;
+                var str = client.GetStringAsync($"https://raw.githubusercontent.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/main/Resources/{name}.json").Result;
 
                 File.WriteAllText(path, str);
                 value = JsonConvert.DeserializeObject<T>(str, new JsonSerializerSettings()

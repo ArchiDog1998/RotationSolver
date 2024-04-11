@@ -180,7 +180,7 @@ public class RotationConfigWindow : ConfigWindow
             {
                 if (!File.Exists(file))
                 {
-                    var url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/{name}.png";
+                    var url = $"https://raw.githubusercontent.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/main/Images/{name}.png";
 
                     using var client = new HttpClient();
                     var stream = await client.GetStreamAsync(url);
@@ -1285,7 +1285,7 @@ public class RotationConfigWindow : ConfigWindow
             {
                 if (ImGui.Button(text))
                 {
-                    Util.OpenLink($"https://github.com/{Service.USERNAME}/{Service.REPO}/blob/main/RotationsLink.md");
+                    Util.OpenLink($"https://github.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/blob/main/RotationsLink.md");
                 }
             }, width, textWidth);
 
