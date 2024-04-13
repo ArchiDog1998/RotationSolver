@@ -148,18 +148,18 @@ partial class RedMageRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.CorpsacorpsPvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (CorpsacorpsPvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.AddlePvE, ActionID.MagickBarrierPvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction? act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (AddlePvE.CanUse(out act)) return true;
         if (MagickBarrierPvE.CanUse(out act, skipAoeCheck: true)) return true;
-        return base.DefenseAreaAbility(out act);
+        return base.DefenseAreaAbility(nextGCD, out act);
     }
 }

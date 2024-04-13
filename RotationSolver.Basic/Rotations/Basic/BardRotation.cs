@@ -183,15 +183,15 @@ partial class BardRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.NaturesMinnePvE)]
-    protected sealed override bool HealSingleAbility(out IAction? act)
+    protected sealed override bool HealSingleAbility(IAction nextGCD, out IAction? act)
     {
         if (NaturesMinnePvE.CanUse(out act)) return true;
-        return base.HealSingleAbility(out act);
+        return base.HealSingleAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.TroubadourPvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction act)
     {
         if (TroubadourPvE.CanUse(out act)) return true;
         return false;

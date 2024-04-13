@@ -117,10 +117,10 @@ partial class PaladinRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.IntervenePvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (IntervenePvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>

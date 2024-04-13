@@ -253,7 +253,7 @@ partial class BlackMageRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.AddlePvE)]
-    protected override bool DefenseAreaAbility(out IAction act)
+    protected override bool DefenseAreaAbility(IAction nextGCD, out IAction act)
     {
         if (AddlePvE.CanUse(out act)) return true;
         return false;

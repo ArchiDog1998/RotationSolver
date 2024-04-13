@@ -208,25 +208,25 @@ partial class ReaperRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.HellsIngressPvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (HellsIngressPvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.FeintPvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction? act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (!HasSoulReaver && !HasEnshrouded && FeintPvE.CanUse(out act)) return true;
-        return base.DefenseAreaAbility(out act);
+        return base.DefenseAreaAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.ArcaneCrestPvE)]
-    protected override bool DefenseSingleAbility(out IAction? act)
+    protected override bool DefenseSingleAbility(IAction nextGCD, out IAction? act)
     {
         if (!HasSoulReaver && !HasEnshrouded && ArcaneCrestPvE.CanUse(out act)) return true;
-        return base.DefenseSingleAbility(out act);
+        return base.DefenseSingleAbility(nextGCD, out act);
     }
 }

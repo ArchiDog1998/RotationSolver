@@ -132,9 +132,9 @@ partial class SageRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.IcarusPvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (IcarusPvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 }

@@ -43,7 +43,7 @@ partial class CustomRotation
         .Where(i => i.FilterGroup == 9 && i.ItemSearchCategory.Row == 43)
         .Select(i => new MpPotionItem(i)).Reverse().ToArray();
 
-    private static bool UseMpPotion(out IAction? act)
+    private static bool UseMpPotion(IAction nextGCD, out IAction? act)
     {
         var acts = from a in MpPotions
                    where a.CanUse(out _, true)
@@ -60,7 +60,7 @@ partial class CustomRotation
         .Where(i => i.FilterGroup == 8 && i.ItemSearchCategory.Row == 43)
         .Select(i => new HpPotionItem(i)).Reverse().ToArray();
 
-    private static bool UseHpPotion(out IAction? act)
+    private static bool UseHpPotion(IAction nextGCD, out IAction? act)
     {
         var acts = from a in HpPotions
                    where a.CanUse(out _, true)

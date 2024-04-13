@@ -150,7 +150,7 @@ partial class GunbreakerRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.RoughDividePvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (RoughDividePvE.CanUse(out act)) return true;
         return false;
