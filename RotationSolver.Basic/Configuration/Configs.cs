@@ -424,6 +424,10 @@ internal partial class Configs : IPluginConfiguration
         Filter = TimelineFilter)]
     private static readonly bool _enableTimelineMovement = false;
 
+    [ConditionBool, UI("Timeline overrides automatic action usage.",
+        Filter = TimelineFilter)]
+    private static readonly bool _timelineOverride = false;
+
     [JobConfig, UI("Override Action Ahead Timer",
         Filter = BasicTimer)]
     private static readonly bool _overrideActionAheadTimer = false;
