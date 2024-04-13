@@ -182,7 +182,7 @@ internal static class StateUpdater
             }
         }
 
-        if (DataCenter.InterruptTarget != null)
+        if (DataCenter.InterruptTarget != null && Service.Config.InterruptibleMoreCheck)
         {
             status |= AutoStatus.Interrupt;
         }
