@@ -233,7 +233,7 @@ public struct ActionTargetInfo(IBaseAction action)
             return FindTargetArea(canTargets, canAffects, range, player);
         }
 
-        var targets = GetMostCanTargetObjects(canTargets, canAffects, action.Config.AoeCount);
+        var targets = GetMostCanTargetObjects(canTargets, canAffects, skipAoeCheck ? 0 : action.Config.AoeCount);
         var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.SpecialType);
         if (target == null) return null;
 
@@ -428,7 +428,7 @@ public struct ActionTargetInfo(IBaseAction action)
                 objectMax.Add(t);
             }
         }
-        if (objectMax.Count < aoeCount && !action.Setting.IsFriendly)
+        if (aoeCount > 0 && objectMax.Count > 0 && objectMax.Count < action.Config.AoeCount && !action.Setting.IsFriendly)
         {
             return [];
         }
