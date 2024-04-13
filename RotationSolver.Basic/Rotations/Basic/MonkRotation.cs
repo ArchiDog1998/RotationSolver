@@ -105,33 +105,33 @@ partial class MonkRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.ThunderclapPvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (ThunderclapPvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.FeintPvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction? act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (FeintPvE.CanUse(out act)) return true;
-        return base.DefenseAreaAbility(out act);
+        return base.DefenseAreaAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.MantraPvE)]
-    protected sealed override bool HealAreaAbility(out IAction? act)
+    protected sealed override bool HealAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (MantraPvE.CanUse(out act)) return true;
-        return base.HealAreaAbility(out act);
+        return base.HealAreaAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.RiddleOfEarthPvE)]
-    protected sealed override bool DefenseSingleAbility(out IAction? act)
+    protected sealed override bool DefenseSingleAbility(IAction nextGCD, out IAction? act)
     {
         if (RiddleOfEarthPvE.CanUse(out act, usedUp: true)) return true;
-        return base.DefenseSingleAbility(out act);
+        return base.DefenseSingleAbility(nextGCD, out act);
     }
 }

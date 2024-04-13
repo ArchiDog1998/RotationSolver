@@ -240,10 +240,10 @@ partial class SummonerRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.RadiantAegisPvE)]
-    protected sealed override bool DefenseSingleAbility(out IAction? act)
+    protected sealed override bool DefenseSingleAbility(IAction nextGCD, out IAction? act)
     {
         if (RadiantAegisPvE.CanUse(out act)) return true;
-        return base.DefenseSingleAbility(out act);
+        return base.DefenseSingleAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
@@ -256,17 +256,17 @@ partial class SummonerRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.AddlePvE)]
-    protected override bool DefenseAreaAbility(out IAction? act)
+    protected override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (AddlePvE.CanUse(out act)) return true;
-        return base.DefenseAreaAbility(out act);
+        return base.DefenseAreaAbility(nextGCD, out act);
     }
     
     /// <inheritdoc/>
     [RotationDesc(ActionID.CrimsonCyclonePvE)]
-    protected override bool MoveForwardAbility(out IAction? act)
+    protected override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (CrimsonCyclonePvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 }

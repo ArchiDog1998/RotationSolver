@@ -135,7 +135,7 @@ partial class DragoonRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.FeintPvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction? act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (FeintPvE.CanUse(out act)) return true;
         return false;
@@ -143,9 +143,9 @@ partial class DragoonRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.ElusiveJumpPvE)]
-    protected override bool MoveBackAbility(out IAction? act)
+    protected override bool MoveBackAbility(IAction nextGCD, out IAction? act)
     {
         if (ElusiveJumpPvE.CanUse(out act, skipClippingCheck: true)) return true;
-        return base.MoveBackAbility(out act);
+        return base.MoveBackAbility(nextGCD, out act);
     }
 }

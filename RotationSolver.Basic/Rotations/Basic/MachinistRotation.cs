@@ -150,7 +150,7 @@ partial class MachinistRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.TacticianPvE, ActionID.DismantlePvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction act)
     {
         if (TacticianPvE.CanUse(out act, skipAoeCheck: true)) return true;
         if (DismantlePvE.CanUse(out act, skipAoeCheck: true)) return true;
