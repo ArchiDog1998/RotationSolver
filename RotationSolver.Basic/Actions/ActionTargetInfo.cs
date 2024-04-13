@@ -236,7 +236,19 @@ public struct ActionTargetInfo(IBaseAction action)
         var targets = GetMostCanTargetObjects(canTargets, canAffects, skipAoeCheck ? 0 : action.Config.AoeCount);
         var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.SpecialType);
         if (target == null) return null;
-
+        if (DataCenter.IsManual && target.IsEnemy())
+        {
+            var activeTarget = Svc.Targets.Target as BattleChara;
+            if (target.ObjectId != activeTarget?.ObjectId)
+            {
+                return null;
+            }
+            else if (activeTarget != null && activeTarget.IsEnemy())
+            {
+                return new(activeTarget, [.. GetAffects(activeTarget, canAffects)], activeTarget.Position);
+            }
+            return null;
+        }
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
     }
 
@@ -412,7 +424,7 @@ public struct ActionTargetInfo(IBaseAction action)
         if (IsSingleTarget || EffectRange <= 0) return canTargets;
         if (!action.Setting.IsFriendly && NoAOE) return [];
 
-        List<BattleChara> objectMax = new();
+        List<BattleChara> objectMax = new(canTargets.Count());
 
         foreach (var t in canTargets)
         {
@@ -424,15 +436,16 @@ public struct ActionTargetInfo(IBaseAction action)
             }
             else if (count > aoeCount)
             {
+                aoeCount = count;
                 objectMax.Clear();
                 objectMax.Add(t);
             }
         }
-        if (aoeCount > 0 && objectMax.Count > 0 && objectMax.Count < action.Config.AoeCount && !action.Setting.IsFriendly)
-        {
-            return [];
-        }
-        else
+        //if (aoeCount > 0 && objectMax.Count > 0 && objectMax.Count < action.Config.AoeCount && !action.Setting.IsFriendly)
+        //{
+        //    return [];
+        //}
+        //else
         {
             return objectMax;
         }
