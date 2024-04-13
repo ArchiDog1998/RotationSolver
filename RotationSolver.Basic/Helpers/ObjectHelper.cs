@@ -87,19 +87,7 @@ public static class ObjectHelper
             names = names.Union(ns1);
 
         if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(battleChara.Name.TextValue).Success)) return false;
-
-
-        if (battleChara is PlayerCharacter p)
-        {
-            var hash = EncryptString(p);
-
-            //Don't attack authors!!
-            if (DataCenter.AuthorHashes.ContainsKey(hash)) return false;
-
-            //Don't attack contributors!!
-            if (DataCenter.ContributorsHash.Contains(hash)) return false;
-        }
-
+        
         //Fate
         if (DataCenter.TerritoryContentType != TerritoryContentType.Eureka)
         {
