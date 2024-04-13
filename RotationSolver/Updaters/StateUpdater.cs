@@ -29,8 +29,8 @@ internal static class StateUpdater
 
     private static AutoStatus StatusFromAutomatic()
     {
-        var hasTimeline = Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)
-            && timeline.Any(p => p.Value.Any(i => i is not DrawingTimeline));
+        var hasTimeline = Service.Config.TimelineOverride ? Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)
+            && timeline.Any(p => p.Value.Any(i => i is not DrawingTimeline)) : false;
 
         AutoStatus status = AutoStatus.None;
 
@@ -182,7 +182,7 @@ internal static class StateUpdater
             }
         }
 
-        if (DataCenter.InterruptTarget != null)
+        if (DataCenter.InterruptTarget != null && Service.Config.InterruptibleMoreCheck)
         {
             status |= AutoStatus.Interrupt;
         }

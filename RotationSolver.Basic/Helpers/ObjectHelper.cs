@@ -272,7 +272,7 @@ public static class ObjectHelper
         var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2;
 
         if (!baseCheck) return false;
-        if (!Service.Config.InterruptibleMoreCheck) return true;
+        if (!Service.Config.InterruptibleMoreCheck) return false;
 
         var id = b.CastActionId;
         if (_effectRangeCheck.TryGetValue(id, out var check)) return check;
