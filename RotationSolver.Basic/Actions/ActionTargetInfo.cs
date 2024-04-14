@@ -28,7 +28,7 @@ public struct ActionTargetInfo(IBaseAction action)
     /// <summary>
     /// Is this action single target.
     /// </summary>
-    public readonly bool IsSingleTarget => action.Action.CastType == 1;
+    public readonly bool IsSingleTarget => action.Action.CastType == 1 || action.Config.SingleTargetAoEOverride;
     /// <summary>
     /// Is this action target area.
     /// </summary>
@@ -150,7 +150,7 @@ public struct ActionTargetInfo(IBaseAction action)
             if (!gameObject.IsAttackable()) return false;
         }
 
-        return CheckStatus(gameObject, skipStatusProvideCheck) 
+        return CheckStatus(gameObject, skipStatusProvideCheck)
             && CheckTimeToKill(gameObject)
             && CheckResistance(gameObject);
     }
@@ -183,7 +183,7 @@ public struct ActionTargetInfo(IBaseAction action)
                 return false;
             }
         }
-        else if(action.Info.Aspect != Aspect.Piercing) // Physic
+        else if (action.Info.Aspect != Aspect.Piercing) // Physic
         {
             if (gameObject.HasStatus(false, StatusHelper.PhysicResistancec))
             {
@@ -278,7 +278,7 @@ public struct ActionTargetInfo(IBaseAction action)
         var target = GetMostCanTargetObjects(canTargets, canAffects, aoeCount)
             .OrderByDescending(ObjectHelper.GetHealthRatio).FirstOrDefault();
         if (target == null) return null;
-        return new(target, [..GetAffects(target, canAffects)], target.Position);
+        return new(target, [.. GetAffects(target, canAffects)], target.Position);
     }
 
     private readonly TargetResult? FindTargetAreaMove(float range)
@@ -441,14 +441,7 @@ public struct ActionTargetInfo(IBaseAction action)
                 objectMax.Add(t);
             }
         }
-        //if (aoeCount > 0 && objectMax.Count > 0 && objectMax.Count < action.Config.AoeCount && !action.Setting.IsFriendly)
-        //{
-        //    return [];
-        //}
-        //else
-        {
-            return objectMax;
-        }
+        return objectMax;
     }
 
     private readonly int CanGetTargetCount(GameObject target, IEnumerable<GameObject> canAffects)

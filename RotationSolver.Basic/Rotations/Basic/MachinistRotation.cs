@@ -111,6 +111,7 @@ partial class MachinistRotation
         setting.CreateConfig = () => new()
         {
             AoeCount = 1,
+            SingleTargetAoEOverride = true,
         };
     }
 
