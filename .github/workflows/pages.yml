@@ -1,13 +1,9 @@
-jobs:
-  # Build job
-  build:
-    # <Not provided for brevity>
-    # At a minimum this job should upload artifacts using actions/upload-pages-artifact
+on:
+  push:
 
+jobs:
   # Deploy job
   deploy:
-    # Add a dependency to the build job
-    needs: build
 
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
