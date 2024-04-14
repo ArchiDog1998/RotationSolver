@@ -7,9 +7,17 @@
 ![Github License](https://img.shields.io/github/license/ArchiDog1998/RotationSolver.svg?label=License&style=for-the-badge)
 ![Github Commits](https://img.shields.io/github/commits-since/ArchiDog1998/RotationSolver/latest/main?style=for-the-badge)
 
-It's time to learn something new, see you in the game version 7.0!
+It's time to learn something new, this plugin will be available to this repo on the game version 7.0!
 
-I won't make any public releases until the game version 7.0. If you want to use it, please build it by yourself. 
+```
+https://raw.githubusercontent.com/ArchiDog1998/DalamudPlugins/main/pluginmaster.json
+```
+
+> [!IMPORTANT]
+>
+> My friends have suggested not to make this plugin fully open source, so the base library will no longer be fully public. 
+>
+> If you want to see the source code, please support me in ko-fi and send me a private message on your GitHub mail!
 
 Try the community version of [Rotation Solver Reborn](https://github.com/FFXIV-CombatReborn/RotationSolverReborn). Buy the dev version for $2 in [ko-fi](https://ko-fi.com/s/7cf5ff0de3).
 
