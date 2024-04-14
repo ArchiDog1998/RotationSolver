@@ -2253,25 +2253,7 @@ public class RotationConfigWindow : ConfigWindow
         {
             window.Collection.DrawItems((int)UiString.ConfigWindow_Basic_Others);
 
-            if (Service.Config.SayHelloToAll)
-            {
-                var str = Player.Object.EncryptString();
-                ImGui.SetNextItemWidth(ImGui.CalcTextSize(str).X + 10);
-                ImGui.InputText("That is your HASH:", ref str, 100);
-
-                if (!DataCenter.ContributorsHash.Contains(str)
-                    && !DownloadHelper.UsersHash.Contains(str)
-                    && !DataCenter.AuthorHashes.ContainsKey(str))
-                {
-                    if (ImGui.Button("DM your Hash to ArchiTed for being greeted."))
-                    {
-                        ImGui.SetClipboardText(str);
-                        Notify.Success($"Your hash \"{str}\" copied to clipboard.");
-                        Util.OpenLink("https://discord.com/users/1007293294100877322");
-                    }
-                }
-            }
-            else
+            if (!Service.Config.SayHelloToAll)
             {
                 ImGui.TextColored(ImGuiColors.DalamudRed, "The author of RS loves being greeted by you!");
             }

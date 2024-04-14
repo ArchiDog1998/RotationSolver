@@ -22,7 +22,7 @@ public static class DownloadHelper
 
         DataCenter.ContributorsHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/main/Resources/ContributorsHash.json") ?? [];
 
-        UsersHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/main/Resources/UsersHash.json") ?? [];
+        UsersHash = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/ArchiDog1998/UsersHash/main/UsersHash.json") ?? [];
 
         Supporters = await DownloadOneAsync<string[]>($"https://raw.githubusercontent.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/main/Resources/Supporters.json") ?? [];
     }

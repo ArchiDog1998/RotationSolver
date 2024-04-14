@@ -10,7 +10,6 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
-using RotationSolver.Localization;
 using System.Diagnostics.CodeAnalysis;
 using XIVConfigUI;
 
@@ -142,26 +141,24 @@ internal class SocialUpdater
     {
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
             .Where(c => c.ObjectId != Player.Object.ObjectId)
-            .Select(player => (player, player.EncryptString()))
-            .Where(pair => !saidAuthors.Contains(pair.Item2)
-                && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(pair.Item2));
+            .Select(player => (player, player.EncryptString()));
 
         IEnumerable<ChatEntity> entities = players
             .Select(c =>
             {
                 if (!DataCenter.AuthorHashes.TryGetValue(c.Item2, out var nameDesc)) nameDesc = string.Empty;
-                return (c.player, nameDesc);
+                return (c.player, c.Item2, nameDesc);
             })
             .Where(p => !string.IsNullOrEmpty(p.nameDesc))
-            .Select(p => new RotationAuthorChatEntity(p.player, p.nameDesc));
+            .Select(p => new RotationAuthorChatEntity(p.player, p.Item2, p.nameDesc));
 
         entities = entities.Union(players
             .Where(p => DataCenter.ContributorsHash.Contains(p.Item2))
-            .Select(p => new ContributorChatEntity(p.player)), _comparer);
+            .Select(p => new ContributorChatEntity(p.player, p.Item2)), _comparer);
 
         entities = entities.Union(players
             .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
-            .Select(p => new UserChatEntity(p.player)), _comparer);
+            .Select(p => new UserChatEntity(p.player, p.Item2)), _comparer);
 
         foreach (var entity in entities)
         {
@@ -172,7 +169,8 @@ internal class SocialUpdater
 
             Svc.Targets.Target = entity.player;
 
-            if (Service.Config.SayHelloToAll)
+            if (Service.Config.SayHelloToAll && !saidAuthors.Contains(entity.Hash)
+                && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(entity.Hash))
             {
                 ECommons.Automation.Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
             }
@@ -191,9 +189,11 @@ internal class SocialUpdater
         }
     }
 
-    internal abstract class ChatEntity(PlayerCharacter character) : IDisposable
+    internal abstract class ChatEntity(PlayerCharacter character, string hash) : IDisposable
     {
         public readonly PlayerCharacter player = character;
+
+        public string Hash => hash;
 
         public bool CanTarget
         {
@@ -250,7 +250,7 @@ internal class SocialUpdater
             => obj.player.GetHashCode();
     }
 
-    internal class RotationAuthorChatEntity(PlayerCharacter character, string nameDesc) : ChatEntity(character)
+    internal class RotationAuthorChatEntity(PlayerCharacter character, string hash, string nameDesc) : ChatEntity(character, hash)
     {
         private readonly string name = nameDesc;
 
@@ -262,8 +262,8 @@ internal class SocialUpdater
     }
 
 
-    internal class ContributorChatEntity(PlayerCharacter character) 
-        : ChatEntity(character)
+    internal class ContributorChatEntity(PlayerCharacter character, string hash) 
+        : ChatEntity(character, hash)
     {
         public override SeString GetMessage() =>
             Character
@@ -272,8 +272,8 @@ internal class SocialUpdater
             .Append(new SeString(new TextPayload(". So say hello to them!")));
     }
 
-    internal class UserChatEntity(PlayerCharacter character) 
-        : ChatEntity(character)
+    internal class UserChatEntity(PlayerCharacter character, string hash) 
+        : ChatEntity(character, hash)
     {
         public override BitmapFontIcon Icon => BitmapFontIcon.NewAdventurer;
 

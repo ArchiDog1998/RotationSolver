@@ -39,19 +39,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         XIVConfigUIMain.ShowTooltip = () => Service.Config.ShowTooltips;
 
         _dis.Add(new Service());
-        try
-        {
-            Service.Config = JsonConvert.DeserializeObject<Configs>(
-                File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName),
-                new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())
-                ?? new Configs();
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Warning(ex, "Failed to load config");
-            Service.Config = new Configs();
-        }
-
         _rotationConfigWindow = new();
         _controlWindow = new();
         _nextActionWindow = new();
