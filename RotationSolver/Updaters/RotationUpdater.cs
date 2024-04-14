@@ -198,6 +198,7 @@ internal static class RotationUpdater
             {
                 if (type.GetInterfaces().Contains(typeof(ICustomRotation))
                     && !type.IsAbstract && !type.IsInterface && type.GetConstructor([]) != null)
+                    //&& type.GetCustomAttribute<ApiAttribute>()?.ApiVersion == Service.ApiVersion) //TODO: Check for API version
                 {
                     rotationList.Add(type);
                 }
@@ -539,6 +540,7 @@ internal static class RotationUpdater
                 {
                     var rot = r.GetCustomAttribute<RotationAttribute>();
                     if (rot == null) return false;
+
                     var type = rot.Type;
 
                     return isPvP ? type.HasFlag(CombatType.PvP) : type.HasFlag(CombatType.PvE);
