@@ -197,11 +197,17 @@ internal static class RotationUpdater
             foreach (var type in TryGetTypes(assembly))
             {
                 if (type.GetInterfaces().Contains(typeof(ICustomRotation))
-                    && !type.IsAbstract && !type.IsInterface && type.GetConstructor([]) != null)
-                    //&& type.GetCustomAttribute<ApiAttribute>()?.ApiVersion == Service.ApiVersion) //TODO: Check for API version
+                    && !type.IsAbstract && !type.IsInterface && type.GetConstructor([]) != null
+                    && type.GetCustomAttribute<ApiAttribute>()?.ApiVersion == Service.ApiVersion)
                 {
                     rotationList.Add(type);
                 }
+                //else if (type.GetInterfaces().Contains(typeof(ICustomRotation))
+                //    && !type.IsAbstract && !type.IsInterface && type.GetConstructor([]) != null)
+                //{
+                //    var name = type.GetCustomAttribute<RotationAttribute>()?.Name ?? "Unknown";
+                //    Svc.Chat.PrintError($"Failed to load rotation {name} from assembly {assembly}");
+                //}
             }
         }
 
