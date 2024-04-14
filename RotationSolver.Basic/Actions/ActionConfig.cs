@@ -55,9 +55,4 @@ public class ActionConfig()
     /// Is this action should be a mistake action.
     /// </summary>
     public bool IsInMistake { get; set; }
-
-    /// <summary>
-    /// Is this action a single target AoE
-    /// </summary>
-    public bool SingleTargetAoEOverride { get; set; }
 }
