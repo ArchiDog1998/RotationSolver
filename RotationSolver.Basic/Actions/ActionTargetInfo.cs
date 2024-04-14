@@ -28,7 +28,7 @@ public struct ActionTargetInfo(IBaseAction action)
     /// <summary>
     /// Is this action single target.
     /// </summary>
-    public readonly bool IsSingleTarget => action.Action.CastType == 1 || action.Config.SingleTargetAoEOverride;
+    public readonly bool IsSingleTarget => action.Action.CastType == 1;
     /// <summary>
     /// Is this action target area.
     /// </summary>
@@ -423,6 +423,7 @@ public struct ActionTargetInfo(IBaseAction action)
     {
         if (IsSingleTarget || EffectRange <= 0) return canTargets;
         if (!action.Setting.IsFriendly && NoAOE) return [];
+        if (aoeCount > 1 && DataCenter.IsManual) return [];
 
         List<BattleChara> objectMax = new(canTargets.Count());
 
