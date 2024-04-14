@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace RotationSolver.Basic.Attributes
 {
-    internal class ApiAttribute(int apiVersion) : Attribute
+    /// <summary>
+    /// Attribute to specify the version of the API that this rotation targets.
+    /// </summary>
+    public class ApiAttribute(int apiVersion) : Attribute
     {
         /// <summary>
         /// The version of the API that this rotation targets.
