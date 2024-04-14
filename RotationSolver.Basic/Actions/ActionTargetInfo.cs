@@ -236,19 +236,6 @@ public struct ActionTargetInfo(IBaseAction action)
         var targets = GetMostCanTargetObjects(canTargets, canAffects, skipAoeCheck ? 0 : action.Config.AoeCount);
         var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.SpecialType);
         if (target == null) return null;
-        if (DataCenter.IsManual && target.IsEnemy())
-        {
-            var activeTarget = Svc.Targets.Target as BattleChara;
-            if (target.ObjectId != activeTarget?.ObjectId)
-            {
-                return null;
-            }
-            else if (activeTarget != null && activeTarget.IsEnemy())
-            {
-                return new(activeTarget, [.. GetAffects(activeTarget, canAffects)], activeTarget.Position);
-            }
-            return null;
-        }
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
     }
 
