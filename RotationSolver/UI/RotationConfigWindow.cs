@@ -38,6 +38,9 @@ public class RotationConfigWindow : ConfigWindow
     protected override string Kofi => "B0B0IN5DX";
     protected override string Crowdin => "rotationsolver";
 
+    protected override string DiscordServerID => "1228953752585637908";
+    protected override string DiscordServerInviteLink => "9D4E8eZW5g";
+
     public override IEnumerable<Searchable> Searchables => [.. base.Searchables, ..DataCenter.RightNowRotation?.Configs];
 
     public RotationConfigWindow()
@@ -402,10 +405,6 @@ public class RotationConfigWindow : ConfigWindow
         base.DrawAbout();
 
         var width = ImGui.GetWindowWidth();
-        //if (IconSet.GetTexture("https://discordapp.com/api/guilds/1064448004498653245/embed.png?style=banner2", out var icon) && ImGuiHelper.TextureButton(icon, width, width))
-        //{
-        //    Util.OpenLink("https://discord.gg/4fECHunam9");
-        //}
 
         var clickingCount = OtherConfiguration.RotationSolverRecord.ClickingCount;
         if (clickingCount > 0)
