@@ -1,9 +1,0 @@
-[submodule "ECommons"]
-	path = ECommons
-	url = https://github.com/NightmareXIV/ECommons
-[submodule "XIVConfigUI"]
-	path = XIVConfigUI
-	url = https://github.com/ArchiDog1998/XIVConfigUI
-[submodule "XIVDrawer"]
-	path = XIVDrawer
-	url = https://github.com/ArchiDog1998/XIVDrawer

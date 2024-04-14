@@ -9,7 +9,7 @@
 
 It's time to learn something new, see you in the game version 7.0!
 
-I won't make any public releases anymore to make this plugin mine. If you want to use it, please build it by yourself. 
+I won't make any public releases until the game version 7.0. If you want to use it, please build it by yourself. 
 
 Try the community version of [Rotation Solver Reborn](https://github.com/FFXIV-CombatReborn/RotationSolverReborn). Buy the dev version for $2 in [ko-fi](https://ko-fi.com/s/7cf5ff0de3).
 
