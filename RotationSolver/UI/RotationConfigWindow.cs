@@ -386,7 +386,14 @@ public partial class RotationConfigWindow : Window
         }
 
         var rotation = DataCenter.RightNowRotation;
-        if (rotation == null) return;
+        if (rotation == null)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudOrange);
+            ImGui.TextWrapped("No rotations loaded! Was there recently a big update?");
+            ImGui.PopStyleColor();
+            ImguiTooltips.HoveredTooltip("Please update your rotations!");
+            return;
+        }
 
         var rotations = RotationUpdater.CustomRotations.FirstOrDefault(i => i.ClassJobIds.Contains((Job)(Player.Object?.ClassJob.Id ?? 0)))?.Rotations ?? [];
 
