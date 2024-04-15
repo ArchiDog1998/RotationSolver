@@ -151,6 +151,7 @@ partial class DancerRotation
     static partial void ModifyTechnicalStepPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.StandardFinish];
+        setting.UnlockedByQuestID = 68790;
     }
 
     static partial void ModifyDoubleTechnicalFinishPvE(ref ActionSetting setting)

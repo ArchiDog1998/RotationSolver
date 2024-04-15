@@ -63,6 +63,7 @@ partial class MachinistRotation
     static partial void ModifyHeatBlastPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => IsOverheated && !OverheatedEndAfterGCD();
+        setting.UnlockedByQuestID = 67234;
     }
 
     static partial void ModifyAutoCrossbowPvE(ref ActionSetting setting)
@@ -72,6 +73,7 @@ partial class MachinistRotation
         {
             AoeCount = 2,
         };
+        setting.UnlockedByQuestID = 67242;
     }
 
     static partial void ModifyRookAutoturretPvE(ref ActionSetting setting)
@@ -81,6 +83,7 @@ partial class MachinistRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 67235;
     }
 
     static partial void ModifyReassemblePvE(ref ActionSetting setting)
@@ -104,6 +107,7 @@ partial class MachinistRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 67233;
     }
 
     static partial void ModifyRicochetPvE(ref ActionSetting setting)
@@ -112,6 +116,7 @@ partial class MachinistRotation
         {
             AoeCount = 1,
         };
+        setting.UnlockedByQuestID = 67240;
     }
 
     static partial void ModifyWildfirePvE(ref ActionSetting setting)
@@ -146,6 +151,27 @@ partial class MachinistRotation
     static partial void ModifyTacticianPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = StatusHelper.RangePhysicalDefense;
+        setting.UnlockedByQuestID = 67244;
+    }
+
+    static partial void ModifyHeatedSplitShotPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67243;
+    }
+
+    static partial void ModifyHeatedSlugShotPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67248;
+    }
+
+    static partial void ModifyFlamethrowerPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 68445;
+    }
+
+    static partial void ModifyDrillPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67246;
     }
 
     /// <inheritdoc/>

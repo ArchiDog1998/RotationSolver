@@ -129,6 +129,7 @@ partial class DarkKnightRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 67591;
     }
 
     static partial void ModifyDeliriumPvE(ref ActionSetting setting)
@@ -150,6 +151,42 @@ partial class DarkKnightRotation
     static partial void ModifyPlungePvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
+        setting.UnlockedByQuestID = 67597;
+    }
+
+    static partial void ModifyFloodOfDarknessPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67590;
+    }
+
+    static partial void ModifyEdgeOfDarknessPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67592;
+    }
+
+    static partial void ModifyLivingDeadPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67594;
+    }
+
+    static partial void ModifySaltedEarthPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67596;
+    }
+
+    static partial void ModifyAbyssalDrainPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67598;
+    }
+
+    static partial void ModifyCarveAndSpitPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67600;
+    }
+
+    static partial void ModifyTheBlackestNightPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 68455;
     }
 
     /// <inheritdoc/>

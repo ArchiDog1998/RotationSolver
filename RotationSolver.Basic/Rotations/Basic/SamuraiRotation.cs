@@ -165,6 +165,7 @@ partial class SamuraiRotation
     static partial void ModifyHissatsuGurenPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Kenki >= 25;
+        setting.UnlockedByQuestID = 68106;
     }
 
     static partial void ModifyHissatsuSeneiPvE(ref ActionSetting setting)

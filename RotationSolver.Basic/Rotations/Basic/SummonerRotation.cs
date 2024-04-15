@@ -131,6 +131,7 @@ partial class SummonerRotation
     static partial void ModifySummonTopazPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HasSummon && IsTitanReady;
+        setting.UnlockedByQuestID = 66639;
     }
 
     static partial void ModifySummonEmeraldPvE(ref ActionSetting setting)
@@ -163,6 +164,7 @@ partial class SummonerRotation
     static partial void ModifySummonBahamutPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InCombat && HasSummon;
+        setting.UnlockedByQuestID = 68165;
     }
 
     static partial void ModifyEnkindleBahamutPvE(ref ActionSetting setting)
@@ -230,11 +232,48 @@ partial class SummonerRotation
     {
         setting.StatusProvide = [StatusID.FurtherRuin];
         setting.ActionCheck = () => !HasAetherflowStacks;
+        setting.UnlockedByQuestID = 67637;
     }
 
     static partial void ModifyPainflarePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HasAetherflowStacks;
+        setting.UnlockedByQuestID = 66629;
+    }
+
+    static partial void ModifyRuinIiPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65997;
+    }
+
+    static partial void ModifySummonIfritPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66627;
+    }
+
+    static partial void ModifySummonTitanPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66628;
+    }
+
+    static partial void ModifySummonGarudaPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66631;
+    }
+
+    static partial void ModifyRuinIiiPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67638;
+    }
+
+    static partial void ModifyDreadwyrmTrancePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67640;
+    }
+
+    static partial void ModifyAstralFlowPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67641;
     }
 
 

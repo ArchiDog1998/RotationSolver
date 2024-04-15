@@ -130,6 +130,11 @@ partial class SageRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
+    static partial void ModifyPanhaimaPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 69608;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.IcarusPvE)]
     protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)

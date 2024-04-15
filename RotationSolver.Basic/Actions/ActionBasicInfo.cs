@@ -159,6 +159,12 @@ public readonly struct ActionBasicInfo
 
         if (!EnoughLevel) return false;
         if (DataCenter.CurrentMp < MPNeed) return false;
+        if (_action.Setting.UnlockedByQuestID != 0)
+        {
+            var isUnlockQuestComplete = QuestManager.IsQuestComplete(_action.Setting.UnlockedByQuestID);
+            if (!isUnlockQuestComplete)
+                return false;
+        }
 
         var player = Player.Object;
 

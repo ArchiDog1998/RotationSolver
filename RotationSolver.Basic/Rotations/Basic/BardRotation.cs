@@ -67,6 +67,7 @@ partial class BardRotation
     static partial void ModifyWindbitePvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = [StatusID.Windbite, StatusID.Stormbite];
+        setting.UnlockedByQuestID = 65612;
     }
 
     static partial void ModifyIronJawsPvE(ref ActionSetting setting)
@@ -78,6 +79,7 @@ partial class BardRotation
             if (t.WillStatusEndGCD(0, 0, true, StatusID.Windbite, StatusID.Stormbite)) return false;
             return true;
         };
+        setting.UnlockedByQuestID = 67252;
     }
 
     static partial void ModifyPitchPerfectPvP(ref ActionSetting setting)
@@ -140,6 +142,7 @@ partial class BardRotation
         {
             AoeCount = 2,
         };
+        setting.UnlockedByQuestID = 66624;
     }
 
     static partial void ModifyRadiantFinalePvE(ref ActionSetting setting)
@@ -171,6 +174,47 @@ partial class BardRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 66626;
+    }
+
+    static partial void ModifyRepellingShotPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65604;
+    }
+
+    static partial void ModifyMagesBalladPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66621;
+    }
+
+    static partial void ModifyTheWardensPaeanPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66622;
+    }
+
+    static partial void ModifyArmysPaeonPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66623;
+    }
+
+    static partial void ModifyTheWanderersMinuetPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67250;
+    }
+
+    static partial void ModifyEmpyrealArrowPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67251;
+    }
+
+    static partial void ModifySidewinderPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67254;
+    }
+
+    static partial void ModifyRefulgentArrowPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 68430;
     }
 
     /// <inheritdoc/>

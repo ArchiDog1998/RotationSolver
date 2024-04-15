@@ -55,6 +55,12 @@ partial class PaladinRotation
     static partial void ModifyShieldLobPvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MeleeRange;
+        setting.UnlockedByQuestID = 65798;
+    }
+
+    static partial void ModifySheltronPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66592;
     }
 
     private protected sealed override IBaseAction TankStance => IronWillPvE;
@@ -90,6 +96,7 @@ partial class PaladinRotation
     static partial void ModifyCoverPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => OathGauge >= 50;
+        setting.UnlockedByQuestID = 66595;
     }
 
     static partial void ModifyIntervenePvE(ref ActionSetting setting)
@@ -105,6 +112,46 @@ partial class PaladinRotation
     static partial void ModifyIntervenePvP(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifySpiritsWithinPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66591;
+    }
+
+    static partial void ModifyProminencePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66593;
+    }
+
+    static partial void ModifyHallowedGroundPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66596;
+    }
+
+    static partial void ModifyGoringBladePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67570;
+    }
+
+    static partial void ModifyDivineVeilPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67571;
+    }
+
+    static partial void ModifyClemencyPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67572;
+    }
+
+    static partial void ModifyRoyalAuthorityPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67573;
+    }
+
+    static partial void ModifyPassageOfArmsPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 68111;
     }
 
     /// <inheritdoc/>
