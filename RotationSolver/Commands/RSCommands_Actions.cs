@@ -64,7 +64,7 @@ public static partial class RSCommands
 
             //Don't attack authors and contributors!!
             if ((DataCenter.AuthorHashes.ContainsKey(hash)
-                || DataCenter.ContributorsHash.Contains(hash)))
+                || DownloadHelper.ContributorsHash.Contains(hash)))
             {
                 Svc.Chat.PrintError($"Please don't attack RS developers with RS by {act1}!");
                 return;

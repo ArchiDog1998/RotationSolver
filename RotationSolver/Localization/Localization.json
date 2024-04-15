@@ -430,5 +430,6 @@
   "RotationSolver.Basic.Configuration.ConfigsName.IWannaBeSaidHello": "I wanna be said hello",
   "RotationSolver.Basic.Data.UiString.CantUseInPvP": "The pvp feature can only be used when your config \"{0}\" is on!",
   "RotationSolver.Basic.Data.UiString.SpecialCommandType_Off": "Off",
-  "RotationSolver.Basic.Data.UiString.SpecialCommandType_Cancel": "Cancel"
+  "RotationSolver.Basic.Data.UiString.SpecialCommandType_Cancel": "Cancel",
+  "RotationSolver.Basic.Data.UiString.CopiedYourHash": "Copied your hash to the clipboard!"
 }

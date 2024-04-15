@@ -122,7 +122,7 @@ internal static partial class TargetUpdater
                 if (DataCenter.AuthorHashes.ContainsKey(hash)) return false;
 
                 //Don't attack contributors!!
-                if (DataCenter.ContributorsHash.Contains(hash)) return false;
+                if (DownloadHelper.ContributorsHash.Contains(hash)) return false;
             }
             return true;
         }).ToArray();

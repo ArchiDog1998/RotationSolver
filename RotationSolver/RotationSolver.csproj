@@ -4,6 +4,14 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+	  <TargetFramework>net8.0-windows</TargetFramework>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Authors>ArchiTed</Authors>
+	  <Version>4.2.6.6</Version>
+	  <PlatformTarget>x64</PlatformTarget>
+	  <Platforms>AnyCPU</Platforms>
+	  <LangVersion>latest</LangVersion>
+	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -55,5 +63,7 @@
 		<Using Include="Dalamud.Interface" />
 		<Using Include="ImGuiNET" />
 		<Using Include="Newtonsoft.Json" />
+		<Using Include="System.Numerics" />
+		<Using Include="System.Reflection" />
 	</ItemGroup>
 </Project>

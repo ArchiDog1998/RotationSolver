@@ -152,7 +152,7 @@ internal class SocialUpdater
             .Select(p => new RotationAuthorChatEntity(p.player, p.Item2, p.nameDesc));
 
         entities = entities.Union(players
-            .Where(p => DataCenter.ContributorsHash.Contains(p.Item2))
+            .Where(p => DownloadHelper.ContributorsHash.Contains(p.Item2))
             .Select(p => new ContributorChatEntity(p.player, p.Item2)), _comparer);
 
         entities = entities.Union(players

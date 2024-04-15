@@ -2669,6 +2669,18 @@ public class RotationConfigWindow : ConfigWindow
         public override uint Icon => 5;
         public override void Draw(ConfigWindow window)
         {
+            if (Player.Available)
+            {
+                ImGui.Text("Hash: ");
+                ImGui.SameLine();
+                var hash = Player.Object.EncryptString();
+                if (ImGui.Button(hash))
+                {
+                    ImGui.SetClipboardText(hash);
+                    Notify.Success(UiString.CopiedYourHash.Local());
+                }
+            }
+
             window.Collection.DrawItems(-1);
 
             if (!Player.Available || !Service.Config.InDebug) return;
