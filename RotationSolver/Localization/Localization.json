@@ -425,5 +425,10 @@
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Rotations_UserName": "User Name",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Rotations_Repository": "Repository",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Rotations_FileName": "File Name",
-  "RotationSolver.Basic.Data.UiString.Rotation_Rate": "There are still {0}s left to rate."
+  "RotationSolver.Basic.Data.UiString.Rotation_Rate": "There are still {0}s left to rate.",
+  "RotationSolver.Basic.Data.UiString.SpecialCommandType_Smart": "Auto Target ",
+  "RotationSolver.Basic.Configuration.ConfigsName.IWannaBeSaidHello": "I wanna be said hello",
+  "RotationSolver.Basic.Data.UiString.CantUseInPvP": "The pvp feature can only be used when your config \"{0}\" is on!",
+  "RotationSolver.Basic.Data.UiString.SpecialCommandType_Off": "Off",
+  "RotationSolver.Basic.Data.UiString.SpecialCommandType_Cancel": "Cancel"
 }
