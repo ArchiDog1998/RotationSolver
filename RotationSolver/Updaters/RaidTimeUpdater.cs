@@ -8,7 +8,6 @@ using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.UI;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 using XIVConfigUI;
 
 namespace RotationSolver.Updaters;

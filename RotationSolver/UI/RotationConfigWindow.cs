@@ -797,6 +797,46 @@ public class RotationConfigWindow : ConfigWindow
             var rotation = DataCenter.RightNowRotation;
             if (rotation == null) return;
 
+            var ratings = DownloadHelper.GetRating(rotation.GetType());
+
+            var rate = "??";
+
+            if (ratings.Count > 0)
+            {
+                rate = ratings.Sum(i => Math.Min(Math.Max((byte)1, i.Value), (byte)10) / (double)ratings.Count).ToString("F1");
+            }
+
+            ImGui.Text($"RATING:{rate}/10");
+
+            ImGui.SameLine();
+
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Star))
+            {
+                ImGui.OpenPopup("Rotation Solver Rating");
+            }
+
+            using(var popup = ImRaii.Popup("Rotation Solver Rating"))
+            {
+                ImGui.Text("Your rate");
+
+                for (byte i = 1; i < 11; i++)
+                {
+                    if (ImGui.Button($"{i}##My Rating Value"))
+                    {
+                        GithubRecourcesHelper.ModifyYourRate(rotation.GetType(), i);
+                    }
+                    ImGui.SameLine();
+                }
+            }
+
+            if (Player.Available && ratings.TryGetValue(Player.Object.EncryptString(), out var myRate))
+            {
+                ImGui.SameLine();
+                ImGui.Text($"Your Rate:{myRate}/10");
+            }
+
+            ImGui.Separator();
+
             ImGui.TextWrapped(UiString.ConfigWindow_Rotation_Rating_Description.Local());
 
             if (DrawRating((float)rotation.AverageCountOfLastUsing, rotation.MaxCountOfLastUsing, 10))
@@ -878,8 +918,6 @@ public class RotationConfigWindow : ConfigWindow
 
                 return result;
             }
-
-
         }
 
         private static float _groupWidth = 100;
