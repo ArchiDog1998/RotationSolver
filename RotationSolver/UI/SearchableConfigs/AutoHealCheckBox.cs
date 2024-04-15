@@ -1,5 +1,4 @@
 ﻿using RotationSolver.Basic.Configuration;
-using RotationSolver.Data;
 using RotationSolver.Localization;
 using System.Linq;
 using XIVConfigUI;

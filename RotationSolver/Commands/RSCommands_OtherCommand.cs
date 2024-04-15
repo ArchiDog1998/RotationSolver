@@ -1,5 +1,4 @@
 ﻿using ECommons.DalamudServices;
-using RotationSolver.Data;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 

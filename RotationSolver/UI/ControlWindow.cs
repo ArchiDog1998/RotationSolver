@@ -4,7 +4,6 @@ using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using RotationSolver.Commands;
-using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using XIVConfigUI;

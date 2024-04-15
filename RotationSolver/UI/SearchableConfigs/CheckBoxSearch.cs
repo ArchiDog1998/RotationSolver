@@ -1,6 +1,5 @@
 ﻿using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
-using RotationSolver.Data;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
 

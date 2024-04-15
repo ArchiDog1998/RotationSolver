@@ -5,7 +5,6 @@ using ECommons.DalamudServices;
 using ECommons.LanguageHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
-using RotationSolver.Data;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
 

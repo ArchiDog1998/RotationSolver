@@ -1,5 +1,4 @@
-﻿using RotationSolver.Data;
-using XIVConfigUI;
+﻿using XIVConfigUI;
 
 namespace RotationSolver.Localization;
 
