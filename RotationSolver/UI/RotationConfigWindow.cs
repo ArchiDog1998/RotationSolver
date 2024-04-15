@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -20,6 +21,7 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Xml.Linq;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
 using XIVDrawer;
@@ -47,6 +49,12 @@ public class RotationConfigWindow : ConfigWindow
         : base(typeof(RotationConfigWindow).Assembly.GetName())
     {
         Size = new Vector2(740f, 490f);
+
+        ImGuiHelper.GetFont(FontSize.Third, GameFontFamily.Axis);
+        ImGuiHelper.GetFont(FontSize.Forth, GameFontFamily.Axis);
+        ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.Axis);
+        ImGuiHelper.GetFont(FontSize.Forth, GameFontFamily.MiedingerMid);
+        ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.MiedingerMid);
     }
 
     public override void OnClose()
@@ -773,6 +781,49 @@ public class RotationConfigWindow : ConfigWindow
             DataCenter.RightNowRotation?.DisplayStatus();
         }
 
+        private static void DrawRate(string name, string rate, int count, Vector4 btnColor, string popId)
+        {
+            using var grp = ImRaii.Group();
+
+            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Third)))
+            {
+                ImGui.TextColored(ImGuiColors.DalamudWhite2, name);
+            }
+
+            ImGui.Spacing();
+
+            using (var color = ImRaii.PushColor(ImGuiCol.Text, btnColor))
+            {
+                using var style = ImRaii.PushColor(ImGuiCol.Button, 0);
+                ImGui.SetWindowFontScale(2f);
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Star, popId))
+                {
+                    ImGui.OpenPopup(popId);
+                }
+                ImGui.SetWindowFontScale(1);
+            }
+
+            ImGui.SameLine();
+
+            using var gp = ImRaii.Group();
+            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Forth, Dalamud.Interface.GameFonts.GameFontFamily.MiedingerMid)))
+            {
+                ImGui.Text(rate);
+            }
+
+            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fifth, Dalamud.Interface.GameFonts.GameFontFamily.MiedingerMid)))
+            {
+                ImGui.SameLine();
+                ImGui.SetCursorPos(ImGui.GetCursorPos() + new Vector2(-3, 3));
+                ImGui.TextColored(ImGuiColors.DalamudWhite2, "/10");
+
+                if (count != 0)
+                {
+                    ImGui.TextColored(ImGuiColors.DalamudWhite2, count.ToString("N0"));
+                }
+            }
+        }
+
         private static void DrawRotationConfiguration()
         {
             var rotation = DataCenter.RightNowRotation;
@@ -792,6 +843,7 @@ public class RotationConfigWindow : ConfigWindow
             set.DrawItems(0);
         }
 
+        private static DateTime _nextChangeTime = DateTime.MinValue;
         private static void DrawRotationRating()
         {
             var rotation = DataCenter.RightNowRotation;
@@ -806,33 +858,81 @@ public class RotationConfigWindow : ConfigWindow
                 rate = ratings.Sum(i => Math.Min(Math.Max((byte)1, i.Value), (byte)10) / (double)ratings.Count).ToString("F1");
             }
 
-            ImGui.Text($"RATING:{rate}/10");
-
-            ImGui.SameLine();
-
-            if (ImGuiEx.IconButton(FontAwesomeIcon.Star))
+            float width;
+            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Third)))
             {
-                ImGui.OpenPopup("Rotation Solver Rating");
+                width = ImGui.CalcTextSize("YOUR RATING").X;
             }
 
-            using(var popup = ImRaii.Popup("Rotation Solver Rating"))
+            var wholeWidth = ImGui.GetWindowWidth();
+            ImGuiHelper.DrawItemMiddle(() =>
             {
-                ImGui.Text("Your rate");
+                DrawRate("RS RATING", rate, ratings.Count, ImGuiColors.DalamudYellow, "Rotation Solver All Rating");
 
-                for (byte i = 1; i < 11; i++)
+            }, wholeWidth, width);
+
+            if (Player.Available)
+            {
+                rate = ratings.TryGetValue(Player.Object.EncryptString(), out var str) ? str.ToString("F1") : "??";
+
+                ImGui.NewLine();
+                ImGuiHelper.DrawItemMiddle(() =>
                 {
-                    if (ImGui.Button($"{i}##My Rating Value"))
+                    DrawRate("YOUR RATING", rate, 0, ImGuiColors.TankBlue, "Rotation Solver Your Rating");
+                }, wholeWidth, width);
+            }
+
+            using (var popup = ImRaii.Popup("Rotation Solver All Rating"))
+            {
+                if (popup.Success)
+                {
+                    var count = (float)ratings.Count;
+                    foreach (var item in ratings.GroupBy(i => i.Value).OrderByDescending(g => g.Key))
                     {
-                        GithubRecourcesHelper.ModifyYourRate(rotation.GetType(), i);
+                        using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.MiedingerMid)))
+                        {
+                            ImGui.Text(item.Key.ToString());
+                        }
+
+                        ImGui.SameLine();
+
+                        var c = item.Count();
+                        var r = c / count;
+
+                        using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Sixth, GameFontFamily.MiedingerMid)))
+                        {
+                            ImGui.ProgressBar(r, new(400, 20), $"{r:P1}({c:N0})");
+                        }
                     }
-                    ImGui.SameLine();
                 }
             }
 
-            if (Player.Available && ratings.TryGetValue(Player.Object.EncryptString(), out var myRate))
+            using (var popup = ImRaii.Popup("Rotation Solver Your Rating"))
             {
-                ImGui.SameLine();
-                ImGui.Text($"Your Rate:{myRate}/10");
+                if (popup.Success)
+                {
+                    var time = _nextChangeTime - DateTime.Now;
+
+                    if(time > TimeSpan.Zero)
+                    {
+                        using var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.Axis));
+                        ImGui.TextColored(ImGuiColors.DalamudRed, string.Format(UiString.Rotation_Rate.Local(), (int)time.TotalSeconds));
+                    }
+                    else
+                    {
+                        using var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Forth, GameFontFamily.MiedingerMid));
+                        for (byte i = 1; i < 11; i++)
+                        {
+                            if (ImGui.Button($"{i}##My Rating Value"))
+                            {
+                                GithubRecourcesHelper.ModifyYourRate(rotation.GetType(), i);
+                                DownloadHelper.ModifyMyRate(i);
+                                _nextChangeTime = DateTime.Now + TimeSpan.FromMinutes(1);
+                            }
+                            ImGui.SameLine();
+                        }
+                    }
+                }
             }
 
             ImGui.Separator();
