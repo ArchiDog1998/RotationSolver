@@ -155,4 +155,9 @@ partial class CustomRotation : ICustomRotation
     /// The things on territory changed.
     /// </summary>
     public virtual void OnTerritoryChanged() { }
+
+    /// <summary>
+    /// Creates a system warning to display to the end-user
+    /// </summary>
+    public void CreateSystemWarning(string warning) => WarningHelper.AddSystemWarning(warning);
 }
