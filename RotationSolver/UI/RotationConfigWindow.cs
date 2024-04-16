@@ -21,6 +21,7 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System.Diagnostics;
+using ECommons.Logging;
 using XIVPainter;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
@@ -1175,20 +1176,13 @@ public partial class RotationConfigWindow : Window
 
             if (config is RotationConfigCombo c)
             {
-                var val = int.Parse(c.Value);
-                ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.Items[val]).X + 50 * Scale);
-                var openCombo = ImGui.BeginCombo(name, c.Items[val]);
-                ImGuiHelper.ReactPopup(key, command, Reset);
-                if (openCombo)
+                var names = c.DisplayValues;
+                var selectedValue = c.selectedIdx;
+                
+                ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.DisplayValues.OrderByDescending(v => v.Length).First()).X + 50 * Scale);
+                if (ImGui.Combo(name, ref selectedValue, names, names.Length))
                 {
-                    for (int comboIndex = 0; comboIndex < c.Items.Length; comboIndex++)
-                    {
-                        if (ImGui.Selectable(c.Items[comboIndex]))
-                        {
-                            config.Value = comboIndex.ToString();
-                        }
-                    }
-                    ImGui.EndCombo();
+                    c.selectedIdx = selectedValue;
                 }
             }
             else if (config is RotationConfigBoolean b)
