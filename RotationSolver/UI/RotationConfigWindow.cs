@@ -527,7 +527,7 @@ public partial class RotationConfigWindow : Window
                         ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudOrange);
                     if (ImGui.Selectable(rAttr.Name))
                     {
-                        if( DataCenter.IsPvP)
+                        if (DataCenter.IsPvP)
                         {
                             Service.Config.PvPRotationChoice = r.FullName;
                         }
@@ -695,7 +695,42 @@ public partial class RotationConfigWindow : Window
         { UiString.ConfigWindow_About_Compatibility.Local, DrawAboutCompatibility},
         { UiString.ConfigWindow_About_Supporters.Local, DrawAboutSupporters},
         { UiString.ConfigWindow_About_Links.Local, DrawAboutLinks},
+        { UiString.ConfigWindow_About_Warnings.Local, DrawAboutWarnings},
     });
+
+    private static void DrawAboutWarnings()
+    {
+        if (DataCenter.SystemWarnings.Any())
+        {
+            using var table = ImRaii.Table("System Warnings", 2, ImGuiTableFlags.BordersInner);
+            if (table)
+            {
+                ImGui.TableSetupScrollFreeze(0, 1);
+                ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_About_Warnings_Time.Local());
+
+                ImGui.TableNextColumn();
+                ImGui.TableHeader(UiString.ConfigWindow_About_Warnings_Warning.Local());
+
+                foreach (var warning in DataCenter.SystemWarnings)
+                {
+                    ImGui.TableNextRow();
+                    ImGui.TableNextColumn();
+
+                    ImGui.Text(warning.Value.ToString());
+
+                    ImGui.TableNextColumn();
+                    ImGui.TextWrapped(warning.Key);
+                }
+            }
+        }
+        else
+        {
+            ImGui.Text("No warnings present. Happy rotating!");
+        }
+    }
 
     private static void DrawAboutMacros()
     {
@@ -1699,7 +1734,7 @@ public partial class RotationConfigWindow : Window
 
                 ImGui.TableNextColumn();
 
-                if(!string.IsNullOrEmpty(info.GitHubUserName) && !string.IsNullOrEmpty(info.GitHubRepository) && !string.IsNullOrEmpty(info.FilePath))
+                if (!string.IsNullOrEmpty(info.GitHubUserName) && !string.IsNullOrEmpty(info.GitHubRepository) && !string.IsNullOrEmpty(info.FilePath))
                 {
                     DrawGitHubBadge(info.GitHubUserName, info.GitHubRepository, info.FilePath);
                 }
@@ -2190,7 +2225,7 @@ public partial class RotationConfigWindow : Window
                         if (selected)
                         {
                             actions.Add(action.RowId);
-                            OtherConfiguration.Save(); 
+                            OtherConfiguration.Save();
                             ImGui.CloseCurrentPopup();
                         }
                     }

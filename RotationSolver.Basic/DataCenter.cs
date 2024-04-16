@@ -66,6 +66,8 @@ internal static class DataCenter
     public static ICustomRotation? RightNowRotation { get; internal set; }
     public static DutyRotation? RightNowDutyRotation { get; internal set; }
 
+    public static Dictionary<string, DateTime> SystemWarnings { get; set; } = new();
+
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
         || !Service.Config.PoslockCasting
         //Key cancel.
