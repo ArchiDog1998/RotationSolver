@@ -33,6 +33,7 @@ internal static class PreviewUpdater
             }
             catch
             {
+                WarningHelper.AddSystemWarning($"Unable to add server bar entry");
                 return;
             }
 
