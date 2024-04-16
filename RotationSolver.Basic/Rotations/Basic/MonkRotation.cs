@@ -109,6 +109,11 @@ partial class MonkRotation
         setting.UnlockedByQuestID = 66598;
     }
 
+    static partial void ModifyThunderclapPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     static partial void ModifyMeditationPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 66094;
