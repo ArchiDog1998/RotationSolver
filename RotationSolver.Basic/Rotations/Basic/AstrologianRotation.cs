@@ -52,6 +52,11 @@ partial class AstrologianRotation
         setting.TargetStatusProvide = [StatusID.Intersection];
     }
 
+    static partial void ModifyCelestialOppositionPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67561;
+    }
+
     static partial void ModifyExaltationPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = [StatusID.Exaltation];
@@ -60,6 +65,7 @@ partial class AstrologianRotation
     static partial void ModifyCollectiveUnconsciousPvE(ref ActionSetting setting)
     {
         setting.TargetStatusProvide = [StatusID.CollectiveUnconscious];
+        setting.UnlockedByQuestID = 67560;
     }
 
     static partial void ModifyAstrodynePvE(ref ActionSetting setting)
@@ -80,11 +86,13 @@ partial class AstrologianRotation
     {
         setting.StatusNeed = [StatusID.ClarifyingDraw];
         setting.ActionCheck = () => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard));
+        setting.UnlockedByQuestID = 67551;
     }
 
     static partial void ModifyMinorArcanaPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InCombat;
+        setting.UnlockedByQuestID = 67949;
     }
 
     static partial void ModifyAspectedHeliosPvE(ref ActionSetting setting)
@@ -119,6 +127,7 @@ partial class AstrologianRotation
         {
             AoeCount = 2,
         };
+        setting.UnlockedByQuestID = 67553;
     }
 
     static partial void ModifyTheArrowPvE(ref ActionSetting setting)
@@ -183,6 +192,16 @@ partial class AstrologianRotation
         {
             TimeToKill = 15,
         };
+    }
+
+    static partial void ModifySynastryPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67554;
+    }
+
+    static partial void ModifyMaleficIiPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67558;
     }
 
     /// <summary>

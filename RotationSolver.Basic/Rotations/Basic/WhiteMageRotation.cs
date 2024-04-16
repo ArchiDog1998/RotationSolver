@@ -54,11 +54,13 @@ partial class WhiteMageRotation
             StatusID.Regen_897,
             StatusID.Regen_1330,
         ];
+        setting.UnlockedByQuestID = 66616;
     }
 
     static partial void ModifyHolyPvE(ref ActionSetting setting)
     {
         setting.IsFriendly = false;
+        setting.UnlockedByQuestID = 66619;
     }
 
     static partial void ModifyHolyIiiPvE(ref ActionSetting setting)
@@ -103,10 +105,52 @@ partial class WhiteMageRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 66615;
     }
 
     static partial void ModifyCureIiiPvP(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.CureIiiReady];
+        setting.UnlockedByQuestID = 66617;
+    }
+
+    static partial void ModifyCureIiPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65977;
+    }
+
+    static partial void ModifyBenedictionPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66620;
+    }
+
+    static partial void ModifyAsylumPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67256;
+    }
+
+    static partial void ModifyStoneIiiPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67257;
+    }
+
+    static partial void ModifyAssizePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67258;
+    }
+
+    static partial void ModifyThinAirPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67259;
+    }
+
+    static partial void ModifyTetragrammatonPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67261;
+    }
+
+    static partial void ModifyPlenaryIndulgencePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67954;
     }
 }

@@ -140,6 +140,11 @@ partial class GunbreakerRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
+    static partial void ModifyContinuationPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 68802;
+    }
+
     /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {

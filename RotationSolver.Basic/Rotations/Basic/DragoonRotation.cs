@@ -54,21 +54,25 @@ partial class DragoonRotation
     static partial void ModifyFangAndClawPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.FangAndClawBared];
+        setting.UnlockedByQuestID = 67229;
     }
 
     static partial void ModifyWheelingThrustPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.WheelInMotion];
+        setting.UnlockedByQuestID = 67230;
     }
 
     static partial void ModifyPiercingTalonPvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MeleeRange;
+        setting.UnlockedByQuestID = 65591;
     }
 
     static partial void ModifyJumpPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.DiveReady];
+        setting.UnlockedByQuestID = 66603;
     }
 
     static partial void ModifyHighJumpPvE(ref ActionSetting setting)
@@ -89,6 +93,7 @@ partial class DragoonRotation
     static partial void ModifyNastrondPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => JobGauge.IsLOTDActive;
+        setting.UnlockedByQuestID = 68450;
     }
 
     static partial void ModifyStardiverPvE(ref ActionSetting setting)
@@ -113,6 +118,7 @@ partial class DragoonRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 65975;
     }
 
     static partial void ModifyDragonSightPvE(ref ActionSetting setting)
@@ -131,6 +137,32 @@ partial class DragoonRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 67226;
+    }
+
+    static partial void ModifyElusiveJumpPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66604;
+    }
+
+    static partial void ModifyDoomSpikePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66605;
+    }
+
+    static partial void ModifySpineshatterDivePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66607;
+    }
+
+    static partial void ModifyDragonfireDivePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66608;
+    }
+
+    static partial void ModifyGeirskogulPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67231;
     }
 
     /// <inheritdoc/>

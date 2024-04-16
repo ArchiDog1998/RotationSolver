@@ -60,6 +60,15 @@ internal enum UiString
     [Description("Links")]
     ConfigWindow_About_Links,
 
+    [Description("System Warnings")]
+    ConfigWindow_About_Warnings,
+
+    [Description("Warning Message")]
+    ConfigWindow_About_Warnings_Warning,
+
+    [Description("Warning Time")]
+    ConfigWindow_About_Warnings_Time,
+
     [Description("Please don't relog without closing the game. Crashes may occur.")]
     ConfigWindow_About_Compatibility_Others,
 

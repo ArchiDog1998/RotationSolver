@@ -140,6 +140,7 @@ partial class ReaperRotation
     {
         setting.StatusProvide = [StatusID.Enshrouded];
         setting.ActionCheck = () => !HasEnshrouded && !HasSoulReaver && Soul >= 50;
+        setting.UnlockedByQuestID = 69614;
     }
 
     static partial void ModifyCommunioPvE(ref ActionSetting setting)

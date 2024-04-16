@@ -131,11 +131,17 @@ partial class RedMageRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 68118;
     }
 
     static partial void ModifyCorpsacorpsPvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifyVerholyPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 68123;
     }
 
     /// <inheritdoc/>

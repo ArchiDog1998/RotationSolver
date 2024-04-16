@@ -38,11 +38,13 @@ partial class NinjaRotation
     static partial void ModifyArmorCrushPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HutonEndAfter(25) && !HutonEndAfterGCD();
+        setting.UnlockedByQuestID = 67221;
     }
 
     static partial void ModifyHuraijinPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HutonEndAfterGCD();
+        setting.UnlockedByQuestID = 67224;
     }
 
     static partial void ModifyPhantomKamaitachiPvE(ref ActionSetting setting)
@@ -98,11 +100,13 @@ partial class NinjaRotation
     {
         setting.StatusProvide = [StatusID.Kassatsu, StatusID.TenChiJin];
         setting.ActionCheck = () => !HutonEndAfterGCD(2);
+        setting.UnlockedByQuestID = 68488;
     }
 
     static partial void ModifyKassatsuPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.Kassatsu, StatusID.TenChiJin];
+        setting.UnlockedByQuestID = 65770;
     }
 
     static partial void ModifyHutonPvE(ref ActionSetting setting)
@@ -118,6 +122,32 @@ partial class NinjaRotation
     static partial void ModifyShukuchiPvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
+        setting.UnlockedByQuestID = 65752;
+    }
+
+    static partial void ModifyTenPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65748;
+    }
+
+    static partial void ModifyChiPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65750;
+    }
+
+    static partial void ModifyJinPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65768;
+    }
+
+    static partial void ModifyHakkeMujinsatsuPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67220;
+    }
+
+    static partial void ModifyDreamWithinADreamPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67222;
     }
 
     /// <summary>
