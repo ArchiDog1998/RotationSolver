@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Keys;
+﻿using System.Diagnostics;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
@@ -10,8 +11,9 @@ using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
-using ExCSS;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
@@ -20,11 +22,11 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
-using System.Diagnostics;
-using ECommons.Logging;
 using XIVPainter;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
+using Status = Lumina.Excel.GeneratedSheets.Status;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
+using Task = System.Threading.Tasks.Task;
 
 namespace RotationSolver.UI;
 
@@ -1503,8 +1505,8 @@ public partial class RotationConfigWindow : Window
                     ImGui.Text("ID: " + action.Info.ID.ToString());
 #if DEBUG
                     ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
-                    ImGui.Text("Resources: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->CheckActionResources(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
-                    ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
+                    ImGui.Text("Resources: " + ActionManager.Instance()->CheckActionResources(ActionType.Action, action.AdjustedID).ToString());
+                    ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Action, action.AdjustedID).ToString());
                     ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
                     ImGui.Text("MP: " + action.Info.MPNeed.ToString());
 #endif
@@ -1528,9 +1530,9 @@ public partial class RotationConfigWindow : Window
             {
                 try
                 {
-                    ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID).ToString());
-                    ImGui.Text("Status HQ: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID + 1000000).ToString());
-                    var remain = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTime(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID) - FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetRecastTimeElapsed(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Item, item.ID);
+                    ImGui.Text("Status: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID).ToString());
+                    ImGui.Text("Status HQ: " + ActionManager.Instance()->GetActionStatus(ActionType.Item, item.ID + 1000000).ToString());
+                    var remain = ActionManager.Instance()->GetRecastTime(ActionType.Item, item.ID) - ActionManager.Instance()->GetRecastTimeElapsed(ActionType.Item, item.ID);
                     ImGui.Text("remain: " + remain.ToString());
                     ImGui.Text("CanUse: " + item.CanUse(out _, true).ToString());
 
@@ -2342,7 +2344,7 @@ public partial class RotationConfigWindow : Window
                     =
                     [
                         .. pts,
-                        FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
+                        Framework.Instance()->BGCollisionModule
                             ->RaycastEx(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
                     ];
                     OtherConfiguration.SaveBeneficialPositions();
