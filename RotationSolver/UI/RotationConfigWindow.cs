@@ -61,51 +61,33 @@ public partial class RotationConfigWindow : Window
         using var style = ImRaii.PushStyle(ImGuiStyleVar.SelectableTextAlign, new Vector2(0.5f, 0.5f));
         try
         {
-            var leftTop = ImGui.GetWindowPos() + ImGui.GetCursorPos();
-            var rightDown = leftTop + ImGui.GetWindowSize();
-            var screenSize = ImGuiHelpers.MainViewport.Size;
-            if ((leftTop.X <= 0 || leftTop.Y <= 0 || rightDown.X >= screenSize.X || rightDown.Y >= screenSize.Y)
-                && !ImGui.GetIO().ConfigFlags.HasFlag(ImGuiConfigFlags.ViewportsEnable))
+            using var table = ImRaii.Table("Rotation Config Table", 2, ImGuiTableFlags.Resizable);
+            if (table)
             {
-                var str = string.Empty;
-                for (int i = 0; i < 150; i++)
+                ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+                ImGui.TableNextColumn();
+
+                try
                 {
-                    str += "Move away! Don't crash! ";
+                    DrawSideBar();
+                }
+                catch (Exception ex)
+                {
+                    Svc.Log.Warning(ex, "Something wrong with sideBar");
                 }
 
-                using var font = ImRaii.PushFont(DrawingExtensions.GetFont(24));
-                using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-                ImGui.TextWrapped(str);
-            }
-            else
-            {
-                using var table = ImRaii.Table("Rotation Config Table", 2, ImGuiTableFlags.Resizable);
-                if (table)
+                ImGui.TableNextColumn();
+
+                try
                 {
-                    ImGui.TableSetupColumn("Rotation Config Side Bar", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
-                    ImGui.TableNextColumn();
-
-                    try
-                    {
-                        DrawSideBar();
-                    }
-                    catch (Exception ex)
-                    {
-                        Svc.Log.Warning(ex, "Something wrong with sideBar");
-                    }
-
-                    ImGui.TableNextColumn();
-
-                    try
-                    {
-                        DrawBody();
-                    }
-                    catch (Exception ex)
-                    {
-                        Svc.Log.Warning(ex, "Something wrong with body");
-                    }
+                    DrawBody();
+                }
+                catch (Exception ex)
+                {
+                    Svc.Log.Warning(ex, "Something wrong with body");
                 }
             }
+
         }
         catch (Exception ex)
         {
