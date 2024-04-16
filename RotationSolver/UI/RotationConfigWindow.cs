@@ -451,6 +451,17 @@ public class RotationConfigWindow : ConfigWindow
             }, width, ImGui.CalcTextSize(countStr).X);
         }
 
+        if (!DownloadHelper.IsSupporter)
+        {
+            var notSupporter = UiString.NotSupporterWarning.Local();
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+                ImGui.TextWrapped(notSupporter);
+            }, width, ImGui.CalcTextSize(notSupporter).X);
+        }
+
         _aboutHeaders.Draw();
     }
 
@@ -806,12 +817,12 @@ public class RotationConfigWindow : ConfigWindow
             ImGui.SameLine();
 
             using var gp = ImRaii.Group();
-            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Forth, Dalamud.Interface.GameFonts.GameFontFamily.MiedingerMid)))
+            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Forth, GameFontFamily.MiedingerMid)))
             {
                 ImGui.Text(rate);
             }
 
-            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fifth, Dalamud.Interface.GameFonts.GameFontFamily.MiedingerMid)))
+            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.MiedingerMid)))
             {
                 ImGui.SameLine();
                 ImGui.SetCursorPos(ImGui.GetCursorPos() + new Vector2(-3, 3));

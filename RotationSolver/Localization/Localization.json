@@ -659,5 +659,8 @@
   "RotationSolver.Basic.Data.TargetingType.LowMaxHP": "Low Max HP",
   "XIVConfigUI.ConfigUnitType.None": "None",
   "XIVConfigUI.ConfigUnitType.Yalms": "Distance Unit, in yalms.",
-  "XIVConfigUI.ConfigUnitType.Pixels": "Display Unit, in pixels."
+  "XIVConfigUI.ConfigUnitType.Pixels": "Display Unit, in pixels.",
+  "RotationSolver.Basic.Data.UiString.AddedYourHash": "Your hash has been added. \nIf you want to remove it, please disable \"{0}\".",
+  "RotationSolver.Basic.Data.UiString.RemovedYourHash": "Your hash has beed removed.",
+  "RotationSolver.Basic.Data.UiString.NotSupporterWarning": "You are not the Supporter, some features are NOT available."
 }
