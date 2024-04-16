@@ -158,6 +158,7 @@ public static partial class RSCommands
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, "Pulse Failed!");
+            WarningHelper.AddSystemWarning($"Action bar failed to pulse because: {ex.Message}");
         }
         finally { started = false; }
         started = false;

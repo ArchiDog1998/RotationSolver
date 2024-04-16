@@ -122,6 +122,7 @@ internal static class ActionUpdater
         }
         catch (Exception ex)
         {
+            WarningHelper.AddSystemWarning($"Failed to update the next action in the rotation because: {ex.Message}");
             Svc.Log.Error(ex, "Failed to update next action.");
         }
 

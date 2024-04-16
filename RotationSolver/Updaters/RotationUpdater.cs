@@ -61,6 +61,7 @@ internal static class RotationUpdater
         }
         catch (Exception ex)
         {
+            WarningHelper.AddSystemWarning($"Failed to load rotations because: {ex.Message}");
             Svc.Log.Error(ex, "Failed to get custom rotations");
         }
         finally
