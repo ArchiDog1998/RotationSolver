@@ -174,6 +174,11 @@ partial class NinjaRotation
         };
     }
 
+    static partial void ModifyShukuchiPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.ShukuchiPvE)]
     protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)

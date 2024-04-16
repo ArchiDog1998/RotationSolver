@@ -80,6 +80,11 @@ partial class DragoonRotation
         setting.StatusProvide = [StatusID.DiveReady];
     }
 
+    static partial void ModifyHighJumpPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     static partial void ModifyMirageDivePvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.DiveReady];

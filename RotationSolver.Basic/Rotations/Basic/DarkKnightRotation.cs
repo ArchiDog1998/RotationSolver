@@ -154,6 +154,11 @@ partial class DarkKnightRotation
         setting.UnlockedByQuestID = 67597;
     }
 
+    static partial void ModifyPlungePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     static partial void ModifyFloodOfDarknessPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 67590;

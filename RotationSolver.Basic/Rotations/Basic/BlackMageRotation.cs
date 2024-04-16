@@ -286,4 +286,8 @@ partial class BlackMageRotation
         if (AetherialManipulationPvE.CanUse(out act)) return true;
         return base.MoveForwardGCD(out act);
     }
+    static partial void ModifyAetherialManipulationPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
 }

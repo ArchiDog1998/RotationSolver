@@ -173,6 +173,11 @@ partial class SamuraiRotation
         setting.ActionCheck = () => Kenki >= 25;
     }
 
+    static partial void ModifyHissatsuSotenPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.HissatsuGyotenPvE)]
     protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)

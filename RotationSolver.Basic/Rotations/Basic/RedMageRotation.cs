@@ -139,6 +139,11 @@ partial class RedMageRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
+    static partial void ModifyCorpsacorpsPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     static partial void ModifyVerholyPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 68123;

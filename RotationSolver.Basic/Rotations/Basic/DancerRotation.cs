@@ -121,6 +121,11 @@ partial class DancerRotation
         setting.IsFriendly = true;
     }
 
+    static partial void ModifyEnAvantPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     static partial void ModifyShieldSambaPvE(ref ActionSetting setting)
     {
         setting.StatusFromSelf = false;
