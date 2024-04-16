@@ -647,5 +647,8 @@
   "XIVConfigUI.LocalString.Search": "Search",
   "XIVConfigUI.LocalString.ExecuteCommand": "Execute \"{0}\"",
   "XIVConfigUI.LocalString.CopyCommand": "Copy \"{0}\"",
-  "RotationSolver.Basic.Configuration.ConfigsName.WindowPadding": "The window padding for icons."
+  "RotationSolver.Basic.Configuration.ConfigsName.WindowPadding": "The window padding for icons.",
+  "RotationSolver.Basic.Configuration.ConfigsName.ShowUsersIcons": "Shows the RS user's icon.",
+  "RotationSolver.Basic.Configuration.ConfigsName.UserIconHeight": "User Icon height from position",
+  "RotationSolver.Basic.Configuration.ConfigsName.UserIconSize": "User Icon size"
 }

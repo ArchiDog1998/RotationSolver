@@ -136,6 +136,7 @@ internal class SocialUpdater
     }
 
     private static readonly ChatEntityComparer _comparer = new();
+    internal static readonly List<PlayerCharacter> _users = [];
     private static async void SayHelloToUsers()
     {
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
@@ -159,6 +160,7 @@ internal class SocialUpdater
             .Where(p => DownloadHelper.UsersHash.Contains(p.Item2))
             .Select(p => new UserChatEntity(p.player, p.Item2)), _comparer);
 
+        _users.Clear();
         foreach (var entity in entities)
         {
             while (!entity.CanTarget && !DataCenter.InCombat)
@@ -167,6 +169,7 @@ internal class SocialUpdater
             }
 
             Svc.Targets.Target = entity.player;
+            _users.Add(entity.player);
 
             if (Service.Config.SayHelloToAll && !saidAuthors.Contains(entity.Hash)
                 && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(entity.Hash))

@@ -44,6 +44,7 @@ internal static class PainterManager
     readonly static Drawing3DCircularSector[] BeneficialItems = new Drawing3DCircularSector[64];
     readonly static Drawing3DText[] TargetTexts = new Drawing3DText[64];
     readonly static Drawing3DImage[] TargetsDrawings = new Drawing3DImage[64];
+    readonly static Drawing3DImage[] UsersDrawings = new Drawing3DImage[64];
 
     public static void Init()
     {
@@ -55,6 +56,14 @@ internal static class PainterManager
         for (int i = 0; i < TargetsDrawings.Length; i++)
         {
             TargetsDrawings[i] = new Drawing3DImage(null, Vector3.Zero)
+            {
+                Enable = false,
+                MustInViewRange = true,
+            };
+        }
+        for (int i = 0; i < UsersDrawings.Length; i++)
+        {
+            UsersDrawings[i] = new Drawing3DImage(null, Vector3.Zero)
             {
                 Enable = false,
                 MustInViewRange = true,
@@ -152,6 +161,7 @@ internal static class PainterManager
         UpdateTargetTexts();
         UpdateTarget();
         UpdateHostileIcons();
+        UpdateUsersIcons();
         UpdateBeneficial();
     }
 
@@ -235,13 +245,41 @@ internal static class PainterManager
         {
             if (TargetsDrawings[i] is not Drawing3DImage item) continue;
 
-            var ojb = DataCenter.AllHostileTargets[i];
+            var obj = DataCenter.AllHostileTargets[i];
 
             item.Enable = true;
             item.Image = hostileIcon;
-            item.Position = ojb.Position + new Vector3(0,
+            item.Position = obj.Position + new Vector3(0,
                     Service.Config.HostileIconHeight, 0);
             item.Size = Service.Config.HostileIconSize;
+        }
+    }
+
+    private static unsafe void UpdateUsersIcons()
+    {
+        foreach (var item in UsersDrawings)
+        {
+            item.Enable = false;
+        }
+
+        if (!Service.Config.ShowUsersIcons)
+        {
+            return;
+        }
+
+        if (!ImageLoader.GetTexture(61551, out var hostileIcon)) return;
+
+        for (int i = 0; i < Math.Min(UsersDrawings.Length, SocialUpdater._users.Count); i++)
+        {
+            if (UsersDrawings[i] is not Drawing3DImage item) continue;
+
+            var obj = SocialUpdater._users[i];
+
+            item.Enable = true;
+            item.Image = hostileIcon;
+            item.Position = obj.Position + new Vector3(0,
+                    Service.Config.UserIconHeight, 0);
+            item.Size = Service.Config.UserIconSize;
         }
     }
 
