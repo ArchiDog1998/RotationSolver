@@ -147,6 +147,7 @@ internal static class PainterManager
         XIVDrawerMain.SampleLength = Service.Config.SampleLength;
         XIVDrawerMain.UseTaskToAccelerate = Service.Config.UseTasksForOverlay;
         XIVDrawerMain.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
+        XIVDrawerMain.ViewPadding = Service.Config.WindowPadding;
 
         UpdateTargetTexts();
         UpdateTarget();

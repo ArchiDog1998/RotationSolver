@@ -6,9 +6,6 @@ using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Configuration.Timeline;
-using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
-using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.UI;
@@ -34,7 +31,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
-        XIVConfigUIMain.Init(pluginInterface, Service.COMMAND, "Open config window.", RSCommands.DoOneCommand);
+        XIVConfigUIMain.Init(pluginInterface, Service.COMMAND, "Open config window.", RSCommands.DoOneCommand,
+            typeof(Configs), typeof(UiString));
         XIVConfigUIMain.ShowTooltip = () => Service.Config.ShowTooltips;
 
         _dis.Add(new Service());
