@@ -650,5 +650,14 @@
   "RotationSolver.Basic.Configuration.ConfigsName.WindowPadding": "The window padding for icons.",
   "RotationSolver.Basic.Configuration.ConfigsName.ShowUsersIcons": "Shows the RS user's icon.",
   "RotationSolver.Basic.Configuration.ConfigsName.UserIconHeight": "User Icon height from position",
-  "RotationSolver.Basic.Configuration.ConfigsName.UserIconSize": "User Icon size"
+  "RotationSolver.Basic.Configuration.ConfigsName.UserIconSize": "User Icon size",
+  "RotationSolver.Basic.Data.TargetingType.Big": "Big",
+  "XIVConfigUI.ConfigUnitType.Degree": "Angle Unit, in degrees.",
+  "RotationSolver.Basic.Data.TargetingType.HighHP": "High HP",
+  "RotationSolver.Basic.Data.TargetingType.LowHP": "Low HP",
+  "RotationSolver.Basic.Data.TargetingType.HighMaxHP": "High Max HP",
+  "RotationSolver.Basic.Data.TargetingType.LowMaxHP": "Low Max HP",
+  "XIVConfigUI.ConfigUnitType.None": "None",
+  "XIVConfigUI.ConfigUnitType.Yalms": "Distance Unit, in yalms.",
+  "XIVConfigUI.ConfigUnitType.Pixels": "Display Unit, in pixels."
 }
