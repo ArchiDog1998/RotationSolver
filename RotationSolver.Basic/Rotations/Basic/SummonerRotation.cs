@@ -313,9 +313,4 @@ partial class SummonerRotation
         if (CrimsonCyclonePvE.CanUse(out act)) return true;
         return base.MoveForwardAbility(nextGCD, out act);
     }
-
-    static partial void ModifyCrimsonCyclonePvP(ref ActionSetting setting)
-    {
-        setting.SpecialType = SpecialActionType.MovingForward;
-    }
 }
