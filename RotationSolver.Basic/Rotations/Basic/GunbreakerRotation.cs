@@ -140,6 +140,11 @@ partial class GunbreakerRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
+    static partial void ModifyRoughDividePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     static partial void ModifyContinuationPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 68802;

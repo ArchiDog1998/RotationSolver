@@ -130,6 +130,11 @@ partial class SageRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
+    static partial void ModifyIcarusPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     static partial void ModifyPanhaimaPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 69608;

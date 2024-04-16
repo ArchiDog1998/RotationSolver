@@ -153,4 +153,9 @@ partial class WhiteMageRotation
     {
         setting.UnlockedByQuestID = 67954;
     }
+
+    static partial void ModifySeraphStrikePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
 }

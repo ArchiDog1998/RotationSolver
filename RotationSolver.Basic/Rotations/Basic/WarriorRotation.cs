@@ -36,7 +36,7 @@ partial class WarriorRotation
 
     static partial void ModifyUpheavalPvE(ref ActionSetting setting)
     {
-        //TODO: Why is that status?
+        //TODO: Why is that status? Answer: This is Warrior's 10% damage buff. Don't want to cast Upheaval at the start of combat without the buff. 
         setting.StatusNeed = [StatusID.SurgingTempest];
     }
 
@@ -53,6 +53,11 @@ partial class WarriorRotation
     static partial void ModifyPrimalRendPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.PrimalRendReady];
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifyPrimalRendPvP(ref ActionSetting setting)
+    {
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
@@ -130,6 +135,11 @@ partial class WarriorRotation
     }
 
     static partial void ModifyOnslaughtPvE(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifyOnslaughtPvP(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
     }

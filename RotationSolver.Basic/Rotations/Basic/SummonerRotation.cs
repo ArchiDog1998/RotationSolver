@@ -187,6 +187,11 @@ partial class SummonerRotation
         setting.StatusNeed = [StatusID.IfritsFavor];
     }
 
+    static partial void ModifyCrimsonCyclonePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     static partial void ModifyMountainBusterPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.TitansFavor];
@@ -307,5 +312,10 @@ partial class SummonerRotation
     {
         if (CrimsonCyclonePvE.CanUse(out act)) return true;
         return base.MoveForwardAbility(nextGCD, out act);
+    }
+
+    static partial void ModifyCrimsonCyclonePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 }
