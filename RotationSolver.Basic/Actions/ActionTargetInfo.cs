@@ -394,7 +394,7 @@ public struct ActionTargetInfo(IBaseAction action)
     {
         if (IsSingleTarget || EffectRange <= 0) return canTargets;
         if (!action.Setting.IsFriendly && Service.Config.AoEType == AoEType.Off) return [];
-        if (aoeCount > 1 && Service.Config.AoEType == AoEType.Limited) return [];
+        if (aoeCount > 1 && Service.Config.AoEType == AoEType.Cleave) return [];
 
         List<BattleChara> objectMax = new(canTargets.Count());
 

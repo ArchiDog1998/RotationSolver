@@ -24,12 +24,12 @@ namespace RotationSolver.Basic.Configuration
             /// <summary>
             /// Only single-target AoE.
             /// </summary>
-            Limited = 1,
+            Cleave = 1,
 
             /// <summary>
             /// Full AoE.
             /// </summary>
-            On = 2,
+            Full = 2,
         }
     }
 }

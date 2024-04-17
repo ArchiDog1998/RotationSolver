@@ -39,7 +39,7 @@ internal partial class Configs : IPluginConfiguration
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
 
-    public AoEType AoEType { get; set; } = AoEType.On;
+    public AoEType AoEType { get; set; } = AoEType.Full;
 
     [ConditionBool, UI("Show RSR logo animation",
         Filter = UiWindows)]
