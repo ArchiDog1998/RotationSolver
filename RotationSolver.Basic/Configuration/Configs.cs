@@ -1,6 +1,7 @@
 ﻿using Dalamud.Configuration;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
 
 namespace RotationSolver.Basic.Configuration;
@@ -750,35 +751,25 @@ internal partial class Configs : IPluginConfiguration
     {
 #if DEBUG
         Svc.Log.Information("Saved configurations.");
-
-        Dictionary<uint, Dictionary<float, List<BaseTimelineItem>>> dict = [];
-        foreach((var job, var timelineSet) in this._timelineDict)
-        {
-            foreach ((var id, var timeline) in timelineSet)
-            {
-                var refineTimeline = timeline.Select(i => (i.Key, i.Value.Where(j => j is DrawingTimeline).ToList())).ToDictionary();
-
-                var count = refineTimeline.Sum(i => i.Value.Count);
-
-                if (count == 0) continue;
-
-                if (dict.TryGetValue(id, out var lastTimeline))
-                {
-                    if (lastTimeline.Sum(i => i.Value.Count) >= count)
-                    {
-                        continue;
-                    }
-                }
-                dict[id] = refineTimeline;
-            }
-        }
-        
-        foreach ((var id, var timeline) in dict)
-        {
-            File.WriteAllText(@$"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources\Timelines\{id}.json", JsonConvert.SerializeObject(timeline, Formatting.Indented));
-        }
 #endif
         File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,
             JsonConvert.SerializeObject(this, Formatting.Indented));
+    }
+
+    public static Configs Migrate(Configs oldConfigs)
+    {
+        var newConfigs = new Configs();
+
+        JObject oldJson = JObject.FromObject(oldConfigs);
+        JObject newJson = JObject.FromObject(newConfigs);
+
+        newJson.Merge(oldJson, new JsonMergeSettings
+        {
+            MergeArrayHandling = MergeArrayHandling.Union,
+            MergeNullValueHandling = MergeNullValueHandling.Merge
+        });
+
+        var migratedConfigs = newJson.ToObject<Configs>();
+        return migratedConfigs ?? new Configs();
     }
 }

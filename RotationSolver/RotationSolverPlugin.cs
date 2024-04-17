@@ -45,10 +45,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis.Add(new Service());
         try
         {
-            Service.Config = JsonConvert.DeserializeObject<Configs>(
+            var oldConfigs = JsonConvert.DeserializeObject<Configs>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName),
                 new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())
                 ?? new Configs();
+
+            var newConfigs = Configs.Migrate(oldConfigs);
+            Service.Config = newConfigs;
         }
         catch (Exception ex)
         {
