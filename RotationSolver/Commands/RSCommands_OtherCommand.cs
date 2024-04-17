@@ -40,58 +40,66 @@ public static partial class RSCommands
     private static void DoSettingCommand(string str)
     {
         var strs = str.Split(' ');
+        var settingName = strs[0];
         var value = strs.LastOrDefault();
 
-
-        foreach (var property in typeof(Configs).GetRuntimeProperties()
-            .Where(p => p.GetMethod?.IsPublic ?? false))
+        foreach (var property in typeof(Configs).GetRuntimeProperties().Where(p => p.GetMethod?.IsPublic ?? false))
         {
-            if (!str.StartsWith(property.Name, StringComparison.OrdinalIgnoreCase)) continue;
+            if (!settingName.Equals(property.Name, StringComparison.OrdinalIgnoreCase))
+                continue;
 
             var type = property.PropertyType;
-
             if (type == typeof(ConditionBoolean))
-            {
                 type = typeof(bool);
-            }
 
-            object v;
-            try { v = Convert.ChangeType(value, type); }
-            catch { v = null; }
-
-            if (v == null && type == typeof(bool))
+            object convertedValue = null;
+            try
             {
-                var config = property.GetValue(Service.Config);
-                if (config is ConditionBoolean relay)
+                if (type.IsEnum)
                 {
-                    relay.Value = !relay.Value;
-                    v = relay.Value;
+                    convertedValue = Enum.Parse(type, value, ignoreCase: true);
+                }
+                else
+                {
+                    convertedValue = Convert.ChangeType(value, type);
+                }
+            }
+            catch
+            {
+                if (type == typeof(bool))
+                {
+                    // Toggle the boolean value if no value is specified
+                    var config = property.GetValue(Service.Config) as ConditionBoolean;
+                    if (config != null)
+                    {
+                        config.Value = !config.Value;
+                        convertedValue = config.Value;
+                    }
                 }
             }
 
-            if (property.PropertyType == typeof(ConditionBoolean))
-            {
-                var relay = (ConditionBoolean)property.GetValue(Service.Config)!;
-                relay.Value = (bool)v!;
-                v = relay;
-            }
-
-            if (v == null)
+            if (convertedValue == null)
             {
 #if DEBUG
-                Svc.Chat.Print("Failed to get the value.");
+                Svc.Chat.Print("Failed to parse the value.");
 #endif
                 continue;
             }
 
-            property.SetValue(Service.Config, v);
-            value = v.ToString();   
+            // If it's a ConditionBoolean, handle it specifically
+            if (property.PropertyType == typeof(ConditionBoolean))
+            {
+                var relay = (ConditionBoolean)property.GetValue(Service.Config)!;
+                relay.Value = (bool)convertedValue;
+                convertedValue = relay;
+            }
 
-            //Say out.
+            property.SetValue(Service.Config, convertedValue);
+            value = convertedValue.ToString();
+
+            // Notify the user of the change
             Svc.Chat.Print(string.Format(UiString.CommandsChangeSettingsValue.Local(), property.Name, value));
-
             return;
-
         }
 
         Svc.Chat.PrintError(UiString.CommandsCannotFindConfig.Local());

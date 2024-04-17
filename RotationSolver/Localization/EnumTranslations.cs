@@ -12,7 +12,7 @@ internal static class EnumTranslations
 
     internal static string ToSayout(this StateCommandType type, JobRole role) => type switch
     {
-        StateCommandType.Cancel => UiString.SpecialCommandType_Cancel.Local(),
+        StateCommandType.Off => UiString.SpecialCommandType_Cancel.Local(),
         _ => type.ToStateString(role),
     };
 
@@ -50,7 +50,7 @@ internal static class EnumTranslations
     {
         StateCommandType.Auto => UiString.SpecialCommandType_Smart.Local() + DataCenter.TargetingType.Local(),
         StateCommandType.Manual => UiString.SpecialCommandType_Manual.Local(),
-        StateCommandType.Cancel => UiString.SpecialCommandType_Off.Local(),
+        StateCommandType.Off => UiString.SpecialCommandType_Off.Local(),
         _ => string.Empty,
     };
 }

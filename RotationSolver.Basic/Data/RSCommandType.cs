@@ -99,7 +99,7 @@ public enum StateCommandType : byte
     /// 
     /// </summary>
     [Description("Stop the addon. Always remember to turn it off when it is not in use!")]
-    Cancel,
+    Off,
 
     /// <summary>
     /// 
