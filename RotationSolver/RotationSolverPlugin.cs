@@ -19,6 +19,7 @@ using RotationSolver.Updaters;
 using System.Xml.Linq;
 using XIVPainter;
 using XIVPainter.Vfx;
+using ChangelogWindow = RotationSolver.UI.ChangelogWindow;
 
 namespace RotationSolver;
 
@@ -30,6 +31,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static ControlWindow? _controlWindow;
     static NextActionWindow? _nextActionWindow;
     static CooldownWindow? _cooldownWindow;
+    static ChangelogWindow? _changelogWindow;
 
     static readonly List<IDisposable> _dis = [];
     public static string Name => "Rotation Solver Reborn";
@@ -63,12 +65,14 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _controlWindow = new();
         _nextActionWindow = new();
         _cooldownWindow = new();
+        _changelogWindow = new();
 
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(_rotationConfigWindow);
         windowSystem.AddWindow(_controlWindow);
         windowSystem.AddWindow(_nextActionWindow);
         windowSystem.AddWindow(_cooldownWindow);
+        windowSystem.AddWindow(_changelogWindow);
 
         Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.OpenMainUi += OnOpenConfigUi;
