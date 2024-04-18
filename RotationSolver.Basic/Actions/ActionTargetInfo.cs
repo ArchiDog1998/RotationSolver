@@ -6,6 +6,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using RotationSolver.Basic.Configuration;
+using static RotationSolver.Basic.Configuration.ConfigTypes;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -38,23 +39,6 @@ public struct ActionTargetInfo(IBaseAction action)
     /// Is this action friendly.
     /// </summary>
     public readonly bool IsTargetFriendly => action.Setting.IsFriendly;
-
-    private static bool NoAOE
-    {
-        get
-        {
-            if (!Service.Config.UseAoeAction) return true;
-
-            if (DataCenter.IsManual)
-            {
-                if (!Service.Config.UseAoeWhenManual) return true;
-            }
-
-            return Service.Config.ChooseAttackMark
-                && !Service.Config.CanAttackMarkAoe
-                && MarkingHelper.HaveAttackChara;
-        }
-    }
 
     #region Target Finder.
     private readonly IEnumerable<BattleChara> GetCanTargets(bool skipStatusProvideCheck, TargetType type)
@@ -409,8 +393,8 @@ public struct ActionTargetInfo(IBaseAction action)
     private readonly IEnumerable<BattleChara> GetMostCanTargetObjects(IEnumerable<BattleChara> canTargets, IEnumerable<BattleChara> canAffects, int aoeCount)
     {
         if (IsSingleTarget || EffectRange <= 0) return canTargets;
-        if (!action.Setting.IsFriendly && NoAOE) return [];
-        if (aoeCount > 1 && DataCenter.IsManual) return [];
+        if (!action.Setting.IsFriendly && Service.Config.AoEType == AoEType.Off) return [];
+        if (aoeCount > 1 && Service.Config.AoEType == AoEType.Cleave) return [];
 
         List<BattleChara> objectMax = new(canTargets.Count());
 

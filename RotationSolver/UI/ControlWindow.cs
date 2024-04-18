@@ -2,6 +2,7 @@
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
@@ -40,71 +41,31 @@ internal class ControlWindow : CtrlWindow
         ImGui.NewLine();
 
         ImGui.Spacing();
-
-        DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
-
-        ImGui.SameLine();
-        DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DalamudWhite2);
-
-        ImGui.SameLine();
-        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
-        ImGui.NewLine();
-
         DrawCommandAction(61822, StateCommandType.Auto, ImGuiColors.DPSRed);
-
         ImGui.SameLine();
-
-        ImGui.BeginGroup();
-
-        ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.Local());
-
-        var value = Service.Config.IsControlWindowLock ? 0 : 1;
-        if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window",
-        [
-            UiString.InfoWindowNoMove.Local(),
-            UiString.InfoWindowMove.Local(),
-        ], ref value))
-        {
-            Service.Config.IsControlWindowLock.Value = value == 0;
-        }
-
-        ImGui.EndGroup();
-
-        ImGui.SameLine();
+        DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
         columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
-        ImGui.NewLine();
+        ImGui.SameLine();
+        DrawCommandAction(61764, StateCommandType.Off, ImGuiColors.DalamudWhite2);
+        ImGui.Spacing();
+        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
 
-        var color = *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
+        var autoMode = DataCenter.TargetingType;
+        ImGui.Text(" Targeting: " + autoMode.Local());
 
-        var isAoe = Service.Config.UseAoeAction && (!DataCenter.IsManual || Service.Config.UseAoeWhenManual);
-
+        var aoeType = Service.Config.AoEType;
+        if (ImGuiHelper.SelectableButton("AoE: " + aoeType.ToString()))
+        {
+            aoeType = (ConfigTypes.AoEType)(((int)aoeType + 1) % 3);
+            Service.Config.AoEType = aoeType;
+        }
         // Track whether the style color was pushed
         bool pushedStyleColor = false;
-
-        if (!isAoe)
-        {
-            ImGui.PushStyleColor(ImGuiCol.Text, color);
-            pushedStyleColor = true; // Indicate that a style color has been pushed
-        }
-
-        if (ImGuiHelper.SelectableButton("AOE"))
-        {
-            Service.Config.UseAoeAction.Value = !isAoe;
-            Service.Config.UseAoeWhenManual.Value = !isAoe;
-        }
-
-        // Ensure PopStyleColor is called only if PushStyleColor was called
-        if (pushedStyleColor)
-        {
-            ImGui.PopStyleColor();
-        }
-
-
-        ImGui.SameLine();
 
         var isBurst = Service.Config.AutoBurst;
         // Track whether the style color was pushed
         pushedStyleColor = false;
+        var color = *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
 
         if (!isBurst)
         {
@@ -123,10 +84,18 @@ internal class ControlWindow : CtrlWindow
             ImGui.PopStyleColor();
         }
         ImGui.SameLine();
-        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
-        ImGui.NewLine();
 
-        ImGui.SetColumnWidth(0, columnWidth);
+        var value = Service.Config.IsControlWindowLock ? 0 : 1;
+        if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window",
+        [
+            UiString.InfoWindowNoMove.Local(),
+            UiString.InfoWindowMove.Local(),
+        ], ref value))
+        {
+            Service.Config.IsControlWindowLock.Value = value == 0;
+        }
+        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
+        ImGui.SetColumnWidth(0, columnWidth + 10);
 
         ImGui.NextColumn();
         ImGui.NextColumn();
@@ -247,7 +216,7 @@ internal class ControlWindow : CtrlWindow
         {
             if (subGroup)
             {
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(2, width / 2 - strWidth / 2));
                 ImGui.TextColored(color, str);
 
                 var help = command.Local();
@@ -347,7 +316,6 @@ internal class ControlWindow : CtrlWindow
 
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
                 if (texture != null) DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
-
             }
         }
 
@@ -380,7 +348,7 @@ internal class ControlWindow : CtrlWindow
         {
             if (group)
             {
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2) - 3.5f);
                 ImGui.TextColored(color, str);
 
                 var help = command.Local();
@@ -400,7 +368,7 @@ internal class ControlWindow : CtrlWindow
         {
             case StateCommandType.Auto when DataCenter.State && !DataCenter.IsManual:
             case StateCommandType.Manual when DataCenter.State && DataCenter.IsManual:
-            case StateCommandType.Cancel when !DataCenter.State:
+            case StateCommandType.Off when !DataCenter.State:
                 isMatch = true;
                 break;
         }

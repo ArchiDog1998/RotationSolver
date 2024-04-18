@@ -3,6 +3,7 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
+using static RotationSolver.Basic.Configuration.ConfigTypes;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -39,6 +40,8 @@ internal partial class Configs : IPluginConfiguration
 
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
+
+    public AoEType AoEType { get; set; } = AoEType.Full;
 
     [ConditionBool, UI("Show RSR logo animation",
         Filter = UiWindows)]
@@ -205,7 +208,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _startOnAttackedBySomeone = false;
 
     [ConditionBool, UI("Don't attack new mobs by AoE. (Dangerous)", Description = "Never use any AoE action when this may attack the mobs that are not hostile targets.",
-        Parent =nameof(UseAoeAction))]
+        Filter = BasicAutoSwitch)]
     private static readonly bool _noNewHostiles = false;
 
     [ConditionBool, UI("Use healing abilities when playing a non-healer role.",
@@ -326,12 +329,6 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Display do action feedback on toast",
         Filter =UiInformation)]
     private static readonly bool _showToastsAboutDoAction = false;
-
-    [ConditionBool, UI("Use AoE actions", Filter = AutoActionUsage)]
-    private static readonly bool _useAOEAction = true;
-
-    [ConditionBool, UI("Use single target AoE actions in manual mode.", Parent = nameof(UseAoeAction))]
-    private static readonly bool _useAOEWhenManual = false;
 
     [ConditionBool, UI("Automatically trigger dps burst phase.", Filter = AutoActionCondition)]
     private static readonly bool _autoBurst = true;

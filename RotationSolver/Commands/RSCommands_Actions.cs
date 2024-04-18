@@ -21,7 +21,7 @@ public static partial class RSCommands
         if (!DataCenter.State) { DoStateCommandType(StateCommandType.Auto); return; }
         if (DataCenter.State && !DataCenter.IsManual && DataCenter.TargetingType == TargetingType.Big) { DoStateCommandType(StateCommandType.Auto); return; }
         if (DataCenter.State && !DataCenter.IsManual) { DoStateCommandType(StateCommandType.Manual); return; }
-        if (DataCenter.State && DataCenter.IsManual) { DoStateCommandType(StateCommandType.Cancel); return; }
+        if (DataCenter.State && DataCenter.IsManual) { DoStateCommandType(StateCommandType.Off); return; }
     }
 
     internal static unsafe bool CanDoAnAction(bool isGCD)
@@ -170,7 +170,7 @@ public static partial class RSCommands
     }
     internal static void CancelState()
     {
-        if (DataCenter.State) DoStateCommandType(StateCommandType.Cancel);
+        if (DataCenter.State) DoStateCommandType(StateCommandType.Off);
     }
 
     static float _lastCountdownTime = 0;
