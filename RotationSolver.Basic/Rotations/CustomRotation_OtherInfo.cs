@@ -277,7 +277,8 @@ partial class CustomRotation
     /// 
     /// </summary>
     [Description("Your ping")]
-    public static float Ping => DataCenter.Ping;
+    [Obsolete("No longer tracked or calculated")]
+    public static float Ping => 0f;
 
     /// <summary>
     /// 

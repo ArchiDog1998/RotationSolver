@@ -196,7 +196,7 @@ internal static class DataCenter
     #region GCD
     public static float DefaultGCDTotal => ActionManagerHelper.GetDefaultRecastTime();
 
-    public static float DefaultGCDRemain => ActionManagerHelper.GetDefaultRecastTime() - ActionManagerHelper.GetDefaultRecastTimeElapsed();
+    public static float DefaultGCDRemain => ActionManagerHelper.GetDefaultRecastTime() - ActionManagerHelper.GetDefaultRecastTimeElapsed() - ActionManagerHelper.GetCurrentAnimationLock();
 
     public static float DefaultGCDElapsed => ActionManagerHelper.GetDefaultRecastTimeElapsed();
 
@@ -379,11 +379,6 @@ internal static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-    public static float Ping => Math.Max(RTT, FetchTime);
-
-    public static float RTT { get; internal set; } = 0.05f;
-    public static float FetchTime => ActionManagerHelper.GetDefaultRecastTimeElapsed();
-
 
     public const float DefaultAnimationLock = 0.6f;
     internal static unsafe void AddActionRec(Action act)

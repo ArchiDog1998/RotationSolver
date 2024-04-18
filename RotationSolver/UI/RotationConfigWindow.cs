@@ -2461,10 +2461,8 @@ public partial class RotationConfigWindow : Window
         ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
         ImGui.Text("Hostile Near Count Max Range: " + DataCenter.NumberOfHostilesInMaxRange.ToString());
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
-        ImGui.Text("Ping: " + DataCenter.Ping.ToString());
         ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
         ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
-        ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
 
         foreach (var status in Player.Object.StatusList)
         {
