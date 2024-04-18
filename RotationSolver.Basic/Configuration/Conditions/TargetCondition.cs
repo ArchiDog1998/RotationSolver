@@ -133,13 +133,13 @@ internal class TargetCondition : DelayCondition
                 switch (Param2)
                 {
                     case 0:
-                        result = castTime > DistanceOrTime + DataCenter.WeaponRemain;
+                        result = castTime > DistanceOrTime + DataCenter.DefaultGCDRemain;
                         break;
                     case 1:
-                        result = castTime < DistanceOrTime + DataCenter.WeaponRemain;
+                        result = castTime < DistanceOrTime + DataCenter.DefaultGCDRemain;
                         break;
                     case 2:
-                        result = castTime == DistanceOrTime + DataCenter.WeaponRemain;
+                        result = castTime == DistanceOrTime + DataCenter.DefaultGCDRemain;
                         break;
                 }
                 break;

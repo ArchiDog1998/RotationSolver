@@ -31,7 +31,7 @@ partial class MachinistRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float OverheatTime => OverheatTimeRemainingRaw - DataCenter.WeaponRemain;
+    public static float OverheatTime => OverheatTimeRemainingRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 

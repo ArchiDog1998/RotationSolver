@@ -56,7 +56,7 @@ partial class BlackMageRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float EnochianTime => EnochianTimeRaw - DataCenter.WeaponRemain;
+    public static float EnochianTime => EnochianTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -79,7 +79,7 @@ partial class BlackMageRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static float ElementTime => ElementTimeRaw - DataCenter.WeaponRemain;
+    protected static float ElementTime => ElementTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -228,12 +228,12 @@ partial class BlackMageRotation
 
     static partial void ModifyTransposePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => DataCenter.ActionRemain <= ElementTimeRaw;
+        setting.ActionCheck = () => DataCenter.DefaultGCDRemain <= ElementTimeRaw;
     }
 
     static partial void ModifyUmbralSoulPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => JobGauge.InUmbralIce && DataCenter.ActionRemain <= ElementTimeRaw;
+        setting.ActionCheck = () => JobGauge.InUmbralIce && DataCenter.DefaultGCDRemain <= ElementTimeRaw;
     }
 
     static partial void ModifyScathePvE(ref ActionSetting setting)

@@ -135,7 +135,7 @@ internal static class ActionUpdater
     internal unsafe static void UpdateActionInfo()
     {
         SetAction(NextGCDAction?.AdjustedID ?? 0);
-        UpdateWeaponTime();
+        //UpdateWeaponTime();
         UpdateCombatTime();
         UpdateSlots();
         UpdateMoving();
@@ -217,27 +217,27 @@ internal static class ActionUpdater
         }
     }
 
-    private static unsafe void UpdateWeaponTime()
-    {
-        var player = Player.Object;
-        if (player == null) return;
+    //private static unsafe void UpdateWeaponTime()
+    //{
+    //    var player = Player.Object;
+    //    if (player == null) return;
 
-        var instance = ActionManager.Instance();
+    //    var instance = ActionManager.Instance();
 
-        var castTotal = player.TotalCastTime;
+    //    var castTotal = player.TotalCastTime;
 
-        var weaponTotal = instance->GetRecastTime(ActionType.Action, 11);
-        if (castTotal > 0) castTotal += 0.1f;
-        if (player.IsCasting) weaponTotal = Math.Max(castTotal, weaponTotal);
+    //    var weaponTotal = instance->GetRecastTime(ActionType.Action, 11);
+    //    if (castTotal > 0) castTotal += 0.1f;
+    //    if (player.IsCasting) weaponTotal = Math.Max(castTotal, weaponTotal);
 
-        DataCenter.WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Action, 11);
-        DataCenter.WeaponRemain = DataCenter.WeaponElapsed == 0 ? player.TotalCastTime - player.CurrentCastTime
-            : Math.Max(weaponTotal - DataCenter.WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
+    //    DataCenter.WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Action, 11);
+    //    DataCenter.WeaponRemain = DataCenter.WeaponElapsed == 0 ? player.TotalCastTime - player.CurrentCastTime
+    //        : Math.Max(weaponTotal - DataCenter.WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
-        //Casting time.
-        if (DataCenter.WeaponElapsed < 0.3) DataCenter.CastingTotal = castTotal;
-        if (weaponTotal > 0 && DataCenter.WeaponElapsed > 0.2) DataCenter.WeaponTotal = weaponTotal;
-    }
+    //    //Casting time.
+    //    if (DataCenter.WeaponElapsed < 0.3) DataCenter.CastingTotal = castTotal;
+    //    if (weaponTotal > 0 && DataCenter.WeaponElapsed > 0.2) DataCenter.WeaponTotal = weaponTotal;
+    //}
 
     static uint _lastMP = 0;
     static DateTime _lastMPUpdate = DateTime.Now;
@@ -280,28 +280,21 @@ internal static class ActionUpdater
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Player.Object.CurrentHp == 0) return false;
 
-
-
-        //GCD
-        var canUseGCD = ActionHelper.CanUseGCD;
-        if (_GCDDelay.Delay(canUseGCD))
-        {
-            return RSCommands.CanDoAnAction(true);
-        }
-        if (canUseGCD) return false;
-
         var nextAction = NextAction;
         if (nextAction == null) return false;
 
         //Skip when casting
-        if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return false;
+        if (0 < Player.Object.TotalCastTime) return false;
 
-        //The last one.
-        if (ActionHelper.CanUseOGCD)
+        //GCD
+        var canUseGCD = ActionHelper.CanUseGCD;
+        if (canUseGCD)
+        {
+            return RSCommands.CanDoAnAction(true);
+        }
+        else
         {
             return RSCommands.CanDoAnAction(false);
         }
-
-        return false;
     }
 }

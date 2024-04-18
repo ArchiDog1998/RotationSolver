@@ -2456,18 +2456,13 @@ public partial class RotationConfigWindow : Window
 
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
         ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
-        ImGui.Text("TimeToNext: " + DataCenter.NextAbilityToNextGCD.ToString());
-        ImGui.Text("WeaponElapsed: " + DataCenter.WeaponElapsed.ToString());
-        ImGui.Text("AnimationLock: " + DataCenter.ActionRemain.ToString());
 
         ImGui.Text("Have pet: " + DataCenter.HasPet.ToString());
         ImGui.Text("Hostile Near Count: " + DataCenter.NumberOfHostilesInRange.ToString());
         ImGui.Text("Hostile Near Count Max Range: " + DataCenter.NumberOfHostilesInMaxRange.ToString());
         ImGui.Text("Have Companion: " + DataCenter.HasCompanion.ToString());
-        ImGui.Text("Ping: " + DataCenter.Ping.ToString());
         ImGui.Text("MP: " + DataCenter.CurrentMp.ToString());
         ImGui.Text("Count Down: " + Service.CountDownTime.ToString());
-        ImGui.Text("Fetch Time: " + DataCenter.FetchTime.ToString());
 
         foreach (var status in Player.Object.StatusList)
         {
@@ -2553,9 +2548,11 @@ public partial class RotationConfigWindow : Window
         ImGui.Text(DataCenter.SpecialType.ToString());
 
         ImGui.Text(ActionUpdater.NextAction?.Name ?? "null");
-        ImGui.Text("Ability Remain: " + DataCenter.AbilityRemain.ToString());
-        ImGui.Text("Action Remain: " + DataCenter.ActionRemain.ToString());
-        ImGui.Text("Weapon Remain: " + DataCenter.WeaponRemain.ToString());
+        ImGui.Text("GCD Total: " + DataCenter.DefaultGCDTotal.ToString());
+        ImGui.Text("GCD Remain: " + DataCenter.DefaultGCDRemain.ToString());
+        ImGui.Text("GCD Elapsed: " + DataCenter.DefaultGCDElapsed.ToString());
+        ImGui.Text("Calculated Action Ahead: " + DataCenter.CalculatedActionAhead.ToString());
+        ImGui.Text("Actual Action Ahead: " + DataCenter.ActionAhead.ToString());
         ImGui.Text("Animation Lock Delay: " + ActionManagerHelper.GetCurrentAnimationLock().ToString());
     }
 

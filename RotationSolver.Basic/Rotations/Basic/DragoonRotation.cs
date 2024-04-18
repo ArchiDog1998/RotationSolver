@@ -23,7 +23,7 @@ partial class DragoonRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float LOTDTime => LOTDTimeRaw - DataCenter.WeaponRemain;
+    public static float LOTDTime => LOTDTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 

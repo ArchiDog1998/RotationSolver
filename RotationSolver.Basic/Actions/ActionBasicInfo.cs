@@ -244,7 +244,7 @@ public readonly struct ActionBasicInfo
         {
             if (comboActions.Contains(DataCenter.LastComboAction))
             {
-                if (DataCenter.ComboTime < DataCenter.WeaponRemain) return false;
+                if (DataCenter.ComboTime < DataCenter.DefaultGCDRemain) return false;
             }
             else
             {

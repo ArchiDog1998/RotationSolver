@@ -22,7 +22,7 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <summary>
     /// 
     /// </summary>
-    public float RecastTimeElapsed => RecastTimeElapsedRaw - DataCenter.WeaponElapsed;
+    public float RecastTimeElapsed => RecastTimeElapsedRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -58,14 +58,14 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <summary>
     /// 
     /// </summary>
-    public float RecastTimeRemainOneCharge => RecastTimeRemainOneChargeRaw - DataCenter.WeaponRemain;
+    public float RecastTimeRemainOneCharge => RecastTimeRemainOneChargeRaw - DataCenter.DefaultGCDRemain;
 
     float RecastTimeRemainOneChargeRaw => RecastTimeRemain % RecastTimeOneChargeRaw;
 
     /// <summary>
     /// 
     /// </summary>
-    public float RecastTimeElapsedOneCharge => RecastTimeElapsedOneChargeRaw - DataCenter.WeaponElapsed;
+    public float RecastTimeElapsedOneCharge => RecastTimeElapsedOneChargeRaw - DataCenter.DefaultGCDElapsed;
 
     float RecastTimeElapsedOneChargeRaw => RecastTimeElapsedRaw % RecastTimeOneChargeRaw;
 
@@ -138,7 +138,7 @@ public readonly struct ActionCooldownInfo : ICooldown
     public bool JustUsedAfter(float time)
     {
         var elapsed = RecastTimeElapsedRaw % RecastTimeOneChargeRaw;
-        return elapsed + DataCenter.WeaponRemain < time;
+        return elapsed + DataCenter.DefaultGCDRemain < time;
     }
 
     internal bool CooldownCheck(bool isEmpty, bool onLastAbility, bool ignoreClippingCheck, byte gcdCountForAbility)
@@ -153,13 +153,13 @@ public readonly struct ActionCooldownInfo : ICooldown
                 }
                 else
                 {
-                    if (!HasOneCharge && RecastTimeRemainOneChargeRaw > DataCenter.ActionRemain) return false;
+                    if (!HasOneCharge && RecastTimeRemainOneChargeRaw > DataCenter.DefaultGCDRemain) return false;
                 }
             }
 
             if (!isEmpty)
             {
-                if (RecastTimeRemain > DataCenter.WeaponRemain + DataCenter.WeaponTotal * gcdCountForAbility)
+                if (RecastTimeRemain > DataCenter.DefaultGCDRemain * gcdCountForAbility)
                     return false;
             }
         }

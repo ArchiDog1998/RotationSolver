@@ -16,7 +16,7 @@ partial class NinjaRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float HutonTime => HutonTimeRaw - DataCenter.WeaponRemain;
+    public static float HutonTime => HutonTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 

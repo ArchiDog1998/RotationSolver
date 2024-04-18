@@ -30,7 +30,7 @@ partial class BardRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float SongTime => SongTimeRaw - DataCenter.WeaponRemain;
+    public static float SongTime => SongTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 

@@ -67,7 +67,7 @@ partial class SummonerRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float SummonTime => SummonTimeRaw - DataCenter.WeaponRemain;
+    public static float SummonTime => SummonTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -90,7 +90,7 @@ partial class SummonerRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float AttunmentTime => AttunmentTimeRaw - DataCenter.WeaponRemain;
+    public static float AttunmentTime => AttunmentTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 

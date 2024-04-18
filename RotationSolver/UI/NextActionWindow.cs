@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
@@ -71,7 +72,7 @@ internal class NextActionWindow : Window
         var group = ActionManager.Instance()->GetRecastGroupDetail(ActionHelper.GCDCooldownGroup - 1);
 
         var remain = group->Total - group->Elapsed;
-        var total = DataCenter.WeaponTotal;
+        var total = DataCenter.DefaultGCDTotal;
 
         if (drawTittle)
         {
@@ -85,12 +86,12 @@ internal class NextActionWindow : Window
 
         ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);
 
-        var actionRemain = DataCenter.ActionRemain;
+        var actionRemain = DataCenter.DefaultGCDElapsed;
         if (actionRemain > 0)
         {
             var value = total - remain + actionRemain;
 
-            if (value > DataCenter.CastingTotal)
+            if (value > Player.Object.TotalCastTime)
             {
                 var pt = cursor + new Vector2(width, 0) * value / total;
 
