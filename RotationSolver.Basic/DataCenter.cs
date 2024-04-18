@@ -194,38 +194,18 @@ internal static class DataCenter
     }
 
     #region GCD
-    public static float WeaponRemain { get; internal set; }
+    public static float DefaultGCDTotal => ActionManagerHelper.GetDefaultRecastTime();
 
-    public static float WeaponTotal { get; internal set; }
+    public static float DefaultGCDRemain => ActionManagerHelper.GetDefaultRecastTime() - ActionManagerHelper.GetDefaultRecastTimeElapsed();
 
-    public static float WeaponElapsed { get; internal set; }
+    public static float DefaultGCDElapsed => ActionManagerHelper.GetDefaultRecastTimeElapsed();
+
+    public static float ActionAhead => Service.Config.OverrideActionAheadTimer ? Service.Config.Action4Head : CalculatedActionAhead;
+
+    public static float CalculatedActionAhead => DefaultGCDTotal * 0.25f;
 
     public static float GCDTime(uint gcdCount = 0, float offset = 0)
-        => WeaponTotal * gcdCount + offset;
-
-    /// <summary>
-    /// Time to the next action
-    /// </summary>
-    public static unsafe float ActionRemain => ActionManagerHelper.GetCurrentAnimationLock();
-
-    public static float AbilityRemain => ActionManagerHelper.GetCurrentAnimationLock();
-    //{
-     //   get
-     //   {
-     //       var gcdRemain = WeaponRemain;
-     //       // Check if we should account for the animation lock and ping.
-     //       if (gcdRemain - MinAnimationLock - Ping <= ActionRemain)
-     //       {
-     //           return gcdRemain + MinAnimationLock + Ping;
-     //       }
-     //       return ActionRemain;
-     //   }
-    //}
-
-    // Update the property to conditionally use AbilityRemain based on the NoPingCheck setting.
-    public static float NextAbilityToNextGCD => WeaponRemain - ActionRemain;
-
-    public static float CastingTotal { get; internal set; }
+        => ActionManagerHelper.GetDefaultRecastTime() * gcdCount + offset;
     #endregion
 
 
@@ -235,8 +215,7 @@ internal static class DataCenter
 
     static DateTime _specialStateStartTime = DateTime.MinValue;
     private static double SpecialTimeElapsed => (DateTime.Now - _specialStateStartTime).TotalSeconds;
-    public static double SpecialTimeLeft => WeaponTotal == 0 || WeaponElapsed == 0 ? Service.Config.SpecialDuration - SpecialTimeElapsed :
-        Math.Ceiling((Service.Config.SpecialDuration + WeaponElapsed - SpecialTimeElapsed) / WeaponTotal) * WeaponTotal - WeaponElapsed;
+    public static double SpecialTimeLeft => Service.Config.SpecialDuration - SpecialTimeElapsed;
 
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
     internal static SpecialCommandType SpecialType
@@ -403,10 +382,10 @@ internal static class DataCenter
     public static float Ping => Math.Max(RTT, FetchTime);
 
     public static float RTT { get; internal set; } = 0.05f;
-    public static float FetchTime { get; private set; } = 0.05f;
+    public static float FetchTime => ActionManagerHelper.GetDefaultRecastTimeElapsed();
 
 
-    public const float MinAnimationLock = 0.6f;
+    public const float DefaultAnimationLock = 0.6f;
     internal static unsafe void AddActionRec(Action act)
     {
         if (!Player.Available) return;
@@ -419,23 +398,9 @@ internal static class DataCenter
             case ActionCate.Spell:
             case ActionCate.Weaponskill:
                 LastAction = LastGCD = id;
-                if (ActionManager.GetAdjustedCastTime(ActionType.Action, (uint)id) == 0)
-                {
-                    FetchTime = WeaponElapsed;
-                }
                 break;
             case ActionCate.Ability:
                 LastAction = LastAbility = id;
-
-                try
-                {
-                    if (!act.IsRealGCD() && ActionManager.GetMaxCharges((uint)id, Player.Object?.Level ?? 1) < 2)
-                    {
-                        FetchTime = ActionManager.Instance()->GetRecastGroupDetail(act.CooldownGroup - 1)->Elapsed;
-                    }
-                }
-                catch { }
-
                 break;
             default:
                 return;

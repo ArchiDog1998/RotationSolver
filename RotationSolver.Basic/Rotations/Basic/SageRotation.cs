@@ -26,7 +26,7 @@ partial class SageRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float AddersgallTime => AddersgallTimerRaw - DataCenter.WeaponRemain;
+    public static float AddersgallTime => AddersgallTimerRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 

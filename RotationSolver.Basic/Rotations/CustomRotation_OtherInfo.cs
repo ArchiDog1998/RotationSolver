@@ -238,17 +238,17 @@ partial class CustomRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static float WeaponRemain => DataCenter.WeaponRemain;
+    protected static float WeaponRemain => DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float WeaponTotal => DataCenter.WeaponTotal;
+    protected static float WeaponTotal => DataCenter.DefaultGCDTotal;
 
     /// <summary>
     /// 
     /// </summary>
-    protected static float WeaponElapsed => DataCenter.WeaponElapsed;
+    protected static float WeaponElapsed => DataCenter.DefaultGCDElapsed;
     #endregion
 
     /// <summary>
@@ -283,7 +283,7 @@ partial class CustomRotation
     /// 
     /// </summary>
     [Description("Time from next ability to next GCD")]
-    public static float NextAbilityToNextGCD => DataCenter.NextAbilityToNextGCD;
+    public static float NextAbilityToNextGCD => DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -436,7 +436,7 @@ partial class CustomRotation
     protected static bool CombatElapsedLessGCD(int GCD)
     {
         CountingOfCombatTimeUsing++;
-        return CombatElapsedLess(GCD * DataCenter.WeaponTotal);
+        return CombatElapsedLess(GCD * DataCenter.DefaultGCDTotal);
     }
 
     /// <summary>
@@ -461,7 +461,7 @@ partial class CustomRotation
         get
         {
             CountingOfCombatTimeUsing++;
-            return InCombat ? DataCenter.CombatTimeRaw + DataCenter.WeaponRemain : 0;
+            return InCombat ? DataCenter.CombatTimeRaw + DataCenter.DefaultGCDRemain : 0;
         }
     }
 
@@ -470,7 +470,7 @@ partial class CustomRotation
     /// </summary>
     /// <param name="GCD"></param>
     /// <returns></returns>
-    protected static bool StopMovingElapsedLessGCD(int GCD) => StopMovingElapsedLess(GCD * DataCenter.WeaponTotal);
+    protected static bool StopMovingElapsedLessGCD(int GCD) => StopMovingElapsedLess(GCD * DataCenter.DefaultGCDTotal);
 
     /// <summary>
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
@@ -484,7 +484,7 @@ partial class CustomRotation
     /// <br>WARNING: Do Not make this method the main of your rotation.</br>
     /// </summary>
     [Description("Stop moving time")]
-    public static float StopMovingTime => IsMoving ? 0 : DataCenter.StopMovingRaw + DataCenter.WeaponRemain;
+    public static float StopMovingTime => IsMoving ? 0 : DataCenter.StopMovingRaw + DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// Time from GCD.

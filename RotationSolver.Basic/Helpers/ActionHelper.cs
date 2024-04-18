@@ -35,23 +35,11 @@ internal static class ActionHelper
     {
         get
         {
-            var maxAhead = Service.Config.OverrideActionAheadTimer ? Service.Config.Action4Head : 0.4;
+            var maxAhead = DataCenter.ActionAhead;
 
             //GCD
-            var canUseGCD = DataCenter.WeaponRemain <= maxAhead;
+            var canUseGCD = DataCenter.DefaultGCDRemain <= maxAhead;
             return canUseGCD;
-        }
-    }
-
-    internal static bool CanUseOGCD
-    {
-        get
-        {
-            var maxAhead = Service.Config.OverrideActionAheadTimer ? Service.Config.Action4Head : Math.Max(DataCenter.Ping, 0.08f);
-            
-            //OGCD
-            var canUseOGCD = ActionManagerHelper.GetCurrentAnimationLock() <= maxAhead;
-            return canUseOGCD;
         }
     }
 }

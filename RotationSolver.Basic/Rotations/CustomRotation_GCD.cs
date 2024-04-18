@@ -161,8 +161,7 @@ partial class CustomRotation
                     return true;
                 }
             }
-            else if (Service.Config.RaisePlayerBySwift && !SwiftcastPvE.Cooldown.IsCoolingDown
-                && NextAbilityToNextGCD > DataCenter.MinAnimationLock + Ping)
+            else if (Service.Config.RaisePlayerBySwift && !SwiftcastPvE.Cooldown.IsCoolingDown)
             {
                 return true;
             }

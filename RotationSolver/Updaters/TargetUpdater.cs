@@ -189,7 +189,7 @@ internal static partial class TargetUpdater
 
         if (h.IsCastInterruptible) return false;
         var last = h.TotalCastTime - h.CurrentCastTime;
-        var t = last - DataCenter.WeaponRemain;
+        var t = last - DataCenter.DefaultGCDTotal;
 
         if (!(h.TotalCastTime > 2.5 &&
             t > 0 && t < DataCenter.GCDTime(2))) return false;

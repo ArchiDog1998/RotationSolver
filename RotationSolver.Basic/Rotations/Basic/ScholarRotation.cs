@@ -21,7 +21,7 @@ partial class ScholarRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float SeraphTime => SeraphTimeRaw - DataCenter.WeaponRemain;
+    public static float SeraphTime => SeraphTimeRaw - DataCenter.DefaultGCDRemain;
     #endregion
     private sealed protected override IBaseAction Raise => ResurrectionPvE;
 

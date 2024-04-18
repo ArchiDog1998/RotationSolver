@@ -21,7 +21,7 @@ partial class WhiteMageRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float LilyTime => LilyTimeRaw + DataCenter.WeaponRemain;
+    public static float LilyTime => LilyTimeRaw + DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 

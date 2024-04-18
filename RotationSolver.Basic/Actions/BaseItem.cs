@@ -175,12 +175,9 @@ public class BaseItem : IBaseItem
 
         var remain = Cooldown.RecastTimeOneChargeRaw - Cooldown.RecastTimeElapsedRaw;
 
-        if (remain > DataCenter.ActionRemain) return false;
+        if (remain > DataCenter.DefaultGCDRemain) return false;
 
-        if (clippingCheck && DataCenter.WeaponRemain > 0)
-        {
-            if (DataCenter.NextAbilityToNextGCD < AnimationLockTime + DataCenter.Ping) return false;
-        }
+        if (clippingCheck && DataCenter.DefaultGCDRemain > 0) return false;
 
         if (ItemCheck != null && !ItemCheck()) return false;
 
