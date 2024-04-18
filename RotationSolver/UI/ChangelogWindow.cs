@@ -91,11 +91,17 @@ namespace RotationSolver.UI
                     {
                         var content = await response.Content.ReadAsStringAsync();
                         var releases = JsonConvert.DeserializeObject<List<GithubRelease.Release>>(content);
+                        var foundLatest = false;
                         if (releases?.Count > 0)
                         {
                             foreach (var release in releases)
                             {
                                 if (release.Prerelease) continue;
+                                if (!foundLatest)
+                                {
+                                    foundLatest = true;
+                                    continue;
+                                }
                                 return release.TagName;
                             }
                         }
