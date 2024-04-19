@@ -758,6 +758,7 @@ internal partial class Configs : IPluginConfiguration
 
     public static Configs Migrate(Configs oldConfigs)
     {
+        return oldConfigs; // Disable migration until a better solution can be found.
         var newConfigs = new Configs();
 
         JObject oldJson = JObject.FromObject(oldConfigs);
