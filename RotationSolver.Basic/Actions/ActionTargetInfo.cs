@@ -55,7 +55,7 @@ public struct ActionTargetInfo(IBaseAction action)
         }
 
         var isAuto = !DataCenter.IsManual || IsTargetFriendly;
-        return objs.Where(b => isAuto || b.ObjectId == Svc.Targets.Target?.ObjectId)
+        return objs.Where(b => isAuto || b.ObjectId == Svc.Targets.Target?.ObjectId || b.ObjectId == Player.Object.ObjectId)
             .Where(InViewTarget).Where(CanUseTo).Where(action.Setting.CanTarget);
     }
 
