@@ -159,8 +159,8 @@ internal static class DataCenter
         {
             if (Service.Config.TargetingTypes.Count == 0)
             {
-                Service.Config.TargetingTypes.Add(TargetingType.Big);
-                Service.Config.TargetingTypes.Add(TargetingType.Small);
+                Service.Config.TargetingTypes.Add(TargetingType.LowHP);
+                Service.Config.TargetingTypes.Add(TargetingType.HighHP);
                 Service.Config.Save();
             }
 
