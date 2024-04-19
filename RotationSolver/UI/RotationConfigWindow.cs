@@ -21,8 +21,8 @@ using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Xml.Linq;
 using XIVConfigUI;
+using XIVConfigUI.Attributes;
 using XIVConfigUI.SearchableConfigs;
 using XIVDrawer;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
@@ -2675,7 +2675,7 @@ public class RotationConfigWindow : ConfigWindow
     }
 
     [Description("Debug")]
-    public class DebutItem : ConfigWindowItemRS
+    public class DebugItem : ConfigWindowItemRS
     {
         public override uint Icon => 5;
         public override void Draw(ConfigWindow window)
@@ -2853,6 +2853,14 @@ public class RotationConfigWindow : ConfigWindow
         {
             ImGui.Text($"{type}: {id}");
         }
+    }
+
+    [Description("ChangeLog")]
+    public class ChangeLogItem : ConfigWindowItemRS
+    {
+        public override uint Icon => 80;
+
+        public override string Link => $"https://github.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/blob/main/CHANGELOG.md";
     }
 
     private static void DrawGitHubBadge(string userName, string repository, string id = "", string link = "", bool center = false)

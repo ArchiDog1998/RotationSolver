@@ -12,6 +12,7 @@ using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.Updaters;
 using XIVConfigUI;
+using XIVConfigUI.Attributes;
 using XIVDrawer;
 using XIVDrawer.Vfx;
 
