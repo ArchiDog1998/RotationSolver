@@ -23,6 +23,7 @@ public static partial class RSCommands
 
     private static void DoOneCommand(string str)
     {
+        if (str == "cancel") str = "off";
         if (TryGetOneEnum<StateCommandType>(str, out var stateType))
         {
             var intStr = str.Split(' ', StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
