@@ -156,7 +156,7 @@ internal enum UiString
     [Description("Conditions for automatic use of action being disabled.")]
     ConfigWindow_Actions_DisabledConditionSet_Description,
 
-    [Description("Download Rotations")]
+    [Description("Force Update Rotations")]
     ConfigWindow_Rotations_Download,
 
     [Description("Links of the rotations online")]
@@ -183,7 +183,7 @@ internal enum UiString
     [Description("File Name")]
     ConfigWindow_Rotations_FileName,
 
-    [Description("The folder contains rotation libs or the download url about rotation lib.")]
+    [Description("The folder contains the rotation library or the download url for the rotation library.")]
     ConfigWindow_Rotations_Library,
 
     [Description("In this window, you can set the parameters that can be customised using lists.")]

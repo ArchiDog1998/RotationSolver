@@ -3,6 +3,7 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
+using System.Windows.Forms.VisualStyles;
 using static RotationSolver.Basic.Configuration.ConfigTypes;
 
 namespace RotationSolver.Basic.Configuration;
@@ -33,9 +34,7 @@ internal partial class Configs : IPluginConfiguration
     public List<ActionEventInfo> Events { get; private set; } = [];
     public SortedSet<Job> DisabledJobs { get; private set; } = [];
 
-    public string[] OtherLibs { get; set; } = [];
-
-    public string[] GitHubLibs { get; set; } = [];
+    public string[] RotationLibs { get; set; } = ["https://github.com/FFXIV-CombatReborn/LTSDefaults/releases/latest/download/DefaultRotations.dll"]; 
     public List<TargetingType> TargetingTypes { get; set; } = [];
 
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
@@ -254,13 +253,16 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Debug Mode", Filter = Debug)]
     private static readonly bool _inDebug = false;
-    public bool AutoUpdateLibs { get; set; } = false;
 
-    [ConditionBool, UI("Auto Download Rotations", Filter = Rotations)]
-    private static readonly bool _downloadRotations = true;
+    [ConditionBool, UI("Customize rotations (WARNING!)",
+               Description = "This will allow RSR to load custom rotations from a specified folder or URL.\n\nUSE EXTREME CAUTION WHEN LOADING CUSTOM ROTATIONS. THEY WILL HAVE FULL ACCESS TO YOUR COMPUTER\n\nOnly load custom rotations from people you trust\n\nThe Combat reborn team takes no responsibility for any custom rotations you might load",
+               Filter = Rotations)]
+    private static readonly bool _useCustomRotations = false;
 
-    [ConditionBool, UI("Auto Update Rotations", Parent = nameof(DownloadRotations))]
-    private static readonly bool _autoUpdateRotations = true;
+    [ConditionBool, UI("Download custom rotations from the internet",
+               Description = "This will allow RSR to download custom rotations from the internet. This is a security risk and should only be enabled if you trust the source of the rotations.",
+               Parent = nameof(UseCustomRotations))]
+    private static readonly bool _downloadCustomRotations = true;
 
     [ConditionBool, UI("Make /rotation Manual as a toggle command.",
         Filter = BasicParams)]
@@ -309,10 +311,6 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Show tooltips",
         Filter = UiInformation)]
     private static readonly bool _showTooltips = true;
-
-    [ConditionBool, UI("Auto load rotations",
-        Filter = Rotations)]
-    private static readonly bool _autoLoadCustomRotations = true;
 
     [ConditionBool, UI("Target Fate priority",
         Filter = TargetConfig, Section = 1)]

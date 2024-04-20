@@ -44,7 +44,7 @@ internal static class RotationUpdater
                 LoadRotationsFromLocal(relayFolder);
             }
 
-            if (option.HasFlag(DownloadOption.Download) && Service.Config.DownloadRotations)
+            if (option.HasFlag(DownloadOption.Download) && Service.Config.DownloadCustomRotations)
                 await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
 
             if (option.HasFlag(DownloadOption.ShowList))
@@ -77,7 +77,7 @@ internal static class RotationUpdater
     /// <param name="relayFolder"></param>
     private static void LoadRotationsFromLocal(string relayFolder)
     {
-        var directories = Service.Config.OtherLibs
+        var directories = Service.Config.RotationLibs
             .Append(relayFolder)
             .Where(Directory.Exists);
 
@@ -255,11 +255,9 @@ internal static class RotationUpdater
         // Code to download rotations from remote server
         bool hasDownload = false;
 
-        var GitHubLinks = Service.Config.GitHubLibs.Union(DownloadHelper.LinkLibraries ?? []);
-
         using (var client = new HttpClient())
         {
-            foreach (var url in Service.Config.OtherLibs.Union(GitHubLinks.Select(Convert)))
+            foreach (var url in Service.Config.RotationLibs)
             {
                 hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
                 var pdbUrl = Path.ChangeExtension(url, ".pdb");
@@ -298,7 +296,6 @@ internal static class RotationUpdater
             if (string.IsNullOrEmpty(fileName)) return false;
             //if (Path.GetExtension(fileName) != ".dll") continue;
             var filePath = Path.Combine(relayFolder, fileName);
-            if (!Service.Config.AutoUpdateRotations && File.Exists(filePath)) return false;
 
             //Download
             using (HttpResponseMessage response = await client.GetAsync(url))
@@ -365,7 +362,7 @@ internal static class RotationUpdater
             return;
         }
 
-        var dirs = Service.Config.OtherLibs;
+        var dirs = Service.Config.RotationLibs;
 
         foreach (var dir in dirs)
         {

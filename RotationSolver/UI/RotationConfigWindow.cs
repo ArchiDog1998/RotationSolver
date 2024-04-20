@@ -1621,29 +1621,21 @@ public partial class RotationConfigWindow : Window
             }
         }, width, textWidth);
 
-        text = UiString.ConfigWindow_Rotations_Links.Local();
-        textWidth = ImGuiHelpers.GetButtonSize(text).X;
-        ImGuiHelper.DrawItemMiddle(() =>
-        {
-            if (ImGui.Button(text))
-            {
-                Util.OpenLink($"https://github.com/{Service.USERNAME}/{Service.REPO}/blob/main/RotationsLink.md");
-            }
-        }, width, textWidth);
-
         _rotationsHeader?.Draw();
     }
     private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
     {
-        { UiString.ConfigWindow_Rotations_Settings.Local, DrawRotationsSettings},
         { UiString.ConfigWindow_Rotations_Loaded.Local, DrawRotationsLoaded},
-        { UiString.ConfigWindow_Rotations_GitHub.Local, DrawRotationsGitHub},
-        { UiString.ConfigWindow_Rotations_Libraries.Local, DrawRotationsLibraries},
+        { UiString.ConfigWindow_Rotations_Settings.Local, DrawRotationsSettings},
     });
 
     private static void DrawRotationsSettings()
     {
         _allSearchable.DrawItems(Configs.Rotations);
+        if (Service.Config.UseCustomRotations)
+        {
+            DrawRotationsLibraries();
+        }
     }
 
     private static void DrawRotationsLoaded()
@@ -1783,77 +1775,12 @@ public partial class RotationConfigWindow : Window
         style.ItemSpacing = spacing;
     }
 
-    private static void DrawRotationsGitHub()
-    {
-        if (!Service.Config.GitHubLibs.Any(s => string.IsNullOrEmpty(s) || s == "||"))
-        {
-            Service.Config.GitHubLibs = [.. Service.Config.GitHubLibs, "||"];
-        }
-
-        ImGui.Spacing();
-
-        foreach (var gitHubLink in DownloadHelper.LinkLibraries ?? [])
-        {
-            var strs = gitHubLink.Split('|');
-            var userName = strs.FirstOrDefault() ?? string.Empty;
-            var repository = strs.Length > 1 ? strs[1] : string.Empty;
-            var fileName = strs.LastOrDefault() ?? string.Empty;
-
-            DrawGitHubBadge(userName, repository, fileName, center: true);
-            ImGui.Spacing();
-            ImGui.Separator();
-        }
-
-        int removeIndex = -1;
-        for (int i = 0; i < Service.Config.GitHubLibs.Length; i++)
-        {
-            var strs = Service.Config.GitHubLibs[i].Split('|');
-            var userName = strs.FirstOrDefault() ?? string.Empty;
-            var repository = strs.Length > 1 ? strs[1] : string.Empty;
-            var fileName = strs.LastOrDefault() ?? string.Empty;
-
-            DrawGitHubBadge(userName, repository, fileName, center: true);
-
-            var changed = false;
-
-            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X * 3 - 10 * Scale;
-            width /= 3;
-
-            ImGui.SetNextItemWidth(width);
-            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}UserName", UiString.ConfigWindow_Rotations_UserName.Local(), ref userName, 1024);
-            ImGui.SameLine();
-
-            ImGui.SetNextItemWidth(width);
-            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}Repository", UiString.ConfigWindow_Rotations_Repository.Local(), ref repository, 1024);
-            ImGui.SameLine();
-
-            ImGui.SetNextItemWidth(width);
-            changed |= ImGui.InputTextWithHint($"##GitHubLib{i}FileName", UiString.ConfigWindow_Rotations_FileName.Local(), ref fileName, 1024);
-            ImGui.SameLine();
-
-            if (changed)
-            {
-                Service.Config.GitHubLibs[i] = $"{userName}|{repository}|{fileName}";
-            }
-
-            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove GitHubLibs{i}"))
-            {
-                removeIndex = i;
-            }
-        }
-        if (removeIndex > -1)
-        {
-            var list = Service.Config.GitHubLibs.ToList();
-            list.RemoveAt(removeIndex);
-            Service.Config.GitHubLibs = [.. list];
-        }
-    }
 
     private static void DrawRotationsLibraries()
     {
-        if (!Service.Config.OtherLibs.Any(string.IsNullOrEmpty))
+        if (!Service.Config.RotationLibs.Any(string.IsNullOrEmpty))
         {
-            Service.Config.OtherLibs = [.. Service.Config.OtherLibs, string.Empty];
+            Service.Config.RotationLibs = [.. Service.Config.RotationLibs, string.Empty];
         }
 
         ImGui.Spacing();
@@ -1861,22 +1788,22 @@ public partial class RotationConfigWindow : Window
         var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
 
         int removeIndex = -1;
-        for (int i = 0; i < Service.Config.OtherLibs.Length; i++)
+        for (int i = 0; i < Service.Config.RotationLibs.Length; i++)
         {
             ImGui.SetNextItemWidth(width);
-            ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", UiString.ConfigWindow_Rotations_Library.Local(), ref Service.Config.OtherLibs[i], 1024);
+            ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", UiString.ConfigWindow_Rotations_Library.Local(), ref Service.Config.RotationLibs[i], 1024);
             ImGui.SameLine();
 
-            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Rotation Library{i}"))
             {
                 removeIndex = i;
             }
         }
         if (removeIndex > -1)
         {
-            var list = Service.Config.OtherLibs.ToList();
+            var list = Service.Config.RotationLibs.ToList();
             list.RemoveAt(removeIndex);
-            Service.Config.OtherLibs = [.. list];
+            Service.Config.RotationLibs = [.. list];
         }
     }
     #endregion 
