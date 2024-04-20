@@ -217,10 +217,6 @@ internal static class MajorUpdater
                 ActionSequencerUpdater.UpdateActionSequencerAction();
                 ActionUpdater.UpdateNextAction();
             }
-            if (DataCenter.RightNowRotation == null)
-            {
-                WarningHelper.AddSystemWarning("No rotations are loaded! Please check the rotations tab on the main configuration window for more information.");
-            }
 
             RSCommands.UpdateRotationState();
             PainterManager.UpdateSettings();

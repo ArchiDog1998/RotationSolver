@@ -171,6 +171,9 @@ internal enum UiString
     [Description("Update Rotations")]
     ConfigWindow_Rotations_Download,
 
+    [Description("Rotation Sources:")]
+    ConfigWindow_Rotations_Sources,
+
     [Description("Links of the rotations online")]
     ConfigWindow_Rotations_Links,
 

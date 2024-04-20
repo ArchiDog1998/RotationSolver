@@ -263,7 +263,7 @@ internal partial class Configs : IPluginConfiguration
                Filter = Rotations)]
     private static readonly bool _downloadCustomRotations = true;
 
-    [ConditionBool, UI("Auto-reload local rotations",
+    [ConditionBool, UI("Monitor local rotations for changes (Developer Mode)",
                Filter = Rotations)]
     private static readonly bool _autoReloadRotations = false;
 

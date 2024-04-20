@@ -1640,9 +1640,9 @@ public partial class RotationConfigWindow : Window
         ImGui.Separator();
         DrawRotationsSettings();
 
+        ImGui.Separator();
         text = UiString.ConfigWindow_Rotations_Download.Local();
         textWidth = ImGuiHelpers.GetButtonSize(text).X;
-
         ImGuiHelper.DrawItemMiddle(() =>
         {
             if (ImGui.Button(text))
@@ -1653,6 +1653,11 @@ public partial class RotationConfigWindow : Window
                 });
             }
         }, width, textWidth);
+        ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 3));
+        ImGui.Text(UiString.ConfigWindow_Rotations_Sources.Local());
+        ImGui.PopFont();
+        DrawRotationsLibraries();
+
 
         _rotationsHeader?.Draw();
     }
@@ -1664,7 +1669,6 @@ public partial class RotationConfigWindow : Window
     private static void DrawRotationsSettings()
     {
         _allSearchable.DrawItems(Configs.Rotations);
-        DrawRotationsLibraries();
     }
 
     private static void DrawRotationsLoaded()
