@@ -23,6 +23,7 @@ using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
 using XIVPainter;
+using static System.Net.Mime.MediaTypeNames;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using Status = Lumina.Excel.GeneratedSheets.Status;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
@@ -374,7 +375,12 @@ public partial class RotationConfigWindow : Window
         if (rotation == null)
         {
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudOrange);
-            ImGui.TextWrapped("No rotations loaded! Was there recently a big update?");
+            var text = UiString.ConfigWindow_NoRotation.Local();
+            var textWidth = ImGuiHelpers.GetButtonSize(text).X;
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextWrapped(text);
+            }, wholeWidth, textWidth);
             ImGui.PopStyleColor();
             ImguiTooltips.HoveredTooltip("Please update your rotations!");
             return;
@@ -1607,8 +1613,35 @@ public partial class RotationConfigWindow : Window
     {
         var width = ImGui.GetWindowWidth();
 
-        var text = UiString.ConfigWindow_Rotations_Download.Local();
+        ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 5));
+        var text = UiString.ConfigWindow_Rotations_Warning.Local();
         var textWidth = ImGuiHelpers.GetButtonSize(text).X;
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            ImGui.TextColored(ImGuiColors.DalamudYellow, text);
+        }, width, textWidth);
+        text = UiString.ConfigWindow_Rotations_Warning2.Local();
+        textWidth = ImGuiHelpers.GetButtonSize(text).X;
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            ImGui.TextColored(ImGuiColors.DalamudYellow, text);
+        }, width, textWidth);
+        ImGui.PopFont();
+
+        if (DataCenter.RightNowRotation == null)
+        {
+            text = UiString.ConfigWindow_Rotations_FirstTime.Local();
+            textWidth = ImGuiHelpers.GetButtonSize(text).X;
+            ImGui.TextWrapped(text);
+        }
+
+        ImGui.Separator();
+
+        ImGui.Separator();
+        DrawRotationsSettings();
+
+        text = UiString.ConfigWindow_Rotations_Download.Local();
+        textWidth = ImGuiHelpers.GetButtonSize(text).X;
 
         ImGuiHelper.DrawItemMiddle(() =>
         {
@@ -1626,16 +1659,12 @@ public partial class RotationConfigWindow : Window
     private static readonly CollapsingHeaderGroup _rotationsHeader = new(new()
     {
         { UiString.ConfigWindow_Rotations_Loaded.Local, DrawRotationsLoaded},
-        { UiString.ConfigWindow_Rotations_Settings.Local, DrawRotationsSettings},
     });
 
     private static void DrawRotationsSettings()
     {
         _allSearchable.DrawItems(Configs.Rotations);
-        if (Service.Config.UseCustomRotations)
-        {
-            DrawRotationsLibraries();
-        }
+        DrawRotationsLibraries();
     }
 
     private static void DrawRotationsLoaded()

@@ -34,7 +34,8 @@ internal partial class Configs : IPluginConfiguration
     public List<ActionEventInfo> Events { get; private set; } = [];
     public SortedSet<Job> DisabledJobs { get; private set; } = [];
 
-    public string[] RotationLibs { get; set; } = ["https://github.com/FFXIV-CombatReborn/LTSDefaults/releases/latest/download/DefaultRotations.dll"]; 
+    public string[] RotationLibs { get; set; } = ["https://github.com/FFXIV-CombatReborn/LTSDefaults/releases/latest/download/DefaultRotations.dll",
+                                                  "https://github.com/Rabalaba/Rabbs-Rotations-for-Rotation-Solver/releases/latest/download/RabbsRotationsNET8.dll"]; 
     public List<TargetingType> TargetingTypes { get; set; } = [];
 
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
@@ -254,15 +255,17 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Debug Mode", Filter = Debug)]
     private static readonly bool _inDebug = false;
 
-    [ConditionBool, UI("Customize rotations (WARNING!)",
-               Description = "This will allow RSR to load custom rotations from a specified folder or URL.\n\nUSE EXTREME CAUTION WHEN LOADING CUSTOM ROTATIONS. THEY WILL HAVE FULL ACCESS TO YOUR COMPUTER\n\nOnly load custom rotations from people you trust\n\nThe Combat reborn team takes no responsibility for any custom rotations you might load",
-               Filter = Rotations)]
-    private static readonly bool _useCustomRotations = false;
+    [ConditionBool, UI("Load rotations automatically at startup", Filter = Rotations)]
+    private static readonly bool _autoLoadRotations = false;
 
     [ConditionBool, UI("Download custom rotations from the internet",
                Description = "This will allow RSR to download custom rotations from the internet. This is a security risk and should only be enabled if you trust the source of the rotations.",
-               Parent = nameof(UseCustomRotations))]
+               Filter = Rotations)]
     private static readonly bool _downloadCustomRotations = true;
+
+    [ConditionBool, UI("Auto-reload local rotations",
+               Filter = Rotations)]
+    private static readonly bool _autoReloadRotations = false;
 
     [ConditionBool, UI("Make /rotation Manual as a toggle command.",
         Filter = BasicParams)]

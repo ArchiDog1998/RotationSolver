@@ -100,7 +100,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Task.Run(async () =>
         {
             await DownloadHelper.DownloadAsync();
-            await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
+            if (Service.Config.AutoLoadRotations) await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
         });
 
 #if DEBUG

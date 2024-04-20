@@ -204,7 +204,7 @@ internal static class MajorUpdater
         {
             StateUpdater.UpdateState();
 
-            if (Service.Config.UseCustomRotations)
+            if (Service.Config.AutoReloadRotations)
             {
                 RotationUpdater.LocalRotationWatcher();
             }
@@ -216,6 +216,10 @@ internal static class MajorUpdater
                 RaidTimeUpdater.UpdateTimeline();
                 ActionSequencerUpdater.UpdateActionSequencerAction();
                 ActionUpdater.UpdateNextAction();
+            }
+            if (DataCenter.RightNowRotation == null)
+            {
+                WarningHelper.AddSystemWarning("No rotations are loaded! Please check the rotations tab on the main configuration window for more information.");
             }
 
             RSCommands.UpdateRotationState();

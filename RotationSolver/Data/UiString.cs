@@ -6,6 +6,9 @@ internal enum UiString
     [Description("The condition set you chose, click to modify.")]
     ConfigWindow_ConditionSetDesc,
 
+    [Description("No rotations loaded! Please see the rotations tab!")]
+    ConfigWindow_NoRotation,
+
     [Description("The duty rotation you chose, click to modify.")]
     ConfigWindow_DutyRotationDesc,
 
@@ -156,7 +159,16 @@ internal enum UiString
     [Description("Conditions for automatic use of action being disabled.")]
     ConfigWindow_Actions_DisabledConditionSet_Description,
 
-    [Description("Force Update Rotations")]
+    [Description("It looks like this might be your first time here. Rotation Solver Reborn does not come with rotations out of the box, but you can download ones created by the community. You can also create your own rotations! For your convenience, Rotation Solver Reborn comes pre-loaded with links to well-known community rotations, but it still your responsibility to install them.")]
+    ConfigWindow_Rotations_FirstTime,
+
+    [Description("Custom rotations are just like plugins and have full access to the game and your computer")]
+    ConfigWindow_Rotations_Warning,
+
+    [Description("Please only load rotations from sources that you trust")]
+    ConfigWindow_Rotations_Warning2,
+
+    [Description("Update Rotations")]
     ConfigWindow_Rotations_Download,
 
     [Description("Links of the rotations online")]
