@@ -1653,6 +1653,19 @@ public partial class RotationConfigWindow : Window
                 });
             }
         }, width, textWidth);
+        text = UiString.ConfigWindow_Rotations_Reset.Local();
+        textWidth = ImGuiHelpers.GetButtonSize(text).X;
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            if (ImGui.Button(text))
+            {
+                Task.Run(async () =>
+                {
+                    await RotationUpdater.ResetToDefaults();
+                    await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.MustDownload | DownloadOption.ShowList);
+                });
+            }
+        }, width, textWidth);
         ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 3));
         ImGui.Text(UiString.ConfigWindow_Rotations_Sources.Local());
         ImGui.PopFont();

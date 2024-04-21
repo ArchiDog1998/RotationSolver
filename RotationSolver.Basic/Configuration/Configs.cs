@@ -34,8 +34,10 @@ internal partial class Configs : IPluginConfiguration
     public List<ActionEventInfo> Events { get; private set; } = [];
     public SortedSet<Job> DisabledJobs { get; private set; } = [];
 
-    public string[] RotationLibs { get; set; } = ["https://github.com/FFXIV-CombatReborn/LTSDefaults/releases/latest/download/DefaultRotations.dll",
-                                                  "https://github.com/Rabalaba/Rabbs-Rotations-for-Rotation-Solver/releases/latest/download/RabbsRotationsNET8.dll"]; 
+    [JsonIgnore]
+    public static string[] DefaultRotations = ["https://github.com/FFXIV-CombatReborn/LTSDefaults/releases/latest/download/DefaultRotations.dll"];
+
+    public string[] RotationLibs { get; set; } = DefaultRotations;
     public List<TargetingType> TargetingTypes { get; set; } = [];
 
     public MacroInfo DutyStart { get; set; } = new MacroInfo();

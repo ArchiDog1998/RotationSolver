@@ -2,6 +2,7 @@
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -22,6 +23,25 @@ internal static class RotationUpdater
     private static DateTime LastRunTime;
 
     static bool _isLoading = false;
+
+    public static async Task ResetToDefaults()
+    {
+        Service.Config.RotationLibs = Configs.DefaultRotations;
+        try
+        {
+            var relayFolder = Svc.PluginInterface.ConfigDirectory.FullName + "\\Rotations";
+            var files = Directory.GetFiles(relayFolder);
+            foreach (var file in files)
+            {
+                Svc.Log.Information($"Deleting {file}");
+                File.Delete(file);
+            }
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Error(ex, "Failed to delete the rotation files");
+        }
+    }
 
     /// <summary>
     /// Retrieves custom rotations from local and/or downloads

@@ -171,6 +171,9 @@ internal enum UiString
     [Description("Update Rotations")]
     ConfigWindow_Rotations_Download,
 
+    [Description("Reset To Defaults")]
+    ConfigWindow_Rotations_Reset,
+
     [Description("Rotation Sources:")]
     ConfigWindow_Rotations_Sources,
 
