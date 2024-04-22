@@ -17,7 +17,7 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
 
         foreach (var pair in RotationUpdater.AllGroupedActions)
         {
-            var showItems = pair.OrderBy(a => a.SortKey).Where(a => a.IsInCooldown
+            var showItems = pair.OrderBy(a => a.SortKey).Where(a => a.IsInCD
                 && (a is not IBaseAction b || !b.Info.IsLimitBreak));
             if (!Service.Config.ShowGcdCooldown) showItems = showItems.Where(i => !(i is IBaseAction a && a.Info.IsGeneralGCD));
 
@@ -42,8 +42,8 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
 
     private static void DrawActionCooldown(IAction act, float width)
     {
-        var recast = act.Cooldown.RecastTimeOneChargeRaw;
-        var elapsed = act.Cooldown.RecastTimeElapsedRaw;
+        var recast = act.CD.RecastTimeOneChargeRaw;
+        var elapsed = act.CD.RecastTimeElapsedRaw;
         var shouldSkip = recast < 3 && act is IBaseAction a && !a.Info.IsRealGCD;
 
         using var group = ImRaii.Group();
@@ -54,7 +54,7 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
         var r = -1f;
         if (Service.Config.UseOriginalCooldown)
         {
-            r = !act.EnoughLevel ? 0 : recast == 0 || !act.Cooldown.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
+            r = !act.EnoughLevel ? 0 : recast == 0 || !act.CD.IsCoolingDown || shouldSkip ? 1 : elapsed / recast;
         }
         var pair = ControlWindow.DrawIAction(act, width, r, false);
         var pos = pair.Item1;
@@ -68,7 +68,7 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
                     new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, progressCol);
             }
         }
-        else if (act.Cooldown.IsCoolingDown && !shouldSkip)
+        else if (act.CD.IsCoolingDown && !shouldSkip)
         {
             if (!Service.Config.UseOriginalCooldown)
             {
@@ -88,9 +88,9 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
             TextShade(fontPos, time);
         }
 
-        if (act.EnoughLevel && act is IBaseAction bAct && bAct.Cooldown.MaxCharges > 1)
+        if (act.EnoughLevel && act is IBaseAction bAct && bAct.CD.MaxCharges > 1)
         {
-            for (int i = 0; i < bAct.Cooldown.CurrentCharges; i++)
+            for (int i = 0; i < bAct.CD.CurrentCharges; i++)
             {
                 ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + (i + 0.5f) * new Vector2(width / 5, 0), width / 12, white);
             }

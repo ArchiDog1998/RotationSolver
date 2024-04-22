@@ -1215,10 +1215,10 @@ public class RotationConfigWindow : ConfigWindow
                 ImGuiHelper.DrawHotKeysPopup(key, cmd);
                 ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
 
-                enable = _activeAction.IsInCooldown;
+                enable = _activeAction.IsInCD;
                 if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_ShowOnCDWindow.Local()}##{_activeAction.Name}InCooldown", ref enable))
                 {
-                    _activeAction.IsInCooldown = enable;
+                    _activeAction.IsInCD = enable;
                 }
 
                 if (_activeAction is IBaseAction a)
@@ -1327,10 +1327,10 @@ public class RotationConfigWindow : ConfigWindow
                         ImGui.Text("AnimationLock: " + action.Info.AnimationLockTime.ToString());
                         ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
                         ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
-                        ImGui.Text("Has One:" + action.Cooldown.HasOneCharge.ToString());
-                        ImGui.Text("Recast One: " + action.Cooldown.RecastTimeOneChargeRaw.ToString());
-                        ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
-                        ImGui.Text($"Charges: {action.Cooldown.CurrentCharges} / {action.Cooldown.MaxCharges}");
+                        ImGui.Text("Has One:" + action.CD.HasOneCharge.ToString());
+                        ImGui.Text("Recast One: " + action.CD.RecastTimeOneChargeRaw.ToString());
+                        ImGui.Text("Recast Elapsed: " + action.CD.RecastTimeElapsedRaw.ToString());
+                        ImGui.Text($"Charges: {action.CD.CurrentCharges} / {action.CD.MaxCharges}");
 
                         ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
                         ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
