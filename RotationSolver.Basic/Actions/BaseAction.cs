@@ -1,5 +1,4 @@
 ﻿using ECommons.DalamudServices;
-using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -157,18 +156,8 @@ public class BaseAction : IBaseAction
         {
             Target = PreviewTarget.Value;
         }
-        if (!CanUseActionOnTarget(PreviewTarget.Value)) return false;
 
         return true;
-    }
-
-    private unsafe bool CanUseActionOnTarget(TargetResult value)
-    {
-        var target = value.Target;
-        if (target == null) return false;
-
-        var canUseOnTarget = ActionManager.CanUseActionOnTarget(AdjustedID, target.GameObject());
-        return canUseOnTarget;
     }
 
     /// <inheritdoc/>
