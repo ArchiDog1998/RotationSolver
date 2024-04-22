@@ -8,6 +8,8 @@ using ECommons;
 using ECommons.DalamudServices;
 using ECommons.Reflection;
 using RotationSolver.Data;
+using RotationSolver.Localization;
+using RotationSolver.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +21,16 @@ using XIVPainter;
 
 namespace RotationSolver.UI
 {
-    internal class ChangelogWindow : Window
+    internal class WelcomeWindow : Window
     {
-        public ChangelogWindow() : base("Rotation Solver Reborn Changelog", BaseFlags)
+        public WelcomeWindow() : base($"Welcome to Rotation Solver Reborn!", BaseFlags)
         {
-            Size = new Vector2(600, 400);
+            Size = new Vector2(650, 500);
             SizeCondition = ImGuiCond.FirstUseEver;
-            if (_lastSeenChangelog != _assemblyVersion)
+            if (_lastSeenChangelog != _assemblyVersion || !Service.Config.FirstTimeSetupDone)
             {
-                IsOpen = true;
                 PopulateChangelogs();
+                IsOpen = true;
             }
         }
 
@@ -105,161 +107,108 @@ namespace RotationSolver.UI
                                 return release.TagName;
                             }
                         }
-                        return "4.0.0.0";
+                        return "4.1.0.0";
                     }
                     else
                     {
                         Svc.Log.Error($"Failed to get releases: {response.StatusCode}");
-                        return "4.0.0.0";
+                        return "4.1.0.0";
                     }
                 }
             }
             catch (Exception ex)
             {
                 Svc.Log.Error(ex, "Failed to get releases");
-                return "4.0.0.0";
+                return "4.1.0.0";
             }
         }
-
-        private void RenderMarkdown(string markdownText)
-        {
-            string[] lines = markdownText.Split('\n');
-
-            foreach (string line in lines)
-            {
-                // Check for headings
-                if (line.StartsWith("## "))
-                {
-                    ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 6));
-                    RenderStyledText(line.Substring(3));
-                    ImGui.PopFont();
-                }
-                else if (line.TrimStart().StartsWith("- "))
-                {
-                    ImGui.Bullet();
-                    RenderStyledText(line.Substring(2).Trim());
-                }
-                else
-                {
-                    RenderStyledText(line);
-                }
-            }
-        }
-
-        private void RenderStyledText(string text)
-        {
-            // Regex for URLs and bold syntax
-            Regex urlRegex = new Regex(@"\bhttps?://\S+\b", RegexOptions.Compiled);
-            Regex boldRegex = new Regex(@"\*\*(.*?)\*\*");
-            Regex italicRegex = new Regex(@"\*(.*?)\*");
-
-            int lastPos = 0;
-            while (lastPos < text.Length)
-            {
-                Match urlMatch = urlRegex.Match(text, lastPos);
-                Match boldMatch = boldRegex.Match(text, lastPos);
-                Match italicMatch = italicRegex.Match(text, lastPos);
-
-                // Find the nearest match
-                Match nearestMatch = null;
-                int nearestPos = int.MaxValue;
-
-                if (urlMatch.Success && urlMatch.Index < nearestPos)
-                {
-                    nearestMatch = urlMatch;
-                    nearestPos = urlMatch.Index;
-                }
-
-                if (boldMatch.Success && boldMatch.Index < nearestPos)
-                {
-                    nearestMatch = boldMatch;
-                    nearestPos = boldMatch.Index;
-                }
-
-                if (italicMatch.Success && italicMatch.Index < nearestPos)
-                {
-                    nearestMatch = italicMatch;
-                    nearestPos = italicMatch.Index;
-                }
-
-                // Render text up to the match
-                if (nearestMatch != null)
-                {
-                    ImGui.TextUnformatted(text.Substring(lastPos, nearestMatch.Index - lastPos));
-                    ImGui.SameLine(0, 0);
-                }
-
-                // Handle the specific markdown
-                if (nearestMatch == urlMatch)
-                {
-                    string url = urlMatch.Value;
-
-                    if (ImGui.Button($"Open Link"))
-                    {
-                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo { FileName = url, UseShellExecute = true });
-                    }
-
-                    lastPos = urlMatch.Index + urlMatch.Length;
-                }
-                else if (nearestMatch == boldMatch)
-                {
-                    ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 3));
-                    ImGui.Text(boldMatch.Groups[1].Value);
-                    ImGui.PopFont();
-                    ImGui.SameLine(0, 0);
-
-                    lastPos = boldMatch.Index + boldMatch.Length;
-                }
-                else if (nearestMatch == italicMatch)
-                {
-                    // Assuming italicFont is defined and loaded appropriately
-                    ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize()));
-                    ImGui.Text(italicMatch.Groups[1].Value);
-                    ImGui.PopFont();
-                    ImGui.SameLine(0, 0);
-
-                    lastPos = italicMatch.Index + italicMatch.Length;
-                }
-                else
-                {
-                    // No more matches, render the rest of the text
-                    ImGui.TextUnformatted(text.Substring(lastPos));
-                    break;
-                }
-            }
-        }
-
-        bool _first = true;
 
         public override void Draw()
         {
+            var windowWidth = ImGui.GetWindowWidth();
             // Centered title
-            string title = $"Welcome to Rotation Solver Reborn!";
-            ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 10));  // Set the font first to calculate correct size
-            float windowWidth = ImGui.GetWindowWidth();
-            float textWidth = ImGui.CalcTextSize(title).X;  // Calculate text width with the correct font
-            ImGui.SetCursorPosX((windowWidth - textWidth) * 0.5f);  // Correctly center the text
-            ImGui.TextColored(ImGuiColors.ParsedGold, title);  // Render the text
-            ImGui.PopFont();  // Reset to the previous font
+            var text = UiString.WelcomeWindow_Header.Local();
+            ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 10));
+            var textSize = ImGui.CalcTextSize(text).X;
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextColored(ImGuiColors.ParsedGold, text);
+            }, windowWidth, textSize);
+            ImGui.PopFont();
 
-            string version = $"Version {_assemblyVersion}";
+            text = $"Version {_assemblyVersion}";
             ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 3));
-            float versionWidth = ImGui.CalcTextSize(version).X;
-            ImGui.SetCursorPosX((windowWidth - versionWidth) * 0.5f);
-            ImGui.TextColored(ImGuiColors.TankBlue, version);
+            textSize = ImGui.CalcTextSize(text).X;
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextColored(ImGuiColors.TankBlue, text);
+            }, windowWidth, textSize);
             ImGui.PopFont();
 
-            string message = $"Here's what's new since the last time you were here:";
+            text = Service.Config.FirstTimeSetupDone ? UiString.WelcomeWindow_WelcomeBack.Local() : UiString.WelcomeWindow_Welcome.Local();
             ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 1));
-            float messageWidth = ImGui.CalcTextSize(message).X;
-            ImGui.SetCursorPosX((windowWidth - messageWidth) * 0.5f);
-            ImGui.Text(message);
+            textSize = ImGui.CalcTextSize(text).X;
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextColored(ImGuiColors.ParsedBlue, text);
+            }, windowWidth, textSize);
             ImGui.PopFont();
+
 
             ImGui.Separator();  // Separator for aesthetic or logical separation
 
-            // Track the first item
-            bool first = true;
+            if (!Service.Config.FirstTimeSetupDone)
+            {
+                text = UiString.WelcomeWindow_FirstTime.Local();
+                ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 3));
+                textSize = ImGui.CalcTextSize(text).X;
+                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudOrange);
+                ImGui.TextWrapped(text);
+                ImGui.PopStyleColor();
+                ImGui.PopFont();
+
+                text = UiString.WelcomeWindow_FirstTime3.Local();
+                ImGui.Text(text);
+                var autoUpdate = Service.Config.AutoLoadRotations.Value;
+                if (ImGui.Checkbox(UiString.WelcomeWindow_LoadAtStartup.Local(), ref autoUpdate))
+                {
+                    Service.Config.AutoLoadRotations.Value = autoUpdate;
+                    Service.Config.Save();
+                }
+                var autoReload = Service.Config.AutoReloadRotations.Value;
+                if (ImGui.Checkbox(UiString.WelcomeWindow_AutoReload.Local(), ref autoReload))
+                {
+                    Service.Config.AutoReloadRotations.Value = autoReload;
+                    Service.Config.Save();
+                }
+
+                text = UiString.WelcomeWindow_FirstTime2.Local();
+                ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 2));
+                textSize = ImGui.CalcTextSize(text).X;
+                ImGuiHelper.DrawItemMiddle(() =>
+                {
+                    ImGui.TextColored(ImGuiColors.DalamudOrange, text);
+                }, windowWidth, textSize);
+                ImGui.PopFont();
+
+                text = UiString.WelcomeWindow_SaveAndInstall.Local();
+                textSize = ImGui.CalcTextSize(text).X;
+                ImGuiHelper.DrawItemMiddle(async () =>
+                {
+                    if (ImGui.Button(text))
+                    {
+                        Service.Config.FirstTimeSetupDone = true;
+                        Service.Config.Save();
+                        await Task.Run(async () =>
+                        {
+                            await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download | DownloadOption.Local | DownloadOption.ShowList);
+                            Service.Config.FirstTimeSetupDone = true;
+                            Service.Config.Save();
+                        });
+                    }
+                }, windowWidth, textSize);
+                ImGui.Separator();
+            }
 
             DrawChangeLog();
 
@@ -273,6 +222,12 @@ namespace RotationSolver.UI
 
         private void DrawChangeLog()
         {
+            var text = UiString.WelcomeWindow_Changelog.Local();
+            var textSize = ImGui.CalcTextSize(text).X;
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextColored(ImGuiColors.HealerGreen, text);
+            }, ImGui.GetWindowWidth(), textSize);
             var changeLog = _changeLog;
             if (changeLog == null || changeLog.Commits == null || changeLog.Commits.Count == 0)
             {
@@ -335,6 +290,7 @@ namespace RotationSolver.UI
         public override void OnClose()
         {
             Service.Config.LastSeenChangelog = _assemblyVersion;
+            Service.Config.FirstTimeSetupDone = true;
             Service.Config.Save();
             IsOpen = false;
             base.OnClose();

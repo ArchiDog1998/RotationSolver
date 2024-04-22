@@ -19,7 +19,7 @@ using RotationSolver.Updaters;
 using System.Xml.Linq;
 using XIVPainter;
 using XIVPainter.Vfx;
-using ChangelogWindow = RotationSolver.UI.ChangelogWindow;
+using WelcomeWindow = RotationSolver.UI.WelcomeWindow;
 
 namespace RotationSolver;
 
@@ -31,7 +31,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static ControlWindow? _controlWindow;
     static NextActionWindow? _nextActionWindow;
     static CooldownWindow? _cooldownWindow;
-    static ChangelogWindow? _changelogWindow;
+    static WelcomeWindow? _changelogWindow;
 
     static readonly List<IDisposable> _dis = [];
     public static string Name => "Rotation Solver Reborn";
@@ -100,7 +100,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Task.Run(async () =>
         {
             await DownloadHelper.DownloadAsync();
-            await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
+            if (Service.Config.AutoLoadRotations) await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
         });
 
 #if DEBUG

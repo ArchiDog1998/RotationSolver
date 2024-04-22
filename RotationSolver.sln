@@ -8,7 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		Resources\ContributorsHash.json = Resources\ContributorsHash.json
 		Directory.Build.props = Directory.Build.props
-		Resources\downloadList.json = Resources\downloadList.json
 		Resources\IncompatiblePlugins.json = Resources\IncompatiblePlugins.json
 		manifest.json = manifest.json
 		UpdateDownloads.ts = UpdateDownloads.ts
