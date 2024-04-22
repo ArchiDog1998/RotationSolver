@@ -749,4 +749,34 @@ internal enum UiString
 
     [Description("The duration of this action.")]
     TimelineItemDuration,
+
+    [Description("Welcome to Rotation Solver Reborn!")]
+    WelcomeWindow_Header,
+
+    [Description("Here's what you missed since the last time you were here")]
+    WelcomeWindow_WelcomeBack,
+
+    [Description("It looks like you might be new here! Let's get you started!")]
+    WelcomeWindow_Welcome,
+
+    [Description("Rotation Solver Reborn does not come with rotations out of the box, but for your convenience a link to a set of rotations maintained by the Combat Reborn team is included by default.")]
+    WelcomeWindow_FirstTime,
+
+    [Description("Would you like to install the default rotations now?")]
+    WelcomeWindow_FirstTime2,
+
+    [Description("Some other settings you may want to consider:")]
+    WelcomeWindow_FirstTime3,
+
+    [Description("Click here to install")]
+    WelcomeWindow_SaveAndInstall,
+
+    [Description("Recent Changes:")]
+    WelcomeWindow_Changelog,
+
+    [Description("Do you want your rotations to update and reload automatically upon login?")]
+    WelcomeWindow_LoadAtStartup,
+
+    [Description("Do you want to automatically reload local rotations when they are updated? (Developer Mode)")]
+    WelcomeWindow_AutoReload,
 }
