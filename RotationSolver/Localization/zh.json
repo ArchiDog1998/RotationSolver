@@ -680,5 +680,5 @@
   "DefaultRotations.Melee.NIN_DefaultName.UseHide": "Use Hide",
   "DefaultRotations.Melee.NIN_DefaultName.AutoUnhide": "Use Unhide",
   "RotationSolver.UI.RotationConfigWindow+DebugItem": "Debug",
-  "RotationSolver.UI.RotationConfigWindow+ChangeLogItem": "Change Logs"
+  "RotationSolver.UI.RotationConfigWindow+ChangeLogItem": "ChangeLog"
 }
