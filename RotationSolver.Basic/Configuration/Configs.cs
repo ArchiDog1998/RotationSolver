@@ -29,7 +29,8 @@ internal partial class Configs : IPluginConfiguration
 
     public int Version { get; set; } = 8;
 
-    public string LastSeenChangelog { get; set; } = "0.0.0";
+    public string LastSeenChangelog { get; set; } = "0.0.0.0";
+    public bool FirstTimeSetupDone { get; set; } = false;
 
     public List<ActionEventInfo> Events { get; private set; } = [];
     public SortedSet<Job> DisabledJobs { get; private set; } = [];
