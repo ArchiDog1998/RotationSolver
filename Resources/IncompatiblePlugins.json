@@ -47,5 +47,12 @@
     "Url": "https://github.com/Caraxi/SimpleTweaksPlugin/blob/main/Tweaks/TreasureHuntTargets.cs",
     "Features": "Blocks targeting treasure hunt enemies",
     "Type": 4
+  },
+  {
+    "Name": "Rotation Solver Reborn",
+    "Icon": "https://raw.githubusercontent.com/FFXIV-CombatReborn/RotationSolverReborn/main/Images/Logo.png",
+    "Url": "https://github.com/FFXIV-CombatReborn/RotationSolverReborn",
+    "Features": "All! The codes are too similar! They even didn't change the icon!",
+    "Type": 4
   }
 ]
