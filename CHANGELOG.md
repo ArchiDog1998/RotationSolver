@@ -1,5 +1,58 @@
 # Changelog
 
+## [4.3.0](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.6...v4.3.0) (2024-04-25)
+
+
+### Features
+
+* add padding drawing for the images. ([c5b38b0](https://github.com/ArchiDog1998/RotationSolver/commit/c5b38b0537452c3fdadaffe424fc68fb5f219199))
+* add rating system. ([56b8926](https://github.com/ArchiDog1998/RotationSolver/commit/56b8926935e73233712a67ecfe9dcfbc0955ac02))
+* add the duty rotation drawing stuff. ([6fdc39b](https://github.com/ArchiDog1998/RotationSolver/commit/6fdc39b4b6742c68849a98c935a3819322b7a584)), closes [#575](https://github.com/ArchiDog1998/RotationSolver/issues/575)
+* add user icons show feature. ([dcc7970](https://github.com/ArchiDog1998/RotationSolver/commit/dcc7970fb8c660fa5d0735a0aed89defa41944ff))
+
+
+### Bug Fixes
+
+* add change logs item. ([483d3d4](https://github.com/ArchiDog1998/RotationSolver/commit/483d3d454211325a7346acb0a1b768ff8660bbf4))
+* add discord. ([d56ee40](https://github.com/ArchiDog1998/RotationSolver/commit/d56ee403a9a30b0b7bb1a80b19ecf978f4a487e1))
+* add not supporter warning. ([2d4355f](https://github.com/ArchiDog1998/RotationSolver/commit/2d4355f958b898ec4844c70b34c00c93dd6b53c0))
+* add on obj created thing. ([6212e49](https://github.com/ArchiDog1998/RotationSolver/commit/6212e49438e714dfc886214e6efdaeb0fec6ba31))
+* add outputs for rp. ([e736661](https://github.com/ArchiDog1998/RotationSolver/commit/e73666164b222d5eccd800420bc8295b5d97534a))
+* add statuses ([3b622ec](https://github.com/ArchiDog1998/RotationSolver/commit/3b622ec8850e2539ef777f99efd1b03d6e288a7a))
+* add submodule. ([ca20511](https://github.com/ArchiDog1998/RotationSolver/commit/ca20511fe059c0a3d93c9f4d7e8154a5d75acea1))
+* add submodules. ([9530207](https://github.com/ArchiDog1998/RotationSolver/commit/953020792b8c02bf6406fc0f027158a4b56c66ed))
+* add supporters hash, for the suppoters only features. ([b2561a7](https://github.com/ArchiDog1998/RotationSolver/commit/b2561a7cf68707a06f332cd1986801951484e419))
+* add things for drawing in the duty rotation. ([125c9dd](https://github.com/ArchiDog1998/RotationSolver/commit/125c9ddd1a45c10650ff1ca88b971054e7952850))
+* changed the main ui ([7d3da7e](https://github.com/ArchiDog1998/RotationSolver/commit/7d3da7ea75b04b3b8762a3e0e9272ae2e22a2e60)), closes [#566](https://github.com/ArchiDog1998/RotationSolver/issues/566)
+* changed the submodule. ([38c155a](https://github.com/ArchiDog1998/RotationSolver/commit/38c155adf700da75a20827d0093104cd2f08ab0e))
+* command unify ([c9cb180](https://github.com/ArchiDog1998/RotationSolver/commit/c9cb180faf7df4b4b3503439324e1844eeb32f60)), closes [#584](https://github.com/ArchiDog1998/RotationSolver/issues/584)
+* fixed rate system. ([9301f49](https://github.com/ArchiDog1998/RotationSolver/commit/9301f497738f3964bfc1088ae6e3b9103fe7a852))
+* fixed say hello thing. ([d84c975](https://github.com/ArchiDog1998/RotationSolver/commit/d84c975fe7b3c0401e58c7b94eb9668ef4b7ba13))
+* fixed some bugs. ([fd0b2ef](https://github.com/ArchiDog1998/RotationSolver/commit/fd0b2eff536b0de425d263e4d7b75945cad0eb77))
+* kofi. ([97ea642](https://github.com/ArchiDog1998/RotationSolver/commit/97ea642edaa63c4d5723902f337931a4a8642baa))
+* local init. ([b352019](https://github.com/ArchiDog1998/RotationSolver/commit/b3520190a0582e189aa5dcb0caead308905fa45f))
+* local. ([362934f](https://github.com/ArchiDog1998/RotationSolver/commit/362934ff2033a5a53634aa4ce6f106d1ff7676f8))
+* merge. ([388fbb5](https://github.com/ArchiDog1998/RotationSolver/commit/388fbb50d4b877107f5b71b4e587bf13577da818))
+* merge. ([8796812](https://github.com/ArchiDog1998/RotationSolver/commit/8796812dd39bb13b4d5603d339e0171a4036082e))
+* namespace. ([c825081](https://github.com/ArchiDog1998/RotationSolver/commit/c825081a73c4d5b09a20d135838c713900b8de03))
+* next gcd action fix. ([d65b89e](https://github.com/ArchiDog1998/RotationSolver/commit/d65b89ece14483b2ce9aa405c9cca719724b70ad))
+* remove some features to XIVConfigUI ([6d7259b](https://github.com/ArchiDog1998/RotationSolver/commit/6d7259beaa08840b92271daf00e825529dbdfff2))
+* removed the repo name and user name. ([c9fa720](https://github.com/ArchiDog1998/RotationSolver/commit/c9fa7209a0d0db078511dad169c91b2494b8e8fe))
+* rename cd. ([66cd7a8](https://github.com/ArchiDog1998/RotationSolver/commit/66cd7a8fbbf4a5d2419e58b360bbfc63f151494a))
+* separated the ui config and the main plugin. ([4ba845a](https://github.com/ArchiDog1998/RotationSolver/commit/4ba845abe8157c32ac81f23f33a06dded1d4a54e)), closes [#566](https://github.com/ArchiDog1998/RotationSolver/issues/566)
+* some check fix for the ff16 duty. ([4ab8bfc](https://github.com/ArchiDog1998/RotationSolver/commit/4ab8bfc30a5622361a8151238cbd2a9763d90f21))
+* some restrictions. ([fc7915c](https://github.com/ArchiDog1998/RotationSolver/commit/fc7915c9693e0286faf0eddbf675f343770a3490))
+* style color fix. ([547301e](https://github.com/ArchiDog1998/RotationSolver/commit/547301e4bbae4e5fed6aa8103488dae5b0ff0c91))
+* submodules. ([ca9e464](https://github.com/ArchiDog1998/RotationSolver/commit/ca9e464a769bb1a9b8f95980de068c4c1d228e06))
+* try to add the ff16 rotation. ([5859d8b](https://github.com/ArchiDog1998/RotationSolver/commit/5859d8b397a1e3b9b5f24b212e07ec3df39b0cb2))
+* ui clean. ([531c1a6](https://github.com/ArchiDog1998/RotationSolver/commit/531c1a6794f61a020a2183a3785638f22a1d76e7))
+* ui fixed. ([8c83f3e](https://github.com/ArchiDog1998/RotationSolver/commit/8c83f3eb8d78d6ecf048d00bae6c3243229dc2d2))
+* ui string. ([8655afa](https://github.com/ArchiDog1998/RotationSolver/commit/8655afaf6dfc209e8d2a9bc8d3ffb25c604e8988))
+* unify the rotation config. ([915a519](https://github.com/ArchiDog1998/RotationSolver/commit/915a5198d9808aba29a7e722cbf65ae1821b11c2)), closes [#583](https://github.com/ArchiDog1998/RotationSolver/issues/583)
+* update submodule. ([ec9f1f8](https://github.com/ArchiDog1998/RotationSolver/commit/ec9f1f8ef9edbc383f7bcecb6bc9f395ecf354ea))
+* update the submodule. ([d50856b](https://github.com/ArchiDog1998/RotationSolver/commit/d50856b3fb72f3a6134b748c779d7cea9f0d3dd7))
+* update the submodule. ([28f3852](https://github.com/ArchiDog1998/RotationSolver/commit/28f3852613a17af5c99e867194c4e758562454cf))
+
 ## [4.2.6](https://github.com/ArchiDog1998/RotationSolver/compare/v4.2.5...v4.2.6) (2024-04-06)
 
 
