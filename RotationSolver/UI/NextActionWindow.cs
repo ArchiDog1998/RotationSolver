@@ -69,10 +69,9 @@ internal class NextActionWindow : Window
 
     public static unsafe void DrawGcdCooldown(float width, bool drawTittle)
     {
-        var group = ActionManager.Instance()->GetRecastGroupDetail(ActionHelper.GCDCooldownGroup - 1);
-
-        var remain = group->Total - group->Elapsed;
+        var remain = DataCenter.DefaultGCDRemain;
         var total = DataCenter.DefaultGCDTotal;
+        var elapsed = DataCenter.DefaultGCDElapsed;
 
         if (drawTittle)
         {
@@ -84,12 +83,12 @@ internal class NextActionWindow : Window
         var cursor = ImGui.GetCursorPos() + ImGui.GetWindowPos();
         var height = Service.Config.ControlProgressHeight   ;
 
-        ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);
+        ImGui.ProgressBar(elapsed / total, new Vector2(width, height), string.Empty);
 
-        var actionRemain = DataCenter.DefaultGCDElapsed;
+        var actionRemain = DataCenter.DefaultGCDRemain;
         if (actionRemain > 0)
         {
-            var value = total - remain + actionRemain;
+            var value = total - DataCenter.ActionAhead;
 
             if (value > Player.Object.TotalCastTime)
             {
