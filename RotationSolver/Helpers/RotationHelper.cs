@@ -6,9 +6,9 @@ namespace RotationSolver.Helpers;
 
 internal static class RotationHelper
 {
-    private static readonly Dictionary<Assembly, AssemblyInfo> _assemblyInfos = new();
+    private static readonly Dictionary<Assembly, AssemblyInfo> _assemblyInfos = [];
 
-    public static List<LoadedAssembly> LoadedCustomRotations { get; } = new List<LoadedAssembly>();
+    public static List<LoadedAssembly> LoadedCustomRotations { get; } = [];
 
     public static AssemblyInfo GetInfo(this Assembly assembly)
     {
