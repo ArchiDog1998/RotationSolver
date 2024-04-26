@@ -683,5 +683,6 @@
   "RotationSolver.UI.RotationConfigWindow+ChangeLogItem": "ChangeLog",
   "RotationSolver.Basic.Data.UiString.CantUseInDeepDungeons": "This feature in deep dungeons is avaliable only for supporters!",
   "RotationSolver.Basic.Data.UiString.CantUseInEureka": "This feature in Eureka is avaliable only for supporters!",
-  "RotationSolver.Basic.Data.UiString.CantUseInBozja": "This feature in Bozja is avaliable only for supporters!"
+  "RotationSolver.Basic.Data.UiString.CantUseInBozja": "This feature in Bozja is avaliable only for supporters!",
+  "RotationSolver.Basic.Data.DescType.MoveForwardAbility": "Move Forward Ability"
 }
