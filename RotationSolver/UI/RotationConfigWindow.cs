@@ -938,6 +938,7 @@ public class RotationConfigWindow : ConfigWindow
                                 GithubRecourcesHelper.ModifyYourRate(rotation.GetType(), i);
                                 DownloadHelper.ModifyMyRate(i);
                                 _nextChangeTime = DateTime.Now + TimeSpan.FromMinutes(1);
+                                ImGui.CloseCurrentPopup();
                             }
                             ImGui.SameLine();
                         }
@@ -1332,7 +1333,9 @@ public class RotationConfigWindow : ConfigWindow
                         ImGui.Text($"Charges: {action.CD.CurrentCharges} / {action.CD.MaxCharges}");
 
                         ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
+                        ImGui.Text($"Why Can't: {action.WhyCant.Local()} ");
                         ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
+                        ImGui.Text($"Why Can't: {action.WhyCant.Local()} ");
                         ImGui.Text("Target Name: " + action.Target.Target?.Name ?? string.Empty);
                     }
                     catch
