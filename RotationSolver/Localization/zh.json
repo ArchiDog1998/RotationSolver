@@ -434,7 +434,7 @@
   "RotationSolver.Basic.Data.UiString.CopiedYourHash": "Copied your hash to the clipboard!",
   "RotationSolver.Basic.Data.UiString.SpecialCommandType_EndSpecial": "End Special",
   "RotationSolver.Basic.Data.UiString.SpecialCommandType_Manual": "Manual Target",
-  "RotationSolver.Basic.Data.UiString.CantUseInHighEnd": "This feature in high end duties is avaliable only for supporters!",
+  "RotationSolver.Basic.Data.UiString.CantUseInHighEnd": "This feature in high-end duties is avaliable only for supporters!",
   "RotationSolver.Basic.Configuration.ConfigsName.OnlyAttackInEnemyList": "Only attacks targets in the enemy list.",
   "RotationSolver.Basic.Configuration.ConfigsDescription.DrawMeleeOffset": "Shows the area where no actions will be used between ranged and melee type actions.",
   "RotationSolver.Basic.Configuration.ConfigsName.CanAttackMarkAoe": "Allows use of AoE abilities to attack as many targets as possibly.",
@@ -680,5 +680,8 @@
   "DefaultRotations.Melee.NIN_DefaultName.UseHide": "Use Hide",
   "DefaultRotations.Melee.NIN_DefaultName.AutoUnhide": "Use Unhide",
   "RotationSolver.UI.RotationConfigWindow+DebugItem": "Debug",
-  "RotationSolver.UI.RotationConfigWindow+ChangeLogItem": "ChangeLog"
+  "RotationSolver.UI.RotationConfigWindow+ChangeLogItem": "ChangeLog",
+  "RotationSolver.Basic.Data.UiString.CantUseInDeepDungeons": "This feature in deep dungeons is avaliable only for supporters!",
+  "RotationSolver.Basic.Data.UiString.CantUseInEureka": "This feature in Eureka is avaliable only for supporters!",
+  "RotationSolver.Basic.Data.UiString.CantUseInBozja": "This feature in Bozja is avaliable only for supporters!"
 }
