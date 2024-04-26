@@ -7,7 +7,6 @@ using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Conditions;
-using RotationSolver.Localization;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
