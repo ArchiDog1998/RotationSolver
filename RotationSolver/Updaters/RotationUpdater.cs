@@ -476,6 +476,10 @@ internal static class RotationUpdater
         {
             DataCenter.RightNowDutyRotation?.Dispose();
             DataCenter.RightNowDutyRotation = GetRotation(type);
+            if(type != null)
+            {
+                Service.Config.DutyRotationChoice[Svc.ClientState.TerritoryType] = type.FullName;
+            }
         }
 
         static DutyRotation? GetRotation(Type? t)
@@ -511,6 +515,10 @@ internal static class RotationUpdater
             }
             RightRotationActions = DataCenter.RightNowRotation?.AllActions ?? [];
             DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
+            if (rotation != null)
+            {
+                Service.Config.RotationChoice = rotation.FullName;
+            }
             return;
         }
 

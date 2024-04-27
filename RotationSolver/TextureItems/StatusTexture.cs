@@ -19,7 +19,7 @@ internal class StatusTexture(Status status) : ITexture
     }
 
     public StatusTexture(uint id)
-     : this(Service.GetSheet<Status>().GetRow(id)!)
+        : this(Service.GetSheet<Status>().GetRow(id)!)
     {
     }
 }
