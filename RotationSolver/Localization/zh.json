@@ -721,5 +721,7 @@
   "DefaultRotations.Magical.SMN_Default+SwiftType.Ruby": "Ruby",
   "DefaultRotations.Magical.SMN_Default+SwiftType.All": "All",
   "DefaultRotations.Magical.SMN_DefaultName.AddSwiftcast": "Use Swiftcast",
-  "DefaultRotations.Magical.SMN_DefaultName.AddCrimsonCyclone": "Use Crimson Cyclone"
+  "DefaultRotations.Magical.SMN_DefaultName.AddCrimsonCyclone": "Use Crimson Cyclone",
+  "DefaultRotations.Healer.AST_DefaultName.UseEarthlyStarTime": "Use Earthly Star Time",
+  "DefaultRotations.Healer.AST_DefaultDescription.UseEarthlyStarTime": "Use Earthly Star during countdown timer."
 }
