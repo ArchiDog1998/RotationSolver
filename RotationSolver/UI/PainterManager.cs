@@ -44,6 +44,7 @@ internal static class PainterManager
     readonly static Drawing3DCircularSector[] BeneficialItems = new Drawing3DCircularSector[64];
     readonly static Drawing3DText[] TargetTexts = new Drawing3DText[64];
     readonly static Drawing3DImage[] TargetsDrawings = new Drawing3DImage[64];
+    readonly static Drawing3DImage[] AllianceDrawings = new Drawing3DImage[64];
     readonly static Drawing3DImage[] UsersDrawings = new Drawing3DImage[64];
 
     public static void Init()
@@ -64,6 +65,14 @@ internal static class PainterManager
         for (int i = 0; i < UsersDrawings.Length; i++)
         {
             UsersDrawings[i] = new Drawing3DImage(null, Vector3.Zero)
+            {
+                Enable = false,
+                MustInViewRange = true,
+            };
+        }
+        for (int i = 0; i < AllianceDrawings.Length; i++)
+        {
+            AllianceDrawings[i] = new Drawing3DImage(null, Vector3.Zero)
             {
                 Enable = false,
                 MustInViewRange = true,
@@ -161,6 +170,7 @@ internal static class PainterManager
         UpdateTargetTexts();
         UpdateTarget();
         UpdateHostileIcons();
+        UpdatAllayIcons();
         UpdateUsersIcons();
         UpdateBeneficial();
     }
@@ -252,6 +262,36 @@ internal static class PainterManager
             item.Position = obj.Position + new Vector3(0,
                     Service.Config.HostileIconHeight, 0);
             item.Size = Service.Config.HostileIconSize;
+        }
+    }
+
+    private static unsafe void UpdatAllayIcons()
+    {
+        foreach (var item in AllianceDrawings)
+        {
+            item.Enable = false;
+        }
+
+        if (!Service.Config.ShowAllianceIcons)
+        {
+            return;
+        }
+
+        if (!ImageLoader.GetTexture(61515, out var hostileIcon)) return;
+
+        var alliance = DataCenter.AllianceMembers.Where(i => i.ObjectId != Player.Object?.ObjectId).ToArray();
+
+        for (int i = 0; i < Math.Min(AllianceDrawings.Length, alliance.Length); i++)
+        {
+            if (AllianceDrawings[i] is not Drawing3DImage item) continue;
+
+            var obj = alliance[i];
+
+            item.Enable = true;
+            item.Image = hostileIcon;
+            item.Position = obj.Position + new Vector3(0,
+                    Service.Config.AllianceIconHeight, 0);
+            item.Size = Service.Config.AllianceIconSize;
         }
     }
 
