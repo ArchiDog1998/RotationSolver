@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver.SourceGenera
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver.GameData", "RotationSolver.GameData\RotationSolver.GameData.csproj", "{FE8D8078-67F6-473E-9076-B01C62F5B937}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RotationSolver.DummyRotations", "RotationSolver.DummyRotations\RotationSolver.DummyRotations.csproj", "{2C9BACA6-A791-478C-84BB-8A798123468A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,14 @@ Global
 		{FE8D8078-67F6-473E-9076-B01C62F5B937}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE8D8078-67F6-473E-9076-B01C62F5B937}.Release|x64.ActiveCfg = Release|Any CPU
 		{FE8D8078-67F6-473E-9076-B01C62F5B937}.Release|x64.Build.0 = Release|Any CPU
+		{2C9BACA6-A791-478C-84BB-8A798123468A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C9BACA6-A791-478C-84BB-8A798123468A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C9BACA6-A791-478C-84BB-8A798123468A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2C9BACA6-A791-478C-84BB-8A798123468A}.Debug|x64.Build.0 = Debug|Any CPU
+		{2C9BACA6-A791-478C-84BB-8A798123468A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C9BACA6-A791-478C-84BB-8A798123468A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C9BACA6-A791-478C-84BB-8A798123468A}.Release|x64.ActiveCfg = Release|Any CPU
+		{2C9BACA6-A791-478C-84BB-8A798123468A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
