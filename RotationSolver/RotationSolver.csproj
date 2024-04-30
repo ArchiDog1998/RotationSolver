@@ -4,6 +4,7 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+	  <Platforms>x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
