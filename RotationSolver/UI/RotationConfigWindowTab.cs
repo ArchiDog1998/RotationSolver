@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ECommons.DalamudServices;
+using System.ComponentModel;
 
 namespace RotationSolver.UI;
 
@@ -55,6 +56,16 @@ public struct IncompatiblePlugin
     public string Icon { get; set; }
     public string Url { get; set; }
     public string Features { get; set; }
+
+    [JsonIgnore]
+    public readonly bool IsInstalled 
+    { 
+        get
+        {
+            var name = this.Name;
+            return Svc.PluginInterface.InstalledPlugins.Any(x => (x.Name.Contains(name) || x.InternalName.Contains(name)) && x.IsLoaded);
+        }
+    }
 
     public CompatibleType Type { get; set; }
 }
