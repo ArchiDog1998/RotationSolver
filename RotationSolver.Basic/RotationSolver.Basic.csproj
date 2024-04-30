@@ -14,6 +14,7 @@
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+	  <Platforms>x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
 	  <Reference Include="Dalamud">
