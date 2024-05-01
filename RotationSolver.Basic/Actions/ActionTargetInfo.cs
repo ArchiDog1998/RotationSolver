@@ -112,10 +112,22 @@ public struct ActionTargetInfo(IBaseAction action)
         var tarAddress = tar.Struct();
         if (tarAddress == null) return false;
 
-        if ((ActionID)action.Info.ID != ActionID.AethericMimicryPvE
-            && !ActionManager.CanUseActionOnTarget(action.Info.AdjustedID, tarAddress)) return false;
+        if (!IsSpecialAbility(action.Info.ID) && !ActionManager.CanUseActionOnTarget(action.Info.AdjustedID, tarAddress)) return false;
 
         return tar.CanSee();
+    }
+
+    private List<ActionID> _specialActions = new List<ActionID>()
+    {
+        ActionID.AethericMimicryPvE,
+        ActionID.EruptionPvE,
+        ActionID.BishopAutoturretPvP,
+    };
+
+    private readonly bool IsSpecialAbility(uint iD)
+    {
+        if (_specialActions.Contains((ActionID)iD)) return true;
+        return false;
     }
 
     private readonly bool GeneralCheck(BattleChara gameObject, bool skipStatusProvideCheck)
