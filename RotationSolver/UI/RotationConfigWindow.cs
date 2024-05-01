@@ -776,7 +776,7 @@ public partial class RotationConfigWindow : Window
 
         var iconSize = 40 * Scale;
 
-        using var table = ImRaii.Table("Incompatible plugin", 4, ImGuiTableFlags.BordersInner
+        using var table = ImRaii.Table("Incompatible plugin", 5, ImGuiTableFlags.BordersInner
         | ImGuiTableFlags.Resizable
         | ImGuiTableFlags.SizingStretchProp);
         if (table)
@@ -795,6 +795,9 @@ public partial class RotationConfigWindow : Window
 
             ImGui.TableNextColumn();
             ImGui.TableHeader("Type");
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Installed");
 
             foreach (var item in DownloadHelper.IncompatiblePlugins ?? [])
             {
@@ -836,6 +839,9 @@ public partial class RotationConfigWindow : Window
                     ImGui.TextColored(ImGuiColors.DalamudRed, CompatibleType.Crash.ToString().Replace('_', ' '));
                     ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_About_Compatibility_Crash.Local());
                 }
+
+                ImGui.TableNextColumn();
+                ImGui.Text(item.IsInstalled ? "Yes" : "No");
             }
         }
     }
