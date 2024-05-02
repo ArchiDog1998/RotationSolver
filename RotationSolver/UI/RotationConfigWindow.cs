@@ -6,6 +6,7 @@ using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
+using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -1208,12 +1209,13 @@ public partial class RotationConfigWindow : Window
             if (config is RotationConfigCombo c)
             {
                 var names = c.DisplayValues;
-                var selectedValue = c.selectedIdx;
-                
+                var selectedValue = c.Value;
+                var index = names.IndexOf(n => n == selectedValue);
+
                 ImGui.SetNextItemWidth(ImGui.CalcTextSize(c.DisplayValues.OrderByDescending(v => v.Length).First()).X + 50 * Scale);
-                if (ImGui.Combo(name, ref selectedValue, names, names.Length))
+                if (ImGui.Combo(name, ref index, names, names.Length))
                 {
-                    c.selectedIdx = selectedValue;
+                    c.Value = names[index];
                 }
             }
             else if (config is RotationConfigBoolean b)

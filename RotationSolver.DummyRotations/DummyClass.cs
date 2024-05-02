@@ -11,10 +11,25 @@ using System.Threading.Tasks;
 
 namespace RotationSolver.DummyRotations
 {
-    [Rotation("Dummy Rotation", CombatType.PvP, GameVersion = "6.58")]
+    [Rotation("Dummy Rotation", CombatType.PvE, GameVersion = "6.58")]
     [Api(1)]
     public class DummyClass : MachinistRotation
     {
+        public enum DummyClassConfig
+        {
+            DummyConfig1,
+            DummyConfig2,
+            DummyConfig3,
+            DummyConfig4,
+            DummyConfig5,
+            DummyConfig6,
+            DummyConfig7,
+            DummyConfig8,
+            DummyConfig9,
+            DummyConfig10,
+        }
+        [RotationConfig(CombatType.PvE)]
+        public DummyClassConfig DummyClassConfigValue { get; set; } = DummyClassConfig.DummyConfig1;
         protected override bool GeneralGCD(out IAction? act)
         {
             return base.GeneralGCD(out act);
@@ -48,8 +63,7 @@ namespace RotationSolver.DummyRotations
         public override void DisplayStatus()
         {
             ImGui.Text("Dummy Rotation");
-            ImGui.Text($"Target: {BishopAutoturretPvP.Target.Position?.X}/{BishopAutoturretPvP.Target.Position?.Y}");
-            ImGui.Text($"Bishop Autoturrent CanUse: {BishopAutoturretPvP.CanUse(out _)}");
+            ImGui.Text("Dummy Config: " + DummyClassConfigValue);
         }
     }
 }
