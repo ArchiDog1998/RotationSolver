@@ -5,7 +5,6 @@ namespace RotationSolver.Basic.Configuration.RotationConfig;
 internal class RotationConfigCombo: RotationConfigBase
 {
     public string[] DisplayValues { get; }
-    public int selectedIdx { get; set; }
 
     public RotationConfigCombo(ICustomRotation rotation, PropertyInfo property)
         :base(rotation, property)
@@ -13,7 +12,7 @@ internal class RotationConfigCombo: RotationConfigBase
         var names = new List<string>();
         foreach (Enum v in Enum.GetValues(property.PropertyType))
         {
-            names.Add(v.GetAttribute<DescriptionAttribute>()?.Description ?? v.ToString());
+            names.Add(v.ToString());
         }
 
         DisplayValues = [.. names];
