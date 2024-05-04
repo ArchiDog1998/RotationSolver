@@ -1,5 +1,5 @@
 
-# [![](Images/Logo.gif)](https://archidog1998.github.io/RotationSolver/#/) 
+# [![](https://raw.githubusercontent.com/FFXIV-CombatReborn/RebornAssets/main/IconAssets/RSR_Icon.png)](https://github.com/FFXIV-CombatReborn/RotationSolverReborn)
 
 **RotationSolverReborn**
 
