@@ -436,5 +436,4 @@ internal static class DataCenter
     #endregion
 
     internal static SortedList<string, string> AuthorHashes { get; set; } = [];
-    internal static string[] ContributorsHash { get; set; } = [];
 }

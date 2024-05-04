@@ -309,7 +309,11 @@ public partial class RotationConfigWindow : Window
 
         var file = dir + $"\\{name}.png";
 
-        if (File.Exists(file))
+        if (File.Exists(file) && File.GetLastWriteTime(file).AddDays(1) < DateTime.Now)
+        {
+            File.Delete(file);
+        }
+        else if (File.Exists(file))
         {
             if (!_logosWrap.ContainsKey(file))
             {
@@ -361,8 +365,7 @@ public partial class RotationConfigWindow : Window
 
                 var frame = Environment.TickCount / 34 % FRAME_COUNT;
                 if (frame <= 0) frame += FRAME_COUNT;
-                if (GetLocalImage(Service.Config.DrawIconAnimation
-                    ? frame.ToString("D4") : "Logo", out var logo))
+                if (GetLocalImage("Logo", out var logo))
                 {
                     ImGui.SetCursorPos(cursor);
                     ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
@@ -685,7 +688,6 @@ public partial class RotationConfigWindow : Window
     {
         { UiString.ConfigWindow_About_Macros.Local, DrawAboutMacros},
         { UiString.ConfigWindow_About_Compatibility.Local, DrawAboutCompatibility},
-        { UiString.ConfigWindow_About_Supporters.Local, DrawAboutSupporters},
         { UiString.ConfigWindow_About_Links.Local, DrawAboutLinks},
         { UiString.ConfigWindow_About_Warnings.Local, DrawAboutWarnings},
     });
@@ -844,22 +846,6 @@ public partial class RotationConfigWindow : Window
                 ImGui.TableNextColumn();
                 ImGui.Text(item.IsInstalled ? "Yes" : "No");
             }
-        }
-    }
-    private static void DrawAboutSupporters()
-    {
-        ImGui.TextWrapped(UiString.ConfigWindow_About_ThanksToSupporters.Local());
-
-        var width = ImGui.GetWindowWidth();
-        using var font = ImRaii.PushFont(DrawingExtensions.GetFont(12));
-        using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
-
-        foreach (var name in DownloadHelper.Supporters)
-        {
-            ImGuiHelper.DrawItemMiddle(() =>
-            {
-                ImGui.TextWrapped(name);
-            }, width, ImGui.CalcTextSize(name).X);
         }
     }
 

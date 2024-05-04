@@ -66,21 +66,6 @@ public static partial class RSCommands
             ControlWindow.DidTime = DateTime.Now;
         }
 
-        if (nextAction is BaseAction act1 && act1.Info.IsPvP && !act1.Setting.IsFriendly
-            && act1.TargetInfo.IsSingleTarget
-            && act1.Target.Target is PlayerCharacter p && p != Player.Object)
-        {
-            var hash = p.EncryptString();
-
-            //Don't attack authors and contributors!!
-            if ((DataCenter.AuthorHashes.ContainsKey(hash)
-                || DataCenter.ContributorsHash.Contains(hash)))
-            {
-                Svc.Chat.PrintError($"Please don't attack RS developers with RS by {act1}!");
-                return;
-            }
-        }
-
 #if DEBUG
         //if (nextAction is BaseAction acti)
         //    Svc.Log.Debug($"Will Do {acti}");
