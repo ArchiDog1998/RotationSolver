@@ -17,7 +17,6 @@ https://raw.githubusercontent.com/ArchiDog1998/DalamudPlugins/main/pluginmaster.
 >
 > My friends have suggested not to make this plugin fully open source, so the base library will no longer be fully public. 
 >
-> If you want to see the source code, please support me in ko-fi and send me a private message on your GitHub mail!
 
 Three ways to get it:
 - Try the community version of [Rotation Solver Reborn](https://github.com/FFXIV-CombatReborn/RotationSolverReborn) (not mine). 
