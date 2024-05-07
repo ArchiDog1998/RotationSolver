@@ -12,7 +12,6 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;
-using RotationSolver.Localization;
 using RotationSolver.UI;
 using System.Runtime.InteropServices;
 using XIVConfigUI;
@@ -92,14 +91,7 @@ internal static class MajorUpdater
             _work = true;
             _lastUpdatedWork = DateTime.Now;
 
-            if (Service.Config.UseWorkTask)
-            {
-                Task.Run(UpdateWork);
-            }
-            else
-            {
-                UpdateWork();
-            }
+            UpdateWork();
         }
         catch (Exception ex)
         {
@@ -112,7 +104,7 @@ internal static class MajorUpdater
         if ((int)Svc.ClientState.ClientLanguage == 4)
         {
             var warning = "Rotation Solver 未进行国服适配并不提供相关支持! 建议使用国服的插件，如：";
-            Svc.Toasts.ShowError(warning + "AE Assist 2.0！");
+            Svc.Toasts.ShowError(warning + "AE Assist 3.0！");
 
             var seString = new SeString(new TextPayload(warning),
                 Svc.PluginInterface.AddChatLinkHandler(2, (id, str) =>
@@ -157,12 +149,6 @@ internal static class MajorUpdater
     static Exception? _innerException;
     private static void UpdateWork()
     {
-        var waitingTime = (DateTime.Now - _lastUpdatedWork).TotalMilliseconds;
-        if (waitingTime > 100)
-        {
-            Svc.Log.Warning($"The time for completing a running cycle for RS is {waitingTime:F2} ms, try disabling the option \"{"UseWorkTask"}\" to get better performance or check your other running plugins for one of them using too many resources and try disabling that.");
-        }
-
         if (!IsValid)
         {
             ActionUpdater.NextAction = ActionUpdater.NextGCDAction = null;

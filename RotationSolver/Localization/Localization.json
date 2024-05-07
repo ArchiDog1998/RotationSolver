@@ -150,7 +150,6 @@
   "RotationSolver.Data.UiString.ConfigWindow_Basic_AutoSwitch": "Auto Switch",
   "RotationSolver.Data.UiString.ConfigWindow_Basic_NamedConditions": "Named Conditions",
   "RotationSolver.Data.UiString.ConfigWindow_Basic_Others": "Others",
-  "RotationSolver.Basic.Configuration.ConfigsName.UseWorkTask": "Uses work task for acceleration.",
   "RotationSolver.Basic.Configuration.ConfigsName.ToggleManual": "Make /rotation Manual as a toggle command.",
   "RotationSolver.Basic.Configuration.ConfigsName.ToggleAuto": "Make /rotation Auto as a toggle command.",
   "RotationSolver.Basic.Configuration.ConfigsName.SayHelloToAll": "Says hello to other players that use Rotation Solver.",
