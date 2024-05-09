@@ -469,8 +469,7 @@ internal static class RotationUpdater
     {
         if (!DutyRotations.TryGetValue(Svc.ClientState.TerritoryType, out var rotations)) return;
 
-        Service.Config.DutyRotationChoice.TryGetValue(Svc.ClientState.TerritoryType, out var value);
-        var name = value ?? string.Empty;
+        var name = Service.Config.DutyRotationChoice ?? string.Empty;
         var type = GetChosenType(rotations, name);
         if (type != DataCenter.RightNowDutyRotation?.GetType())
         {
@@ -478,7 +477,7 @@ internal static class RotationUpdater
             DataCenter.RightNowDutyRotation = GetRotation(type);
             if (type != null)
             {
-                Service.Config.DutyRotationChoice[Svc.ClientState.TerritoryType] = type.FullName ?? string.Empty;
+                Service.Config.DutyRotationChoice = type.FullName ?? string.Empty;
             }
         }
 

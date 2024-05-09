@@ -93,12 +93,12 @@ public class RotationConfigWindow : ConfigWindow
 
                 if (ImGui.Selectable("None"))
                 {
-                    Service.Config.DutyRotationChoice[Svc.ClientState.TerritoryType] = string.Empty;
+                    Service.Config.DutyRotationChoice = string.Empty;
                 }
 
                 if (ImGui.Selectable(r.Name) && !string.IsNullOrEmpty(type.FullName))
                 {
-                    Service.Config.DutyRotationChoice[Svc.ClientState.TerritoryType] = type.FullName;
+                    Service.Config.DutyRotationChoice = type.FullName;
                 }
             }
         }
@@ -847,6 +847,16 @@ public class RotationConfigWindow : ConfigWindow
             if (!enable) return;
 
             var set = rotation.Configs;
+
+            if (set.Any()) ImGui.Separator();
+
+            set.DrawItems(0);
+
+            var duty = DataCenter.RightNowDutyRotation;
+
+            if (duty == null) return;
+
+            set = duty.Configs;
 
             if (set.Any()) ImGui.Separator();
 
