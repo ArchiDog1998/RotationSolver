@@ -140,6 +140,11 @@ public struct ActionTargetInfo(IBaseAction action)
             return false;
         }
 
+        if (Service.Config.DisableTargetDummys && gameObject.IsDummy())
+        {
+            return false;
+        }
+
         if (gameObject.IsEnemy())
         {
             //Can't attack.
