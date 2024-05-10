@@ -159,7 +159,7 @@ public readonly struct ActionCooldownInfo : ICooldown
 
             if (!isEmpty)
             {
-                if (RecastTimeRemain > DataCenter.DefaultGCDRemain * gcdCountForAbility)
+                if (RecastTimeRemain > DataCenter.DefaultGCDRemain + DataCenter.DefaultGCDTotal * gcdCountForAbility)
                     return false;
             }
         }

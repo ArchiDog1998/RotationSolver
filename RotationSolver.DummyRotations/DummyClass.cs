@@ -32,17 +32,14 @@ namespace RotationSolver.DummyRotations
         public DummyClassConfig DummyClassConfigValue { get; set; } = DummyClassConfig.DummyConfig1;
         protected override bool GeneralGCD(out IAction? act)
         {
-            return base.GeneralGCD(out act);
+            act = null;
+            if (DrillPvE.CanUse(out act)) return true;
+            return false;
         }
 
         protected override bool GeneralAbility(IAction nextGCD, out IAction? act)
         {
-            act = null;
-            if (BishopAutoturretPvP.CanUse(out act))
-            {
-                return true;
-            }
-            return false;
+            return base.GeneralAbility(nextGCD, out act);
         }
 
         protected override IAction? CountDownAction(float remainTime)

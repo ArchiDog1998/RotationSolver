@@ -125,19 +125,19 @@ partial class SummonerRotation
     static partial void ModifySummonRubyPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.IfritsFavor];
-        setting.ActionCheck = () => HasSummon && IsIfritReady;
+        setting.ActionCheck = () => SummonTime <= WeaponRemain && IsIfritReady;
     }
 
     static partial void ModifySummonTopazPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => HasSummon && IsTitanReady;
+        setting.ActionCheck = () => SummonTime <= WeaponRemain && IsTitanReady;
         setting.UnlockedByQuestID = 66639;
     }
 
     static partial void ModifySummonEmeraldPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.GarudasFavor];
-        setting.ActionCheck = () => HasSummon && IsGarudaReady;
+        setting.ActionCheck = () => SummonTime <= WeaponRemain && IsGarudaReady;
     }
 
     static RandomDelay _carbuncleDelay = new (() => (2, 2));
@@ -163,7 +163,7 @@ partial class SummonerRotation
 
     static partial void ModifySummonBahamutPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => InCombat && HasSummon;
+        setting.ActionCheck = () => InCombat && SummonTime <= WeaponRemain;
         setting.UnlockedByQuestID = 68165;
     }
 

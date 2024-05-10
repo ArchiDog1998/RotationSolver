@@ -424,5 +424,14 @@
   "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Description": "Literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:",
   "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Mislead": "Conflicts with RSR decision making",
   "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Mistake": "Can't properly execute the behavior that RSR wants to do.",
-  "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Crash": "Causes the game to crash."
+  "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Crash": "Causes the game to crash.",
+  "RotationSolver.Data.UiString.WelcomeWindow_Header": "Welcome to Rotation Solver Reborn!",
+  "RotationSolver.Data.UiString.WelcomeWindow_WelcomeBack": "Here's what you missed since the last time you were here",
+  "RotationSolver.Data.UiString.WelcomeWindow_Changelog": "Recent Changes:",
+  "RotationSolver.Basic.Data.DescType.DefenseAreaAbility": "Defense Area Ability",
+  "RotationSolver.Basic.Data.DescType.DefenseSingleAbility": "Defense Single Ability",
+  "RotationSolver.Basic.Data.DescType.MoveForwardAbility": "Move Forward Ability",
+  "RotationSolver.Basic.Data.DescType.SpeedAbility": "Speed Ability",
+  "DefaultRotations.Melee.RPR_Default.Name": "EnshroudPooling",
+  "DefaultRotations.Melee.RPR_Default.DisplayName": "[Beta Option] Pool Shroud for Arcane Circle."
 }
