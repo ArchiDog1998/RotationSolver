@@ -64,12 +64,12 @@
   "RotationSolver.Data.UiString.ConfigWindow_Rotations_GitHub": "Github",
   "RotationSolver.Data.UiString.ConfigWindow_Rotations_Libraries": "Libraries",
   "RotationSolver.UI.RotationConfigWindowTab.Actions": "The abilities and custom conditions that your selected job has.",
-  "RotationSolver.Data.UiString.ConfigWindow_Actions_Description": "To customize when Rotation Solver uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_Description": "Used to customize when RSR uses specific actions automatically, click on an action's icon in the left list. Below, you may set the conditions for when that specific action is used. Each action can have a different set of conditions to override the default rotation behavior.",
   "RotationSolver.Data.UiString.ConfigWindow_Actions_ConditionDescription": "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Condition will be ignored.",
   "RotationSolver.Data.UiString.ConfigWindow_Actions_ForcedConditionSet": "Forced Condition",
   "RotationSolver.Data.UiString.ConfigWindow_Actions_DisabledConditionSet": "Disabled Condition",
   "RotationSolver.Data.UiString.ConfigWindow_Actions_ShowOnCDWindow": "Show on CD window",
-  "RotationSolver.Data.UiString.ConfigWindow_Actions_TTK": "TTK that this action needs the target be.",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_TTK": "TTK that this action needs the target be before it is used.",
   "RotationSolver.Basic.Attributes.ConfigUnitType.Seconds": "Time Unit, in seconds.",
   "RotationSolver.Data.UiString.ConfigWindow_Actions_HealRatio": "The HP ratio to auto heal",
   "RotationSolver.Basic.Attributes.ConfigUnitType.Percent": "Ratio Unit, as percentage.",
@@ -357,7 +357,7 @@
   "BeneficialAreaStrategyName": "Beneficial AoE strategy",
   "UseGroundBeneficialAbilityWhenMovingName": "Use beneficial AoE actions when moving.",
   "RotationSolver.Data.UiString.SpecialCommandType_TankStance": "Tank Stance",
-  "RotationSolver.Data.UiString.ConfigWindow_Actions_TTU": "Time to untargetable that this action needs the timeline be.",
+  "RotationSolver.Data.UiString.ConfigWindow_Actions_TTU": "TTK that this action needs the target be on the timeline before it is used",
   "TargetDelayName": "The range of random delay for finding a target.",
   "ShowOmenName": "Show The Omen things.",
   "AutoCloseChestWindowName": "Auto close the loot window when auto opened the chest.",
@@ -424,5 +424,6 @@
   "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Description": "Literally, Rotation Solver helps you to choose the target and then click the action. So any plugin that changes these will affect its decision.\n\nHere is a list of known incompatible plugins:",
   "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Mislead": "Conflicts with RSR decision making",
   "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Mistake": "Can't properly execute the behavior that RSR wants to do.",
-  "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Crash": "Causes the game to crash."
+  "RotationSolver.Data.UiString.ConfigWindow_About_Compatibility_Crash": "Causes the game to crash.",
+  "RotationSolver.Basic.Data.TargetingType.HighHP": "High HP"
 }

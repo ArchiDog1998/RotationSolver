@@ -196,7 +196,7 @@ internal static class DataCenter
     #region GCD
     public static float DefaultGCDTotal => ActionManagerHelper.GetDefaultRecastTime();
 
-    public static float DefaultGCDRemain => ActionManagerHelper.GetDefaultRecastTime() - ActionManagerHelper.GetDefaultRecastTimeElapsed() - ActionManagerHelper.GetCurrentAnimationLock();
+    public static float DefaultGCDRemain => ActionManagerHelper.GetDefaultRecastTime() - ActionManagerHelper.GetDefaultRecastTimeElapsed();
 
     public static float DefaultGCDElapsed => ActionManagerHelper.GetDefaultRecastTimeElapsed();
 
