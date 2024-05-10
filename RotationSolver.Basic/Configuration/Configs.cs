@@ -330,6 +330,10 @@ internal partial class Configs : IPluginConfiguration
 
     private static readonly bool _targetQuestPriority = true;
 
+    [ConditionBool, UI("Ignore target dummies",
+               Filter = TargetConfig, Section = 1)]
+    private static readonly bool _disableTargetDummys = false;
+
     [ConditionBool, UI("Display do action feedback on toast",
         Filter =UiInformation)]
     private static readonly bool _showToastsAboutDoAction = false;
