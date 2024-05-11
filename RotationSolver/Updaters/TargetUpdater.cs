@@ -4,6 +4,8 @@ using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Watch;
+using RotationSolver.Basic.Watcher;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Updaters;
@@ -24,20 +26,6 @@ internal static partial class TargetUpdater
             && b.IsTargetable //Removed the one can't target.
             ));
         UpdateNamePlate(battles);
-    }
-
-    private static GameObject[] _lastObjs = [];
-    private static void UpdateNewCharactors()
-    {
-        foreach (var obj in Svc.Objects.Except(_lastObjs))
-        {
-#if DEBUG
-            Svc.Log.Debug($"Find a new object {obj.Name.TextValue}");
-#endif
-            DataCenter.RightNowDutyRotation?.OnNewActor(obj);
-        }
-
-        _lastObjs = [.. Svc.Objects];
     }
 
     private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;
@@ -172,7 +160,7 @@ internal static partial class TargetUpdater
         if (isVfx == null) return false;
         try
         {
-            foreach (var item in DataCenter.VfxNewData.Reverse())
+            foreach (var item in Recorder.VfxNewData)
             {
                 if (item.TimeDuration.TotalSeconds is > 1 and < 5)
                 {

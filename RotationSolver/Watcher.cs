@@ -9,6 +9,8 @@ using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Watch;
+using RotationSolver.Basic.Watcher;
 using System.Text.RegularExpressions;
 using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
@@ -52,17 +54,8 @@ public static class Watcher
         ActionEffect.ActionEffectEvent += ActionFromSelf;
         MapEffect.Init((a1, position, param1, param2) =>
         {
-            if (DataCenter.MapEffects.Count >= 64)
-            {
-                DataCenter.MapEffects.TryDequeue(out _);
-            }
-
             var effect = new MapEffectData(position, param1, param2);
-            DataCenter.MapEffects.Enqueue(effect);
-#if DEBUG
-            Svc.Log.Debug(effect.ToString());
-#endif
-            DataCenter.RightNowDutyRotation?.OnMapEffect(effect);
+            Recorder.Enqueue(effect);
         });
     }
 
@@ -88,18 +81,8 @@ public static class Watcher
 
             if (NotFrom(path))
             {
-                if (DataCenter.VfxNewData.Count >= 64)
-                {
-                    DataCenter.VfxNewData.TryDequeue(out _);
-                }
-
                 var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
-                DataCenter.VfxNewData.Enqueue(effect);
-
-#if DEBUG
-                Svc.Log.Debug(effect.ToString());
-#endif
-                DataCenter.RightNowDutyRotation?.OnActorVfxNew(effect);
+                Recorder.Enqueue(effect);
             }
 
         }
@@ -125,19 +108,13 @@ public static class Watcher
     {
         try
         {
-            if (DataCenter.ObjectEffects.Count >= 64)
-            {
-                DataCenter.ObjectEffects.TryDequeue(out _);
-            }
-
             var effect = new ObjectEffectData(a1->ObjectID, a2, a3);
-            DataCenter.ObjectEffects.Enqueue(effect);
+            Recorder.Enqueue(effect);
 
             Svc.Objects.CreateObjectReference((nint)a1);
 #if DEBUG
             Svc.Log.Debug(effect.ToString());
 #endif
-            DataCenter.RightNowDutyRotation?.OnObjectEffect(effect);
         }
         catch (Exception e)
         {
