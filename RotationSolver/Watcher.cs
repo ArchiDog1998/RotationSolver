@@ -9,8 +9,7 @@ using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Watch;
-using RotationSolver.Basic.Watcher;
+using RotationSolver.Basic.Record;
 using System.Text.RegularExpressions;
 using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
@@ -81,7 +80,7 @@ public static class Watcher
 
             if (NotFrom(path))
             {
-                var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
+                var effect = new VfxNewData(obj, path);
                 Recorder.Enqueue(effect);
             }
 
@@ -108,13 +107,10 @@ public static class Watcher
     {
         try
         {
-            var effect = new ObjectEffectData(a1->ObjectID, a2, a3);
-            Recorder.Enqueue(effect);
+            var obj = Svc.Objects.CreateObjectReference((nint)a1);
 
-            Svc.Objects.CreateObjectReference((nint)a1);
-#if DEBUG
-            Svc.Log.Debug(effect.ToString());
-#endif
+            var effect = new ObjectEffectData(obj, a2, a3);
+            Recorder.Enqueue(effect);
         }
         catch (Exception e)
         {
@@ -156,14 +152,7 @@ public static class Watcher
         if (battle.SubKind == 9) return; //Friend!
         if (Svc.Objects.SearchById(battle.ObjectId) is PlayerCharacter) return;
 
-        try
-        {
-            DataCenter.RightNowDutyRotation?.OnActionFromEnemy(set);
-        }
-        catch(Exception e)
-        {
-            Svc.Log.Warning(e, "Failed to act on the duty rotation about acion on enemy.");
-        }
+        Recorder.Enqueue(set);
 
         var damageRatio = set.TargetEffects
             .Where(e => e.TargetID == Player.Object.ObjectId)

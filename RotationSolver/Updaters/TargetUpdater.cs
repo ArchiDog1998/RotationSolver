@@ -4,8 +4,7 @@ using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Watch;
-using RotationSolver.Basic.Watcher;
+using RotationSolver.Basic.Record;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.Updaters;
@@ -144,7 +143,7 @@ internal static partial class TargetUpdater
         {
             if (!s.Path.StartsWith("vfx/lockon/eff/tank_lockon")) return false;
             if (!Player.Available) return false;
-            if (Player.Object.IsJobCategory(JobRole.Tank) && s.ObjectId != Player.Object.ObjectId) return false;
+            if (Player.Object.IsJobCategory(JobRole.Tank) && s.Object?.ObjectId != Player.Object.ObjectId) return false;
 
             return true;
         });
@@ -160,12 +159,9 @@ internal static partial class TargetUpdater
         if (isVfx == null) return false;
         try
         {
-            foreach (var item in Recorder.VfxNewData)
+            foreach (var item in Recorder.GetData<VfxNewData>(1, 5))
             {
-                if (item.TimeDuration.TotalSeconds is > 1 and < 5)
-                {
-                    if (isVfx(item)) return true;
-                }
+                if (isVfx(item)) return true;
             }
         }
         catch
