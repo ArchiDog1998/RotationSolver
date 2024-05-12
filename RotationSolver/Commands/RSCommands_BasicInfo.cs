@@ -8,13 +8,24 @@ namespace RotationSolver.Commands;
 public static partial class RSCommands
 {
     internal static void Enable()
-        => Svc.Commands.AddHandler(Service.COMMAND, new CommandInfo(OnCommand)
+    {
+        Svc.Commands.AddHandler(Service.COMMAND, new CommandInfo(OnCommand)
         {
             HelpMessage = UiString.Commands_Rotation.Local(),
             ShowInHelp = true,
         });
+        Svc.Commands.AddHandler(Service.ALTCOMMAND, new CommandInfo(OnCommand)
+        {
+            HelpMessage = UiString.Commands_Rotation.Local(),
+            ShowInHelp = true,
+        });
+    }
 
-    internal static void Disable() => Svc.Commands.RemoveHandler(Service.COMMAND);
+    internal static void Disable()
+    {
+        Svc.Commands.RemoveHandler(Service.COMMAND);
+        Svc.Commands.RemoveHandler(Service.ALTCOMMAND);
+    }
 
     private static void OnCommand(string command, string arguments)
     {
