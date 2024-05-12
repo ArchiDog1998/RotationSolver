@@ -38,6 +38,8 @@ public class RotationConfigWindow : ConfigWindow
     public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
 
     protected override string Kofi => "B0B0IN5DX";
+
+    protected override string Patreon => "archidog1998";
     protected override string Crowdin => "rotationsolver";
 
     protected override string DiscordServerID => "1228953752585637908";
