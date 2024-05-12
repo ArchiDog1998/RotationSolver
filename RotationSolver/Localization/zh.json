@@ -722,5 +722,9 @@
   "DefaultRotations.Magical.SMN_DefaultName.AddSwiftcast": "Use Swiftcast",
   "DefaultRotations.Magical.SMN_DefaultName.AddCrimsonCyclone": "Use Crimson Cyclone",
   "DefaultRotations.Healer.AST_DefaultName.UseEarthlyStarTime": "Use Earthly Star Time",
-  "DefaultRotations.Healer.AST_DefaultDescription.UseEarthlyStarTime": "Use Earthly Star during countdown timer."
+  "DefaultRotations.Healer.AST_DefaultDescription.UseEarthlyStarTime": "Use Earthly Star during countdown timer.",
+  "RotationSolver.Basic.Configuration.ConfigsName.ShowAllianceIcons": "Shows the alliance icon.",
+  "RotationSolver.Basic.Configuration.ConfigsName.AllianceIconHeight": "Alliance icons height from position.",
+  "RotationSolver.Basic.Configuration.ConfigsName.AllianceIconSize": "Allicance icon size.",
+  "RotationSolver.Basic.Configuration.ConfigsName.WatcherCount": "The watcher counting"
 }
