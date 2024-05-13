@@ -140,11 +140,6 @@ public struct ActionTargetInfo(IBaseAction action)
             return false;
         }
 
-        if (Service.Config.DisableTargetDummys && gameObject.IsDummy())
-        {
-            return false;
-        }
-
         if (DataCenter.BlacklistedNameIds.Contains(gameObject.NameId))
         {
             return false;

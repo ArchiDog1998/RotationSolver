@@ -17,7 +17,7 @@ internal static partial class TargetUpdater
     {
         var battles = Svc.Objects.OfType<BattleChara>();
 
-        DataCenter.AllTargets.Delay(battles.GetObjectInRadius(30));
+        DataCenter.AllTargets.Delay(battles.GetObjectInRadius(30).Where(o => !o.IsDummy() || !Service.Config.DisableTargetDummys));
         UpdateHostileTargets(DataCenter.AllTargets);
         UpdateFriends(DataCenter.AllTargets
             .Where(b => b.Character()->CharacterData.OnlineStatus != 15 //Removed the one watching cutscene.
