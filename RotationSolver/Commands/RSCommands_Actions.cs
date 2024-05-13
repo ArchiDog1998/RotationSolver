@@ -118,9 +118,9 @@ public static partial class RSCommands
             }
 
         }
-        else
+        else if (Service.Config.InDebug)
         {
-            Svc.Log.Error($"Failed to use the action {nextAction} ({nextAction.AdjustedID})");
+            Svc.Log.Verbose($"Failed to use the action {nextAction} ({nextAction.AdjustedID})");
         }
     }
 
