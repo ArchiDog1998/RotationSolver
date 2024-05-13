@@ -145,6 +145,11 @@ public struct ActionTargetInfo(IBaseAction action)
             return false;
         }
 
+        if (DataCenter.BlacklistedNameIds.Contains(gameObject.NameId))
+        {
+            return false;
+        }
+
         if (gameObject.IsEnemy())
         {
             //Can't attack.
