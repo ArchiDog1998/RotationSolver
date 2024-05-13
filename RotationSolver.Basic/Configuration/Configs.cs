@@ -23,6 +23,7 @@ internal partial class Configs : IPluginConfiguration
         Extra = "Extra",
         Rotations = "Rotations",
         List = "List",
+        List2 = "List2",
         TimelineFilter = "Timeline",
         Debug = "Debug";
 
@@ -435,6 +436,9 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Timeline overrides automatic action usage.",
         Filter = TimelineFilter)]
     private static readonly bool _timelineOverride = false;
+
+    [ConditionBool, UI("Record knockback actions", Filter = List2)]
+    private static readonly bool _recordKnockbackies = false;
 
     [JobConfig, UI("Override Action Ahead Timer",
         Filter = BasicTimer)]
