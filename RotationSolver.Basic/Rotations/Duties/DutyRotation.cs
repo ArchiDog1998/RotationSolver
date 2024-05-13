@@ -124,6 +124,8 @@ partial class DutyRotation : IDisposable
         GC.SuppressFinalize(this);
     }
 
+    public BattleChara? HostileTarget => DataCenter.HostileTarget;
+
     internal IAction[] AllActions
     {
         get
