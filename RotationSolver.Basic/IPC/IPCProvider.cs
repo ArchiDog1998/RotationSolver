@@ -79,5 +79,12 @@ namespace RotationSolver.Basic.IPC
             }
             Svc.Log.Debug($"IPC ChangeOperatingMode was called. StateCommand:{stateCommand}");
         }
+
+        [EzIPC]
+        public void TriggerSpecialState(SpecialCommandType specialCommand)
+        {
+            DataCenter.SpecialType = specialCommand;
+            Svc.Log.Debug($"IPC TriggerSpecialState was called. SpecialCommand:{specialCommand}");
+        }
     }
 }
