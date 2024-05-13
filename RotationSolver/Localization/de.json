@@ -31,7 +31,7 @@
   "RotationSolver.Data.UiString.ConfigWindow_ConditionSetDesc": "The condition set you chose, click to modify.",
   "XIVConfigUI.LocalString.Searching": "Search... ",
   "RotationSolver.UI.RotationConfigWindow+ActionsItem": "Actions",
-  "RotationSolver.UI.RotationConfigWindow+RotationsItem": "Rotations",
+  "RotationSolver.UI.RotationConfigWindow+RotationsItem": "Drehung",
   "RotationSolver.UI.RotationConfigWindow+ListItem": "List",
   "RotationSolver.UI.RotationConfigWindow+BasicItem": "Basic",
   "RotationSolver.UI.RotationConfigWindow+UIItem": "UI",
