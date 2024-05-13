@@ -10,6 +10,7 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
+using RotationSolver.Basic.IPC;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -38,6 +39,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
     public static DalamudLinkPayload OpenLinkPayload { get; private set; } = null!;
     public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }
+
+    internal IPCProvider IPCProvider;
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
@@ -60,6 +63,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             Svc.Log.Warning(ex, "Failed to load config");
             Service.Config = new Configs();
         }
+
+        IPCProvider = new();
 
         _rotationConfigWindow = new();
         _controlWindow = new();

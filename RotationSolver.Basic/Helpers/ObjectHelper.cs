@@ -242,6 +242,10 @@ public static class ObjectHelper
 
         if (Service.Config.ChooseAttackMark && MarkingHelper.AttackSignTargets.FirstOrDefault(id => id != GameObject.InvalidGameObjectId) == obj.ObjectId) return true;
 
+
+        var npc = obj as BattleChara;
+        if (npc != null && DataCenter.PrioritizedNameIds.Contains(npc.NameId)) return true;
+
         return false;
     }
 

@@ -29,6 +29,9 @@ internal static class DataCenter
         }
     }
 
+    internal static List<uint> PrioritizedNameIds { get; set; } = new();
+    internal static List<uint> BlacklistedNameIds { get; set; } = new();
+
     internal static Queue<MapEffectData> MapEffects { get; } = new(64);
     internal static Queue<ObjectEffectData> ObjectEffects { get; } = new(64);
     internal static Queue<VfxNewData> VfxNewData { get; } = new(64);
