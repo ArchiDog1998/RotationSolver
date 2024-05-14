@@ -34,7 +34,6 @@ internal static class MajorUpdater
 
     private unsafe static void FrameworkUpdate(IFramework framework)
     {
-        PainterManager.ActionIds.Clear();
         RotationSolverPlugin.UpdateDisplayWindow();
         if (!IsValid)
         {
@@ -70,7 +69,6 @@ internal static class MajorUpdater
             {
                 //Sprint action id is 3 however the id in hot bar is 4.
                 var id = ActionUpdater.NextAction.AdjustedID;
-                PainterManager.ActionIds.Add(id == (uint)ActionID.SprintPvE ? 4 : id);
             }
             ActionUpdater.UpdateActionInfo();
 
@@ -219,7 +217,6 @@ internal static class MajorUpdater
             }
 
             RSCommands.UpdateRotationState();
-            PainterManager.UpdateSettings();
         }
         catch (Exception ex)
         {

@@ -23,7 +23,6 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
-using System.Diagnostics;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using Status = Lumina.Excel.GeneratedSheets.Status;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
@@ -556,7 +555,7 @@ public partial class RotationConfigWindow : Window
         {
             if (_searchResults != null && _searchResults.Length != 0)
             {
-                using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(18)))
+                using (var font = ImRaii.PushFont(FontManager.GetFont(18)))
                 {
                     using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
                     ImGui.TextWrapped(UiString.ConfigWindow_Search_Result.Local());
@@ -609,10 +608,6 @@ public partial class RotationConfigWindow : Window
                         DrawTarget();
                         break;
 
-                    case RotationConfigWindowTab.Timeline:
-                        TimelineDrawer.DrawTimeline();
-                        break;
-
                     case RotationConfigWindowTab.Extra:
                         DrawExtra();
                         break;
@@ -634,7 +629,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawAbout()
     {
-        using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(18)))
+        using (var font = ImRaii.PushFont(FontManager.GetFont(18)))
         {
             using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
             ImGui.TextWrapped(UiString.ConfigWindow_About_Punchline.Local());
@@ -884,7 +879,7 @@ public partial class RotationConfigWindow : Window
         var desc = rotation.Description;
         if (!string.IsNullOrEmpty(desc))
         {
-            using var font = ImRaii.PushFont(DrawingExtensions.GetFont(15));
+            using var font = ImRaii.PushFont(FontManager.GetFont(15));
             ImGuiEx.TextWrappedCopy(desc);
         }
 
@@ -939,7 +934,7 @@ public partial class RotationConfigWindow : Window
         ImGui.GetStyle().ItemSpacing = Vector2.Zero;
 
         var size = Vector2.Zero;
-        using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(16)))
+        using (var font = ImRaii.PushFont(FontManager.GetFont(16)))
         {
             using (var color = ImRaii.PushColor(ImGuiCol.Text, RatingColors[(int)(ratio1 * count)]))
             {
@@ -1606,7 +1601,7 @@ public partial class RotationConfigWindow : Window
     {
         var width = ImGui.GetWindowWidth();
 
-        ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 5));
+        ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 5));
         var text = UiString.ConfigWindow_Rotations_Warning.Local();
         var textWidth = ImGuiHelpers.GetButtonSize(text).X;
         ImGuiHelper.DrawItemMiddle(() =>
@@ -1659,7 +1654,7 @@ public partial class RotationConfigWindow : Window
                 });
             }
         }, width, textWidth);
-        ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 3));
+        ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 3));
         ImGui.Text(UiString.ConfigWindow_Rotations_Sources.Local());
         ImGui.PopFont();
         DrawRotationsLibraries();
@@ -2187,7 +2182,7 @@ public partial class RotationConfigWindow : Window
 
         var territoryId = Svc.ClientState.TerritoryType;
 
-        using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(21)))
+        using (var font = ImRaii.PushFont(FontManager.GetFont(21)))
         {
             using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
 

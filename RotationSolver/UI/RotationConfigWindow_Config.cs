@@ -195,10 +195,6 @@ public partial class RotationConfigWindow
             () => _allSearchable.DrawItems(Configs.UiInformation)
         },
         {
-            UiString.ConfigWindow_UI_Overlay.Local,
-            () =>_allSearchable.DrawItems(Configs.UiOverlay)
-        },
-        {
             UiString.ConfigWindow_UI_Windows.Local,
             () =>_allSearchable.DrawItems(Configs.UiWindows)
         },
