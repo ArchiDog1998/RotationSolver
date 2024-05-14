@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Actions;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+
+namespace RotationSolver.Basic.Actions;
 
 internal enum SpecialActionType : byte
 {
@@ -118,4 +120,10 @@ public class ActionSetting()
     /// Should end the special.
     /// </summary>
     public bool EndSpecial { get; set; }
+
+    /// <summary>
+    /// The quest ID that unlocks this action.
+    /// 0 means no quest.
+    /// </summary>
+    public uint UnlockedByQuestID { get; set; } = 0;
 }

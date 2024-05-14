@@ -67,7 +67,7 @@ partial class SummonerRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float SummonTime => SummonTimeRaw - DataCenter.WeaponRemain;
+    public static float SummonTime => SummonTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -90,7 +90,7 @@ partial class SummonerRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float AttunmentTime => AttunmentTimeRaw - DataCenter.WeaponRemain;
+    public static float AttunmentTime => AttunmentTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -125,18 +125,19 @@ partial class SummonerRotation
     static partial void ModifySummonRubyPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.IfritsFavor];
-        setting.ActionCheck = () => HasSummon && IsIfritReady;
+        setting.ActionCheck = () => SummonTime <= WeaponRemain && IsIfritReady;
     }
 
     static partial void ModifySummonTopazPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => HasSummon && IsTitanReady;
+        setting.ActionCheck = () => SummonTime <= WeaponRemain && IsTitanReady;
+        setting.UnlockedByQuestID = 66639;
     }
 
     static partial void ModifySummonEmeraldPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.GarudasFavor];
-        setting.ActionCheck = () => HasSummon && IsGarudaReady;
+        setting.ActionCheck = () => SummonTime <= WeaponRemain && IsGarudaReady;
     }
 
     static RandomDelay _carbuncleDelay = new (() => (2, 2));
@@ -162,7 +163,8 @@ partial class SummonerRotation
 
     static partial void ModifySummonBahamutPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => InCombat && HasSummon;
+        setting.ActionCheck = () => InCombat && SummonTime <= WeaponRemain;
+        setting.UnlockedByQuestID = 68165;
     }
 
     static partial void ModifyEnkindleBahamutPvE(ref ActionSetting setting)
@@ -183,6 +185,11 @@ partial class SummonerRotation
     static partial void ModifyCrimsonCyclonePvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.IfritsFavor];
+    }
+
+    static partial void ModifyCrimsonCyclonePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     static partial void ModifyMountainBusterPvE(ref ActionSetting setting)
@@ -230,20 +237,57 @@ partial class SummonerRotation
     {
         setting.StatusProvide = [StatusID.FurtherRuin];
         setting.ActionCheck = () => !HasAetherflowStacks;
+        setting.UnlockedByQuestID = 67637;
     }
 
     static partial void ModifyPainflarePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HasAetherflowStacks;
+        setting.UnlockedByQuestID = 66629;
+    }
+
+    static partial void ModifyRuinIiPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65997;
+    }
+
+    static partial void ModifySummonIfritPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66627;
+    }
+
+    static partial void ModifySummonTitanPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66628;
+    }
+
+    static partial void ModifySummonGarudaPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66631;
+    }
+
+    static partial void ModifyRuinIiiPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67638;
+    }
+
+    static partial void ModifyDreadwyrmTrancePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67640;
+    }
+
+    static partial void ModifyAstralFlowPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67641;
     }
 
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.RadiantAegisPvE)]
-    protected sealed override bool DefenseSingleAbility(out IAction? act)
+    protected sealed override bool DefenseSingleAbility(IAction nextGCD, out IAction? act)
     {
         if (RadiantAegisPvE.CanUse(out act)) return true;
-        return base.DefenseSingleAbility(out act);
+        return base.DefenseSingleAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
@@ -256,9 +300,17 @@ partial class SummonerRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.AddlePvE)]
-    protected override bool DefenseAreaAbility(out IAction? act)
+    protected override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (AddlePvE.CanUse(out act)) return true;
-        return base.DefenseAreaAbility(out act);
+        return base.DefenseAreaAbility(nextGCD, out act);
+    }
+    
+    /// <inheritdoc/>
+    [RotationDesc(ActionID.CrimsonCyclonePvE)]
+    protected override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
+    {
+        if (CrimsonCyclonePvE.CanUse(out act)) return true;
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 }

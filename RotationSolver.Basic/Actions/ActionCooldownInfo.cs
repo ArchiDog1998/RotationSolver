@@ -22,7 +22,7 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <summary>
     /// 
     /// </summary>
-    public float RecastTimeElapsed => RecastTimeElapsedRaw - DataCenter.WeaponElapsed;
+    public float RecastTimeElapsed => RecastTimeElapsedRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -39,17 +39,17 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <summary>
     /// 
     /// </summary>
-    public unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(_action.Info.AdjustedID, (uint)Player.Level), (ushort)1);
-
-    /// <summary>
-    /// 
-    /// </summary>
     public bool HasOneCharge => !IsCoolingDown || RecastTimeElapsedRaw >= RecastTimeOneChargeRaw;
 
     /// <summary>
     /// 
     /// </summary>
-    public ushort CurrentCharges => IsCoolingDown ? (ushort)(RecastTimeElapsedRaw / RecastTimeOneChargeRaw) : MaxCharges;
+    public unsafe ushort CurrentCharges => (ushort)ActionManager.Instance()->GetCurrentCharges(_action.Info.AdjustedID);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public unsafe ushort MaxCharges => Math.Max(ActionManager.GetMaxCharges(_action.Info.AdjustedID, (uint)Player.Level), (ushort)1);
 
     internal float RecastTimeOneChargeRaw => ActionManager.GetAdjustedRecastTime(ActionType.Action, _action.Info.AdjustedID) / 1000f;
 
@@ -58,14 +58,14 @@ public readonly struct ActionCooldownInfo : ICooldown
     /// <summary>
     /// 
     /// </summary>
-    public float RecastTimeRemainOneCharge => RecastTimeRemainOneChargeRaw - DataCenter.WeaponRemain;
+    public float RecastTimeRemainOneCharge => RecastTimeRemainOneChargeRaw - DataCenter.DefaultGCDRemain;
 
     float RecastTimeRemainOneChargeRaw => RecastTimeRemain % RecastTimeOneChargeRaw;
 
     /// <summary>
     /// 
     /// </summary>
-    public float RecastTimeElapsedOneCharge => RecastTimeElapsedOneChargeRaw - DataCenter.WeaponElapsed;
+    public float RecastTimeElapsedOneCharge => RecastTimeElapsedOneChargeRaw - DataCenter.DefaultGCDElapsed;
 
     float RecastTimeElapsedOneChargeRaw => RecastTimeElapsedRaw % RecastTimeOneChargeRaw;
 
@@ -138,7 +138,7 @@ public readonly struct ActionCooldownInfo : ICooldown
     public bool JustUsedAfter(float time)
     {
         var elapsed = RecastTimeElapsedRaw % RecastTimeOneChargeRaw;
-        return elapsed + DataCenter.WeaponRemain < time;
+        return elapsed + DataCenter.DefaultGCDRemain < time;
     }
 
     internal bool CooldownCheck(bool isEmpty, bool onLastAbility, bool ignoreClippingCheck, byte gcdCountForAbility)
@@ -153,13 +153,13 @@ public readonly struct ActionCooldownInfo : ICooldown
                 }
                 else
                 {
-                    if (!HasOneCharge && RecastTimeRemainOneChargeRaw > DataCenter.ActionRemain) return false;
+                    if (!HasOneCharge && RecastTimeRemainOneChargeRaw > DataCenter.DefaultGCDRemain) return false;
                 }
             }
 
             if (!isEmpty)
             {
-                if (RecastTimeRemain > DataCenter.WeaponRemain + DataCenter.WeaponTotal * gcdCountForAbility)
+                if (RecastTimeRemain > DataCenter.DefaultGCDRemain + DataCenter.DefaultGCDTotal * gcdCountForAbility)
                     return false;
             }
         }

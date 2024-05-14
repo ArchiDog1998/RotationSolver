@@ -92,7 +92,7 @@ public readonly struct ActionBasicInfo
     }
 
     /// <summary>
-    /// Is thia action on the slot.
+    /// Is this action on the slot.
     /// </summary>
     public readonly bool IsOnSlot
     {
@@ -159,6 +159,16 @@ public readonly struct ActionBasicInfo
 
         if (!EnoughLevel) return false;
         if (DataCenter.CurrentMp < MPNeed) return false;
+        if (_action.Setting.UnlockedByQuestID != 0)
+        {
+            var isUnlockQuestComplete = QuestManager.IsQuestComplete(_action.Setting.UnlockedByQuestID);
+            if (!isUnlockQuestComplete)
+            {
+                var warning = $"The action {Name} is locked by the quest {_action.Setting.UnlockedByQuestID}. Please complete this quest to learn this action.";
+                WarningHelper.AddSystemWarning(warning);
+                return false;
+            }
+        }
 
         var player = Player.Object;
 
@@ -234,7 +244,7 @@ public readonly struct ActionBasicInfo
         {
             if (comboActions.Contains(DataCenter.LastComboAction))
             {
-                if (DataCenter.ComboTime < DataCenter.WeaponRemain) return false;
+                if (DataCenter.ComboTime < DataCenter.DefaultGCDRemain) return false;
             }
             else
             {

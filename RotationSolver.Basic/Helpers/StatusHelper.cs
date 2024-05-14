@@ -156,7 +156,7 @@ public static class StatusHelper
             if (DataCenter.HasApplyStatus(obj.ObjectId, statusIDs)) return float.MaxValue;
             var times = obj.StatusTimes(isFromSelf, statusIDs);
             if (times == null || !times.Any()) return 0;
-            return Math.Max(0, times.Min() - DataCenter.WeaponRemain);
+            return Math.Max(0, times.Min() - DataCenter.DefaultGCDRemain);
         }
         catch
         {
@@ -273,6 +273,6 @@ public static class StatusHelper
     /// <returns></returns>
     public static bool CanDispel(this Status status)
     {
-        return status.GameData.CanDispel && status.RemainingTime > 1 + DataCenter.WeaponRemain;
+        return status.GameData.CanDispel && status.RemainingTime > 1 + DataCenter.DefaultGCDRemain;
     }
 }

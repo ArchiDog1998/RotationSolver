@@ -87,19 +87,7 @@ public static class ObjectHelper
             names = names.Union(ns1);
 
         if (names.Any(n => !string.IsNullOrEmpty(n) && new Regex(n).Match(battleChara.Name.TextValue).Success)) return false;
-
-
-        if (battleChara is PlayerCharacter p)
-        {
-            var hash = EncryptString(p);
-
-            //Don't attack authors!!
-            if (DataCenter.AuthorHashes.ContainsKey(hash)) return false;
-
-            //Don't attack contributors!!
-            if (DataCenter.ContributorsHash.Contains(hash)) return false;
-        }
-
+        
         //Fate
         if (DataCenter.TerritoryContentType != TerritoryContentType.Eureka)
         {
@@ -254,6 +242,10 @@ public static class ObjectHelper
 
         if (Service.Config.ChooseAttackMark && MarkingHelper.AttackSignTargets.FirstOrDefault(id => id != GameObject.InvalidGameObjectId) == obj.ObjectId) return true;
 
+
+        var npc = obj as BattleChara;
+        if (npc != null && DataCenter.PrioritizedNameIds.Contains(npc.NameId)) return true;
+
         return false;
     }
 
@@ -272,7 +264,7 @@ public static class ObjectHelper
         var baseCheck = b.IsCasting && b.IsCastInterruptible && b.TotalCastTime >= 2;
 
         if (!baseCheck) return false;
-        if (!Service.Config.InterruptibleMoreCheck) return true;
+        if (!Service.Config.InterruptibleMoreCheck) return false;
 
         var id = b.CastActionId;
         if (_effectRangeCheck.TryGetValue(id, out var check)) return check;

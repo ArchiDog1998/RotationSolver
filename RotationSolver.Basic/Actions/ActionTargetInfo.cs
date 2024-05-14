@@ -6,6 +6,7 @@ using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Scene;
 using RotationSolver.Basic.Configuration;
+using static RotationSolver.Basic.Configuration.ConfigTypes;
 
 namespace RotationSolver.Basic.Actions;
 
@@ -30,27 +31,14 @@ public struct ActionTargetInfo(IBaseAction action)
     /// </summary>
     public readonly bool IsSingleTarget => action.Action.CastType == 1;
     /// <summary>
-    /// Is this action target are.
+    /// Is this action target area.
     /// </summary>
-
     public readonly bool IsTargetArea => action.Action.TargetArea;
 
-    private static bool NoAOE
-    {
-        get
-        {
-            if (!Service.Config.UseAoeAction) return true;
-
-            if (DataCenter.IsManual)
-            {
-                if (!Service.Config.UseAoeWhenManual) return true;
-            }
-
-            return Service.Config.ChooseAttackMark
-                && !Service.Config.CanAttackMarkAoe
-                && MarkingHelper.HaveAttackChara;
-        }
-    }
+    /// <summary>
+    /// Is this action friendly.
+    /// </summary>
+    public readonly bool IsTargetFriendly => action.Setting.IsFriendly;
 
     #region Target Finder.
     private readonly IEnumerable<BattleChara> GetCanTargets(bool skipStatusProvideCheck, TargetType type)
@@ -66,7 +54,9 @@ public struct ActionTargetInfo(IBaseAction action)
             objs.Add(obj);
         }
 
-        return objs.Where(CanUseTo).Where(InViewTarget).Where(action.Setting.CanTarget);
+        var isAuto = !DataCenter.IsManual || IsTargetFriendly;
+        return objs.Where(b => isAuto || b.ObjectId == Svc.Targets.Target?.ObjectId || b.ObjectId == Player.Object.ObjectId)
+            .Where(InViewTarget).Where(CanUseTo).Where(action.Setting.CanTarget);
     }
 
     private readonly List<BattleChara> GetCanAffects(bool skipStatusProvideCheck, TargetType type)
@@ -122,10 +112,22 @@ public struct ActionTargetInfo(IBaseAction action)
         var tarAddress = tar.Struct();
         if (tarAddress == null) return false;
 
-        if ((ActionID)action.Info.ID != ActionID.AethericMimicryPvE
-            && !ActionManager.CanUseActionOnTarget(action.Info.AdjustedID, tarAddress)) return false;
+        if (!IsSpecialAbility(action.Info.ID) && !ActionManager.CanUseActionOnTarget(action.Info.AdjustedID, tarAddress)) return false;
 
         return tar.CanSee();
+    }
+
+    private List<ActionID> _specialActions = new List<ActionID>()
+    {
+        ActionID.AethericMimicryPvE,
+        ActionID.EruptionPvE,
+        ActionID.BishopAutoturretPvP,
+    };
+
+    private readonly bool IsSpecialAbility(uint iD)
+    {
+        if (_specialActions.Contains((ActionID)iD)) return true;
+        return false;
     }
 
     private readonly bool GeneralCheck(BattleChara gameObject, bool skipStatusProvideCheck)
@@ -134,6 +136,11 @@ public struct ActionTargetInfo(IBaseAction action)
 
         if (!Service.Config.TargetAllForFriendly
             && gameObject.IsAlliance() && !gameObject.IsParty())
+        {
+            return false;
+        }
+
+        if (DataCenter.BlacklistedNameIds.Contains(gameObject.NameId))
         {
             return false;
         }
@@ -226,43 +233,10 @@ public struct ActionTargetInfo(IBaseAction action)
         {
             return FindTargetArea(canTargets, canAffects, range, player);
         }
-        else if (DataCenter.IsManual)
-        {
-            var t = Svc.Targets.Target as BattleChara;
 
-            if (t == null || !action.Setting.CanTarget(t)) return null;
-
-            if (type == TargetType.Move)
-            {
-                return null;
-            }
-            else if (IsSingleTarget)
-            {
-                if (CanUseTo(t) && CheckStatus(t, skipStatusProvideCheck) && t.DistanceToPlayer() <= range)
-                {
-                    return new(t, [.. GetAffects(t, canAffects)], t.Position);
-                }
-            }
-            else if (!NoAOE)
-            {
-                var effects = GetAffects(t, canAffects).ToArray();
-                if (effects.Length >= action.Config.AoeCount || skipAoeCheck)
-                {
-                    return new(t, effects, t.Position);
-                }
-            }
-            return null;
-        }
-
-        var targets = GetMostCanTargetObjects(canTargets, canAffects,
-            skipAoeCheck ? 0 : action.Config.AoeCount);
-        if (type == TargetType.BeAttacked && !action.Setting.IsFriendly)
-        {
-            type = TargetType.Big;
-        }
+        var targets = GetMostCanTargetObjects(canTargets, canAffects, skipAoeCheck ? 0 : action.Config.AoeCount);
         var target = FindTargetByType(targets, type, action.Config.AutoHealRatio, action.Setting.SpecialType);
         if (target == null) return null;
-
         return new(target, [.. GetAffects(target, canAffects)], target.Position);
     }
 
@@ -436,7 +410,8 @@ public struct ActionTargetInfo(IBaseAction action)
     private readonly IEnumerable<BattleChara> GetMostCanTargetObjects(IEnumerable<BattleChara> canTargets, IEnumerable<BattleChara> canAffects, int aoeCount)
     {
         if (IsSingleTarget || EffectRange <= 0) return canTargets;
-        if (!action.Setting.IsFriendly && NoAOE) return [];
+        if (!action.Setting.IsFriendly && Service.Config.AoEType == AoEType.Off) return [];
+        if (aoeCount > 1 && Service.Config.AoEType == AoEType.Cleave) return [];
 
         List<BattleChara> objectMax = new(canTargets.Count());
 
@@ -455,7 +430,14 @@ public struct ActionTargetInfo(IBaseAction action)
                 objectMax.Add(t);
             }
         }
-        return objectMax;
+        //if (aoeCount > 0 && objectMax.Count > 0 && objectMax.Count < action.Config.AoeCount && !action.Setting.IsFriendly)
+        //{
+        //    return [];
+        //}
+        //else
+        {
+            return objectMax;
+        }
     }
 
     private readonly int CanGetTargetCount(GameObject target, IEnumerable<GameObject> canAffects)
@@ -707,13 +689,13 @@ public struct ActionTargetInfo(IBaseAction action)
 
         BattleChara? FindHostileRaw()
         {
-            gameObjects = type switch
+            gameObjects = DataCenter.TargetingType switch
             {
-                TargetType.Small => gameObjects.OrderBy(p => p.HitboxRadius),
-                TargetType.HighHP => gameObjects.OrderByDescending(p => p is BattleChara b ? b.CurrentHp : 0),
-                TargetType.LowHP => gameObjects.OrderBy(p => p is BattleChara b ? b.CurrentHp : 0),
-                TargetType.HighMaxHP => gameObjects.OrderByDescending(p => p is BattleChara b ? b.MaxHp : 0),
-                TargetType.LowMaxHP => gameObjects.OrderBy(p => p is BattleChara b ? b.MaxHp : 0),
+                TargetingType.Small => gameObjects.OrderBy(p => p.HitboxRadius),
+                TargetingType.HighHP => gameObjects.OrderByDescending(p => p is BattleChara b ? b.CurrentHp : 0),
+                TargetingType.LowHP => gameObjects.OrderBy(p => p is BattleChara b ? b.CurrentHp : 0),
+                TargetingType.HighMaxHP => gameObjects.OrderByDescending(p => p is BattleChara b ? b.MaxHp : 0),
+                TargetingType.LowMaxHP => gameObjects.OrderBy(p => p is BattleChara b ? b.MaxHp : 0),
                 _ => gameObjects.OrderByDescending(p => p.HitboxRadius),
             };
             return gameObjects.FirstOrDefault();

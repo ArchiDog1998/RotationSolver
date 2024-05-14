@@ -27,15 +27,6 @@ internal static class ReflectionHelper
         return methods.Union(type.BaseType.GetAllMethodInfo());
     }
 
-    internal static IEnumerable<PropertyInfo> GetAllPropertyInfo(this Type? type)
-    {
-        if (type == null) return [];
-
-        var methods = type.GetRuntimeProperties();
-
-        return methods.Union(type.BaseType.GetAllPropertyInfo());
-    }
-
     internal static PropertyInfo? GetPropertyInfo(this Type type, string name)
     {
         if (type == null) return null;

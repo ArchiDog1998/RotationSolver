@@ -1,7 +1,9 @@
 ﻿using Dalamud.Configuration;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
+using static RotationSolver.Basic.Configuration.ConfigTypes;
 
 namespace RotationSolver.Basic.Configuration;
 
@@ -21,21 +23,29 @@ internal partial class Configs : IPluginConfiguration
         Extra = "Extra",
         Rotations = "Rotations",
         List = "List",
+        List2 = "List2",
         TimelineFilter = "Timeline",
         Debug = "Debug";
 
     public int Version { get; set; } = 8;
 
+    public string LastSeenChangelog { get; set; } = "0.0.0.0";
+    public bool FirstTimeSetupDone { get; set; } = false;
+
     public List<ActionEventInfo> Events { get; private set; } = [];
     public SortedSet<Job> DisabledJobs { get; private set; } = [];
 
-    public string[] OtherLibs { get; set; } = [];
+    [JsonIgnore]
+    public static string[] DefaultRotations = ["https://github.com/FFXIV-CombatReborn/LTSDefaults/releases/latest/download/DefaultRotations.dll"];
 
-    public string[] GitHubLibs { get; set; } = [];
+    public string[] RotationLibs { get; set; } = DefaultRotations;
     public List<TargetingType> TargetingTypes { get; set; } = [];
 
     public MacroInfo DutyStart { get; set; } = new MacroInfo();
     public MacroInfo DutyEnd { get; set; } = new MacroInfo();
+
+    [UI("What kind of AoE moves to use.", Description = "Full - Use all AoE actions\nCleave - Use only single target AoE actions\nOff - Use no AoE at all", Filter = AutoActionUsage, Section = 3)]
+    public AoEType AoEType { get; set; } = AoEType.Full;
 
     [ConditionBool, UI("Show RSR logo animation",
         Filter = UiWindows)]
@@ -133,6 +143,9 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Use Tinctures", Filter = AutoActionUsage)]
     private static readonly bool _useTinctures = false;
 
+    [ConditionBool, UI("Automatically use Anti-Knockback role actions (Arms Length, Surecast)", Filter = AutoActionUsage)]
+    private static readonly bool _useKnockback = true;
+
     [ConditionBool, UI("Automatically use HP Potions", Filter = AutoActionUsage)]
     private static readonly bool _useHpPotions = false;
 
@@ -190,12 +203,16 @@ internal partial class Configs : IPluginConfiguration
         Filter =BasicAutoSwitch, Section = 1)]
     private static readonly bool _startOnCountdown = true;
 
+    [ConditionBool, UI("Countdown will start manual mode instead of auto mode",
+               Parent = nameof(StartOnCountdown))]
+    private static readonly bool _countdownStartsManualMode = false;
+
     [ConditionBool, UI("Switch to manual and target attackers automatically.",
         Filter =BasicAutoSwitch, Section =1)]
     private static readonly bool _startOnAttackedBySomeone = false;
 
     [ConditionBool, UI("Don't attack new mobs by AoE. (Dangerous)", Description = "Never use any AoE action when this may attack the mobs that are not hostile targets.",
-        Parent =nameof(UseAoeAction))]
+        Filter = BasicAutoSwitch)]
     private static readonly bool _noNewHostiles = false;
 
     [ConditionBool, UI("Use healing abilities when playing a non-healer role.",
@@ -240,13 +257,18 @@ internal partial class Configs : IPluginConfiguration
 
     [ConditionBool, UI("Debug Mode", Filter = Debug)]
     private static readonly bool _inDebug = false;
-    public bool AutoUpdateLibs { get; set; } = false;
 
-    [ConditionBool, UI("Auto Download Rotations", Filter = Rotations)]
-    private static readonly bool _downloadRotations = true;
+    [ConditionBool, UI("Load rotations automatically at startup", Filter = Rotations)]
+    private static readonly bool _autoLoadRotations = false;
 
-    [ConditionBool, UI("Auto Update Rotations", Parent = nameof(DownloadRotations))]
-    private static readonly bool _autoUpdateRotations = true;
+    [ConditionBool, UI("Download custom rotations from the internet",
+               Description = "This will allow RSR to download custom rotations from the internet. This is a security risk and should only be enabled if you trust the source of the rotations.",
+               Filter = Rotations)]
+    private static readonly bool _downloadCustomRotations = true;
+
+    [ConditionBool, UI("Monitor local rotations for changes (Developer Mode)",
+               Filter = Rotations)]
+    private static readonly bool _autoReloadRotations = false;
 
     [ConditionBool, UI("Make /rotation Manual as a toggle command.",
         Filter = BasicParams)]
@@ -281,21 +303,20 @@ internal partial class Configs : IPluginConfiguration
         Parent = nameof(ShowCooldownWindow))]
     private static readonly bool _showItemsCooldown = false;
 
-    [ConditionBool, UI("Show GCD' Cooldown",
+    [ConditionBool, UI("Show GCD Cooldown",
         Parent = nameof(ShowCooldownWindow))]
     private static readonly bool _showGCDCooldown = false;
 
     [ConditionBool, UI("Show Original Cooldown",
-        Parent = nameof(ShowCooldownWindow))]
+        Filter = UiInformation)]
     private static readonly bool _useOriginalCooldown = true;
+
+    [ConditionBool, UI("Always Show Cooldowns", Filter = UiInformation)]
+    private static readonly bool _showCooldownsAlways = true;
 
     [ConditionBool, UI("Show tooltips",
         Filter = UiInformation)]
     private static readonly bool _showTooltips = true;
-
-    [ConditionBool, UI("Auto load rotations",
-        Filter = Rotations)]
-    private static readonly bool _autoLoadCustomRotations = true;
 
     [ConditionBool, UI("Target Fate priority",
         Filter = TargetConfig, Section = 1)]
@@ -310,15 +331,13 @@ internal partial class Configs : IPluginConfiguration
 
     private static readonly bool _targetQuestPriority = true;
 
+    [ConditionBool, UI("Ignore target dummies",
+               Filter = TargetConfig, Section = 1)]
+    private static readonly bool _disableTargetDummys = false;
+
     [ConditionBool, UI("Display do action feedback on toast",
         Filter =UiInformation)]
     private static readonly bool _showToastsAboutDoAction = false;
-
-    [ConditionBool, UI("Use AoE actions", Filter = AutoActionUsage)]
-    private static readonly bool _useAOEAction = true;
-
-    [ConditionBool, UI("Use AoE actions in manual mode.", Parent = nameof(UseAoeAction))]
-    private static readonly bool _useAOEWhenManual = false;
 
     [ConditionBool, UI("Automatically trigger dps burst phase.", Filter = AutoActionCondition)]
     private static readonly bool _autoBurst = true;
@@ -414,10 +433,17 @@ internal partial class Configs : IPluginConfiguration
         Filter = TimelineFilter)]
     private static readonly bool _enableTimelineMovement = false;
 
-    [UI("The max ping that RSR can get to before skipping to the next action.", Description = "(If you set too low, RSR will skip oGCDs)",
+    [ConditionBool, UI("Timeline overrides automatic action usage.",
+        Filter = TimelineFilter)]
+    private static readonly bool _timelineOverride = false;
+
+    [ConditionBool, UI("Record knockback actions", Filter = List2)]
+    private static readonly bool _recordKnockbackies = false;
+
+    [JobConfig, UI("Override Action Ahead Timer",
         Filter = BasicTimer)]
-    [Range(0.01f, 0.5f, ConfigUnitType.Seconds, 0.002f)]
-    public float MaxPing { get; set; } = 0.5f;
+    private static readonly bool _overrideActionAheadTimer = false;
+
 
     [UI("Use additional conditions", Filter = BasicParams)]
     public bool UseAdditionalConditions { get; set; } = false;
@@ -432,14 +458,15 @@ internal partial class Configs : IPluginConfiguration
     [Range(0.005f, 0.05f, ConfigUnitType.Yalms, 0.001f)]
     public float SampleLength { get; set; } = 1;
 
-    [ConditionBool, UI("Use tasks for making the overlay window faster. (EXPERIMENTAL, ", Parent = nameof(UseOverlayWindow))]
+    [ConditionBool, UI("Use tasks for making the overlay window faster. (EXPERIMENTAL,WILL CAUSE CRASHES) ", Parent = nameof(UseOverlayWindow))]
     private static readonly bool _useTasksForOverlay = false;
 
     [UI("The angle of your vision cone", Parent = nameof(OnlyAttackInVisionCone))]
     [Range(0, 90, ConfigUnitType.Degree, 0.02f)]
     public float AngleOfVisionCone { get; set; } = 45;
 
-    [UI("HP for standard deviation for using AoE heal.", Description = "Basically the health difference between a single party member and the whole party, used for deciding between healing a single party member or AOE healing. Leave this alone if you don't undertand its use.", Parent = nameof(UseHealWhenNotAHealer))]
+    [UI("HP for standard deviation for using AoE heal.", Description = "Basically the health difference between a single party member and the whole party, used for deciding between healing a single party member or AOE healing. Leave this alone if you don't undertand its use.", 
+        Filter = AutoActionCondition, Section = 1)]
     [Range(0, 0.5f, ConfigUnitType.Percent, 0.02f)]
     public float HealthDifference { get; set; } = 0.25f;
 
@@ -448,11 +475,6 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Melee, PvPFilter = JobFilterType.NoJob)]
     [Range(0, 5, ConfigUnitType.Yalms, 0.02f)]
     public float MeleeRangeOffset { get; set; } = 1;
-
-    [UI("The minimum time ahead that the last oGCD ability can be used before the next GCD ability becomes available to use.", Description = "(Adjust to prevent clipping and allow weaving)",
-        Filter = BasicTimer)]
-    [Range(0, 0.4f, ConfigUnitType.Seconds, 0.002f)]
-    public float MinLastAbilityAdvanced { get; set; } = 0.06f;
 
     [UI("When their minimum HP is lower than this.", Parent = nameof(HealWhenNothingTodo))]
     [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
@@ -485,16 +507,11 @@ internal partial class Configs : IPluginConfiguration
     [Range(1, 20, ConfigUnitType.Seconds, 1f)]
     public float SpecialDuration { get; set; } = 3;
 
-    [UI("The amount of time before an oGCD is available to actually use for RSR to decide which to use.",
-        Filter = BasicTimer)]
-    [Range(0, 0.5f, ConfigUnitType.Seconds, 0.002f)]
-    public float ActionAheadForLast0GCD { get; set; } = 0.01f;
-
     [UI("Range of time before locking onto aggro'd or new target to attack", Description = "(Do not set too low, can rip newly aggro'd dungeon mobs off tanks).", Filter =TargetConfig)]
     [Range(0, 3, ConfigUnitType.Seconds)]
     public Vector2 TargetDelay { get; set; } = new(1, 2);
 
-    [UI("GCD Action Execution Delay.\n(RSR will not take actions during window).",
+    [UI("Action Execution Delay.\n(RSR will not take actions during window).",
         Filter = BasicTimer)]
     [Range(0, 1, ConfigUnitType.Seconds, 0.002f)]
     public Vector2 WeaponDelay { get; set; } = new(0, 0);
@@ -560,11 +577,12 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 60, ConfigUnitType.Seconds, 0.02f)]
     public float DyingTimeToKill { get; set; } = 10;
 
-    [UI("Change the cooldown font size.", Parent = nameof(ShowCooldownWindow))]
+    [UI("Change the cooldown font size.",
+        Filter = UiInformation)]
     [Range(9.6f, 96, ConfigUnitType.Pixels, 0.1f)]
     public float CooldownFontSize { get; set; } = 16;
 
-    [UI("Cooldown window icon size", Parent = nameof(ShowCooldownWindow))]
+    [UI("Cooldown window icon size")]
     [Range(0, 80, ConfigUnitType.Pixels, 0.2f)]
     public float CooldownWindowIconSize { get; set; } = 30;
 
@@ -611,8 +629,8 @@ internal partial class Configs : IPluginConfiguration
 
     [UI("The minimum time between updating RSR information. (Setting too low can negatively effect framerate)",
         Filter = BasicTimer)]
-    [Range(0, 1, ConfigUnitType.Seconds, 0.002f)]
-    public float MinUpdatingTime { get; set; } = 0.00f;
+    [JobConfig, Range(0, 0.3f, ConfigUnitType.Seconds, 0.002f)]
+    public float MinUpdatingTime { get; set; } = 0.01f;
 
     [UI("The HP for using Guard.", 
         Filter = AutoActionCondition, Section = 3,
@@ -710,9 +728,11 @@ internal partial class Configs : IPluginConfiguration
         PvEFilter = JobFilterType.Tank)]
     private readonly float _healthForAutoDefense = 1;
 
-    [JobConfig, Range(0, 0.5f, ConfigUnitType.Seconds)]
-    [UI("Action Ahead (How far ahead of a oGCD/GCD use does RSR decide which oGCD/GCD to use)", Filter = BasicTimer)]
-    private readonly float _actionAhead = 0.08f;
+    [JobConfig, Range(0, 1.0f, ConfigUnitType.Seconds)]
+    [UI("Action Ahead (How far in advance of GCD being available RSR will try to queue the next GCD)", 
+        Description = "This setting controls how many oGCDs RSR will try to fit in a single GCD window\nLower numbers mean more oGCDs, but potentially more GCD clipping", 
+        Parent = nameof(OverrideActionAheadTimer))]
+    private readonly float _action4head = 0.4f;
 
     [JobConfig, UI("Engage settings", Filter = TargetConfig, PvPFilter = JobFilterType.NoJob)]
     private readonly TargetHostileType _hostileType = TargetHostileType.AllTargetsWhenSolo;
@@ -742,35 +762,26 @@ internal partial class Configs : IPluginConfiguration
     {
 #if DEBUG
         Svc.Log.Information("Saved configurations.");
-
-        Dictionary<uint, Dictionary<float, List<BaseTimelineItem>>> dict = [];
-        foreach((var job, var timelineSet) in this._timelineDict)
-        {
-            foreach ((var id, var timeline) in timelineSet)
-            {
-                var refineTimeline = timeline.Select(i => (i.Key, i.Value.Where(j => j is DrawingTimeline).ToList())).ToDictionary();
-
-                var count = refineTimeline.Sum(i => i.Value.Count);
-
-                if (count == 0) continue;
-
-                if (dict.TryGetValue(id, out var lastTimeline))
-                {
-                    if (lastTimeline.Sum(i => i.Value.Count) >= count)
-                    {
-                        continue;
-                    }
-                }
-                dict[id] = refineTimeline;
-            }
-        }
-        
-        foreach ((var id, var timeline) in dict)
-        {
-            File.WriteAllText(@$"E:\OneDrive - stu.zafu.edu.cn\PartTime\FFXIV\RotationSolver\Resources\Timelines\{id}.json", JsonConvert.SerializeObject(timeline, Formatting.Indented));
-        }
 #endif
         File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName,
             JsonConvert.SerializeObject(this, Formatting.Indented));
+    }
+
+    public static Configs Migrate(Configs oldConfigs)
+    {
+        return oldConfigs; // Disable migration until a better solution can be found.
+        var newConfigs = new Configs();
+
+        JObject oldJson = JObject.FromObject(oldConfigs);
+        JObject newJson = JObject.FromObject(newConfigs);
+
+        newJson.Merge(oldJson, new JsonMergeSettings
+        {
+            MergeArrayHandling = MergeArrayHandling.Union,
+            MergeNullValueHandling = MergeNullValueHandling.Merge
+        });
+
+        var migratedConfigs = newJson.ToObject<Configs>();
+        return migratedConfigs ?? new Configs();
     }
 }

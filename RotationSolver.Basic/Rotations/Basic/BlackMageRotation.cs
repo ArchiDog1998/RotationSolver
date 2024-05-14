@@ -56,7 +56,7 @@ partial class BlackMageRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float EnochianTime => EnochianTimeRaw - DataCenter.WeaponRemain;
+    public static float EnochianTime => EnochianTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -79,7 +79,7 @@ partial class BlackMageRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static float ElementTime => ElementTimeRaw - DataCenter.WeaponRemain;
+    protected static float ElementTime => ElementTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -122,6 +122,7 @@ partial class BlackMageRotation
     static partial void ModifyThunderIiiPvE(ref ActionSetting setting)
     {
         setting.MPOverride = () => HasThunder ? 0 : null;
+        setting.UnlockedByQuestID = 66612;
     }
 
     static partial void ModifyThunderIvPvE(ref ActionSetting setting)
@@ -138,6 +139,7 @@ partial class BlackMageRotation
     static partial void ModifyFireIvPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InAstralFire && !ElementTimeEndAfter(ActionID.FireIvPvE.GetCastTime() - 0.1f);
+        setting.UnlockedByQuestID = 67219;
     }
 
     static partial void ModifyDespairPvE(ref ActionSetting setting)
@@ -148,11 +150,13 @@ partial class BlackMageRotation
     static partial void ModifyBlizzardIiiPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => !IsLastGCD(ActionID.BlizzardIvPvE);
+        setting.UnlockedByQuestID = 66610;
     }
 
     static partial void ModifyBlizzardIvPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InUmbralIce && !ElementTimeEndAfter(ActionID.BlizzardIvPvE.GetCastTime() - 0.1f);
+        setting.UnlockedByQuestID = 67218;
     }
 
     static partial void ModifyXenoglossyPvE(ref ActionSetting setting)
@@ -168,16 +172,19 @@ partial class BlackMageRotation
     static partial void ModifyFlarePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InAstralFire && !ElementTimeEndAfter(ActionID.FlarePvE.GetCastTime() - 0.1f);
+        setting.UnlockedByQuestID = 66614;
     }
 
     static partial void ModifyFreezePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InUmbralIce && !ElementTimeEndAfter(ActionID.FreezePvE.GetCastTime() - 0.1f);
+        setting.UnlockedByQuestID = 66611;
     }
 
     static partial void ModifyFoulPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => PolyglotStacks > 0;
+        setting.UnlockedByQuestID = 68128;
     }
 
     static partial void ModifyAmplifierPvE(ref ActionSetting setting)
@@ -189,6 +196,7 @@ partial class BlackMageRotation
     static partial void ModifyManafontPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => DataCenter.CurrentMp <= 7000;
+        setting.UnlockedByQuestID = 66609;
     }
 
     static partial void ModifyLeyLinesPvE(ref ActionSetting setting)
@@ -198,6 +206,7 @@ partial class BlackMageRotation
         {
             TimeToKill = 15,
         };
+        setting.UnlockedByQuestID = 67215;
     }
 
     static partial void ModifyBetweenTheLinesPvE(ref ActionSetting setting)
@@ -209,6 +218,7 @@ partial class BlackMageRotation
     {
         setting.ActionCheck = () => HasHostilesInRange;
         setting.StatusProvide = [StatusID.Sharpcast];
+        setting.UnlockedByQuestID = 67216;
     }
 
     static partial void ModifyTriplecastPvE(ref ActionSetting setting)
@@ -218,12 +228,22 @@ partial class BlackMageRotation
 
     static partial void ModifyTransposePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => DataCenter.ActionRemain <= ElementTimeRaw;
+        setting.ActionCheck = () => DataCenter.DefaultGCDRemain <= ElementTimeRaw;
     }
 
     static partial void ModifyUmbralSoulPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => JobGauge.InUmbralIce && DataCenter.ActionRemain <= ElementTimeRaw;
+        setting.ActionCheck = () => JobGauge.InUmbralIce && DataCenter.DefaultGCDRemain <= ElementTimeRaw;
+    }
+
+    static partial void ModifyScathePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65886;
+    }
+
+    static partial void ModifyManawardPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65889;
     }
 
     /// <summary>
@@ -253,7 +273,7 @@ partial class BlackMageRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.AddlePvE)]
-    protected override bool DefenseAreaAbility(out IAction act)
+    protected override bool DefenseAreaAbility(IAction nextGCD, out IAction act)
     {
         if (AddlePvE.CanUse(out act)) return true;
         return false;
@@ -265,5 +285,9 @@ partial class BlackMageRotation
     {
         if (AetherialManipulationPvE.CanUse(out act)) return true;
         return base.MoveForwardGCD(out act);
+    }
+    static partial void ModifyAetherialManipulationPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 }

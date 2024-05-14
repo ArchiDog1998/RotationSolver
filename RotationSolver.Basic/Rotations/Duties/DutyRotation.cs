@@ -51,18 +51,18 @@ partial class DutyRotation : IDisposable
     #endregion
 
     #region Ability
-    public virtual bool InterruptAbility(out IAction? act)
+
+    public virtual bool InterruptAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-    public virtual bool AntiKnockbackAbility(out IAction? act)
+    public virtual bool AntiKnockbackAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-
-    public virtual bool ProvokeAbility(out IAction? act)
+    public virtual bool ProvokeAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
@@ -72,69 +72,68 @@ partial class DutyRotation : IDisposable
         act = null; return false;
     }
 
-    public virtual bool MoveForwardAbility(out IAction? act)
+    public virtual bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-    public virtual bool MoveBackAbility(out IAction? act)
+    public virtual bool MoveBackAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-    public virtual bool HealSingleAbility(out IAction? act)
+    public virtual bool HealSingleAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-    public virtual bool HealAreaAbility(out IAction? act)
+    public virtual bool HealAreaAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-    public virtual bool DefenseSingleAbility(out IAction? act)
+    public virtual bool DefenseSingleAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-    public virtual bool DefenseAreaAbility(out IAction? act)
+    public virtual bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-    public virtual bool SpeedAbility(out IAction? act)
+    public virtual bool SpeedAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-    public virtual bool GeneralAbility(out IAction? act)
+    public virtual bool GeneralAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
-    public virtual bool AttackAbility(out IAction? act)
+    public virtual bool AttackAbility(IAction nextGCD, out IAction? act)
     {
         act = null; return false;
     }
 
     #endregion
 
-    //public virtual void GenerateDrawing()
-    //{
-
-    //}
-
     public void Dispose()
     {
         GC.SuppressFinalize(this);
     }
 
+    public BattleChara? HostileTarget => DataCenter.HostileTarget;
+
     internal IAction[] AllActions
     {
         get
         {
-            var properties = this.GetType().GetAllPropertyInfo()
-                .Where(p => DataCenter.DutyActions.Contains(p.GetCustomAttribute<IDAttribute>()?.ID ?? 0));
+            var properties = this.GetType().GetRuntimeProperties()
+                .Where(p => DataCenter.DutyActions.Contains(p.GetCustomAttribute<IDAttribute>()?.ID ?? uint.MaxValue));
+
+            if (properties == null || !properties.Any()) return [];
 
             return [.. properties.Select(p => (IAction)p.GetValue(this)!)];
         }

@@ -10,6 +10,7 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
+using RotationSolver.Basic.IPC;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -19,6 +20,7 @@ using RotationSolver.Updaters;
 using System.Xml.Linq;
 using XIVPainter;
 using XIVPainter.Vfx;
+using WelcomeWindow = RotationSolver.UI.WelcomeWindow;
 
 namespace RotationSolver;
 
@@ -30,12 +32,15 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static ControlWindow? _controlWindow;
     static NextActionWindow? _nextActionWindow;
     static CooldownWindow? _cooldownWindow;
+    static WelcomeWindow? _changelogWindow;
 
     static readonly List<IDisposable> _dis = [];
     public static string Name => "Rotation Solver Reborn";
 
     public static DalamudLinkPayload OpenLinkPayload { get; private set; } = null!;
     public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }
+
+    internal IPCProvider IPCProvider;
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
@@ -45,10 +50,13 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _dis.Add(new Service());
         try
         {
-            Service.Config = JsonConvert.DeserializeObject<Configs>(
+            var oldConfigs = JsonConvert.DeserializeObject<Configs>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName),
                 new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())
                 ?? new Configs();
+
+            var newConfigs = Configs.Migrate(oldConfigs);
+            Service.Config = newConfigs;
         }
         catch (Exception ex)
         {
@@ -56,18 +64,23 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             Service.Config = new Configs();
         }
 
+        IPCProvider = new();
+
         _rotationConfigWindow = new();
         _controlWindow = new();
         _nextActionWindow = new();
         _cooldownWindow = new();
+        _changelogWindow = new();
 
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(_rotationConfigWindow);
         windowSystem.AddWindow(_controlWindow);
         windowSystem.AddWindow(_nextActionWindow);
         windowSystem.AddWindow(_cooldownWindow);
+        windowSystem.AddWindow(_changelogWindow);
 
         Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
+        Svc.PluginInterface.UiBuilder.OpenMainUi += OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
         PainterManager.Init();
@@ -92,7 +105,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Task.Run(async () =>
         {
             await DownloadHelper.DownloadAsync();
-            await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
+            if (Service.Config.AutoLoadRotations) await RotationUpdater.GetAllCustomRotationsAsync(DownloadOption.Download);
         });
 
 #if DEBUG

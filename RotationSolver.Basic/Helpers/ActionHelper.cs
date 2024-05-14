@@ -30,4 +30,16 @@ internal static class ActionHelper
         }
         return true;
     }
+
+    internal static bool CanUseGCD
+    {
+        get
+        {
+            var maxAhead = DataCenter.ActionAhead;
+
+            //GCD
+            var canUseGCD = DataCenter.DefaultGCDRemain <= maxAhead;
+            return canUseGCD;
+        }
+    }
 }

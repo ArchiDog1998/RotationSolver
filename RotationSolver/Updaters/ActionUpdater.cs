@@ -24,48 +24,52 @@ internal static class ActionUpdater
         get => _nextGCDAction;
         set
         {
+            UpdateOmen(value);
             if (_nextGCDAction == value) return;
             _nextGCDAction = value;
+        }
+    }
 
-            if (!Service.Config.ShowTarget) return;
+    private static void UpdateOmen(IBaseAction? value)
+    {
+        var player = Player.Object;
+        if (player == null) return;
 
-            var player = Player.Object;
-            if (player == null) return;
+        circle ??= new(GroundOmenFriendly.Circle.Omen(), player, new Vector3(0, gcdHeight, 0));
+        sector ??= new(GroundOmenFriendly.Fan120.Omen(), player, new Vector3(0, gcdHeight, 0));
+        rectangle ??= new(GroundOmenFriendly.Rectangle.Omen(), player, new Vector3(0, gcdHeight, 0));
 
-            circle ??= new(GroundOmenFriendly.Circle.Omen(), player, new Vector3(0, gcdHeight, 0));
-            sector ??= new(GroundOmenFriendly.Fan120.Omen(), player, new Vector3(0, gcdHeight, 0));
-            rectangle ??= new(GroundOmenFriendly.Rectangle.Omen(), player, new Vector3(0, gcdHeight, 0));
+        circle.Enable = sector.Enable = rectangle.Enable = false;
+        circle.Owner = sector.Owner = rectangle.Owner = player;
 
-            circle.Enable = sector.Enable = rectangle.Enable = false;
-            circle.Owner = sector.Owner = rectangle.Owner = player;
+        if (!Service.Config.ShowTarget) return;
+        if (value == null) return;
 
-            if (value == null) return;
-            var target = value.Target.Target ?? player;
+        var target = value.Target.Target ?? player;
 
-            var range = value.Action.EffectRange;
-            var size = new Vector3(range, gcdHeight, range);
-            switch(value.Action.CastType)
-            {
-                //case 1:
-                case 2:
-                    circle.Owner = target;
-                    circle.UpdateScale(size);
-                    circle.Enable = true;
-                    break;
+        var range = value.Action.EffectRange;
+        var size = new Vector3(range, gcdHeight, range);
+        switch (value.Action.CastType)
+        {
+            //case 1:
+            case 2:
+                circle.Owner = target;
+                circle.UpdateScale(size);
+                circle.Enable = true;
+                break;
 
-                case 3:
-                    sector.Target = target;
-                    sector.UpdateScale(size);
-                    sector.Enable = true;
-                    break;
+            case 3:
+                sector.Target = target;
+                sector.UpdateScale(size);
+                sector.Enable = true;
+                break;
 
-                case 4:
-                    size.X = value.Action.XAxisModifier / 2;
-                    rectangle.Target = target;
-                    rectangle.UpdateScale(size);
-                    rectangle.Enable = true;
-                    break;
-            }
+            case 4:
+                size.X = value.Action.XAxisModifier / 2;
+                rectangle.Target = target;
+                rectangle.UpdateScale(size);
+                rectangle.Enable = true;
+                break;
         }
     }
 
@@ -110,16 +114,14 @@ internal static class ActionUpdater
 
                 if (gcdAction is IBaseAction GcdAction)
                 {
-                    if (NextGCDAction != GcdAction)
-                    {
-                        NextGCDAction = GcdAction;
-                    }
+                    NextGCDAction = GcdAction;
                 }
                 return;
             }
         }
         catch (Exception ex)
         {
+            WarningHelper.AddSystemWarning($"Failed to update the next action in the rotation because: {ex.Message}");
             Svc.Log.Error(ex, "Failed to update next action.");
         }
 
@@ -132,7 +134,7 @@ internal static class ActionUpdater
     internal unsafe static void UpdateActionInfo()
     {
         SetAction(NextGCDAction?.AdjustedID ?? 0);
-        UpdateWeaponTime();
+        //UpdateWeaponTime();
         UpdateCombatTime();
         UpdateSlots();
         UpdateMoving();
@@ -214,27 +216,27 @@ internal static class ActionUpdater
         }
     }
 
-    private static unsafe void UpdateWeaponTime()
-    {
-        var player = Player.Object;
-        if (player == null) return;
+    //private static unsafe void UpdateWeaponTime()
+    //{
+    //    var player = Player.Object;
+    //    if (player == null) return;
 
-        var instance = ActionManager.Instance();
+    //    var instance = ActionManager.Instance();
 
-        var castTotal = player.TotalCastTime;
+    //    var castTotal = player.TotalCastTime;
 
-        var weaponTotal = instance->GetRecastTime(ActionType.Action, 11);
-        if (castTotal > 0) castTotal += 0.1f;
-        if (player.IsCasting) weaponTotal = Math.Max(castTotal, weaponTotal);
+    //    var weaponTotal = instance->GetRecastTime(ActionType.Action, 11);
+    //    if (castTotal > 0) castTotal += 0.1f;
+    //    if (player.IsCasting) weaponTotal = Math.Max(castTotal, weaponTotal);
 
-        DataCenter.WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Action, 11);
-        DataCenter.WeaponRemain = DataCenter.WeaponElapsed == 0 ? player.TotalCastTime - player.CurrentCastTime
-            : Math.Max(weaponTotal - DataCenter.WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
+    //    DataCenter.WeaponElapsed = instance->GetRecastTimeElapsed(ActionType.Action, 11);
+    //    DataCenter.WeaponRemain = DataCenter.WeaponElapsed == 0 ? player.TotalCastTime - player.CurrentCastTime
+    //        : Math.Max(weaponTotal - DataCenter.WeaponElapsed, player.TotalCastTime - player.CurrentCastTime);
 
-        //Casting time.
-        if (DataCenter.WeaponElapsed < 0.3) DataCenter.CastingTotal = castTotal;
-        if (weaponTotal > 0 && DataCenter.WeaponElapsed > 0.2) DataCenter.WeaponTotal = weaponTotal;
-    }
+    //    //Casting time.
+    //    if (DataCenter.WeaponElapsed < 0.3) DataCenter.CastingTotal = castTotal;
+    //    if (weaponTotal > 0 && DataCenter.WeaponElapsed > 0.2) DataCenter.WeaponTotal = weaponTotal;
+    //}
 
     static uint _lastMP = 0;
     static DateTime _lastMPUpdate = DateTime.Now;
@@ -277,42 +279,21 @@ internal static class ActionUpdater
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Player.Object.CurrentHp == 0) return false;
 
-        var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
-        var ahead = Math.Min(maxAhead, Service.Config.ActionAhead);
-
-        //GCD
-        var canUseGCD = DataCenter.WeaponRemain <= ahead;
-        if (_GCDDelay.Delay(canUseGCD))
-        {
-            return RSCommands.CanDoAnAction(true);
-        }
-        if (canUseGCD) return false;
-
         var nextAction = NextAction;
         if (nextAction == null) return false;
 
-        var timeToNext = DataCenter.ActionRemain;
-
-        ////No time to use 0gcd
-        //if (timeToNext + nextAction.AnimationLockTime
-        //    > DataCenter.WeaponRemain) return false;
-
         //Skip when casting
-        if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return false;
+        if (Player.Object.TotalCastTime - Service.Config.Action4Head > 0) return false;
 
-        //The last one.
-        if (timeToNext + nextAction.AnimationLockTime + DataCenter.Ping + DataCenter.MinAnimationLock > DataCenter.WeaponRemain)
+        //GCD
+        var canUseGCD = ActionHelper.CanUseGCD;
+        if (canUseGCD)
         {
-            if (DataCenter.WeaponRemain > nextAction.AnimationLockTime + DataCenter.Ping +
-                Math.Max(ahead, Service.Config.MinLastAbilityAdvanced)) return false;
-
-            return RSCommands.CanDoAnAction(false);
+            return RSCommands.CanDoAnAction(true);
         }
-        else if (timeToNext < ahead)
+        else
         {
             return RSCommands.CanDoAnAction(false);
         }
-
-        return false;
     }
 }

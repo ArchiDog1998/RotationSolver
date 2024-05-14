@@ -65,8 +65,8 @@ partial class CustomRotation
             ActionHealAreaGCD = HealAreaGCD(out act) ? act : null;
             ActionHealSingleGCD = HealSingleGCD(out act) ? act : null;
 
-            ActionHealAreaAbility = HealAreaAbility(out act) ? act : null;
-            ActionHealSingleAbility = HealSingleAbility(out act) ? act : null;
+            ActionHealAreaAbility = HealAreaAbility(AddlePvE, out act) ? act : null;
+            ActionHealSingleAbility = HealSingleAbility(AddlePvE, out act) ? act : null;
         }
 
         IBaseAction.TargetOverride = TargetType.BeAttacked;
@@ -88,8 +88,8 @@ partial class CustomRotation
         };
 
         IBaseAction.TargetOverride = TargetType.BeAttacked;
-        ActionDefenseAreaAbility = DefenseAreaAbility(out act) ? act : null;
-        ActionDefenseSingleAbility = DefenseSingleAbility(out act) ? act : null;
+        ActionDefenseAreaAbility = DefenseAreaAbility(AddlePvE, out act) ? act : null;
+        ActionDefenseSingleAbility = DefenseSingleAbility(AddlePvE, out act) ? act : null;
         IBaseAction.TargetOverride = null;
 
         ActionDispelStancePositionalAbility = role switch
@@ -104,10 +104,10 @@ partial class CustomRotation
             JobRole.Tank => ShirkPvE.CanUse(out act) ? act : null,
             _ => null,
         };
-        ActionAntiKnockbackAbility = AntiKnockback(role, out act) ? act : null;
+        ActionAntiKnockbackAbility = AntiKnockback(role, AddlePvE, out act) ? act : null;
 
         IBaseAction.TargetOverride = TargetType.Move;
-        var movingTarget = MoveForwardAbility(out act);
+        var movingTarget = MoveForwardAbility(AddlePvE, out act);
         IBaseAction.TargetOverride = null;
         ActionMoveForwardAbility = movingTarget ? act : null;
 
@@ -148,8 +148,8 @@ partial class CustomRotation
             MoveTarget = null;
         }
 
-        ActionMoveBackAbility = MoveBackAbility(out act) ? act : null;
-        ActionSpeedAbility = SpeedAbility(out act) ? act : null;
+        ActionMoveBackAbility = MoveBackAbility(AddlePvE, out act) ? act : null;
+        ActionSpeedAbility = SpeedAbility(AddlePvE, out act) ? act : null;
     }
 
     private IAction? Invoke(out IAction? gcdAction)
@@ -158,8 +158,6 @@ partial class CustomRotation
         IBaseAction.IgnoreClipping = true;
 
         var countDown = Service.CountDownTime;
-        IBaseAction.TargetOverride = countDown < 1 
-            ? TargetType.Move : TargetType.BeAttacked;
         if (countDown > 0)
         {
             gcdAction = null;
@@ -172,8 +170,7 @@ partial class CustomRotation
 
         if (gcdAction != null)
         {
-            if (DataCenter.NextAbilityToNextGCD < DataCenter.MinAnimationLock + DataCenter.Ping
-                || DataCenter.WeaponTotal < DataCenter.CastingTotal) return gcdAction;
+            if (ActionHelper.CanUseGCD) return gcdAction;
 
             if (Ability(gcdAction, out var ability)) return ability;
 

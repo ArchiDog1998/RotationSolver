@@ -2,10 +2,12 @@
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
+using XIVPainter;
 
 namespace RotationSolver.UI;
 
@@ -39,71 +41,31 @@ internal class ControlWindow : CtrlWindow
         ImGui.NewLine();
 
         ImGui.Spacing();
-
-        DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
-
-        ImGui.SameLine();
-        DrawCommandAction(61764, StateCommandType.Cancel, ImGuiColors.DalamudWhite2);
-
-        ImGui.SameLine();
-        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
-        ImGui.NewLine();
-
         DrawCommandAction(61822, StateCommandType.Auto, ImGuiColors.DPSRed);
-
         ImGui.SameLine();
-
-        ImGui.BeginGroup();
-
-        ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.Local());
-
-        var value = Service.Config.IsControlWindowLock ? 0 : 1;
-        if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window",
-        [
-            UiString.InfoWindowNoMove.Local(),
-            UiString.InfoWindowMove.Local(),
-        ], ref value))
-        {
-            Service.Config.IsControlWindowLock.Value = value == 0;
-        }
-
-        ImGui.EndGroup();
-
-        ImGui.SameLine();
+        DrawCommandAction(61751, StateCommandType.Manual, ImGuiColors.DPSRed);
         columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
-        ImGui.NewLine();
+        ImGui.SameLine();
+        DrawCommandAction(61764, StateCommandType.Off, ImGuiColors.DalamudWhite2);
+        ImGui.Spacing();
+        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
 
-        var color = *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
+        var autoMode = DataCenter.TargetingType;
+        ImGui.Text(" Targeting: " + autoMode.Local());
 
-        var isAoe = Service.Config.UseAoeAction && (!DataCenter.IsManual || Service.Config.UseAoeWhenManual);
-
+        var aoeType = Service.Config.AoEType;
+        if (ImGuiHelper.SelectableButton("AoE: " + aoeType.ToString()))
+        {
+            aoeType = (ConfigTypes.AoEType)(((int)aoeType + 1) % 3);
+            Service.Config.AoEType = aoeType;
+        }
         // Track whether the style color was pushed
         bool pushedStyleColor = false;
-
-        if (!isAoe)
-        {
-            ImGui.PushStyleColor(ImGuiCol.Text, color);
-            pushedStyleColor = true; // Indicate that a style color has been pushed
-        }
-
-        if (ImGuiHelper.SelectableButton("AOE"))
-        {
-            Service.Config.UseAoeAction.Value = !isAoe;
-            Service.Config.UseAoeWhenManual.Value = !isAoe;
-        }
-
-        // Ensure PopStyleColor is called only if PushStyleColor was called
-        if (pushedStyleColor)
-        {
-            ImGui.PopStyleColor();
-        }
-
-
-        ImGui.SameLine();
 
         var isBurst = Service.Config.AutoBurst;
         // Track whether the style color was pushed
         pushedStyleColor = false;
+        var color = *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
 
         if (!isBurst)
         {
@@ -122,10 +84,18 @@ internal class ControlWindow : CtrlWindow
             ImGui.PopStyleColor();
         }
         ImGui.SameLine();
-        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
-        ImGui.NewLine();
 
-        ImGui.SetColumnWidth(0, columnWidth);
+        var value = Service.Config.IsControlWindowLock ? 0 : 1;
+        if (ImGuiHelper.SelectableCombo("Rotation Solver Lock the Control Window",
+        [
+            UiString.InfoWindowNoMove.Local(),
+            UiString.InfoWindowMove.Local(),
+        ], ref value))
+        {
+            Service.Config.IsControlWindowLock.Value = value == 0;
+        }
+        columnWidth = Math.Max(columnWidth, ImGui.GetCursorPosX());
+        ImGui.SetColumnWidth(0, columnWidth + 10);
 
         ImGui.NextColumn();
         ImGui.NextColumn();
@@ -246,7 +216,7 @@ internal class ControlWindow : CtrlWindow
         {
             if (subGroup)
             {
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(2, width / 2 - strWidth / 2));
                 ImGui.TextColored(color, str);
 
                 var help = command.Local();
@@ -296,7 +266,7 @@ internal class ControlWindow : CtrlWindow
             {
                 var time = DataCenter.SpecialTimeLeft.ToString("F2") + "s";
                 var strSize = ImGui.CalcTextSize(time);
-                CooldownWindow.TextShade(winPos + pos + size - strSize, time);
+                ImGuiHelper.TextShade(winPos + pos + size - strSize, time);
             }
         }
     }
@@ -346,7 +316,6 @@ internal class ControlWindow : CtrlWindow
 
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
                 if (texture != null) DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
-
             }
         }
 
@@ -361,7 +330,7 @@ internal class ControlWindow : CtrlWindow
             {
                 var time = DataCenter.SpecialTimeLeft.ToString("F2") + "s";
                 var strSize = ImGui.CalcTextSize(time);
-                CooldownWindow.TextShade(winPos + pos + size - strSize, time);
+                ImGuiHelper.TextShade(winPos + pos + size - strSize, time);
             }
         }
     }
@@ -379,7 +348,7 @@ internal class ControlWindow : CtrlWindow
         {
             if (group)
             {
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2) - 3.5f);
                 ImGui.TextColored(color, str);
 
                 var help = command.Local();
@@ -399,7 +368,7 @@ internal class ControlWindow : CtrlWindow
         {
             case StateCommandType.Auto when DataCenter.State && !DataCenter.IsManual:
             case StateCommandType.Manual when DataCenter.State && DataCenter.IsManual:
-            case StateCommandType.Cancel when !DataCenter.State:
+            case StateCommandType.Off when !DataCenter.State:
                 isMatch = true;
                 break;
         }
@@ -459,16 +428,82 @@ internal class ControlWindow : CtrlWindow
                 }
                 if (canDoIt) action?.Use();
             }
-            else if(action != null)
+            else if (action != null)
             {
                 DataCenter.AddCommandAction(action, 5);
             }
         }
         var size = ImGui.GetItemRectSize();
-        ImGuiHelper.DrawActionOverlay(cursor, width, action == null ? -1 : percent);
-        ImguiTooltips.HoveredTooltip(desc);
+        var pos = cursor;
+        DrawKeybindOnAction(pos, action?.ID);
 
-        return (cursor, size);
+        if (action == null || !Service.Config.ShowCooldownsAlways)
+        {
+            ImGuiHelper.DrawActionOverlay(pos, width, -1);
+            ImguiTooltips.HoveredTooltip(desc);
+
+            return (pos, size);
+        }
+        else
+        {
+            var recast = action.Cooldown.RecastTimeOneChargeRaw;
+            var elapsed = action.Cooldown.RecastTimeElapsedRaw;
+            var winPos = ImGui.GetWindowPos();
+            var r = -1f;
+            if (Service.Config.UseOriginalCooldown)
+            {
+                r = !action.EnoughLevel ? 0 : recast == 0 || !action.Cooldown.IsCoolingDown ? 1 : elapsed / recast;
+            }
+            ImGuiHelper.DrawActionOverlay(cursor, width, r);
+            ImguiTooltips.HoveredTooltip(desc);
+
+            if (!action.EnoughLevel)
+            {
+                if (!Service.Config.UseOriginalCooldown)
+                {
+                    ImGui.GetWindowDrawList().AddRectFilled(new Vector2(pos.X, pos.Y) + winPos,
+                        new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, ImGuiHelper.ProgressCol);
+                }
+            }
+            else if (action.Cooldown.IsCoolingDown)
+            {
+                if (!Service.Config.UseOriginalCooldown)
+                {
+                    var ratio = recast == 0 || !action.EnoughLevel ? 0 : elapsed % recast / recast;
+                    var startPos = new Vector2(pos.X + size.X * ratio, pos.Y) + winPos;
+                    ImGui.GetWindowDrawList().AddRectFilled(startPos,
+                        new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, ImGuiHelper.ProgressCol);
+
+                    ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), ImGuiHelper.Black);
+                }
+
+                using var font = ImRaii.PushFont(DrawingExtensions.GetFont(Service.Config.CooldownFontSize));
+                string time = recast == 0 ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
+                var strSize = ImGui.CalcTextSize(time);
+                var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;
+
+                ImGuiHelper.TextShade(fontPos, time);
+            }
+
+            if (action.EnoughLevel && action is IBaseAction bAct && bAct.Cooldown.MaxCharges > 1)
+            {
+                for (int i = 0; i < bAct.Cooldown.CurrentCharges; i++)
+                {
+                    ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + (i + 0.5f) * new Vector2(width / 5, 0), width / 12, ImGuiHelper.White);
+                }
+            }
+
+            return (pos, size);
+        }
+    }
+
+    private static void DrawKeybindOnAction(Vector2 pos, uint? @uint)
+    {
+        return;
+        if (@uint == null) return;
+        var keybind = PreviewUpdater.GetActionKeybind(@uint.Value);
+        if (string.IsNullOrEmpty(keybind)) return;
+        ImGuiHelper.TextShade(pos + new Vector2(2, 2), keybind);
     }
 
     static unsafe void DrawNextAction(float gcd, float ability, float width)

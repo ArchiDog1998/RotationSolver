@@ -25,16 +25,18 @@ partial class WarriorRotation
     static partial void ModifyInnerBeastPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => BeastGauge >= 50 || Player.HasStatus(true, StatusID.InnerRelease);
+        setting.UnlockedByQuestID = 66586;
     }
 
     static partial void ModifyTomahawkPvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MeleeRange;
+        setting.UnlockedByQuestID = 65852;
     }
 
     static partial void ModifyUpheavalPvE(ref ActionSetting setting)
     {
-        //TODO: Why is that status?
+        //TODO: Why is that status? Answer: This is Warrior's 10% damage buff. Don't want to cast Upheaval at the start of combat without the buff. 
         setting.StatusNeed = [StatusID.SurgingTempest];
     }
 
@@ -45,11 +47,17 @@ partial class WarriorRotation
         {
             AoeCount = 2,
         };
+        setting.UnlockedByQuestID = 66589;
     }
 
     static partial void ModifyPrimalRendPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.PrimalRendReady];
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifyPrimalRendPvP(ref ActionSetting setting)
+    {
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
@@ -61,6 +69,7 @@ partial class WarriorRotation
         {
             TimeToKill = 0,
         };
+        setting.UnlockedByQuestID = 66590;
     }
 
     static partial void ModifyInnerReleasePvE(ref ActionSetting setting)
@@ -69,6 +78,7 @@ partial class WarriorRotation
         {
             TimeToKill = 0,
         };
+        setting.UnlockedByQuestID = 68440;
     }
 
     static partial void ModifyBerserkPvE(ref ActionSetting setting)
@@ -94,6 +104,7 @@ partial class WarriorRotation
         {
             AoeCount = 2,
         };
+        setting.UnlockedByQuestID = 66587;
     }
 
     static partial void ModifyVengeancePvE(ref ActionSetting setting)
@@ -105,6 +116,7 @@ partial class WarriorRotation
     static partial void ModifyRawIntuitionPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = Player.IsTargetOnSelf;
+        setting.UnlockedByQuestID = 66132;
     }
 
     static partial void ModifyHolmgangPvE(ref ActionSetting setting)
@@ -127,6 +139,37 @@ partial class WarriorRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
+    static partial void ModifyOnslaughtPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifyNascentFlashPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.NascentFlash];
+        setting.StatusProvide = [StatusID.NascentGlint];
+    }
+
+    static partial void ModifyThrillOfBattlePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65855;
+    }
+
+    static partial void ModifyFellCleavePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66124;
+    }
+
+    static partial void ModifyEquilibriumPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66134;
+    }
+
+    static partial void ModifyDecimatePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66137;
+    }
+
     /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {
@@ -137,10 +180,10 @@ partial class WarriorRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.OnslaughtPvE)]
-    protected override bool MoveForwardAbility(out IAction? act)
+    protected override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (OnslaughtPvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>

@@ -33,6 +33,7 @@ internal static class PreviewUpdater
             }
             catch
             {
+                WarningHelper.AddSystemWarning($"Unable to add server bar entry");
                 return;
             }
 
@@ -78,6 +79,41 @@ internal static class PreviewUpdater
             return IsActionSlotRight(bar, hot, actionID);
         });
     }
+
+    internal static unsafe string GetActionKeybind(uint actionID)
+    {
+        string result = string.Empty; // Initialize result as an empty string to return something even if no keybind is found
+
+        LoopAllSlotBar((bar, hot, index) =>
+        {
+            if (IsActionSlotRight(bar, hot, actionID))
+            {
+                if (hot.HasValue)
+                {
+                    var hotValue = hot.Value;
+                    var keyBind = hotValue.KeybindHint;
+                    var length = DetermineLength(keyBind);
+                    result = SeString.Parse(keyBind, length).ToString();
+                }
+            }
+            return false;
+        });
+
+        return result;
+    }
+
+    // Placeholder for a method to determine the length of the data pointed to by keybindPtr
+    // You need to replace this with your actual logic to get the length
+    private static unsafe int DetermineLength(byte* ptr)
+    {
+        int length = 0;
+        for (byte* temp = ptr; *temp != 0; temp++)
+        {
+            length++;
+        }
+        return length;
+    }
+
 
     private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotBarSlot? hot, uint actionID)
     {

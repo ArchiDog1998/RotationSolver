@@ -21,7 +21,7 @@ partial class ScholarRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float SeraphTime => SeraphTimeRaw - DataCenter.WeaponRemain;
+    public static float SeraphTime => SeraphTimeRaw - DataCenter.DefaultGCDRemain;
     #endregion
     private sealed protected override IBaseAction Raise => ResurrectionPvE;
 
@@ -34,27 +34,32 @@ partial class ScholarRotation
             StatusID.EukrasianPrognosis,
             StatusID.Galvanize
         ];
+        setting.UnlockedByQuestID = 66633;
     }
 
     static partial void ModifySuccorPvE(ref ActionSetting setting)
     {
         setting.StatusFromSelf = false;
         setting.StatusProvide = [StatusID.Galvanize];
+        setting.UnlockedByQuestID = 66634;
     }
 
     static partial void ModifyLustratePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HasAetherflow;
+        setting.UnlockedByQuestID = 66637;
     }
 
     static partial void ModifySacredSoilPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HasAetherflow && !IsMoving;
+        setting.UnlockedByQuestID = 66638;
     }
 
     static partial void ModifyIndomitabilityPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HasAetherflow;
+        setting.UnlockedByQuestID = 67208;
     }
 
     static partial void ModifyExcogitationPvE(ref ActionSetting setting)
@@ -102,11 +107,13 @@ partial class ScholarRotation
     {
         setting.StatusProvide = [StatusID.Dissipation];
         setting.ActionCheck = () => !HasAetherflow && SeraphTime <= 0 && InCombat && DataCenter.HasPet;
+        setting.UnlockedByQuestID = 67212;
     }
 
     static partial void ModifyAetherpactPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => FairyGauge >= 10 && DataCenter.HasPet && SeraphTime <= 0;
+        setting.UnlockedByQuestID = 68463;
     }
 
     static partial void ModifyFeyBlessingPvE(ref ActionSetting setting)
@@ -139,13 +146,19 @@ partial class ScholarRotation
     static partial void ModifyDeploymentTacticsPvE(ref ActionSetting setting)
     {
         setting.TargetStatusNeed = [StatusID.Galvanize];
+        setting.UnlockedByQuestID = 67210;
+    }
+
+    static partial void ModifyBroilPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67209;
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.ExpedientPvE)]
-    protected override bool SpeedAbility(out IAction? act)
+    protected override bool SpeedAbility(IAction nextGCD, out IAction? act)
     {
         if (InCombat && ExpedientPvE.CanUse(out act, usedUp: true)) return true;
-        return base.SpeedAbility(out act);
+        return base.SpeedAbility(nextGCD, out act);
     }
 }

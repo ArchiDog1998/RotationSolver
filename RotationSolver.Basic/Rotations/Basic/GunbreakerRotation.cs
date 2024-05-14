@@ -140,6 +140,16 @@ partial class GunbreakerRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
+    static partial void ModifyRoughDividePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifyContinuationPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 68802;
+    }
+
     /// <inheritdoc/>
     protected override bool EmergencyAbility(IAction nextGCD, out IAction? act)
     {
@@ -150,7 +160,7 @@ partial class GunbreakerRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.RoughDividePvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (RoughDividePvE.CanUse(out act)) return true;
         return false;

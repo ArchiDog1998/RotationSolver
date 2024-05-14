@@ -127,4 +127,10 @@ public interface ICustomRotation : ITexture
     /// It occur when territory changed or rotation changed.
     /// </summary>
     void OnTerritoryChanged();
+
+    /// <summary>
+    /// Creates a system warning to display to the end-user
+    /// </summary>
+    /// <param name="warning">The warning to display</param>
+    void CreateSystemWarning(string warning);
 }

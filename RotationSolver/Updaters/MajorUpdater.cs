@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin.Services;
@@ -29,6 +30,7 @@ internal static class MajorUpdater
     static bool _showedWarning, _work;
     static Exception? _threadException;
     static DateTime _lastUpdatedWork = DateTime.Now;
+    static DateTime _warningsLastDisplayed = DateTime.MinValue;
 
     private unsafe static void FrameworkUpdate(IFramework framework)
     {
@@ -39,14 +41,24 @@ internal static class MajorUpdater
             TargetUpdater.ClearTarget();
             ActionUpdater.ClearNextAction();
             CustomRotation.MoveTarget = null;
-
             return;
         }
 
-        if (!_showedWarning)
+        if (DataCenter.SystemWarnings.Any())
         {
-            _showedWarning = true;
-            ShowWarning();
+            foreach (var warning in DataCenter.SystemWarnings)
+            {
+                if ((warning.Value + new TimeSpan(0, 10, 0)) < DateTime.Now)
+                {
+                    DataCenter.SystemWarnings.Remove(warning.Key);
+                    continue;
+                }
+            }
+            if (_warningsLastDisplayed + new TimeSpan(0, 10, 0) < DateTime.Now)
+            {
+                _warningsLastDisplayed = DateTime.Now;
+                WarningHelper.ShowWarning("System warnings are present.");
+            }
         }
 
         try
@@ -104,6 +116,25 @@ internal static class MajorUpdater
         catch (Exception ex)
         {
             Svc.Log.Error(ex, "Worker Exception");
+        }
+    }
+
+    private static XivChatEntry BuildWarningChatEntry()
+    {
+        DalamudLinkPayload linkPayload = Svc.PluginInterface.AddChatLinkHandler(3, OpenWarningChatHandler);
+        XivChatEntry entry = new()
+        {
+            Message = new SeString(new TextPayload("RotationSolver Reborn: System warnings are present. Click here to view."), linkPayload),
+            Type = XivChatType.ErrorMessage,
+        };
+        return entry;
+    }
+
+    private static void OpenWarningChatHandler(uint arg1, SeString @string)
+    {
+        if (arg1 == 3)
+        {
+            RotationSolverPlugin.OpenConfigWindow();
         }
     }
 
@@ -173,7 +204,7 @@ internal static class MajorUpdater
         {
             StateUpdater.UpdateState();
 
-            if (Service.Config.AutoLoadCustomRotations)
+            if (Service.Config.AutoReloadRotations)
             {
                 RotationUpdater.LocalRotationWatcher();
             }

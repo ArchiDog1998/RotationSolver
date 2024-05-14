@@ -13,21 +13,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
+      
+      - name: Setup NuGet.exe for use with actions
+        uses: NuGet/setup-nuget@v2
+        with:
+           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+          
 
       - name: Get Environment Variables
         run: |
           $tag = "${{ github.ref }}" -replace 'refs/tags/', ''
 
           "tag=$tag" | Out-File -Append -FilePath $Env:GITHUB_ENV
-
-          if ($tag -match "-test$") {
-              $branch = "testing"
-              $tag = $tag -replace '-test$', ''
-          } else {
-              $branch = "latest"
-          }
-
-          "branch=$branch" | Out-File -Append -FilePath $Env:GITHUB_ENV
           
       - name: Set up .NET
         uses: actions/setup-dotnet@v1
@@ -43,7 +40,10 @@ jobs:
         run: dotnet restore RotationSolver/RotationSolver.csproj
 
       - name: Build Plugin
-        run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }} --output .\build
+        run: dotnet build --no-restore -c Release RotationSolver/RotationSolver.csproj -p:AssemblyVersion=${{ env.tag }} -p:FileVersion=${{ env.tag }} -p:PackageVersion=${{ env.tag }} -p:InformationalVersion=${{ env.tag }} --output .\build
+
+      - name: Push Nuget Package
+        run: dotnet nuget push .\build\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
       - name: Zip Plugin
         run: Compress-Archive -Path .\build\* -DestinationPath .\build\RotationSolver.zip
@@ -53,9 +53,4 @@ jobs:
         with:
           files: ./build/RotationSolver.zip
           token: ${{ secrets.GITHUB_TOKEN }}
-          draft: false
-          make_latest: ${{ env.branch == 'latest' }}
-          prerelease: ${{ env.branch == 'testing' }}
-
-
 

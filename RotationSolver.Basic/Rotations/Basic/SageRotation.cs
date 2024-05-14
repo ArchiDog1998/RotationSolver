@@ -26,7 +26,7 @@ partial class SageRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float AddersgallTime => AddersgallTimerRaw - DataCenter.WeaponRemain;
+    public static float AddersgallTime => AddersgallTimerRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -130,11 +130,21 @@ partial class SageRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
+    static partial void ModifyIcarusPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifyPanhaimaPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 69608;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.IcarusPvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (IcarusPvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 }

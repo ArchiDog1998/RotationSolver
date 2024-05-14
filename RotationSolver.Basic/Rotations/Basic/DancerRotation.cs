@@ -121,6 +121,11 @@ partial class DancerRotation
         setting.IsFriendly = true;
     }
 
+    static partial void ModifyEnAvantPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     static partial void ModifyShieldSambaPvE(ref ActionSetting setting)
     {
         setting.StatusFromSelf = false;
@@ -151,6 +156,7 @@ partial class DancerRotation
     static partial void ModifyTechnicalStepPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.StandardFinish];
+        setting.UnlockedByQuestID = 68790;
     }
 
     static partial void ModifyDoubleTechnicalFinishPvE(ref ActionSetting setting)
@@ -261,9 +267,10 @@ partial class DancerRotation
     /// 
     /// </summary>
     /// <param name="act"></param>
+    /// <param name="nextGCD"></param>
     /// <returns></returns>
     [RotationDesc(ActionID.EnAvantPvE)]
-    protected sealed override bool MoveForwardAbility(out IAction act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction act)
     {
         if (EnAvantPvE.CanUse(out act, usedUp:true)) return true;
         return false;
@@ -273,9 +280,10 @@ partial class DancerRotation
     /// 
     /// </summary>
     /// <param name="act"></param>
+    /// <param name="nextGCD"></param>
     /// <returns></returns>
     [RotationDesc(ActionID.CuringWaltzPvE, ActionID.ImprovisationPvE)]
-    protected sealed override bool HealAreaAbility(out IAction act)
+    protected sealed override bool HealAreaAbility(IAction nextGCD, out IAction act)
     {
         if (CuringWaltzPvE.CanUse(out act, usedUp: true)) return true;
         if (ImprovisationPvE.CanUse(out act, usedUp: true)) return true;
@@ -286,9 +294,10 @@ partial class DancerRotation
     /// 
     /// </summary>
     /// <param name="act"></param>
+    /// <param name="nextGCD"></param>
     /// <returns></returns>
     [RotationDesc(ActionID.ShieldSambaPvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction act)
     {
         if (ShieldSambaPvE.CanUse(out act, usedUp: true)) return true;
         return false;

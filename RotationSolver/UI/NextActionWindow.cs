@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
+using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
@@ -41,19 +42,36 @@ internal class NextActionWindow : Window
         base.PostDraw();
     }
 
-    public override void Draw()
+    public override unsafe void Draw()
     {
         var width = Service.Config.ControlWindowGCDSize
             * Service.Config.ControlWindowNextSizeRatio;
         DrawGcdCooldown(width, false);
-        ControlWindow.DrawIAction(ActionUpdater.NextAction, width, 1);
+
+        var precent = 0f;
+
+        var group = ActionManager.Instance()->GetRecastGroupDetail(ActionHelper.GCDCooldownGroup - 1);
+        if (group ->Elapsed == group->Total || group->Total == 0)
+        {
+            precent = 1;
+        }
+        else
+        {
+            precent = group->Elapsed / group->Total;
+            if(ActionUpdater.NextAction != ActionUpdater.NextGCDAction)
+            {
+                precent++;
+            }
+        }
+
+        ControlWindow.DrawIAction(ActionUpdater.NextAction, width, precent);
     }
 
     public static unsafe void DrawGcdCooldown(float width, bool drawTittle)
     {
-        var group = ActionManager.Instance()->GetRecastGroupDetail(ActionHelper.GCDCooldownGroup - 1);
-        var remain = group->Total - group->Elapsed;
-        var total = DataCenter.WeaponTotal;
+        var remain = DataCenter.DefaultGCDRemain;
+        var total = DataCenter.DefaultGCDTotal;
+        var elapsed = DataCenter.DefaultGCDElapsed;
 
         if (drawTittle)
         {
@@ -65,14 +83,14 @@ internal class NextActionWindow : Window
         var cursor = ImGui.GetCursorPos() + ImGui.GetWindowPos();
         var height = Service.Config.ControlProgressHeight   ;
 
-        ImGui.ProgressBar(group->Elapsed / group->Total, new Vector2(width, height), string.Empty);
+        ImGui.ProgressBar(elapsed / total, new Vector2(width, height), string.Empty);
 
-        var actionRemain = DataCenter.ActionRemain;
-        if (remain > actionRemain + 0.6f + DataCenter.Ping)
+        var actionRemain = DataCenter.DefaultGCDRemain;
+        if (actionRemain > 0)
         {
-            var value = total - remain + actionRemain;
+            var value = total - DataCenter.ActionAhead;
 
-            if (value > DataCenter.CastingTotal)
+            if (value > Player.Object.TotalCastTime)
             {
                 var pt = cursor + new Vector2(width, 0) * value / total;
 

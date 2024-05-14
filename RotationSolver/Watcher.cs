@@ -45,7 +45,6 @@ public static class Watcher
             _actorVfxCreateHook.Enable();
         }
         IpcSubscriber = Svc.PluginInterface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
-        IpcSubscriber.Subscribe(UpdateRTTDetour);
 
         ActionEffect.ActionEffectEvent += ActionFromEnemy;
         ActionEffect.ActionEffectEvent += ActionFromSelf;
@@ -72,7 +71,6 @@ public static class Watcher
         _processObjectEffectHook?.Dispose();
         _actorVfxCreateHook?.Dispose();
 
-        IpcSubscriber?.Unsubscribe(UpdateRTTDetour);
         MapEffect.Dispose();
         ActionEffect.ActionEffectEvent -= ActionFromEnemy;
         ActionEffect.ActionEffectEvent -= ActionFromSelf;
@@ -149,12 +147,6 @@ public static class Watcher
     }
 #endif
 
-    private static void UpdateRTTDetour(dynamic obj)
-    {
-        Svc.Log.Verbose($"LastRTT:{obj.LastRTT}");
-        DataCenter.RTT = (long)obj.LastRTT / 1000f;
-    }
-
     public static string ShowStrSelf { get; private set; } = string.Empty;
     public static string ShowStrEnemy { get; private set; } = string.Empty;
 
@@ -191,6 +183,11 @@ public static class Watcher
                 {
                     DataCenter.KnockbackStart = DateTime.Now;
                     DataCenter.KnockbackFinished = DateTime.Now + TimeSpan.FromSeconds(knock.Distance / (float)knock.Speed);
+                    if (!OtherConfiguration.HostileCastingKnockback.Contains(set.Action.RowId) && Service.Config.RecordKnockbackies)
+                    {
+                        OtherConfiguration.HostileCastingKnockback.Add(set.Action.RowId);
+                        OtherConfiguration.Save();
+                    }
                 }
                 break;
             }

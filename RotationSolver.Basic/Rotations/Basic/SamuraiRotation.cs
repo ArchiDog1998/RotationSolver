@@ -165,6 +165,7 @@ partial class SamuraiRotation
     static partial void ModifyHissatsuGurenPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Kenki >= 25;
+        setting.UnlockedByQuestID = 68106;
     }
 
     static partial void ModifyHissatsuSeneiPvE(ref ActionSetting setting)
@@ -172,27 +173,32 @@ partial class SamuraiRotation
         setting.ActionCheck = () => Kenki >= 25;
     }
 
+    static partial void ModifyHissatsuSotenPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.HissatsuGyotenPvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (HissatsuGyotenPvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.FeintPvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction? act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (FeintPvE.CanUse(out act)) return true;
-        return base.DefenseAreaAbility(out act);
+        return base.DefenseAreaAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.ThirdEyePvE)]
-    protected override bool DefenseSingleAbility(out IAction? act)
+    protected override bool DefenseSingleAbility(IAction nextGCD, out IAction? act)
     {
         if (ThirdEyePvE.CanUse(out act)) return true;
-        return base.DefenseSingleAbility(out act);
+        return base.DefenseSingleAbility(nextGCD, out act);
     }
 }

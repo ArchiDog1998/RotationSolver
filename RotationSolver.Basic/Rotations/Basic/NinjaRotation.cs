@@ -16,7 +16,7 @@ partial class NinjaRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float HutonTime => HutonTimeRaw - DataCenter.WeaponRemain;
+    public static float HutonTime => HutonTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -38,11 +38,13 @@ partial class NinjaRotation
     static partial void ModifyArmorCrushPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HutonEndAfter(25) && !HutonEndAfterGCD();
+        setting.UnlockedByQuestID = 67221;
     }
 
     static partial void ModifyHuraijinPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => HutonEndAfterGCD();
+        setting.UnlockedByQuestID = 67224;
     }
 
     static partial void ModifyPhantomKamaitachiPvE(ref ActionSetting setting)
@@ -98,11 +100,13 @@ partial class NinjaRotation
     {
         setting.StatusProvide = [StatusID.Kassatsu, StatusID.TenChiJin];
         setting.ActionCheck = () => !HutonEndAfterGCD(2);
+        setting.UnlockedByQuestID = 68488;
     }
 
     static partial void ModifyKassatsuPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.Kassatsu, StatusID.TenChiJin];
+        setting.UnlockedByQuestID = 65770;
     }
 
     static partial void ModifyHutonPvE(ref ActionSetting setting)
@@ -118,6 +122,32 @@ partial class NinjaRotation
     static partial void ModifyShukuchiPvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
+        setting.UnlockedByQuestID = 65752;
+    }
+
+    static partial void ModifyTenPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65748;
+    }
+
+    static partial void ModifyChiPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65750;
+    }
+
+    static partial void ModifyJinPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 65768;
+    }
+
+    static partial void ModifyHakkeMujinsatsuPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67220;
+    }
+
+    static partial void ModifyDreamWithinADreamPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67222;
     }
 
     /// <summary>
@@ -144,28 +174,33 @@ partial class NinjaRotation
         };
     }
 
+    static partial void ModifyShukuchiPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
     /// <inheritdoc/>
     [RotationDesc(ActionID.ShukuchiPvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (ShukuchiPvE.CanUse(out act)) return true;
-        return base.MoveForwardAbility(out act);
+        return base.MoveForwardAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.FeintPvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction? act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (FeintPvE.CanUse(out act)) return true;
-        return base.DefenseAreaAbility(out act);
+        return base.DefenseAreaAbility(nextGCD, out act);
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.ShadeShiftPvE)]
-    protected override bool DefenseSingleAbility(out IAction? act)
+    protected override bool DefenseSingleAbility(IAction nextGCD, out IAction? act)
     {
         if (ShadeShiftPvE.CanUse(out act)) return true;
-        return base.DefenseSingleAbility(out act);
+        return base.DefenseSingleAbility(nextGCD, out act);
     }
 
     //static partial void ModifySuitonPvE(ref ActionSetting setting)

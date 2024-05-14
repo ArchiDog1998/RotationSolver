@@ -23,7 +23,7 @@ partial class DragoonRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float LOTDTime => LOTDTimeRaw - DataCenter.WeaponRemain;
+    public static float LOTDTime => LOTDTimeRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -54,26 +54,35 @@ partial class DragoonRotation
     static partial void ModifyFangAndClawPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.FangAndClawBared];
+        setting.UnlockedByQuestID = 67229;
     }
 
     static partial void ModifyWheelingThrustPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.WheelInMotion];
+        setting.UnlockedByQuestID = 67230;
     }
 
     static partial void ModifyPiercingTalonPvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MeleeRange;
+        setting.UnlockedByQuestID = 65591;
     }
 
     static partial void ModifyJumpPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.DiveReady];
+        setting.UnlockedByQuestID = 66603;
     }
 
     static partial void ModifyHighJumpPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.DiveReady];
+    }
+
+    static partial void ModifyHighJumpPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     static partial void ModifyMirageDivePvE(ref ActionSetting setting)
@@ -89,6 +98,7 @@ partial class DragoonRotation
     static partial void ModifyNastrondPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => JobGauge.IsLOTDActive;
+        setting.UnlockedByQuestID = 68450;
     }
 
     static partial void ModifyStardiverPvE(ref ActionSetting setting)
@@ -113,6 +123,7 @@ partial class DragoonRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 65975;
     }
 
     static partial void ModifyDragonSightPvE(ref ActionSetting setting)
@@ -131,11 +142,37 @@ partial class DragoonRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 67226;
+    }
+
+    static partial void ModifyElusiveJumpPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66604;
+    }
+
+    static partial void ModifyDoomSpikePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66605;
+    }
+
+    static partial void ModifySpineshatterDivePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66607;
+    }
+
+    static partial void ModifyDragonfireDivePvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 66608;
+    }
+
+    static partial void ModifyGeirskogulPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67231;
     }
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.FeintPvE)]
-    protected sealed override bool DefenseAreaAbility(out IAction? act)
+    protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
         if (FeintPvE.CanUse(out act)) return true;
         return false;
@@ -143,9 +180,9 @@ partial class DragoonRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.ElusiveJumpPvE)]
-    protected override bool MoveBackAbility(out IAction? act)
+    protected override bool MoveBackAbility(IAction nextGCD, out IAction? act)
     {
         if (ElusiveJumpPvE.CanUse(out act, skipClippingCheck: true)) return true;
-        return base.MoveBackAbility(out act);
+        return base.MoveBackAbility(nextGCD, out act);
     }
 }

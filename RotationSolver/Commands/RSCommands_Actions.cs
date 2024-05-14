@@ -21,7 +21,7 @@ public static partial class RSCommands
         if (!DataCenter.State) { DoStateCommandType(StateCommandType.Auto); return; }
         if (DataCenter.State && !DataCenter.IsManual && DataCenter.TargetingType == TargetingType.Big) { DoStateCommandType(StateCommandType.Auto); return; }
         if (DataCenter.State && !DataCenter.IsManual) { DoStateCommandType(StateCommandType.Manual); return; }
-        if (DataCenter.State && DataCenter.IsManual) { DoStateCommandType(StateCommandType.Cancel); return; }
+        if (DataCenter.State && DataCenter.IsManual) { DoStateCommandType(StateCommandType.Off); return; }
     }
 
     internal static unsafe bool CanDoAnAction(bool isGCD)
@@ -64,21 +64,6 @@ public static partial class RSCommands
             Svc.Toasts.ShowError(string.Format(UiString.ClickingMistakeMessage.Local(), nextAction));
             ControlWindow.Wrong = nextAction;
             ControlWindow.DidTime = DateTime.Now;
-        }
-
-        if (nextAction is BaseAction act1 && act1.Info.IsPvP && !act1.Setting.IsFriendly
-            && act1.TargetInfo.IsSingleTarget
-            && act1.Target.Target is PlayerCharacter p && p != Player.Object)
-        {
-            var hash = p.EncryptString();
-
-            //Don't attack authors and contributors!!
-            if ((DataCenter.AuthorHashes.ContainsKey(hash)
-                || DataCenter.ContributorsHash.Contains(hash)))
-            {
-                Svc.Chat.PrintError($"Please don't attack RS developers with RS by {act1}!");
-                return;
-            }
         }
 
 #if DEBUG
@@ -133,9 +118,9 @@ public static partial class RSCommands
             }
 
         }
-        else
+        else if (Service.Config.InDebug)
         {
-            Svc.Log.Error($"Failed to use the action {nextAction} ({nextAction.AdjustedID})");
+            Svc.Log.Verbose($"Failed to use the action {nextAction} ({nextAction.AdjustedID})");
         }
     }
 
@@ -158,6 +143,7 @@ public static partial class RSCommands
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, "Pulse Failed!");
+            WarningHelper.AddSystemWarning($"Action bar failed to pulse because: {ex.Message}");
         }
         finally { started = false; }
         started = false;
@@ -169,7 +155,7 @@ public static partial class RSCommands
     }
     internal static void CancelState()
     {
-        if (DataCenter.State) DoStateCommandType(StateCommandType.Cancel);
+        if (DataCenter.State) DoStateCommandType(StateCommandType.Off);
     }
 
     static float _lastCountdownTime = 0;
@@ -234,7 +220,10 @@ public static partial class RSCommands
             _lastCountdownTime = Service.CountDownTime;
             if (!DataCenter.State)
             {
-                DoStateCommandType(StateCommandType.Auto);
+                if (Service.Config.CountdownStartsManualMode)
+                    DoStateCommandType(StateCommandType.Manual);
+                else
+                    DoStateCommandType(StateCommandType.Auto);
             }
         }
         //Cancel when after combat.

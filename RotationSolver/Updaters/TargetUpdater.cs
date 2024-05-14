@@ -17,7 +17,7 @@ internal static partial class TargetUpdater
     {
         var battles = Svc.Objects.OfType<BattleChara>();
 
-        DataCenter.AllTargets.Delay(battles.GetObjectInRadius(30));
+        DataCenter.AllTargets.Delay(battles.GetObjectInRadius(30).Where(o => !o.IsDummy() || !Service.Config.DisableTargetDummys));
         UpdateHostileTargets(DataCenter.AllTargets);
         UpdateFriends(DataCenter.AllTargets
             .Where(b => b.Character()->CharacterData.OnlineStatus != 15 //Removed the one watching cutscene.
@@ -94,17 +94,6 @@ internal static partial class TargetUpdater
         DataCenter.AllHostileTargets = allTargets.Where(b =>
         {
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
-
-            if (b is PlayerCharacter p)
-            {
-                var hash = p.EncryptString();
-
-                //Don't attack authors!!
-                if (DataCenter.AuthorHashes.ContainsKey(hash)) return false;
-
-                //Don't attack contributors!!
-                if (DataCenter.ContributorsHash.Contains(hash)) return false;
-            }
             return true;
         }).ToArray();
 
@@ -126,6 +115,7 @@ internal static partial class TargetUpdater
 
         DataCenter.IsHostileCastingToTank = IsCastingTankVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingTank);
         DataCenter.IsHostileCastingAOE = IsCastingAreaVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingArea);
+        DataCenter.IsHostileCastingKnockback = DataCenter.AllHostileTargets.Any(IsHostileCastingKnockback);
 
         DataCenter.ProvokeTarget = _provokeDelay.Delay(DataCenter.AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke));
     }
@@ -185,13 +175,21 @@ internal static partial class TargetUpdater
         });
     }
 
+    private static bool IsHostileCastingKnockback(BattleChara h)
+    {
+        return IsHostileCastingBase(h, (act) =>
+        {
+            return OtherConfiguration.HostileCastingKnockback.Contains(act.RowId);
+        });
+    }
+
     private static bool IsHostileCastingBase(BattleChara h, Func<Action, bool> check)
     {
         if (!h.IsCasting) return false;
 
         if (h.IsCastInterruptible) return false;
         var last = h.TotalCastTime - h.CurrentCastTime;
-        var t = last - DataCenter.WeaponRemain;
+        var t = last - DataCenter.DefaultGCDTotal;
 
         if (!(h.TotalCastTime > 2.5 &&
             t > 0 && t < DataCenter.GCDTime(2))) return false;

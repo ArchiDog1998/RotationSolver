@@ -3,9 +3,9 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <PackageIcon>Logo.png</PackageIcon>
 	  <Description>A basic library for rotation development in FFXIV in RotationSolver.</Description>
-	  <PackageId>RotationSolver.Basic</PackageId>
+	  <PackageId>RotationSolverReborn.Basic</PackageId>
 	  <Title>RotationSolver.Basic</Title>
-	  <RepositoryUrl>https://github.com/ArchiDog1998/RotationSolver/tree/main/RotationSolver.Basic</RepositoryUrl>
+	  <RepositoryUrl>https://github.com/FFXIV-CombatReborn/RotationSolverReborn/tree/main/RotationSolver.Basic</RepositoryUrl>
 	  <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 	  <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
 	  <PackageTags>FFXIV, FF14, Dalamud, Rotation</PackageTags>
@@ -14,6 +14,7 @@
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+	  <Platforms>x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
 	  <Reference Include="Dalamud">

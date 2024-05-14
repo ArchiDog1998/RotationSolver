@@ -2,6 +2,7 @@
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -22,6 +23,25 @@ internal static class RotationUpdater
     private static DateTime LastRunTime;
 
     static bool _isLoading = false;
+
+    public static async Task ResetToDefaults()
+    {
+        Service.Config.RotationLibs = Configs.DefaultRotations;
+        try
+        {
+            var relayFolder = Svc.PluginInterface.ConfigDirectory.FullName + "\\Rotations";
+            var files = Directory.GetFiles(relayFolder);
+            foreach (var file in files)
+            {
+                Svc.Log.Information($"Deleting {file}");
+                File.Delete(file);
+            }
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Error(ex, "Failed to delete the rotation files");
+        }
+    }
 
     /// <summary>
     /// Retrieves custom rotations from local and/or downloads
@@ -44,7 +64,7 @@ internal static class RotationUpdater
                 LoadRotationsFromLocal(relayFolder);
             }
 
-            if (option.HasFlag(DownloadOption.Download) && Service.Config.DownloadRotations)
+            if (option.HasFlag(DownloadOption.Download) && Service.Config.DownloadCustomRotations)
                 await DownloadRotationsAsync(relayFolder, option.HasFlag(DownloadOption.MustDownload));
 
             if (option.HasFlag(DownloadOption.ShowList))
@@ -61,6 +81,7 @@ internal static class RotationUpdater
         }
         catch (Exception ex)
         {
+            WarningHelper.AddSystemWarning($"Failed to load rotations because: {ex.Message}");
             Svc.Log.Error(ex, "Failed to get custom rotations");
         }
         finally
@@ -76,7 +97,7 @@ internal static class RotationUpdater
     /// <param name="relayFolder"></param>
     private static void LoadRotationsFromLocal(string relayFolder)
     {
-        var directories = Service.Config.OtherLibs
+        var directories = Service.Config.RotationLibs
             .Append(relayFolder)
             .Where(Directory.Exists);
 
@@ -197,10 +218,17 @@ internal static class RotationUpdater
             foreach (var type in TryGetTypes(assembly))
             {
                 if (type.GetInterfaces().Contains(typeof(ICustomRotation))
-                    && !type.IsAbstract && !type.IsInterface && type.GetConstructor([]) != null)
+                    && !type.IsAbstract && !type.IsInterface && type.GetConstructor([]) != null
+                    && type.GetCustomAttribute<ApiAttribute>()?.ApiVersion == Service.ApiVersion)
                 {
                     rotationList.Add(type);
                 }
+                //else if (type.GetInterfaces().Contains(typeof(ICustomRotation))
+                //    && !type.IsAbstract && !type.IsInterface && type.GetConstructor([]) != null)
+                //{
+                //    var name = type.GetCustomAttribute<RotationAttribute>()?.Name ?? "Unknown";
+                //    Svc.Chat.PrintError($"Failed to load rotation {name} from assembly {assembly}");
+                //}
             }
         }
 
@@ -247,11 +275,9 @@ internal static class RotationUpdater
         // Code to download rotations from remote server
         bool hasDownload = false;
 
-        var GitHubLinks = Service.Config.GitHubLibs.Union(DownloadHelper.LinkLibraries ?? []);
-
         using (var client = new HttpClient())
         {
-            foreach (var url in Service.Config.OtherLibs.Union(GitHubLinks.Select(Convert)))
+            foreach (var url in Service.Config.RotationLibs)
             {
                 hasDownload |= await DownloadOneUrlAsync(url, relayFolder, client, mustDownload);
                 var pdbUrl = Path.ChangeExtension(url, ".pdb");
@@ -290,7 +316,6 @@ internal static class RotationUpdater
             if (string.IsNullOrEmpty(fileName)) return false;
             //if (Path.GetExtension(fileName) != ".dll") continue;
             var filePath = Path.Combine(relayFolder, fileName);
-            if (!Service.Config.AutoUpdateRotations && File.Exists(filePath)) return false;
 
             //Download
             using (HttpResponseMessage response = await client.GetAsync(url))
@@ -357,7 +382,7 @@ internal static class RotationUpdater
             return;
         }
 
-        var dirs = Service.Config.OtherLibs;
+        var dirs = Service.Config.RotationLibs;
 
         foreach (var dir in dirs)
         {
@@ -539,6 +564,7 @@ internal static class RotationUpdater
                 {
                     var rot = r.GetCustomAttribute<RotationAttribute>();
                     if (rot == null) return false;
+
                     var type = rot.Type;
 
                     return isPvP ? type.HasFlag(CombatType.PvP) : type.HasFlag(CombatType.PvE);

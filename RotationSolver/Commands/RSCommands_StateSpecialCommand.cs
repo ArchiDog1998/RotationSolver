@@ -29,13 +29,13 @@ public static partial class RSCommands
             if (DataCenter.IsManual && stateType == StateCommandType.Manual
                 && Service.Config.ToggleManual)
             {
-                stateType = StateCommandType.Cancel;
+                stateType = StateCommandType.Off;
             }
             else if (stateType == StateCommandType.Auto)
             {
                 if (Service.Config.ToggleAuto)
                 {
-                    stateType = StateCommandType.Cancel;
+                    stateType = StateCommandType.Off;
                 }
                 else
                 {
@@ -51,7 +51,7 @@ public static partial class RSCommands
 
         switch (stateType)
         {
-            case StateCommandType.Cancel:
+            case StateCommandType.Off:
                 DataCenter.State = false;
                 break;
 

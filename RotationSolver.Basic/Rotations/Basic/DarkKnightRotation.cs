@@ -24,7 +24,7 @@ partial class DarkKnightRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float DarkSideTime => DarkSideTimeRemainingRaw - DataCenter.WeaponRemain;
+    public static float DarkSideTime => DarkSideTimeRemainingRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -47,7 +47,7 @@ partial class DarkKnightRotation
     /// <summary>
     /// 
     /// </summary>
-    public static float ShadowTime => ShadowTimeRemainingRaw - DataCenter.WeaponRemain;
+    public static float ShadowTime => ShadowTimeRemainingRaw - DataCenter.DefaultGCDRemain;
 
     /// <summary>
     /// 
@@ -88,7 +88,7 @@ partial class DarkKnightRotation
 
     static partial void ModifyStalwartSoulPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.SaltedEarth];
+        setting.ComboIds = [ActionID.UnleashPvE];
         setting.CreateConfig = () => new()
         {
             AoeCount = 2,
@@ -129,6 +129,7 @@ partial class DarkKnightRotation
         {
             TimeToKill = 10,
         };
+        setting.UnlockedByQuestID = 67591;
     }
 
     static partial void ModifyDeliriumPvE(ref ActionSetting setting)
@@ -150,6 +151,47 @@ partial class DarkKnightRotation
     static partial void ModifyPlungePvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
+        setting.UnlockedByQuestID = 67597;
+    }
+
+    static partial void ModifyPlungePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifyFloodOfDarknessPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67590;
+    }
+
+    static partial void ModifyEdgeOfDarknessPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67592;
+    }
+
+    static partial void ModifyLivingDeadPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67594;
+    }
+
+    static partial void ModifySaltedEarthPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67596;
+    }
+
+    static partial void ModifyAbyssalDrainPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67598;
+    }
+
+    static partial void ModifyCarveAndSpitPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 67600;
+    }
+
+    static partial void ModifyTheBlackestNightPvE(ref ActionSetting setting)
+    {
+        setting.UnlockedByQuestID = 68455;
     }
 
     /// <inheritdoc/>
@@ -162,7 +204,7 @@ partial class DarkKnightRotation
 
     /// <inheritdoc/>
     [RotationDesc(ActionID.PlungePvE)]
-    protected sealed override bool MoveForwardAbility(out IAction? act)
+    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
         if (PlungePvE.CanUse(out act)) return true;
         return false;
