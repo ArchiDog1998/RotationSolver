@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Statuses;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
@@ -238,7 +239,7 @@ public static class ObjectHelper
             or 71344 //Major Quest
            || obj.GetEventType() is EventHandlerType.Quest)) return true;
 
-        if (obj is BattleChara b && b.StatusList.Any(StatusHelper.IsPriority)) return true;
+        if (obj is BattleChara b && b.StatusList != null && b.StatusList.Any(StatusHelper.IsPriority)) return true;
 
         if (Service.Config.ChooseAttackMark && MarkingHelper.AttackSignTargets.FirstOrDefault(id => id != GameObject.InvalidGameObjectId) == obj.ObjectId) return true;
 
