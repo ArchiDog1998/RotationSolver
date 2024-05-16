@@ -371,10 +371,7 @@ partial class CustomRotation
         if (SprintPvP.CanUse(out act)) return true;
 
         if (PelotonPvE.CanUse(out act, skipAoeCheck: true)) return true;
-        if (!Player.HasStatus(false, StatusID.SprintPenalty))
-        {
-            if (SprintPvE.CanUse(out act)) return true;
-        }
+        if (SprintPvE.CanUse(out act)) return true;
 
         if (DataCenter.RightNowDutyRotation?.SpeedAbility(nextGCD, out act) ?? false) return true;
         return false;
