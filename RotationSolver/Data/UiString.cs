@@ -411,6 +411,12 @@ internal enum UiString
     [Description("Action Condition")]
     ConfigWindow_Auto_ActionCondition,
 
+    [Description("Healing Condition")]
+    ConfigWindow_Auto_HealingCondition,
+
+    [Description("How RSR should use healing abilities")]
+    ConfigWindow_Auto_HealingCondition_Description,
+
     [Description("State Condition")]
     ConfigWindow_Auto_StateCondition,
 
