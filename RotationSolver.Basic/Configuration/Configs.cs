@@ -19,6 +19,7 @@ internal partial class Configs : IPluginConfiguration
         UiWindows = "UiWindows",
         AutoActionUsage = "AutoActionUsage",
         AutoActionCondition = "AutoActionCondition",
+        HealingActionCondition = "HealingActionCondition",
         TargetConfig = "TargetConfig",
         Extra = "Extra",
         Rotations = "Rotations",
@@ -89,7 +90,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _showInfoOnDtr = true;
 
     [ConditionBool, UI("Heal party members when not in combat.",
-        Filter = AutoActionCondition, Section =1)]
+        Filter = HealingActionCondition, Section = 1)]
     private static readonly bool _healOutOfCombat = false;
 
     [ConditionBool, UI("Display plugin status on toast popup",
@@ -216,7 +217,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _noNewHostiles = false;
 
     [ConditionBool, UI("Use healing abilities when playing a non-healer role.",
-        Filter = AutoActionCondition, Section = 1,
+        Filter = HealingActionCondition, Section = 1,
         PvEFilter = JobFilterType.NoHealer, PvPFilter = JobFilterType.NoJob)]
     private static readonly bool _useHealWhenNotAHealer = true;
 
@@ -251,7 +252,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _onlyAttackInVisionCone = false;
 
     [ConditionBool, UI("Use single target healing over time actions only on tanks",
-        Filter = AutoActionCondition, Section = 1,
+        Filter = HealingActionCondition, Section = 1,
         PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
     private static readonly bool _onlyHotOnTanks = false;
 
@@ -339,10 +340,10 @@ internal partial class Configs : IPluginConfiguration
         Filter =UiInformation)]
     private static readonly bool _showToastsAboutDoAction = false;
 
-    [ConditionBool, UI("Automatically trigger dps burst phase.", Filter = AutoActionCondition)]
+    [ConditionBool, UI("Automatically trigger dps burst phase.", Filter = AutoActionCondition, Section = 4)]
     private static readonly bool _autoBurst = true;
 
-    [ConditionBool, UI("Automatic Heal", Filter = AutoActionCondition)]
+    [ConditionBool, UI("Automatic Healing Thresholds", Filter = HealingActionCondition, Section = 1, Order = 1)]
     private static readonly bool _autoHeal = true;
 
     [ConditionBool, UI("Auto-use oGCD abilities", Filter = AutoActionUsage)]
@@ -417,7 +418,7 @@ internal partial class Configs : IPluginConfiguration
     private static readonly bool _healWhenNothingTodo = true;
 
     [ConditionBool, UI("Only heal self When not a Healer", 
-        Filter = AutoActionCondition, Section = 1,
+        Filter = HealingActionCondition, Section = 1,
         PvPFilter = JobFilterType.NoHealer, PvEFilter = JobFilterType.NoHealer)]
     private static readonly bool _onlyHealSelfWhenNoHealer = false;
 
@@ -466,7 +467,7 @@ internal partial class Configs : IPluginConfiguration
     public float AngleOfVisionCone { get; set; } = 45;
 
     [UI("HP for standard deviation for using AoE heal.", Description = "Basically the health difference between a single party member and the whole party, used for deciding between healing a single party member or AOE healing. Leave this alone if you don't undertand its use.", 
-        Filter = AutoActionCondition, Section = 1)]
+        Filter = AutoActionCondition, Section = 3)]
     [Range(0, 0.5f, ConfigUnitType.Percent, 0.02f)]
     public float HealthDifference { get; set; } = 0.25f;
 
@@ -491,13 +492,13 @@ internal partial class Configs : IPluginConfiguration
     public float MistakeRatio { get; set; } = 0;
 
     [UI("Heal tank first if their HP is lower than this.",
-        Filter = AutoActionCondition, Section = 1,
+        Filter = HealingActionCondition, Section = 1,
         PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
     [Range(0, 1, ConfigUnitType.Percent, 0.02f)]
     public float HealthTankRatio { get; set; } = 0.4f;
 
     [UI("Heal healer first if their HP is lower than this.", 
-        Filter = AutoActionCondition, Section = 1,
+        Filter = HealingActionCondition, Section = 1,
         PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]
     [Range(0, 1, ConfigUnitType.Percent, 0.02f)]
     public float HealthHealerRatio { get; set; } = 0.4f;
@@ -633,7 +634,7 @@ internal partial class Configs : IPluginConfiguration
     public float MinUpdatingTime { get; set; } = 0.01f;
 
     [UI("The HP for using Guard.", 
-        Filter = AutoActionCondition, Section = 3,
+        Filter = HealingActionCondition, Section = 3,
         PvEFilter = JobFilterType.NoJob)]
     [Range(0, 1, ConfigUnitType.Percent, 0.02f)]
     public float HealthForGuard { get; set; } = 0.15f;

@@ -9,6 +9,7 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
+using RotationSolver.Updaters;
 using XIVPainter;
 
 namespace RotationSolver.UI;
@@ -105,15 +106,15 @@ public partial class RotationConfigWindow
 
     private static readonly CollapsingHeaderGroup _autoSwitch = new(new()
     {
-        { 
+        {
             UiString.ConfigWindow_Basic_SwitchCancelConditionSet.Local,
-            () => DataCenter.RightSet.SwitchCancelConditionSet?.DrawMain(DataCenter.RightNowRotation) 
+            () => DataCenter.RightSet.SwitchCancelConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
-        { 
+        {
             UiString.ConfigWindow_Basic_SwitchManualConditionSet.Local,
-            () => DataCenter.RightSet.SwitchManualConditionSet?.DrawMain(DataCenter.RightNowRotation) 
+            () => DataCenter.RightSet.SwitchManualConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
-        { 
+        {
             UiString.ConfigWindow_Basic_SwitchAutoConditionSet.Local,
             () => DataCenter.RightSet.SwitchAutoConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
@@ -191,7 +192,7 @@ public partial class RotationConfigWindow
 
     private static readonly CollapsingHeaderGroup _UIHeader = new(new()
     {
-        { 
+        {
             UiString.ConfigWindow_UI_Information.Local,
             () => _allSearchable.DrawItems(Configs.UiInformation)
         },
@@ -225,21 +226,29 @@ public partial class RotationConfigWindow
                 _allSearchable.DrawItems(Configs.AutoActionUsage);
             }
         },
+        { UiString.ConfigWindow_Auto_HealingCondition.Local, DrawHealingActionCondition },
         { UiString.ConfigWindow_Auto_ActionCondition.Local, DrawAutoActionCondition },
         { UiString.ConfigWindow_Auto_StateCondition.Local, () => _autoState?.Draw() },
     });
 
+    private static void DrawHealingActionCondition()
+    {
+        ImGui.TextWrapped(UiString.ConfigWindow_Auto_HealingCondition_Description.Local());
+        ImGui.Separator();
+
+        _allSearchable.DrawItems(Configs.HealingActionCondition);
+    }
 
     private static readonly CollapsingHeaderGroup _autoState = new(new()
     {
-        { 
+        {
             UiString.ConfigWindow_Auto_HealAreaConditionSet.Local,
-            () => DataCenter.RightSet.HealAreaConditionSet?.DrawMain(DataCenter.RightNowRotation) 
+            () => DataCenter.RightSet.HealAreaConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
             UiString.ConfigWindow_Auto_HealSingleConditionSet.Local,
-            () => DataCenter.RightSet.HealSingleConditionSet?.DrawMain(DataCenter.RightNowRotation) 
+            () => DataCenter.RightSet.HealSingleConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
@@ -264,12 +273,12 @@ public partial class RotationConfigWindow
 
         {
             UiString.ConfigWindow_Auto_MoveForwardConditionSet.Local,
-            () => DataCenter.RightSet.MoveForwardConditionSet?.DrawMain(DataCenter.RightNowRotation) 
+            () => DataCenter.RightSet.MoveForwardConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
             UiString.ConfigWindow_Auto_MoveBackConditionSet.Local,
-            () => DataCenter.RightSet.MoveBackConditionSet?.DrawMain(DataCenter.RightNowRotation) 
+            () => DataCenter.RightSet.MoveBackConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
@@ -279,12 +288,12 @@ public partial class RotationConfigWindow
 
         {
             UiString.ConfigWindow_Auto_SpeedConditionSet.Local,
-            () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation) 
+            () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
 
         {
             UiString.ConfigWindow_Auto_LimitBreakConditionSet.Local,
-            () => DataCenter.RightSet.LimitBreakConditionSet?.DrawMain(DataCenter.RightNowRotation) 
+            () => DataCenter.RightSet.LimitBreakConditionSet?.DrawMain(DataCenter.RightNowRotation)
         },
     })
     {
@@ -381,7 +390,7 @@ public partial class RotationConfigWindow
         { UiString.ConfigWindow_EventItem.Local, DrawEventTab },
 
         {
-            UiString.ConfigWindow_Extra_Others.Local, 
+            UiString.ConfigWindow_Extra_Others.Local,
             () => _allSearchable.DrawItems(Configs.Extra)
         },
     });
