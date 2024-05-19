@@ -6,12 +6,12 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration.Conditions;
+using RotationSolver.Basic.Configuration.Condition;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
 using Action = System.Action;
-using TargetType = RotationSolver.Basic.Configuration.Conditions.TargetType;
+using TargetType = RotationSolver.Basic.Configuration.Condition.TargetType;
 
 namespace RotationSolver.UI;
 

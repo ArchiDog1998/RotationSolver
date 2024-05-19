@@ -1,6 +1,6 @@
 ﻿using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using RotationSolver.Basic.Configuration.Conditions;
+using RotationSolver.Basic.Configuration.Condition;
 using RotationSolver.Basic.Configuration.Timeline;
 using System.Runtime.CompilerServices;
 

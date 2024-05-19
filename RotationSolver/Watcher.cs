@@ -78,7 +78,7 @@ public static class Watcher
         {
             var obj = Svc.Objects.CreateObjectReference(a2);
 
-            if (NotFrom(path))
+            if (NotFrom(path) && obj != null)
             {
                 var effect = new VfxNewData(obj, path);
                 Recorder.Enqueue(effect);
@@ -109,8 +109,11 @@ public static class Watcher
         {
             var obj = Svc.Objects.CreateObjectReference((nint)a1);
 
-            var effect = new ObjectEffectData(obj, a2, a3);
-            Recorder.Enqueue(effect);
+            if (obj != null)
+            {
+                var effect = new ObjectEffectData(obj, a2, a3);
+                Recorder.Enqueue(effect);
+            }
         }
         catch (Exception e)
         {

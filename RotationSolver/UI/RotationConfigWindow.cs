@@ -14,7 +14,8 @@ using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Configuration.Conditions;
+using RotationSolver.Basic.Configuration.Condition;
+using RotationSolver.Basic.Record;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.UI.SearchableConfigs;
@@ -689,7 +690,6 @@ public class RotationConfigWindow : ConfigWindow
             _rotationHeader.Draw();
         }
 
-        private const float DESC_SIZE = 24;
         private static void DrawRotationDescription()
         {
             var rotation = DataCenter.RightNowRotation;
@@ -2543,6 +2543,7 @@ public class RotationConfigWindow : ConfigWindow
         #endregion
 
     }
+
     [Description("Timeline")]
     public class TimelineItem : ConfigWindowItemRS
     {
@@ -2552,6 +2553,49 @@ public class RotationConfigWindow : ConfigWindow
         public override void Draw(ConfigWindow window)
         {
             TimelineDrawer.DrawTimeline();
+        }
+    }
+
+    [Description("Trigger")]
+    public class TriggerItem : ConfigWindowItemRS
+    {
+        public override uint Icon => 24;
+
+        public override void Draw(ConfigWindow window)
+        {
+            using var table = ImRaii.Table("Trigger Table", 2, ImGuiTableFlags.Resizable);
+
+            if (!table) return;
+
+            ImGui.TableSetupColumn("Records Bar", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
+            ImGui.TableNextColumn();
+
+            DrawRecord();
+
+            ImGui.TableNextColumn();
+
+            DrawTrigger();
+        }
+
+        private static void DrawRecord()
+        {
+            foreach ((var time, var data) in Recorder.Data)
+            {
+                if (ImGuiEx.IconButton(FontAwesome.Plus, data.GetHashCode().ToString()))
+                {
+                    //TODO: create the trigger.
+                }
+
+                ImGui.SameLine();
+                ImGui.Text(time.ToString("HH:mm:ss.fff"));
+                ImGui.SameLine();
+                ImGui.Text(data.ToString());
+            }
+        }
+
+        private static void DrawTrigger()
+        {
+            //TODO: the trigger editor.
         }
     }
 

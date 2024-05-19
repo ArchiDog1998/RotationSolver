@@ -55,16 +55,17 @@ I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXI
 
 ## How to build
 
-- Build `RotationSolver.SourceGenerators`
-- Restart your IDE.
+- Change the dependency of `RotationSolver.Basic` to the nuget one.
 - Build the whole solution!
 
 ## Links
 
-If you have any questions about usage, please check the [Wiki](https://archidog1998.github.io/RotationSolver/#/).
+If you have any questions about usage, please check the [Wiki](https://archidog1998.github.io/RotationSolver.Templates/#/).
 
 The rotations definitions are [here](https://github.com/ArchiDog1998/FFXIVRotations).
 
 [![Crowdin](https://badges.crowdin.net/badge/light/crowdin-on-dark.png)](https://crowdin.com/project/rotationsolver)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B0IN5DX)
+
+[![](https://c7.patreon.com/https%3A%2F%2Fwww.patreon.com%2F%2Fcreator-teaser-image%2F7803473/selector/%23creator-teaser%2C.png)](https://www.patreon.com/ArchiDog1998)

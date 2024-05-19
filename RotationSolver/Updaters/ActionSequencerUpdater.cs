@@ -1,4 +1,4 @@
-﻿using RotationSolver.Basic.Configuration.Conditions;
+﻿using RotationSolver.Basic.Configuration.Condition;
 
 namespace RotationSolver.Updaters;
 
