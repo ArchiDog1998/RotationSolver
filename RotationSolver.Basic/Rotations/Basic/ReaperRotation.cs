@@ -230,4 +230,12 @@ partial class ReaperRotation
         if (!HasSoulReaver && !HasEnshrouded && ArcaneCrestPvE.CanUse(out act)) return true;
         return base.DefenseSingleAbility(nextGCD, out act);
     }
+
+    ///<inheritdoc/>
+    [RotationDesc(ActionID.HellsEgressPvE)]
+    protected override bool MoveBackAbility(IAction nextGCD, out IAction? act)
+    {
+        if (HellsEgressPvE.CanUse(out act)) return true;
+        return base.MoveBackAbility(nextGCD, out act);
+    }
 }
