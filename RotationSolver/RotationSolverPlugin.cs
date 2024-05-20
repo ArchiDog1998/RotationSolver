@@ -89,7 +89,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         windowSystem.Draw();
     }
 
-    public async void Dispose()
+    public void Dispose()
     {
         DataCenter.RightNowDutyRotation?.Dispose();
         DataCenter.RightNowRotation?.Dispose();
@@ -108,7 +108,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Dispose();
         PainterManager.Dispose();
         XIVConfigUIMain.Dispose();
-        await OtherConfiguration.Save();
+        OtherConfiguration.Save().Wait();
         Service.Config.Save();
 
         ECommonsMain.Dispose();
