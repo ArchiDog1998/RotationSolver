@@ -726,5 +726,8 @@
   "RotationSolver.Basic.Configuration.ConfigsName.ShowAllianceIcons": "Shows the alliance icon.",
   "RotationSolver.Basic.Configuration.ConfigsName.AllianceIconHeight": "Alliance icons height from position.",
   "RotationSolver.Basic.Configuration.ConfigsName.AllianceIconSize": "Allicance icon size.",
-  "RotationSolver.Basic.Configuration.ConfigsName.WatcherCount": "The watcher counting"
+  "RotationSolver.Basic.Configuration.ConfigsName.WatcherCount": "The watcher counting",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Timeline_JobActions": "Job Actions",
+  "RotationSolver.Basic.Data.WhyActionCantUse.HasThePenaltyStatus": "There are the pernalty statuses of this action!",
+  "RotationSolver.UI.RotationConfigWindow+TriggerItem": "Trigger"
 }
