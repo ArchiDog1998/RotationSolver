@@ -109,10 +109,9 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         PainterManager.Dispose();
         XIVConfigUIMain.Dispose();
         await OtherConfiguration.Save();
+        Service.Config.Save();
 
         ECommonsMain.Dispose();
-
-        Service.Config.Save();
     }
 
     private void OnOpenConfigUi()

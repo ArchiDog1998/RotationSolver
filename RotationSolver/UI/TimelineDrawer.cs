@@ -7,6 +7,7 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
@@ -60,22 +61,14 @@ internal static class TimelineDrawer
         }, ImGui.GetWindowWidth(), width);
 
         RotationConfigWindow.DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
-
-        if (!Service.Config.Timeline.TryGetValue(_territoryId, out var timeLine))
-        {
-            RaidTimeUpdater.DownloadTerritory(_territoryId);
-            Service.Config.Timeline[_territoryId] = timeLine = [];
-        }
-        if (timeLine.Sum(i => i.Value.Count) == 0)
-        {
-            RaidTimeUpdater.DownloadTerritory(_territoryId);
-        }
+        
+        var territoryConfig = OtherConfiguration.GetTerritoryConfigById(_territoryId);
 
         ImGui.Separator();
 
-        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
+        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local())) // TODO : Only the timeline things to be copied.
         {
-            var str = JsonConvert.SerializeObject(timeLine, Formatting.Indented);
+            var str = JsonConvert.SerializeObject(territoryConfig, Formatting.Indented);
             ImGui.SetClipboardText(str);
         }
 
@@ -86,9 +79,7 @@ internal static class TimelineDrawer
             var str = ImGui.GetClipboardText();
             try
             {
-                var set = JsonConvert.DeserializeObject<Dictionary<float, List<BaseTimelineItem>>>(str,
-                    new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())!;
-                Service.Config.Timeline[_territoryId] = timeLine = set;
+                OtherConfiguration.SetTerritoryConfigById(_territoryId, str);
             }
             catch (Exception ex)
             {
@@ -111,7 +102,7 @@ internal static class TimelineDrawer
 
         RotationSolverPlugin._rotationConfigWindow?.Collection.DrawItems((int)UiString.TimelineRaidTime);
 
-        using var table = ImRaii.Table("Rotation Solver List Timeline", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
+        using var table = ImRaii.Table("Rotation Solver List Timeline", 4, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)
         {
             ImGui.TableSetupScrollFreeze(0, 1);
@@ -126,16 +117,14 @@ internal static class TimelineDrawer
             ImGui.TableNextColumn();
             ImGui.TableHeader(UiString.ConfigWindow_Timeline_Actions.Local());
 
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(UiString.ConfigWindow_Timeline_JobActions.Local());
+
             ImGui.TableNextRow();
 
             foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)_territoryId))
             {
                 if (!item.IsShown) continue;
-
-                if (!timeLine.TryGetValue(item.Time, out var timeLineItems))
-                {
-                    timeLine[item.Time] = timeLineItems = [];
-                }
 
                 ImGui.TableNextColumn();
 
@@ -145,8 +134,6 @@ internal static class TimelineDrawer
                 ImGui.Text(TimeSpan.FromSeconds(item.Time).ToString("hh\\:mm\\:ss\\.f"));
 
                 ImGui.TableNextColumn();
-                AddButton();
-                ImGui.SameLine();
 
                 var itemName = item.Name;
 #if DEBUG
@@ -157,90 +144,113 @@ internal static class TimelineDrawer
 
                 ImGui.TableNextColumn();
 
-                for (int i = 0; i < timeLineItems.Count; i++)
+                if (!territoryConfig.Config.Timeline.TryGetValue(item.Time, out var timeLineItems))
                 {
-                    if (i != 0)
-                    {
-                        ImGui.Separator();
-                    }
-                    var timeLineItem = timeLineItems[i];
-
-                    void Delete()
-                    {
-                        timeLineItems.RemoveAt(i);
-                    };
-
-                    void Up()
-                    {
-                        timeLineItems.RemoveAt(i);
-                        timeLineItems.Insert(Math.Max(0, i - 1), timeLineItem);
-                    };
-
-                    void Down()
-                    {
-                        timeLineItems.RemoveAt(i);
-                        timeLineItems.Insert(Math.Min(timeLineItems.Count, i + 1), timeLineItem);
-                    }
-
-                    void Execute()
-                    {
-                        Task.Run(async () =>
-                        {
-                            timeLineItem.OnEnable();
-                            await Task.Delay(3000);
-                            timeLineItem.OnDisable();
-                        });
-                    }
-
-                    var key = $"TimelineItem Pop Up: {timeLineItem.GetHashCode()}";
-
-                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                        (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
-                        (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                        (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
-                        (UiString.TimelineExecute.Local(), Execute, ["→"]));
-
-                    ConditionDrawer.DrawCondition(timeLineItem.InPeriod(item));
-
-                    ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
-                        (Delete, [VirtualKey.DELETE]),
-                        (Up, [VirtualKey.UP]),
-                        (Down, [VirtualKey.DOWN]),
-                        (Execute, [VirtualKey.RIGHT]));
-
-                    ImGui.SameLine();
-
-                    using var grp = ImRaii.Group();
-
-                    DrawTimelineItem(timeLineItem, item);
+                    territoryConfig.Config.Timeline[item.Time] = timeLineItems = [];
                 }
+
+                DrawItems(timeLineItems, item, false);
+
+                ImGui.TableNextColumn();
+
+                if (!territoryConfig.JobConfig.Timeline.TryGetValue(item.Time, out timeLineItems))
+                {
+                    territoryConfig.JobConfig.Timeline[item.Time] = timeLineItems = [];
+                }
+
+                DrawItems(timeLineItems, item, true);
 
                 ImGui.TableNextRow();
 
-                void AddButton()
+                static void DrawItems(List<BaseTimelineItem> timeLineItems, TimelineItem item, bool isJob)
                 {
-                    if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddTimelineButton" + item.Time))
+                    AddButton();
+                    for (int i = 0; i < timeLineItems.Count; i++)
                     {
-                        ImGui.OpenPopup("PopupTimelineButton" + item.Time);
-                    }
-                    ImguiTooltips.HoveredTooltip(UiString.AddTimelineButton.Local());
-
-                    using var popUp = ImRaii.Popup("PopupTimelineButton" + item.Time);
-                    if (popUp)
-                    {
-                        AddOneCondition<ActionTimelineItem>();
-                        AddOneCondition<StateTimelineItem>();
-                        AddOneCondition<DrawingTimeline>();
-                        AddOneCondition<MacroTimelineItem>();
-                        AddOneCondition<MoveTimelineItem>();
-                    }
-
-                    void AddOneCondition<T>() where T : BaseTimelineItem
-                    {
-                        if (ImGui.Selectable(typeof(T).Local()))
+                        if (i != 0)
                         {
-                            timeLineItems.Add(Activator.CreateInstance<T>());
-                            ImGui.CloseCurrentPopup();
+                            ImGui.Separator();
+                        }
+                        var timeLineItem = timeLineItems[i];
+
+                        void Delete()
+                        {
+                            timeLineItems.RemoveAt(i);
+                        };
+
+                        void Up()
+                        {
+                            timeLineItems.RemoveAt(i);
+                            timeLineItems.Insert(Math.Max(0, i - 1), timeLineItem);
+                        };
+
+                        void Down()
+                        {
+                            timeLineItems.RemoveAt(i);
+                            timeLineItems.Insert(Math.Min(timeLineItems.Count, i + 1), timeLineItem);
+                        }
+
+                        void Execute()
+                        {
+                            Task.Run(async () =>
+                            {
+                                timeLineItem.OnEnable();
+                                await Task.Delay(3000);
+                                timeLineItem.OnDisable();
+                            });
+                        }
+
+                        var key = $"TimelineItem Pop Up: {timeLineItem.GetHashCode()}";
+
+                        ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
+                            (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
+                            (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
+                            (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
+                            (UiString.TimelineExecute.Local(), Execute, ["→"]));
+
+                        ConditionDrawer.DrawCondition(timeLineItem.InPeriod(item));
+
+                        ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+                            (Delete, [VirtualKey.DELETE]),
+                            (Up, [VirtualKey.UP]),
+                            (Down, [VirtualKey.DOWN]),
+                            (Execute, [VirtualKey.RIGHT]));
+
+                        ImGui.SameLine();
+
+                        using var grp = ImRaii.Group();
+
+                        DrawTimelineItem(timeLineItem, item);
+                    }
+
+                    void AddButton()
+                    {
+                        if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddTimelineButton" + item.Time + isJob))
+                        {
+                            ImGui.OpenPopup("PopupTimelineButton" + item.Time + isJob);
+                        }
+                        ImguiTooltips.HoveredTooltip(UiString.AddTimelineButton.Local());
+
+                        using var popUp = ImRaii.Popup("PopupTimelineButton" + item.Time + isJob);
+                        if (popUp)
+                        {
+                            if (isJob)
+                            {
+                                AddOneCondition<ActionTimelineItem>();
+                            }
+                            AddOneCondition<StateTimelineItem>();
+                            AddOneCondition<DrawingTimeline>();
+                            AddOneCondition<MacroTimelineItem>();
+                            AddOneCondition<MoveTimelineItem>();
+                        }
+
+                        void AddOneCondition<T>() where T : BaseTimelineItem
+                        {
+                            if (ImGui.Selectable(typeof(T).Local()))
+                            {
+                                timeLineItems.Add(Activator.CreateInstance<T>());
+                                ImGui.CloseCurrentPopup();
+                            }
                         }
                     }
                 }

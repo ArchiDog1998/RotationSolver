@@ -2567,7 +2567,6 @@ public class RotationConfigWindow : ConfigWindow
 
             if (!table) return;
 
-            ImGui.TableSetupColumn("Records Bar", ImGuiTableColumnFlags.WidthFixed, 100 * Scale);
             ImGui.TableNextColumn();
 
             DrawRecord();
