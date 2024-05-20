@@ -5,9 +5,7 @@
 
 ![Github Latest Releases](https://img.shields.io/github/downloads/FFXIV-CombatReborn/RotationSolverReborn/latest/total.svg?style=for-the-badge)
 ![Github All Releases](https://img.shields.io/github/downloads/FFXIV-CombatReborn/RotationSolverReborn/total.svg?style=for-the-badge)
-![](https://img.shields.io/codefactor/grade/github/FFXIV-CombatReborn/RotationSolverReborn?longCache=true&style=for-the-badge)
 ![Github License](https://img.shields.io/github/license/FFXIV-CombatReborn/RotationSolverReborn.svg?label=License&style=for-the-badge)
-![Github Commits](https://img.shields.io/github/commits-since/FFXIV-CombatReborn/RotationSolverReborn/latest/main?style=for-the-badge)
 
 RotationSolverReborn is a community-made fork of the original RotationSolver plugin for Final Fantasy XIV. This tool is designed to enhance your gameplay experience by performing your rotation as optimally as possible, including heals, intterupts, mitigations, and MP management.
 
