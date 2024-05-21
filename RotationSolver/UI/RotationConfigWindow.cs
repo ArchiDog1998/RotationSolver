@@ -1371,16 +1371,6 @@ public class RotationConfigWindow : ConfigWindow
                 }
             }, width, textWidth);
 
-            text = UiString.ConfigWindow_Rotations_Links.Local();
-            textWidth = ImGuiHelpers.GetButtonSize(text).X;
-            ImGuiHelper.DrawItemMiddle(() =>
-            {
-                if (ImGui.Button(text))
-                {
-                    Util.OpenLink($"https://github.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/blob/main/RotationsLink.md");
-                }
-            }, width, textWidth);
-
             _rotationsHeader ??= new(new()
             {
                 {  () => UiString.ConfigWindow_Rotations_Settings.Local(), () => DrawRotationsSettings(window)},

@@ -242,6 +242,7 @@ internal static class TimelineDrawer
                             AddOneCondition<DrawingTimeline>();
                             AddOneCondition<MacroTimelineItem>();
                             AddOneCondition<MoveTimelineItem>();
+                            AddOneCondition<PathfindTimelineItem>();
                         }
 
                         void AddOneCondition<T>() where T : BaseTimelineItem
@@ -384,6 +385,16 @@ internal static class TimelineDrawer
                 {
                     moveItem.Points[i] = point;
                 }
+            }
+        }
+        else if (timeLineItem is PathfindTimelineItem pathItem)
+        {
+            ImGui.SameLine();
+
+            var point = pathItem.Destination;
+            if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local(), ref point, "Pos" + pathItem.GetHashCode(), "X", "Y", "Z", () => Player.Object?.Position ?? default))
+            {
+                pathItem.Destination = point;
             }
         }
 
