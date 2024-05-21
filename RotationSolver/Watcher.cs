@@ -155,7 +155,7 @@ public static class Watcher
         if (battle.SubKind == 9) return; //Friend!
         if (Svc.Objects.SearchById(battle.ObjectId) is PlayerCharacter) return;
 
-        Recorder.Enqueue(set);
+        Recorder.Enqueue(new ActionEffectSetData(set));
 
         var damageRatio = set.TargetEffects
             .Where(e => e.TargetID == Player.Object.ObjectId)

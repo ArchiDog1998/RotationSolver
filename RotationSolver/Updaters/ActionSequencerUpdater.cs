@@ -57,8 +57,10 @@ internal class ActionSequencerUpdater
         if (_actionSequencerFolder == null) return;
         try
         {
-            Directory.Delete(_actionSequencerFolder);
-            Directory.CreateDirectory(_actionSequencerFolder);
+            if (!Directory.Exists(_actionSequencerFolder))
+            {
+                Directory.CreateDirectory(_actionSequencerFolder);
+            }
         }
         catch
         {

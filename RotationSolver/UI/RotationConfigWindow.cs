@@ -87,22 +87,21 @@ public class RotationConfigWindow : ConfigWindow
         ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_DutyRotationDesc.Local());
 
         using var popup = ImRaii.Popup(popUpId);
-        if (popup)
+        if (!popup) return;
+
+        foreach (var type in rotations)
         {
-            foreach (var type in rotations)
+            var r = type.GetCustomAttribute<RotationAttribute>();
+            if (r == null) continue;
+
+            if (ImGui.Selectable("None"))
             {
-                var r = type.GetCustomAttribute<RotationAttribute>();
-                if (r == null) continue;
+                Service.Config.DutyRotationChoice = string.Empty;
+            }
 
-                if (ImGui.Selectable("None"))
-                {
-                    Service.Config.DutyRotationChoice = string.Empty;
-                }
-
-                if (ImGui.Selectable(r.Name) && !string.IsNullOrEmpty(type.FullName))
-                {
-                    Service.Config.DutyRotationChoice = type.FullName;
-                }
+            if (ImGui.Selectable(r.Name) && !string.IsNullOrEmpty(type.FullName))
+            {
+                Service.Config.DutyRotationChoice = type.FullName;
             }
         }
     }
@@ -119,53 +118,52 @@ public class RotationConfigWindow : ConfigWindow
         ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_ConditionSetDesc.Local());
 
         using var popup = ImRaii.Popup(popUpId);
-        if (popup)
+        if (!popup) return;
+
+        var combos = DataCenter.ConditionSets;
+        for (int i = 0; i < combos.Length; i++)
         {
-            var combos = DataCenter.ConditionSets;
-            for (int i = 0; i < combos.Length; i++)
+            void DeleteFile()
             {
-                void DeleteFile()
-                {
-                    ActionSequencerUpdater.Delete(combos[i].Name);
-                }
-
-                if (combos[i].Name == set.Name)
-                {
-                    ImGuiHelperRS.SetNextWidthWithName(set.Name);
-                    ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
-                }
-                else
-                {
-                    var key = "Condition Set At " + i.ToString();
-                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), DeleteFile, ["Delete"]));
-
-                    if (ImGui.Selectable(combos[i].Name))
-                    {
-                        Service.Config.ActionSequencerIndex = i;
-                    }
-
-                    ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
-                        (DeleteFile, [VirtualKey.DELETE]));
-                }
+                ActionSequencerUpdater.Delete(combos[i].Name);
             }
 
-            ImGui.PushFont(UiBuilder.IconFont);
-
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
-            if (ImGui.Selectable(FontAwesomeIcon.Plus.ToIconString()))
+            if (combos[i].Name == set.Name)
             {
-                ActionSequencerUpdater.AddNew();
+                ImGuiHelperRS.SetNextWidthWithName(set.Name);
+                ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
             }
-            ImGui.PopStyleColor();
-
-            if (ImGui.Selectable(FontAwesomeIcon.FileDownload.ToIconString()))
+            else
             {
-                ActionSequencerUpdater.LoadFiles();
-            }
+                var key = "Condition Set At " + i.ToString();
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), DeleteFile, ["Delete"]));
 
-            ImGui.PopFont();
-            ImguiTooltips.HoveredTooltip(UiString.ActionSequencer_Load.Local());
+                if (ImGui.Selectable(combos[i].Name))
+                {
+                    Service.Config.ActionSequencerIndex = i;
+                }
+
+                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false,
+                    (DeleteFile, [VirtualKey.DELETE]));
+            }
         }
+
+        ImGui.PushFont(UiBuilder.IconFont);
+
+        ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
+        if (ImGui.Selectable(FontAwesomeIcon.Plus.ToIconString()))
+        {
+            ActionSequencerUpdater.AddNew();
+        }
+        ImGui.PopStyleColor();
+
+        if (ImGui.Selectable(FontAwesomeIcon.FileDownload.ToIconString()))
+        {
+            ActionSequencerUpdater.LoadFiles();
+        }
+
+        ImGui.PopFont();
+        ImguiTooltips.HoveredTooltip(UiString.ActionSequencer_Load.Local());
     }
 
     private const int FRAME_COUNT = 180;
