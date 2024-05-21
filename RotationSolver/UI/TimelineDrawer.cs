@@ -8,9 +8,9 @@ using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.Drawing;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
-using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
@@ -194,9 +194,9 @@ internal static class TimelineDrawer
                         {
                             Task.Run(async () =>
                             {
-                                timeLineItem.OnEnable();
+                                timeLineItem.TerritoryAction.Enable();
                                 await Task.Delay(3000);
-                                timeLineItem.OnDisable();
+                                timeLineItem.TerritoryAction.Disable();
                             });
                         }
 
@@ -281,9 +281,9 @@ internal static class TimelineDrawer
             if (DataCenter.RightNowRotation != null)
             {
                 var popUpKey = $"Action Finder{timeLineItem.GetHashCode()}";
-                ConditionDrawer.ActionSelectorPopUp(popUpKey, _timelineActionsList, DataCenter.RightNowRotation, item => actionItem.ID = (ActionID)item.ID);
+                ConditionDrawer.ActionSelectorPopUp(popUpKey, _timelineActionsList, DataCenter.RightNowRotation, item => actionItem.ActionAction.ID = (ActionID)item.ID);
 
-                if (actionItem.ID.GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
+                if (actionItem.ActionAction.ID.GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
                 {
                     ImGui.SameLine();
                     var cursor = ImGui.GetCursorPos();
@@ -297,11 +297,11 @@ internal static class TimelineDrawer
         }
         else if (timeLineItem is StateTimelineItem stateItem)
         {
-            var state = stateItem.State;
+            var state = stateItem.StateAction.State;
             ImGui.SameLine();
             if (ConditionDrawer.DrawByteEnum($"##AutoState{timeLineItem.GetHashCode()}", ref state))
             {
-                stateItem.State = state;
+                stateItem.StateAction.State = state;
             }
         }
         else if (timeLineItem is DrawingTimeline drawingItem)
@@ -312,10 +312,10 @@ internal static class TimelineDrawer
         {
             ImGui.SameLine();
 
-            var macro = macroItem.Macro;
+            var macro = macroItem.MacroAction.Macro;
             if (ImGui.InputTextMultiline(UiString.ConfigWindow_About_Macros.Local() + ": ##" + macroItem.GetHashCode(), ref macro, 500, new Vector2( -1, 50)))
             {
-                macroItem.Macro = macro;
+                macroItem.MacroAction.Macro = macro;
             }
         }
         else if (timeLineItem is MoveTimelineItem moveItem)
@@ -324,31 +324,31 @@ internal static class TimelineDrawer
             if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddPoint" + moveItem.GetHashCode())
                 && Player.Available)
             {
-                moveItem.Points.Add(Player.Object.Position);
+                moveItem.MoveAction.Points.Add(Player.Object.Position);
             }
 
-            for (int i = 0; i < moveItem.Points.Count; i++)
+            for (int i = 0; i < moveItem.MoveAction.Points.Count; i++)
             {
-                var point = moveItem.Points[i];
+                var point = moveItem.MoveAction.Points[i];
 
                 void Delete()
                 {
-                    moveItem.Points.RemoveAt(i);
+                    moveItem.MoveAction.Points.RemoveAt(i);
                 };
 
                 void Up()
                 {
-                    moveItem.Points.RemoveAt(i);
-                    moveItem.Points.Insert(Math.Max(0, i - 1), point);
+                    moveItem.MoveAction.Points.RemoveAt(i);
+                    moveItem.MoveAction.Points.Insert(Math.Max(0, i - 1), point);
                 };
 
                 void Down()
                 {
-                    moveItem.Points.RemoveAt(i);
-                    moveItem.Points.Insert(Math.Min(moveItem.Points.Count, i + 1), point);
+                    moveItem.MoveAction.Points.RemoveAt(i);
+                    moveItem.MoveAction.Points.Insert(Math.Min(moveItem.MoveAction.Points.Count, i + 1), point);
                 }
 
-                var key = $"Point Pop Up: {moveItem.Points.GetHashCode()}";
+                var key = $"Point Pop Up: {moveItem.MoveAction.Points.GetHashCode()}";
 
                 ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
                     (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
@@ -383,7 +383,7 @@ internal static class TimelineDrawer
 
                 if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local(), ref point, "Pos" + moveItem.GetHashCode() + i, "X", "Y", "Z", () => Player.Object?.Position ?? default))
                 {
-                    moveItem.Points[i] = point;
+                    moveItem.MoveAction.Points[i] = point;
                 }
             }
         }
@@ -391,10 +391,10 @@ internal static class TimelineDrawer
         {
             ImGui.SameLine();
 
-            var point = pathItem.Destination;
+            var point = pathItem.PathfindAction.Destination;
             if (ConditionDrawer.DrawDragFloat3(ConfigUnitType.Yalms, UiString.TimelinePosition.Local(), ref point, "Pos" + pathItem.GetHashCode(), "X", "Y", "Z", () => Player.Object?.Position ?? default))
             {
-                pathItem.Destination = point;
+                pathItem.PathfindAction.Destination = point;
             }
         }
 
@@ -407,44 +407,44 @@ internal static class TimelineDrawer
     }
     private static void DrawDrawingTimeline(DrawingTimeline drawingItem, TimelineItem timelineItem)
     {
-        var duration = drawingItem.Duration;
+        var duration = drawingItem.DrawingAction.Duration;
         if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"{UiString.TimelineDuration.Local()}##Duration{drawingItem.GetHashCode()}", ref duration, UiString.TimelineItemDuration.Local()))
         {
-            drawingItem.Duration = duration;
+            drawingItem.DrawingAction.Duration = duration;
         }
 
         ImGui.SameLine();
 
         AddButton();
 
-        for (int i = 0; i < drawingItem.DrawingGetters.Count; i++)
+        for (int i = 0; i < drawingItem.DrawingAction.DrawingGetters.Count; i++)
         {
             if(i != 0)
             {
                 ImGui.Spacing();
             }
-            var item = drawingItem.DrawingGetters[i];
+            var item = drawingItem.DrawingAction.DrawingGetters[i];
 
             void Delete()
             {
-                drawingItem.DrawingGetters.RemoveAt(i);
+                drawingItem.DrawingAction.DrawingGetters.RemoveAt(i);
             };
 
             void Up()
             {
-                drawingItem.DrawingGetters.RemoveAt(i);
-                drawingItem.DrawingGetters.Insert(Math.Max(0, i - 1), item);
+                drawingItem.DrawingAction.DrawingGetters.RemoveAt(i);
+                drawingItem.DrawingAction.DrawingGetters.Insert(Math.Max(0, i - 1), item);
             };
 
             void Down()
             {
-                drawingItem.DrawingGetters.RemoveAt(i);
-                drawingItem.DrawingGetters.Insert(Math.Min(drawingItem.DrawingGetters.Count, i + 1), item);
+                drawingItem.DrawingAction.DrawingGetters.RemoveAt(i);
+                drawingItem.DrawingAction.DrawingGetters.Insert(Math.Min(drawingItem.DrawingAction.DrawingGetters.Count, i + 1), item);
             }
 
             void Copy()
             {
-                var str = JsonConvert.SerializeObject(drawingItem.DrawingGetters[i], Formatting.Indented);
+                var str = JsonConvert.SerializeObject(drawingItem.DrawingAction.DrawingGetters[i], Formatting.Indented);
                 ImGui.SetClipboardText(str);
             }
 
@@ -513,7 +513,7 @@ internal static class TimelineDrawer
                     {
                         var s = JsonConvert.DeserializeObject<BaseDrawingGetter>
                             (str, new BaseDrawingGetterConverter())!;
-                        drawingItem.DrawingGetters.Add(s);
+                        drawingItem.DrawingAction.DrawingGetters.Add(s);
                     }
                     catch (Exception ex)
                     {
@@ -527,7 +527,7 @@ internal static class TimelineDrawer
             {
                 if (ImGui.Selectable(typeof(T).Local()))
                 {
-                    drawingItem.DrawingGetters.Add(Activator.CreateInstance<T>());
+                    drawingItem.DrawingAction.DrawingGetters.Add(Activator.CreateInstance<T>());
                     ImGui.CloseCurrentPopup();
                 }
             }
