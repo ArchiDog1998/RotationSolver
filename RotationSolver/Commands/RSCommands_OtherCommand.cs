@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 
@@ -21,6 +22,30 @@ public static partial class RSCommands
             case OtherCommandType.NextAction:
                 DoAction();
                 break;
+
+            case OtherCommandType.ToggleActionGroup:
+                ToggleActionGroup(str);
+                break;
+        }
+    }
+
+    private static void ToggleActionGroup(string str)
+    {
+        foreach (var grp in Service.Config.ActionGroup)
+        {
+            if (str.StartsWith(grp.Name))
+            {
+                var flag = str[grp.Name.Length..].Trim();
+
+                grp.Enable = bool.TryParse(flag, out var parse) ? parse : !grp.Enable;
+
+                if (Service.Config.ShowToggledActionInChat)
+                {
+                    Svc.Chat.Print($"Toggled {grp.Name} : {grp.Enable}");
+                }
+
+                return;
+            }
         }
     }
 

@@ -2,6 +2,7 @@
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Rotations.Duties;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -463,6 +464,7 @@ internal static class RotationUpdater
     {
         UpdateCustomRotation();
         UpdateDutyRotation();
+        RightRotationActions = ActionGroup.AllActions;
     }
 
     private static void UpdateDutyRotation()
@@ -512,7 +514,6 @@ internal static class RotationUpdater
                 instance?.OnTerritoryChanged();
                 DataCenter.RightNowRotation = instance;
             }
-            RightRotationActions = DataCenter.RightNowRotation?.AllActions ?? [];
             DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
             if (rotation != null)
             {
@@ -524,7 +525,6 @@ internal static class RotationUpdater
         CustomRotation.MoveTarget = null;
         DataCenter.RightNowRotation?.Dispose();
         DataCenter.RightNowRotation = null;
-        RightRotationActions = [];
         DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
 
         static ICustomRotation? GetRotation(Type? t)
