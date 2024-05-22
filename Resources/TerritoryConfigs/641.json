@@ -2,6 +2,9 @@
   "_jobConfigs": {
     "AST": {
       "Timeline": {}
+    },
+    "BLM": {
+      "Timeline": {}
     }
   },
   "Config": {

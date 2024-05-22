@@ -5,6 +5,7 @@ using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
+using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -15,6 +16,7 @@ using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Condition;
+using RotationSolver.Basic.Configuration.Trigger;
 using RotationSolver.Basic.Record;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
@@ -647,7 +649,7 @@ public class RotationConfigWindow : ConfigWindow
             { GetRotationStatusHead,  DrawRotationStatus },
 
             { () => UiString.ConfigWindow_Rotation_Configuration.Local(), DrawRotationConfiguration },
-            { () =>  UiString.ConfigWindow_Rotation_Rating.Local(), DrawRotationRating },
+            { () => UiString.ConfigWindow_Rotation_Rating.Local(), DrawRotationRating },
 
             { () => UiString.ConfigWindow_Rotation_Information.Local(), DrawRotationInformation },
         });
@@ -2532,32 +2534,133 @@ public class RotationConfigWindow : ConfigWindow
 
     }
 
+    public abstract class TerritoryConfigItem : ConfigWindowItemRS
+    {
+        internal static uint _territoryId = 0;
+        private static string _territorySearch = string.Empty;
+        internal static TerritoryConfig? _territoryConfig;
+
+        protected virtual bool IsTimeline => true;
+
+        public override void Draw(ConfigWindow window)
+        {
+            static string GetName(TerritoryType? territory)
+            {
+                var str = territory?.ContentFinderCondition?.Value?.Name?.RawString;
+                if (str == null || string.IsNullOrEmpty(str)) return "Unnamed Duty";
+                return str;
+            }
+
+            var territory = Svc.Data.GetExcelSheet<TerritoryType>();
+            if (territory == null) return;
+
+            var territories = RaidTimeUpdater.PathForRaids.Keys.OrderByDescending(i => i).Select(territory.GetRow).ToArray();
+
+            var rightTerritory = territory?.GetRow(_territoryId);
+            var name = GetName(rightTerritory);
+
+            var imFont = DrawingExtensions.GetFont(21);
+            float width = 0;
+            using (var font = ImRaii.PushFont(imFont))
+            {
+                width = ImGui.CalcTextSize(name).X + ImGui.GetStyle().ItemSpacing.X * 2;
+            }
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGuiHelperRS.SearchCombo("##Choice the specific dungeon", name, ref _territorySearch, territories, GetName, t =>
+                {
+                    _territoryId = t?.RowId ?? 0;
+                }, UiString.ConfigWindow_Condition_DutyName.Local(), imFont, ImGuiColors.DalamudYellow);
+            }, ImGui.GetWindowWidth(), width);
+
+            DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
+
+            _territoryConfig = OtherConfiguration.GetTerritoryConfigById(_territoryId);
+
+            ImGui.Separator();
+
+            if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
+            {
+                var str = JsonConvert.SerializeObject(_territoryConfig, Formatting.Indented);
+                ImGui.SetClipboardText(str);
+            }
+
+            ImGui.SameLine();
+
+            if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))// TODO : Only paste the timeline things.
+            {
+                var str = ImGui.GetClipboardText();
+                try
+                {
+                    OtherConfiguration.SetTerritoryConfigById(_territoryId, str, IsTimeline);
+                }
+                catch (Exception ex)
+                {
+                    Svc.Log.Warning(ex, "Failed to load the condition.");
+                }
+            }
+        }
+    }
+
     [Description("Timeline")]
-    public class TimelineItem : ConfigWindowItemRS
+    public class TimelineItem : TerritoryConfigItem
     {
         public override uint Icon => 73;
         public override string Description => UiString.Item_Timeline.Local();
 
         public override void Draw(ConfigWindow window)
         {
-            TimelineDrawer.DrawTimeline();
+            base.Draw(window);
+
+            if (_territoryConfig != null)
+            {
+                TimelineDrawer.DrawTimeline(_territoryId, _territoryConfig);
+            }
         }
     }
 
     [Description("Trigger")]
-    public class TriggerItem : ConfigWindowItemRS
+    public class TriggerItem : TerritoryConfigItem
     {
         public override uint Icon => 24;
+        public override string Description => UiString.Item_Trigger.Local();
+        protected override bool IsTimeline => false;
+
+        public static TriggerData TriggerData { get; set; } = default;
+        public static bool IsJob { get; set; }
 
         public override void Draw(ConfigWindow window)
         {
-            using var table = ImRaii.Table("Trigger Table", 2, ImGuiTableFlags.Resizable);
+            base.Draw(window);
+
+            using var table = ImRaii.Table("Trigger Table", 3, 
+                ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
 
             if (!table) return;
+
+            ImGui.TableSetupScrollFreeze(0, 1);
+            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(UiString.ConfigWindow_Trigger_Log.Local());
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(UiString.ConfigWindow_Trigger_TriggerData.Local());
+
+            ImGui.TableNextColumn();
+            ImGui.TableHeader(IsJob ? UiString.ConfigWindow_Timeline_JobActions.Local()
+                : UiString.ConfigWindow_Timeline_Actions.Local());
+
+            ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
 
             DrawRecord();
+
+            ImGui.TableNextColumn();
+
+            DrawTriggerData();
 
             ImGui.TableNextColumn();
 
@@ -2566,24 +2669,166 @@ public class RotationConfigWindow : ConfigWindow
 
         private static void DrawRecord()
         {
+            int index = 0;
             foreach ((var time, var data) in Recorder.Data)
             {
-                if (ImGuiEx.IconButton(FontAwesome.Plus, data.GetHashCode().ToString()))
-                {
-                    //TODO: create the trigger.
-                }
+                ImGui.SameLine();
+                ImGui.Text(time.ToString("HH:mm:ss.fff") + "|");
+                ImGui.SameLine();
 
-                ImGui.SameLine();
-                ImGui.Text(time.ToString("HH:mm:ss.fff"));
-                ImGui.SameLine();
-                ImGui.Text(data.ToString());
+                if (ImGui.Button($"{data}##{index++}"))
+                {
+                    AddTriggerData(data.ToTriggerData(), false);
+                }
+                if (ImGui.IsItemHovered())
+                {
+                    if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
+                    {
+                        AddTriggerData(data.ToTriggerData(), true);
+                    }
+                    ImGuiHelper.ShowTooltip(UiString.ConfigWindow_Trigger_AddTrggerDataDesc.Local());
+                }
+            }
+
+            static void AddTriggerData(TriggerData data, bool isJob)
+            {
+                if (_territoryConfig == null) return;
+
+                var dict = isJob ? _territoryConfig.JobConfig.Trigger : _territoryConfig.Config.Trigger;
+
+                TriggerData = data;
+                IsJob = isJob;
+
+                if (dict.ContainsKey(data)) return;
+
+                dict[data] = [];
+            }
+        }
+
+        private static void DrawTriggerData()
+        {
+            if (_territoryConfig == null) return;
+
+            var isJob = IsJob;
+            if (ImGui.Button(UiString.ConfigWindow_Trigger_IsJob.Local()))
+            {
+                IsJob = isJob;
+            }
+
+            var dict = IsJob ? _territoryConfig.JobConfig.Trigger : _territoryConfig.Config.Trigger;
+
+            int index = 0;
+            foreach (var key in dict.Keys)
+            {
+                if (ImGui.Selectable($"{key}##{index++}", key == TriggerData))
+                {
+                    TriggerData = key;
+                }
             }
         }
 
         private static void DrawTrigger()
         {
-            //TODO: the trigger editor.
+            if (_territoryConfig == null) return;
+            var dict = IsJob ? _territoryConfig.JobConfig.Trigger : _territoryConfig.Config.Trigger;
+
+            if (!dict.TryGetValue(TriggerData, out var data)) return;
+
+            DrawItems(data, IsJob);
+
+            static void DrawItems(List<BaseTriggerItem> triggerItems, bool isJob)
+            {
+                AddButton();
+                for (int i = 0; i < triggerItems.Count; i++)
+                {
+                    if (i != 0)
+                    {
+                        ImGui.Separator();
+                    }
+                    var triggerItem = triggerItems[i];
+
+                    void Delete()
+                    {
+                        triggerItems.RemoveAt(i);
+                    };
+
+                    void Up()
+                    {
+                        triggerItems.RemoveAt(i);
+                        triggerItems.Insert(Math.Max(0, i - 1), triggerItem);
+                    };
+
+                    void Down()
+                    {
+                        triggerItems.RemoveAt(i);
+                        triggerItems.Insert(Math.Min(triggerItems.Count, i + 1), triggerItem);
+                    }
+
+                    void Execute()
+                    {
+                        Task.Run(async () =>
+                        {
+                            triggerItem.TerritoryAction.Enable();
+                            await Task.Delay(3000);
+                            triggerItem.TerritoryAction.Disable();
+                        });
+                    }
+
+                    var key = $"TimelineItem Pop Up: {triggerItem.GetHashCode()}";
+
+                    ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
+                        (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
+                        (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
+                        (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
+                        (UiString.TimelineExecute.Local(), Execute, ["→"]));
+
+                    ConditionDrawer.DrawCondition(true);
+
+                    ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+                        (Delete, [VirtualKey.DELETE]),
+                        (Up, [VirtualKey.UP]),
+                        (Down, [VirtualKey.DOWN]),
+                        (Execute, [VirtualKey.RIGHT]));
+
+                    ImGui.SameLine();
+                    using var grp = ImRaii.Group();
+
+                    TerritoryActionDrawer.DrawTerritoryAction(triggerItem.TerritoryAction, []);
+                }
+
+                void AddButton()
+                {
+                    if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddTriggerButton" + isJob))
+                    {
+                        ImGui.OpenPopup("PopupTriggerButton" + isJob);
+                    }
+                    ImguiTooltips.HoveredTooltip(UiString.AddTimelineButton.Local());
+
+                    using var popUp = ImRaii.Popup("PopupTriggerButton" + isJob);
+                    if (!popUp) return;
+
+                    if (isJob)
+                    {
+                        AddOneCondition<ActionTriggerItem>();
+                    }
+                    AddOneCondition<StateTriggerItem>();
+                    AddOneCondition<DrawingTriggerItem>();
+                    AddOneCondition<MacroTriggerItem>();
+                    AddOneCondition<MoveTriggerItem>();
+                    AddOneCondition<PathfindTriggerItem>();
+
+                    void AddOneCondition<T>() where T : BaseTriggerItem
+                    {
+                        if (ImGui.Selectable(typeof(T).Local()))
+                        {
+                            triggerItems.Add(Activator.CreateInstance<T>());
+                            ImGui.CloseCurrentPopup();
+                        }
+                    }
+                }
+            }
         }
+
     }
 
     [Description("Extra")]

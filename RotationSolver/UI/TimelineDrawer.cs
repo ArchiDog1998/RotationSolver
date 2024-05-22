@@ -4,81 +4,20 @@ using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
-using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
-using XIVDrawer;
 
 namespace RotationSolver.UI;
 
 internal static class TimelineDrawer
 {
-    internal static uint _territoryId = 0;
-    private static string _territorySearch = string.Empty;
-    public static void DrawTimeline()
+    public static void DrawTimeline(uint territoryId, TerritoryConfig territoryConfig)
     {
-        static string GetName(TerritoryType? territory)
-        {
-            var str = territory?.ContentFinderCondition?.Value?.Name?.RawString;
-            if (str == null || string.IsNullOrEmpty(str)) return "Unnamed Duty";
-            return str;
-        }
-
-        var territory = Svc.Data.GetExcelSheet<TerritoryType>();
-        if (territory == null) return;
-
-        var territories = RaidTimeUpdater.PathForRaids.Keys.OrderByDescending(i => i).Select(territory.GetRow).ToArray();
-
-        var rightTerritory = territory?.GetRow(_territoryId);
-        var name = GetName(rightTerritory);
-
-        var imFont = DrawingExtensions.GetFont(21);
-        float width = 0;
-        using (var font = ImRaii.PushFont(imFont))
-        {
-            width = ImGui.CalcTextSize(name).X + ImGui.GetStyle().ItemSpacing.X * 2;
-        }
-
-        ImGuiHelper.DrawItemMiddle(() =>
-        {
-            ImGuiHelperRS.SearchCombo("##Choice the specific dungeon", name, ref _territorySearch, territories, GetName, t =>
-            {
-                _territoryId = t?.RowId ?? 0;
-            }, UiString.ConfigWindow_Condition_DutyName.Local(), imFont, ImGuiColors.DalamudYellow);
-        }, ImGui.GetWindowWidth(), width);
-
-        RotationConfigWindow.DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
-        
-        var territoryConfig = OtherConfiguration.GetTerritoryConfigById(_territoryId);
-
-        ImGui.Separator();
-
-        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local())) // TODO : Only the timeline things to be copied.
-        {
-            var str = JsonConvert.SerializeObject(territoryConfig, Formatting.Indented);
-            ImGui.SetClipboardText(str);
-        }
-
-        ImGui.SameLine();
-
-        if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
-        {
-            var str = ImGui.GetClipboardText();
-            try
-            {
-                OtherConfiguration.SetTerritoryConfigById(_territoryId, str);
-            }
-            catch (Exception ex)
-            {
-                Svc.Log.Warning(ex, "Failed to load the condition.");
-            }
-        }
-
-        var link = RaidTimeUpdater.GetLink(_territoryId);
+        var link = RaidTimeUpdater.GetLink(territoryId);
         if (!string.IsNullOrEmpty(link))
         {
             ImGui.SameLine();
@@ -113,7 +52,7 @@ internal static class TimelineDrawer
 
             ImGui.TableNextRow();
 
-            foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)_territoryId))
+            foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)territoryId))
             {
                 if (!item.IsShown) continue;
 
@@ -354,27 +293,26 @@ internal static class TimelineDrawer
                 ImguiTooltips.HoveredTooltip(UiString.AddTimelineCondition.Local());
 
                 using var popUp = ImRaii.Popup("Popup" + set.GetHashCode().ToString());
-                if (popUp)
-                {
-                    AddOneCondition<TimelineConditionSet>();
-                    AddOneCondition<TimelineConditionAction>();
-                    AddOneCondition<TimelineConditionTargetCount>();
+                if (!popUp) return;
 
-                    if (ImGui.Selectable(UiString.ActionSequencer_FromClipboard.Local()))
+                AddOneCondition<TimelineConditionSet>();
+                AddOneCondition<TimelineConditionAction>();
+                AddOneCondition<TimelineConditionTargetCount>();
+
+                if (ImGui.Selectable(UiString.ActionSequencer_FromClipboard.Local()))
+                {
+                    var str = ImGui.GetClipboardText();
+                    try
                     {
-                        var str = ImGui.GetClipboardText();
-                        try
-                        {
-                            var s = JsonConvert.DeserializeObject<ITimelineCondition>
-                                (str, new ITimelineConditionConverter())!;
-                            set.Conditions.Add(s);
-                        }
-                        catch (Exception ex)
-                        {
-                            Svc.Log.Warning(ex, "Failed to load the condition.");
-                        }
-                        ImGui.CloseCurrentPopup();
+                        var s = JsonConvert.DeserializeObject<ITimelineCondition>
+                            (str, new ITimelineConditionConverter())!;
+                        set.Conditions.Add(s);
                     }
+                    catch (Exception ex)
+                    {
+                        Svc.Log.Warning(ex, "Failed to load the condition.");
+                    }
+                    ImGui.CloseCurrentPopup();
                 }
 
                 void AddOneCondition<T>() where T : ITimelineCondition
