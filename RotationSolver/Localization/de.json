@@ -729,5 +729,12 @@
   "RotationSolver.Basic.Configuration.ConfigsName.WatcherCount": "The watcher counting",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Timeline_JobActions": "Job Actions",
   "RotationSolver.Basic.Data.WhyActionCantUse.HasThePenaltyStatus": "There are the pernalty statuses of this action!",
-  "RotationSolver.UI.RotationConfigWindow+TriggerItem": "Trigger"
+  "RotationSolver.UI.RotationConfigWindow+TriggerItem": "Trigger",
+  "RotationSolver.Basic.Configuration.ConfigsName.ShowDrawing": "Shows the timeline assigned drawings in game.",
+  "RotationSolver.Basic.Configuration.ConfigsName.EnableMovement": "Enables auto movement using timeline assignments.",
+  "RotationSolver.Basic.Data.UiString.CantUseTerritoryAction": "The territory action feature is supporters-only feature!",
+  "RotationSolver.Basic.Configuration.Timeline.PathfindTimelineItem": "Path find Time line",
+  "DefaultRotations.Magical.BLM_DefaultName.UseTransposeForParadox": "Use Transpose to Astral Fire before Paradox",
+  "DefaultRotations.Magical.BLM_DefaultName.ExtendTimeSafely": "Extend Astral Fire Time Safely",
+  "DefaultRotations.Magical.BLM_DefaultName.UseN15": "Use \"Double Paradox\" rotation [N15]"
 }
