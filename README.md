@@ -28,7 +28,7 @@ On relaunch there will be 2 versions:
 - Free edition (for most of the game)
 - Supporter edition (which will have support for extra/endgame features)
 	- Get it on [Patreon](https://www.patreon.com/ArchiDog1998) for a monthly subscription
-	- Get it on [Ko-fi](https://ko-fi.com/s/7cf5ff0de3) for either a subscription or a one time 2$ donation
+	- Get it on [Ko-fi](https://ko-fi.com/s/7cf5ff0de3) for either a subscription
 
 
 ## Description
