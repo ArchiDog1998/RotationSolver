@@ -2642,9 +2642,6 @@ public class RotationConfigWindow : ConfigWindow
             DrawTerritoryHeader();
             DrawContentFinder(DataCenter.ContentFinder);
 
-            window.Collection.DrawItems((int)UiString.TimelineRaidTime);
-            window.Collection.DrawItems((int)UiString.Item_Trigger);
-
             _territoryConfig = OtherConfiguration.GetTerritoryConfigById(Svc.ClientState.TerritoryType);
 
             ImGui.Separator();
@@ -2672,14 +2669,16 @@ public class RotationConfigWindow : ConfigWindow
 
             ImGui.SameLine();
 
-            var isJob = IsJob;
-            if (ImGui.Button(UiString.ConfigWindow_Trigger_IsJob.Local()))
+            if (ImGui.Button(UiString.ConfigWindow_Trigger_Clear.Local()))
             {
-                IsJob = isJob;
+                Recorder.Clear();
             }
 
+            window.Collection.DrawItems((int)UiString.TimelineRaidTime);
+            window.Collection.DrawItems((int)UiString.Item_Trigger);
+
             using var table = ImRaii.Table("Trigger Table", 3, 
-                ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
+                ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame | ImGuiTableFlags.ScrollY);
 
             if (!table) return;
 
@@ -2700,15 +2699,24 @@ public class RotationConfigWindow : ConfigWindow
 
             ImGui.TableNextColumn();
 
-            DrawRecord();
+            using(var recordChild = ImRaii.Child("Record Child", new Vector2(0, -2)))
+            {
+                DrawRecord();
+            }
 
             ImGui.TableNextColumn();
 
-            DrawTriggerData();
+            using (var recordChild = ImRaii.Child("Trigger Data Child", new Vector2(0, -2)))
+            {
+                DrawTriggerData();
+            }
 
             ImGui.TableNextColumn();
 
-            DrawTrigger();
+            using (var recordChild = ImRaii.Child("Trigger Child", new Vector2(0, -2)))
+            {
+                DrawTrigger();
+            }
         }
 
         private static void DrawRecord()
@@ -2716,8 +2724,7 @@ public class RotationConfigWindow : ConfigWindow
             int index = 0;
             foreach ((var time, var data) in Recorder.Data)
             {
-                ImGui.SameLine();
-                ImGui.Text(time.ToString("HH:mm:ss.fff") + "|");
+                ImGui.Text(time.ToString("HH:mm:ss.fff") + " |");
                 ImGui.SameLine();
 
                 if (ImGui.Button($"{data}##{index++}"))
@@ -2743,9 +2750,9 @@ public class RotationConfigWindow : ConfigWindow
                 TriggerData = data;
                 IsJob = isJob;
 
-                if (dict.ContainsKey(data)) return;
+                if(dict.Any(d => d.Item1.Equals(TriggerData))) return;
 
-                dict[data] = [];
+                dict.Add((data, []));
             }
         }
 
@@ -2755,13 +2762,27 @@ public class RotationConfigWindow : ConfigWindow
 
             var dict = IsJob ? _territoryConfig.JobConfig.Trigger : _territoryConfig.Config.Trigger;
 
-            int index = 0;
-            foreach (var key in dict.Keys)
+            for (int i = 0; i < dict.Count; i++)
             {
-                if (ImGui.Selectable($"{key}##{index++}", key == TriggerData))
+                void Delete()
+                {
+                    dict.RemoveAt(i);
+                };
+
+                var pair = dict[i];
+                var key = pair.Item1;
+
+                var popKey = $"TriggerDataPopup{i}";
+                ImGuiHelper.DrawHotKeysPopup(popKey, string.Empty,
+                    (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]));
+
+                if (ImGui.Selectable($"{key}##{i}", key.Equals(TriggerData)))
                 {
                     TriggerData = key;
                 }
+
+                ImGuiHelper.ExecuteHotKeysPopup(popKey, string.Empty, string.Empty, true,
+                    (Delete, [VirtualKey.DELETE]));
             }
         }
 
@@ -2770,7 +2791,17 @@ public class RotationConfigWindow : ConfigWindow
             if (_territoryConfig == null) return;
             var dict = IsJob ? _territoryConfig.JobConfig.Trigger : _territoryConfig.Config.Trigger;
 
-            if (!dict.TryGetValue(TriggerData, out var data)) return;
+            List<BaseTriggerItem>? data = null;
+            foreach (var pair in dict)
+            {
+                if (pair.Item1.Equals(TriggerData))
+                {
+                    data = pair.Item2;
+                    break;
+                }
+            }
+
+            if (data == null) return;
 
             DrawItems(data, IsJob);
 
@@ -2831,6 +2862,12 @@ public class RotationConfigWindow : ConfigWindow
                     ImGui.SameLine();
                     using var grp = ImRaii.Group();
 
+                    var duration = triggerItem.Duration;
+                    if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"##Duration{triggerItem.GetHashCode()}", ref duration, UiString.TimelineItemDuration.Local()))
+                    {
+                        triggerItem.Duration = duration;
+                    }
+
                     TerritoryActionDrawer.DrawTerritoryAction(triggerItem.TerritoryAction, []);
                 }
 
@@ -2840,7 +2877,7 @@ public class RotationConfigWindow : ConfigWindow
                     {
                         ImGui.OpenPopup("PopupTriggerButton" + isJob);
                     }
-                    ImguiTooltips.HoveredTooltip(UiString.AddTimelineButton.Local());
+                    ImguiTooltips.HoveredTooltip(UiString.AddTerritoryActionButton.Local());
 
                     using var popUp = ImRaii.Popup("PopupTriggerButton" + isJob);
                     if (!popUp) return;

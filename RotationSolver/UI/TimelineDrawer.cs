@@ -220,7 +220,7 @@ internal static class TimelineDrawer
                         {
                             ImGui.OpenPopup("PopupTimelineButton" + item.Time + isJob);
                         }
-                        ImguiTooltips.HoveredTooltip(UiString.AddTimelineButton.Local());
+                        ImguiTooltips.HoveredTooltip(UiString.AddTerritoryActionButton.Local());
 
                         using var popUp = ImRaii.Popup("PopupTimelineButton" + item.Time + isJob);
                         if (popUp)
@@ -268,7 +268,7 @@ internal static class TimelineDrawer
         }
 
         var duration = timeLineItem.Duration;
-        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"{UiString.TimelineDuration.Local()}##Duration{timeLineItem.GetHashCode()}", ref duration, UiString.TimelineItemDuration.Local()))
+        if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"##Duration{timeLineItem.GetHashCode()}", ref duration, UiString.TimelineItemDuration.Local()))
         {
             timeLineItem.Duration = duration;
         }
