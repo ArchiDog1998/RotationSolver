@@ -13,7 +13,7 @@ internal class ActionGroupWindow : CtrlWindow
     {
         foreach (var item in Service.Config.ActionGroups)
         {
-            if (!item.ShowInWindow) continue;
+            if (!item.IsValid) continue;
 
             using var color = ImRaii.PushColor(ImGuiCol.Text, item.Color);
             if(ImGui.Selectable(item.Name + "##" + item.GetHashCode(), item.Enable))

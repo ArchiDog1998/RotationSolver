@@ -13,8 +13,10 @@ using ECommons.ImGuiMethods;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.GeneratedSheets2;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Condition;
+using RotationSolver.Basic.Configuration.TerritoryAction;
 using RotationSolver.Basic.Configuration.Trigger;
 using RotationSolver.Basic.Record;
 using RotationSolver.Data;
@@ -1804,7 +1806,7 @@ public class RotationConfigWindow : ConfigWindow
             },
             {
                () =>  UiString.ConfigWindow_Basic_SwitchAutoConditionSet.Local(),
-                () => DataCenter.RightSet.SwitchAutoConditionSet?.DrawMain(DataCenter.RightNowRotation)
+               () => DataCenter.RightSet.SwitchAutoConditionSet?.DrawMain(DataCenter.RightNowRotation)
             },
         })
         {
@@ -2086,12 +2088,116 @@ public class RotationConfigWindow : ConfigWindow
                 { () => UiString.ConfigWindow_List_Statuses.Local(), DrawListStatuses},
                 { () => Service.Config.UseDefenseAbility ? UiString.ConfigWindow_List_Actions.Local() : string.Empty,
                     () => DrawListActions(window)},
-                {() =>  UiString.ConfigWindow_List_Territories.Local(), DrawListTerritories},
+                { () =>  UiString.ConfigWindow_List_Territories.Local(), DrawListTerritories},
+                { () =>  UiString.ConfigWindow_List_ActionGroups.Local(), DrawActionGroups},
             });
             _idsHeader?.Draw();
         }
 
         #region List
+        private static readonly CollapsingHeaderGroup _actionGrpActionsList = new()
+        {
+            HeaderSize = FontSize.Fifth,
+        };
+
+        private static void DrawActionGroups()
+        {
+            if (DataCenter.RightNowRotation == null) return;
+
+            if (!Service.Config.ActionGroups.Any(i => i.ActionIds.Count == 0))
+            {
+                Service.Config.ActionGroups.Add(new());
+            }
+
+            int removeIndex = -1;
+
+            for (int i = 0; i < Service.Config.ActionGroups.Count; i++)
+            {
+                var group = Service.Config.ActionGroups[i];
+
+                var isChecked = group.Enable;
+
+                if(ImGui.Checkbox("##ActionGroupEnable" + i, ref isChecked))
+                {
+                    group.Enable = isChecked;
+                }
+
+                ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Enable.Local());
+
+                ImGui.SameLine();
+
+                var showInWindow = group.ShowInWindow;
+                if (ImGui.Checkbox("##ActionGroupShow" + i, ref showInWindow))
+                {
+                    group.ShowInWindow = showInWindow;
+                }
+
+                ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Show.Local());
+
+                ImGui.SameLine();
+
+                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##ActionGroupRemove{i}"))
+                {
+                    removeIndex = i;
+                }
+
+                ImGui.SameLine();
+
+                ImGui.SetNextItemWidth(150 * Scale);
+
+                var name = group.Name;
+                if(ImGui.InputTextWithHint($"##ActionGroupName{i}", UiString.ConfigWindow_List_ActionGroups_Name.Local(), ref name, 1024))
+                {
+                    group.Name = name;
+                }
+                
+                var actions = group.ActionIds;
+
+                if (!actions.Any(a => a == 0))
+                {
+                    actions.Add(0);
+                }
+
+                for (int j = 0; j < actions.Count; j++)
+                {
+                    var action = actions[j];
+
+                    void Delete()
+                    {
+                        actions.RemoveAt(j);
+                    };
+
+                    var popUpKey = $"ActionPopup{group.GetHashCode()}{j}";
+                    ConditionDrawer.ActionSelectorPopUp(popUpKey, _actionGrpActionsList, DataCenter.RightNowRotation, item => actions[j] = item.ID);
+
+                    if (((ActionID)action).GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
+                    {
+                        ImGui.SameLine();
+                        var cursor = ImGui.GetCursorPos();
+
+                        var key = $"ActionPopupDelete{group.GetHashCode()}{j}";
+
+                        if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, $"ActionIcon{group.GetHashCode()}{j}"))
+                        {
+                            if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
+                        }
+
+                        ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
+                            (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]));
+
+                        ImGuiHelper.DrawActionOverlay(cursor, ConditionDrawer.IconSize, 1);
+
+                        ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
+                            (Delete, [VirtualKey.DELETE]));
+                    }
+                }
+            }
+
+            if (removeIndex > -1)
+            {
+                Service.Config.ActionGroups.RemoveAt(removeIndex);
+            }
+        }
 
         private static void DrawListStatuses()
         {
