@@ -1870,9 +1870,9 @@ public class RotationConfigWindow : ConfigWindow
         {
             window.Collection.DrawItems((int)UiString.ConfigWindow_Basic_Others);
 
-            if (!Service.Config.SayHelloToAll)
+            if (Service.Config.UseAdditionalConditions && !DownloadHelper.IsSupporter)
             {
-                ImGui.TextColored(ImGuiColors.DalamudRed, "The author of RS loves being greeted by you!");
+                ImGui.TextColored(ImGuiColors.DalamudRed, UiString.CantUseConditionBoolean.Local());
             }
         }
     }
@@ -2348,37 +2348,14 @@ public class RotationConfigWindow : ConfigWindow
             }
         }
 
+
         private static void DrawListTerritories()
         {
             if (Svc.ClientState == null) return;
 
             var territoryId = Svc.ClientState.TerritoryType;
 
-            using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(21)))
-            {
-                using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-
-                const int iconSize = 32;
-                var contentFinder = DataCenter.ContentFinder;
-                var territoryName = DataCenter.TerritoryName;
-                if (contentFinder != null && !string.IsNullOrEmpty(contentFinder.Name))
-                {
-                    territoryName += $" ({DataCenter.ContentFinderName})";
-                }
-                var icon = DataCenter.ContentFinder?.ContentType?.Value?.Icon ?? 23;
-                if (icon == 0) icon = 23;
-                var getIcon = ImageLoader.GetTexture(icon, out var texture);
-                ImGuiHelper.DrawItemMiddle(() =>
-                {
-                    if (getIcon)
-                    {
-                        ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * Scale);
-                        ImGui.SameLine();
-                    }
-                    ImGui.Text(territoryName);
-                }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
-            }
-
+            DrawTerritoryHeader();
             DrawContentFinder(DataCenter.ContentFinder);
 
             using var table = ImRaii.Table("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
@@ -2533,13 +2510,15 @@ public class RotationConfigWindow : ConfigWindow
 
     }
 
-    public abstract class TerritoryConfigItem : ConfigWindowItemRS
+    [Description("Timeline")]
+    public class TimelineItem : ConfigWindowItemRS
     {
         internal static uint _territoryId = 0;
         private static string _territorySearch = string.Empty;
         internal static TerritoryConfig? _territoryConfig;
 
-        protected virtual bool IsTimeline => true;
+        public override uint Icon => 73;
+        public override string Description => UiString.Item_Timeline.Local();
 
         public override void Draw(ConfigWindow window)
         {
@@ -2587,30 +2566,18 @@ public class RotationConfigWindow : ConfigWindow
 
             ImGui.SameLine();
 
-            if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))// TODO : Only paste the timeline things.
+            if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
             {
                 var str = ImGui.GetClipboardText();
                 try
                 {
-                    OtherConfiguration.SetTerritoryConfigById(_territoryId, str, IsTimeline);
+                    OtherConfiguration.SetTerritoryConfigById(_territoryId, str, true);
                 }
                 catch (Exception ex)
                 {
                     Svc.Log.Warning(ex, "Failed to load the condition.");
                 }
             }
-        }
-    }
-
-    [Description("Timeline")]
-    public class TimelineItem : TerritoryConfigItem
-    {
-        public override uint Icon => 73;
-        public override string Description => UiString.Item_Timeline.Local();
-
-        public override void Draw(ConfigWindow window)
-        {
-            base.Draw(window);
 
             if (_territoryConfig != null)
             {
@@ -2620,18 +2587,53 @@ public class RotationConfigWindow : ConfigWindow
     }
 
     [Description("Trigger")]
-    public class TriggerItem : TerritoryConfigItem
+    public class TriggerItem : ConfigWindowItemRS
     {
+        internal static TerritoryConfig? _territoryConfig;
+
         public override uint Icon => 24;
         public override string Description => UiString.Item_Trigger.Local();
-        protected override bool IsTimeline => false;
 
         public static TriggerData TriggerData { get; set; } = default;
         public static bool IsJob { get; set; }
 
         public override void Draw(ConfigWindow window)
         {
-            base.Draw(window);
+            DrawTerritoryHeader();
+            DrawContentFinder(DataCenter.ContentFinder);
+
+            _territoryConfig = OtherConfiguration.GetTerritoryConfigById(Svc.ClientState.TerritoryType);
+
+            ImGui.Separator();
+
+            if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
+            {
+                var str = JsonConvert.SerializeObject(_territoryConfig, Formatting.Indented);
+                ImGui.SetClipboardText(str);
+            }
+
+            ImGui.SameLine();
+
+            if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
+            {
+                var str = ImGui.GetClipboardText();
+                try
+                {
+                    OtherConfiguration.SetTerritoryConfigById(Svc.ClientState.TerritoryType, str, true);
+                }
+                catch (Exception ex)
+                {
+                    Svc.Log.Warning(ex, "Failed to load the condition.");
+                }
+            }
+
+            ImGui.SameLine();
+
+            var isJob = IsJob;
+            if (ImGui.Button(UiString.ConfigWindow_Trigger_IsJob.Local()))
+            {
+                IsJob = isJob;
+            }
 
             using var table = ImRaii.Table("Trigger Table", 3, 
                 ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
@@ -2707,12 +2709,6 @@ public class RotationConfigWindow : ConfigWindow
         private static void DrawTriggerData()
         {
             if (_territoryConfig == null) return;
-
-            var isJob = IsJob;
-            if (ImGui.Button(UiString.ConfigWindow_Trigger_IsJob.Local()))
-            {
-                IsJob = isJob;
-            }
 
             var dict = IsJob ? _territoryConfig.JobConfig.Trigger : _territoryConfig.Config.Trigger;
 
@@ -3143,7 +3139,34 @@ public class RotationConfigWindow : ConfigWindow
         return result;
     }
 
-    internal static void DrawContentFinder(ContentFinderCondition? content)
+    private static void DrawTerritoryHeader()
+    {
+        using var font = ImRaii.PushFont(DrawingExtensions.GetFont(21));
+
+        using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+
+        const int iconSize = 32;
+        var contentFinder = DataCenter.ContentFinder;
+        var territoryName = DataCenter.TerritoryName;
+        if (contentFinder != null && !string.IsNullOrEmpty(contentFinder.Name))
+        {
+            territoryName += $" ({DataCenter.ContentFinderName})";
+        }
+        var icon = DataCenter.ContentFinder?.ContentType?.Value?.Icon ?? 23;
+        if (icon == 0) icon = 23;
+        var getIcon = ImageLoader.GetTexture(icon, out var texture);
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            if (getIcon)
+            {
+                ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * Scale);
+                ImGui.SameLine();
+            }
+            ImGui.Text(territoryName);
+        }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
+    }
+
+    private static void DrawContentFinder(ContentFinderCondition? content)
     {
         var badge = content?.Image;
         if (badge != null && badge.Value != 0
