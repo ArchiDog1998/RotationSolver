@@ -55,9 +55,9 @@ public class RotationConfigWindow : ConfigWindow
         Size = new Vector2(740f, 490f);
 
         ImGuiHelper.GetFont(FontSize.Third, GameFontFamily.Axis);
-        ImGuiHelper.GetFont(FontSize.Forth, GameFontFamily.Axis);
+        ImGuiHelper.GetFont(FontSize.Fourth, GameFontFamily.Axis);
         ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.Axis);
-        ImGuiHelper.GetFont(FontSize.Forth, GameFontFamily.MiedingerMid);
+        ImGuiHelper.GetFont(FontSize.Fourth, GameFontFamily.MiedingerMid);
         ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.MiedingerMid);
     }
 
@@ -747,7 +747,7 @@ public class RotationConfigWindow : ConfigWindow
             ImGui.SameLine();
 
             using var gp = ImRaii.Group();
-            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Forth, GameFontFamily.MiedingerMid)))
+            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fourth, GameFontFamily.MiedingerMid)))
             {
                 ImGui.Text(rate);
             }
@@ -871,7 +871,7 @@ public class RotationConfigWindow : ConfigWindow
                     }
                     else
                     {
-                        using var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Forth, GameFontFamily.MiedingerMid));
+                        using var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fourth, GameFontFamily.MiedingerMid));
                         for (byte i = 1; i < 11; i++)
                         {
                             if (ImGui.Button($"{i}##My Rating Value"))
@@ -1311,7 +1311,7 @@ public class RotationConfigWindow : ConfigWindow
 
         private static readonly CollapsingHeaderGroup _actionsList = new()
         {
-            HeaderSize = FontSize.Forth,
+            HeaderSize = FontSize.Fourth,
         };
 
         private static readonly CollapsingHeaderGroup _sequencerList = new(new()
@@ -1339,7 +1339,7 @@ public class RotationConfigWindow : ConfigWindow
             } },
         })
         {
-            HeaderSize = FontSize.Forth,
+            HeaderSize = FontSize.Fourth,
         };
     }
 
@@ -1808,7 +1808,7 @@ public class RotationConfigWindow : ConfigWindow
             },
         })
         {
-            HeaderSize = FontSize.Forth,
+            HeaderSize = FontSize.Fourth,
         };
         private static void DrawBasicAutoSwitch(ConfigWindow window)
         {
@@ -1982,7 +1982,7 @@ public class RotationConfigWindow : ConfigWindow
             },
         })
         {
-            HeaderSize = FontSize.Forth,
+            HeaderSize = FontSize.Fourth,
         };
 
         private static void DrawAutoActionCondition(ConfigWindow window)
@@ -2641,6 +2641,9 @@ public class RotationConfigWindow : ConfigWindow
         {
             DrawTerritoryHeader();
             DrawContentFinder(DataCenter.ContentFinder);
+
+            window.Collection.DrawItems((int)UiString.TimelineRaidTime);
+            window.Collection.DrawItems((int)UiString.Item_Trigger);
 
             _territoryConfig = OtherConfiguration.GetTerritoryConfigById(Svc.ClientState.TerritoryType);
 
