@@ -740,7 +740,7 @@
   "RotationSolver.Basic.Configuration.ConfigsName.ShowActionGroupWindow": "Shows action group window.",
   "RotationSolver.Basic.Configuration.ConfigsName.RecordCount": "The record count",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_List_ActionGroups": "Action Groups",
-  "RotationSolver.Basic.Data.UiString.ConfigWindow_List_ActionGroups_Name": "The Name of the action group",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_List_ActionGroups_Name": "The Name of it",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_List_ActionGroups_Enable": "Is this group enabled. True to turn all actions on.",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_List_ActionGroups_Show": "Show this action group in the action group window.",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Trigger_Log": "Log",
@@ -763,5 +763,7 @@
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.ObjectType.Myself": "Myself",
   "RotationSolver.Basic.Configuration.Timeline.DrawingTimelineItem": "Drawing Timeline",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Trigger_Clear": "Clear Log",
-  "RotationSolver.Basic.Data.UiString.AddTerritoryActionButton": "Add a territory action."
+  "RotationSolver.Basic.Data.UiString.AddTerritoryActionButton": "Add a territory action.",
+  "RotationSolver.Basic.Configuration.Condition.LogicalType.And": "&&",
+  "RotationSolver.Basic.Configuration.Condition.LogicalType.Or": " | | "
 }

@@ -11,6 +11,8 @@ internal class ActionGroupWindow : CtrlWindow
 
     public override void Draw()
     {
+        using var style = ImRaii.PushStyle(ImGuiStyleVar.SelectableTextAlign, new Vector2(0.5f, 0.5f));
+
         foreach (var item in Service.Config.ActionGroups)
         {
             if (!item.IsValid) continue;

@@ -2102,7 +2102,7 @@ public class RotationConfigWindow : ConfigWindow
         {
             if (DataCenter.RightNowRotation == null) return;
 
-            if (!Service.Config.ActionGroups.Any(i => i.ActionIds.Count == 0))
+            if (!Service.Config.ActionGroups.Any(i => !i.ActionIds.Any(i => i != 0)))
             {
                 Service.Config.ActionGroups.Add(new());
             }
@@ -2131,6 +2131,15 @@ public class RotationConfigWindow : ConfigWindow
                 }
 
                 ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Show.Local());
+
+                ImGui.SameLine();
+
+                var color = group.Color;
+
+                if(ImGui.ColorEdit4("##ActionGroupColor" + i, ref color, ImGuiColorEditFlags.NoInputs))
+                {
+                    group.Color = color;
+                }
 
                 ImGui.SameLine();
 
