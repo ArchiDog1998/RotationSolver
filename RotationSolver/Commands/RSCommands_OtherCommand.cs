@@ -31,7 +31,7 @@ public static partial class RSCommands
 
     private static void ToggleActionGroup(string str)
     {
-        foreach (var grp in Service.Config.ActionGroup)
+        foreach (var grp in Service.Config.ActionGroups)
         {
             if (str.StartsWith(grp.Name))
             {

@@ -10,14 +10,75 @@ using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
+using XIVDrawer;
+using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.UI;
 
 internal static class TimelineDrawer
 {
-    public static void DrawTimeline(uint territoryId, TerritoryConfig territoryConfig)
+    internal static uint _territoryId = 0;
+    private static string _territorySearch = string.Empty;
+    public static void DrawTimeline()
     {
-        var link = RaidTimeUpdater.GetLink(territoryId);
+        static string GetName(TerritoryType? territory)
+        {
+            var str = territory?.ContentFinderCondition?.Value?.Name?.RawString;
+            if (str == null || string.IsNullOrEmpty(str)) return "Unnamed Duty";
+            return str;
+        }
+
+        var territory = Svc.Data.GetExcelSheet<TerritoryType>();
+        if (territory == null) return;
+
+        var territories = RaidTimeUpdater.PathForRaids.Keys.OrderByDescending(i => i).Select(territory.GetRow).ToArray();
+
+        var rightTerritory = territory?.GetRow(_territoryId);
+        var name = GetName(rightTerritory);
+
+        var imFont = DrawingExtensions.GetFont(21);
+        float width = 0;
+        using (var font = ImRaii.PushFont(imFont))
+        {
+            width = ImGui.CalcTextSize(name).X + ImGui.GetStyle().ItemSpacing.X * 2;
+        }
+
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            ImGuiHelperRS.SearchCombo("##Choice the specific dungeon", name, ref _territorySearch, territories, GetName, t =>
+            {
+                _territoryId = t?.RowId ?? 0;
+            }, UiString.ConfigWindow_Condition_DutyName.Local(), imFont, ImGuiColors.DalamudYellow);
+        }, ImGui.GetWindowWidth(), width);
+
+        RotationConfigWindow.DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
+
+        var territoryConfig = OtherConfiguration.GetTerritoryConfigById(_territoryId);
+
+        ImGui.Separator();
+
+        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
+        {
+            var str = JsonConvert.SerializeObject(territoryConfig, Formatting.Indented);
+            ImGui.SetClipboardText(str);
+        }
+
+        ImGui.SameLine();
+
+        if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
+        {
+            var str = ImGui.GetClipboardText();
+            try
+            {
+                OtherConfiguration.SetTerritoryConfigById(_territoryId, str, true);
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Warning(ex, "Failed to load the condition.");
+            }
+        }
+
+        var link = RaidTimeUpdater.GetLink(_territoryId);
         if (!string.IsNullOrEmpty(link))
         {
             ImGui.SameLine();
@@ -52,7 +113,7 @@ internal static class TimelineDrawer
 
             ImGui.TableNextRow();
 
-            foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)territoryId))
+            foreach (var item in RaidTimeUpdater.GetRaidTime((ushort)_territoryId))
             {
                 if (!item.IsShown) continue;
 

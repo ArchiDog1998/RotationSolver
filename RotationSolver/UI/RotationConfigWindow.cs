@@ -13,10 +13,8 @@ using ECommons.ImGuiMethods;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
-using Lumina.Excel.GeneratedSheets2;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Condition;
-using RotationSolver.Basic.Configuration.TerritoryAction;
 using RotationSolver.Basic.Configuration.Trigger;
 using RotationSolver.Basic.Record;
 using RotationSolver.Data;
@@ -2619,76 +2617,12 @@ public class RotationConfigWindow : ConfigWindow
     [Description("Timeline")]
     public class TimelineItem : ConfigWindowItemRS
     {
-        internal static uint _territoryId = 0;
-        private static string _territorySearch = string.Empty;
-        internal static TerritoryConfig? _territoryConfig;
-
         public override uint Icon => 73;
         public override string Description => UiString.Item_Timeline.Local();
 
         public override void Draw(ConfigWindow window)
         {
-            static string GetName(TerritoryType? territory)
-            {
-                var str = territory?.ContentFinderCondition?.Value?.Name?.RawString;
-                if (str == null || string.IsNullOrEmpty(str)) return "Unnamed Duty";
-                return str;
-            }
-
-            var territory = Svc.Data.GetExcelSheet<TerritoryType>();
-            if (territory == null) return;
-
-            var territories = RaidTimeUpdater.PathForRaids.Keys.OrderByDescending(i => i).Select(territory.GetRow).ToArray();
-
-            var rightTerritory = territory?.GetRow(_territoryId);
-            var name = GetName(rightTerritory);
-
-            var imFont = DrawingExtensions.GetFont(21);
-            float width = 0;
-            using (var font = ImRaii.PushFont(imFont))
-            {
-                width = ImGui.CalcTextSize(name).X + ImGui.GetStyle().ItemSpacing.X * 2;
-            }
-
-            ImGuiHelper.DrawItemMiddle(() =>
-            {
-                ImGuiHelperRS.SearchCombo("##Choice the specific dungeon", name, ref _territorySearch, territories, GetName, t =>
-                {
-                    _territoryId = t?.RowId ?? 0;
-                }, UiString.ConfigWindow_Condition_DutyName.Local(), imFont, ImGuiColors.DalamudYellow);
-            }, ImGui.GetWindowWidth(), width);
-
-            DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
-
-            _territoryConfig = OtherConfiguration.GetTerritoryConfigById(_territoryId);
-
-            ImGui.Separator();
-
-            if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
-            {
-                var str = JsonConvert.SerializeObject(_territoryConfig, Formatting.Indented);
-                ImGui.SetClipboardText(str);
-            }
-
-            ImGui.SameLine();
-
-            if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
-            {
-                var str = ImGui.GetClipboardText();
-                try
-                {
-                    OtherConfiguration.SetTerritoryConfigById(_territoryId, str, true);
-                }
-                catch (Exception ex)
-                {
-                    Svc.Log.Warning(ex, "Failed to load the condition.");
-                }
-            }
-
-            if (_territoryConfig != null)
-            {
-                TimelineDrawer.DrawTimeline(_territoryId, _territoryConfig);
-            }
+            TimelineDrawer.DrawTimeline();
         }
     }
 
@@ -3272,7 +3206,7 @@ public class RotationConfigWindow : ConfigWindow
         }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
     }
 
-    private static void DrawContentFinder(ContentFinderCondition? content)
+    internal static void DrawContentFinder(ContentFinderCondition? content)
     {
         var badge = content?.Image;
         if (badge != null && badge.Value != 0
