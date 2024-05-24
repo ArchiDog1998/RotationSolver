@@ -13,6 +13,7 @@ using ECommons.ImGuiMethods;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.GeneratedSheets2;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Condition;
 using RotationSolver.Basic.Configuration.Trigger;
@@ -2107,47 +2108,53 @@ public class RotationConfigWindow : ConfigWindow
                 Service.Config.ActionGroups.Add(new());
             }
 
-            int removeIndex = -1;
-
             for (int i = 0; i < Service.Config.ActionGroups.Count; i++)
             {
+                void DeleteActionGroup()
+                {
+                    Service.Config.ActionGroups.RemoveAt(i);
+                }
+
                 var group = Service.Config.ActionGroups[i];
 
-                var isChecked = group.Enable;
+                var keyGrp = $"ActionPopupDelete{group.GetHashCode()}";
+                var cmd = ToCommandStr(OtherCommandType.ToggleActionGroup, $"{group.Name} true");
 
-                if(ImGui.Checkbox("##ActionGroupEnable" + i, ref isChecked))
+                ImGuiHelper.DrawHotKeysPopup(keyGrp, cmd,
+                    (UiString.ConfigWindow_List_Remove.Local(), DeleteActionGroup, ["Delete"]));
+                using (var grp = ImRaii.Group())
                 {
-                    group.Enable = isChecked;
+                    var isChecked = group.Enable;
+
+                    if (ImGui.Checkbox("##ActionGroupEnable" + i, ref isChecked))
+                    {
+                        group.Enable = isChecked;
+                    }
+
+                    ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Enable.Local());
+
+                    ImGui.SameLine();
+
+                    var showInWindow = group.ShowInWindow;
+                    if (ImGui.Checkbox("##ActionGroupShow" + i, ref showInWindow))
+                    {
+                        group.ShowInWindow = showInWindow;
+                    }
+
+                    ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Show.Local());
+
+                    ImGui.SameLine();
+
+                    var color = group.Color;
+
+                    if (ImGui.ColorEdit4("##ActionGroupColor" + i, ref color, ImGuiColorEditFlags.NoInputs))
+                    {
+                        group.Color = color;
+                    }
                 }
 
-                ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Enable.Local());
-
-                ImGui.SameLine();
-
-                var showInWindow = group.ShowInWindow;
-                if (ImGui.Checkbox("##ActionGroupShow" + i, ref showInWindow))
-                {
-                    group.ShowInWindow = showInWindow;
-                }
-
-                ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Show.Local());
-
-                ImGui.SameLine();
-
-                var color = group.Color;
-
-                if(ImGui.ColorEdit4("##ActionGroupColor" + i, ref color, ImGuiColorEditFlags.NoInputs))
-                {
-                    group.Color = color;
-                }
-
-                ImGui.SameLine();
-
-                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##ActionGroupRemove{i}"))
-                {
-                    removeIndex = i;
-                }
-
+                ImGuiHelper.ExecuteHotKeysPopup(keyGrp, cmd, string.Empty, true,
+                    (DeleteActionGroup, [VirtualKey.DELETE]));
                 ImGui.SameLine();
 
                 ImGui.SetNextItemWidth(150 * Scale);
@@ -2182,7 +2189,7 @@ public class RotationConfigWindow : ConfigWindow
                         ImGui.SameLine();
                         var cursor = ImGui.GetCursorPos();
 
-                        var key = $"ActionPopupDelete{group.GetHashCode()}{j}";
+                        var key = $"ActionPopupActionDelete{group.GetHashCode()}{j}";
 
                         if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, $"ActionIcon{group.GetHashCode()}{j}"))
                         {
@@ -2198,11 +2205,6 @@ public class RotationConfigWindow : ConfigWindow
                             (Delete, [VirtualKey.DELETE]));
                     }
                 }
-            }
-
-            if (removeIndex > -1)
-            {
-                Service.Config.ActionGroups.RemoveAt(removeIndex);
             }
         }
 

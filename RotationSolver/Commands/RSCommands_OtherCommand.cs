@@ -33,6 +33,8 @@ public static partial class RSCommands
     {
         foreach (var grp in Service.Config.ActionGroups)
         {
+            if (string.IsNullOrEmpty(grp.Name)) continue;
+
             if (str.StartsWith(grp.Name))
             {
                 var flag = str[grp.Name.Length..].Trim();
