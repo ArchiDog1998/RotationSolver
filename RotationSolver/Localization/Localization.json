@@ -768,5 +768,6 @@
   "RotationSolver.Basic.Configuration.Condition.LogicalType.Or": " | | ",
   "RotationSolver.Basic.Data.UiString.TriggerItemTime": "The time after this trigger raised.",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Trigger_AddTriggerDataDesc": "Left-click to add the general Trigger Data.\nRight-click to add the job Trigger Data.",
-  "RotationSolver.Basic.Data.UiString.SupporterOnlyWarning": "This feature is available for supporter! You can modify it, but it will not take effect."
+  "RotationSolver.Basic.Data.UiString.SupporterOnlyWarning": "This feature is available for supporter! You can modify it, but it will not take effect.",
+  "RotationSolver.Basic.Data.UiString.IWannaBeSaidHelloWarning": "There are some limits if you turn {0} off!"
 }

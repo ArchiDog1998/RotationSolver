@@ -2,7 +2,6 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.Internal;
-using Dalamud.Interface.Style;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
@@ -14,7 +13,6 @@ using ECommons.ImGuiMethods;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
-using Lumina.Excel.GeneratedSheets2;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Condition;
 using RotationSolver.Basic.Configuration.Trigger;
