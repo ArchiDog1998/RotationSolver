@@ -190,7 +190,7 @@ internal static class ConditionDrawer
                 var index = 0;
                 foreach (var item in pair.OrderBy(t => t.ID))
                 {
-                    if (!item.GetTexture(out var icon)) continue;
+                    if (!IconSet.GetTexture((ActionID)item.ID, out var icon)) continue;
 
                     if (index++ % count != 0)
                     {
@@ -200,7 +200,7 @@ internal static class ConditionDrawer
                     using (var group = ImRaii.Group())
                     {
                         var cursor = ImGui.GetCursorPos();
-                        if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, group.GetHashCode().ToString()))
+                        if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * IconSize, item.GetHashCode().ToString()))
                         {
                             action?.Invoke(item);
                             ImGui.CloseCurrentPopup();

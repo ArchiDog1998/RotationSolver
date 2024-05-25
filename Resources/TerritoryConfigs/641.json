@@ -11,6 +11,10 @@
     "ADV": {
       "Timeline": {},
       "Trigger": []
+    },
+    "PLD": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "Config": {
