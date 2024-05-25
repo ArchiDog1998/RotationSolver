@@ -33,7 +33,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
         XIVConfigUIMain.Init(pluginInterface, Service.COMMAND, "Open config window.", RSCommands.DoOneCommand,
-            typeof(Configs), typeof(UiString), typeof(TargetingType), typeof(WhyActionCantUse));
+            typeof(Configs), typeof(UiString), typeof(TargetingType), typeof(WhyActionCantUse), typeof(AutoStatus));
         XIVConfigUIMain.ShowTooltip = () => Service.Config.ShowTooltips;
 
         _dis.Add(new Service());

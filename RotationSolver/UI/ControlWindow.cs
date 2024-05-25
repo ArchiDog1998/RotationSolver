@@ -206,7 +206,7 @@ internal class ControlWindow : CtrlWindow
             if (group)
             {
                 ImGui.TextWrapped(DataCenter.RightNowTargetToHostileType.Local());
-                ImGui.Text("Auto: " + DataCenter.AutoStatus.ToString());
+                ImGui.TextWrapped("Auto: " + DataCenter.AutoStatus.Local());
             }
         }
 
