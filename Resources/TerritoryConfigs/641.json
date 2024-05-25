@@ -1,13 +1,20 @@
 {
   "_jobConfigs": {
     "AST": {
-      "Timeline": {}
+      "Timeline": {},
+      "Trigger": []
     },
     "BLM": {
-      "Timeline": {}
+      "Timeline": {},
+      "Trigger": []
+    },
+    "ADV": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "Config": {
-    "Timeline": {}
+    "Timeline": {},
+    "Trigger": []
   }
 }

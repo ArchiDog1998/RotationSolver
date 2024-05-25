@@ -2,6 +2,7 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.Internal;
+using Dalamud.Interface.Style;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
@@ -1870,9 +1871,20 @@ public class RotationConfigWindow : ConfigWindow
         {
             window.Collection.DrawItems((int)UiString.ConfigWindow_Basic_Others);
 
-            if (Service.Config.UseAdditionalConditions && !DownloadHelper.IsSupporter)
+            if (DownloadHelper.IsSupporter) return;
+
+            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+
+            if (Service.Config.UseAdditionalConditions)
             {
-                ImGui.TextColored(ImGuiColors.DalamudRed, UiString.CantUseConditionBoolean.Local());
+                ImGui.TextWrapped(UiString.CantUseConditionBoolean.Local());
+            }
+
+            if (!Service.Config.IWannaBeSaidHello)
+            {
+                var uiName = Service.Config.GetType().GetRuntimeProperty(nameof(Configs.IWannaBeSaidHello))?.LocalUIName() ?? string.Empty;
+
+                ImGui.TextWrapped(string.Format(UiString.IWannaBeSaidHelloWarning.Local(), uiName));
             }
         }
     }
@@ -2107,47 +2119,53 @@ public class RotationConfigWindow : ConfigWindow
                 Service.Config.ActionGroups.Add(new());
             }
 
-            int removeIndex = -1;
-
             for (int i = 0; i < Service.Config.ActionGroups.Count; i++)
             {
+                void DeleteActionGroup()
+                {
+                    Service.Config.ActionGroups.RemoveAt(i);
+                }
+
                 var group = Service.Config.ActionGroups[i];
 
-                var isChecked = group.Enable;
+                var keyGrp = $"ActionPopupDelete{group.GetHashCode()}";
+                var cmd = ToCommandStr(OtherCommandType.ToggleActionGroup, $"{group.Name} true");
 
-                if(ImGui.Checkbox("##ActionGroupEnable" + i, ref isChecked))
+                ImGuiHelper.DrawHotKeysPopup(keyGrp, cmd,
+                    (UiString.ConfigWindow_List_Remove.Local(), DeleteActionGroup, ["Delete"]));
+                using (var grp = ImRaii.Group())
                 {
-                    group.Enable = isChecked;
+                    var isChecked = group.Enable;
+
+                    if (ImGui.Checkbox("##ActionGroupEnable" + i, ref isChecked))
+                    {
+                        group.Enable = isChecked;
+                    }
+
+                    ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Enable.Local());
+
+                    ImGui.SameLine();
+
+                    var showInWindow = group.ShowInWindow;
+                    if (ImGui.Checkbox("##ActionGroupShow" + i, ref showInWindow))
+                    {
+                        group.ShowInWindow = showInWindow;
+                    }
+
+                    ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Show.Local());
+
+                    ImGui.SameLine();
+
+                    var color = group.Color;
+
+                    if (ImGui.ColorEdit4("##ActionGroupColor" + i, ref color, ImGuiColorEditFlags.NoInputs))
+                    {
+                        group.Color = color;
+                    }
                 }
 
-                ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Enable.Local());
-
-                ImGui.SameLine();
-
-                var showInWindow = group.ShowInWindow;
-                if (ImGui.Checkbox("##ActionGroupShow" + i, ref showInWindow))
-                {
-                    group.ShowInWindow = showInWindow;
-                }
-
-                ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_ActionGroups_Show.Local());
-
-                ImGui.SameLine();
-
-                var color = group.Color;
-
-                if(ImGui.ColorEdit4("##ActionGroupColor" + i, ref color, ImGuiColorEditFlags.NoInputs))
-                {
-                    group.Color = color;
-                }
-
-                ImGui.SameLine();
-
-                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##ActionGroupRemove{i}"))
-                {
-                    removeIndex = i;
-                }
-
+                ImGuiHelper.ExecuteHotKeysPopup(keyGrp, cmd, string.Empty, true,
+                    (DeleteActionGroup, [VirtualKey.DELETE]));
                 ImGui.SameLine();
 
                 ImGui.SetNextItemWidth(150 * Scale);
@@ -2182,7 +2200,7 @@ public class RotationConfigWindow : ConfigWindow
                         ImGui.SameLine();
                         var cursor = ImGui.GetCursorPos();
 
-                        var key = $"ActionPopupDelete{group.GetHashCode()}{j}";
+                        var key = $"ActionPopupActionDelete{group.GetHashCode()}{j}";
 
                         if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, $"ActionIcon{group.GetHashCode()}{j}"))
                         {
@@ -2198,11 +2216,6 @@ public class RotationConfigWindow : ConfigWindow
                             (Delete, [VirtualKey.DELETE]));
                     }
                 }
-            }
-
-            if (removeIndex > -1)
-            {
-                Service.Config.ActionGroups.RemoveAt(removeIndex);
             }
         }
 
@@ -2686,6 +2699,8 @@ public class RotationConfigWindow : ConfigWindow
             window.Collection.DrawItems((int)UiString.TimelineRaidTime);
             window.Collection.DrawItems((int)UiString.Item_Trigger);
 
+            DrawSupporterWarning();
+
             using var table = ImRaii.Table("Trigger Table", 3, 
                 ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame | ImGuiTableFlags.ScrollY);
 
@@ -2746,7 +2761,7 @@ public class RotationConfigWindow : ConfigWindow
                     {
                         AddTriggerData(data.ToTriggerData(), true);
                     }
-                    ImGuiHelper.ShowTooltip(UiString.ConfigWindow_Trigger_AddTrggerDataDesc.Local());
+                    ImGuiHelper.ShowTooltip(UiString.ConfigWindow_Trigger_AddTriggerDataDesc.Local());
                 }
             }
 
@@ -2870,6 +2885,14 @@ public class RotationConfigWindow : ConfigWindow
 
                     ImGui.SameLine();
                     using var grp = ImRaii.Group();
+
+                    var time = triggerItem.StartTime;
+                    if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $" ##Time{triggerItem.GetHashCode()}", ref time, UiString.TriggerItemTime.Local()))
+                    {
+                        triggerItem.StartTime = time;
+                    }
+
+                    ImGui.SameLine();
 
                     var duration = triggerItem.Duration;
                     if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"##Duration{triggerItem.GetHashCode()}", ref duration, UiString.TimelineItemDuration.Local()))
@@ -3276,5 +3299,14 @@ public class RotationConfigWindow : ConfigWindow
         var c = ImGui.ColorConvertU32ToFloat4(color);
         c.W = 0.55f;
         return ImGui.ColorConvertFloat4ToU32(c);
+    }
+
+    internal static void DrawSupporterWarning()
+    {
+        if (DownloadHelper.IsSupporter) return;
+
+        using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+
+        ImGui.TextWrapped(UiString.SupporterOnlyWarning.Local());
     }
 }

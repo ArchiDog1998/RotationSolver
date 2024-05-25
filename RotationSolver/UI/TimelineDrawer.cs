@@ -93,6 +93,8 @@ internal static class TimelineDrawer
 
         RotationSolverPlugin._rotationConfigWindow?.Collection.DrawItems((int)UiString.TimelineRaidTime);
 
+        RotationConfigWindow.DrawSupporterWarning();
+
         using var table = ImRaii.Table("Rotation Solver List Timeline", 4, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)
         {

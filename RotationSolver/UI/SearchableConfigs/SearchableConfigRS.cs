@@ -7,12 +7,12 @@ using XIVConfigUI.SearchableConfigs;
 namespace RotationSolver.UI.SearchableConfigs;
 internal class SearchableConfigRS : SearchableConfig
 {
-    public override Dictionary<string, Func<PropertyInfo, Searchable>> PropertyNameCreaters { get; } = new()
+    public override Dictionary<string, Func<PropertyInfo, Searchable>> PropertyNameCreators { get; } = new()
     {
         {nameof(Configs.AutoHeal), p => new AutoHealCheckBox(p, Service.Config) }
     };
 
-    public override Dictionary<Type, Func<PropertyInfo, Searchable>> PropertyTypeCreaters { get; } = new()
+    public override Dictionary<Type, Func<PropertyInfo, Searchable>> PropertyTypeCreators { get; } = new()
     {
         {typeof(ConditionBoolean), p => new CheckBoxSearchCondition(p, Service.Config) }
     };
