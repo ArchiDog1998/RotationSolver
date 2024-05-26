@@ -686,7 +686,7 @@ public class RotationConfigWindow : ConfigWindow
         new AutoItem(),
         new TargetItem(),
         new ListItem(),
-        new TimelineItem(),
+        new TimelineConfigItem(),
         new TriggerItem(),
         new ExtraItem(),
         new DebugItem(),

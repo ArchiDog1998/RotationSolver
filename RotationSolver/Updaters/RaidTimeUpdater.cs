@@ -4,6 +4,7 @@ using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.UI;
+using RotationSolver.UI.ConfigWindows;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -333,7 +334,7 @@ internal static partial class RaidTimeUpdater
         _isInCombat.Clear();
         if (PathForRaids.ContainsKey(id))
         {
-            TimelineDrawer._territoryId = id;
+            TimelineConfigItem._territoryId = id;
         }
         try
         {

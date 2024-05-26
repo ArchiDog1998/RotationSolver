@@ -9,17 +9,22 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Updaters;
+using System.ComponentModel;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
 using XIVDrawer;
 
-namespace RotationSolver.UI;
+namespace RotationSolver.UI.ConfigWindows;
 
-internal static class TimelineDrawer
+[Description("Timeline")]
+public class TimelineConfigItem : ConfigWindowItemRS
 {
     internal static uint _territoryId = 0;
     private static string _territorySearch = string.Empty;
-    public static void DrawTimeline()
+    public override uint Icon => 73;
+    public override string Description => UiString.Item_Timeline.Local();
+
+    public override void Draw(ConfigWindow window)
     {
         static string GetName(TerritoryType? territory)
         {
@@ -438,3 +443,4 @@ internal static class TimelineDrawer
         }
     }
 }
+
