@@ -177,14 +177,7 @@ public class RotationItem : ConfigWindowItemRS
         var rotation = DataCenter.RightNowRotation;
         if (rotation == null) return;
 
-        var ratings = DownloadHelper.GetRating(rotation.GetType());
-
-        var rate = "??";
-
-        if (ratings.Count > 0)
-        {
-            rate = ratings.Sum(i => Math.Min(Math.Max((byte)1, i.Value), (byte)10) / (double)ratings.Count).ToString("F1");
-        }
+        var ratings = DownloadHelper.GetRating(rotation.GetType(), out var rate);
 
         float width;
         using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Third)))
