@@ -1,17 +1,21 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
+using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.LanguageHelpers;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
+using XIVDrawer;
 
 namespace RotationSolver.UI;
 
 internal static class ImGuiHelperRS
 {
+    private static float Scale => ImGuiHelpers.GlobalScale;
     internal static void SetNextWidthWithName(string name)
     {
         ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X + 30 * ImGuiHelpers.GlobalScale));
@@ -227,5 +231,128 @@ internal static class ImGuiHelperRS
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.DalamudRed, " None of PvE or PvP!");
         }
+    }
+
+    internal static void DrawGitHubBadge(string userName, string repository, string id = "", string link = "", bool center = false)
+    {
+        if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(repository)) return;
+
+        var wholeWidth = ImGui.GetWindowWidth();
+
+        link = string.IsNullOrEmpty(link) ? $"https://GitHub.com/{userName}/{repository}" : link;
+
+        if (ImageLoader.GetTexture($"https://github-readme-stats.vercel.app/api/pin/?username={userName}&repo={repository}&theme=dark", out var icon)
+            && (center ? ImGuiHelper.TextureButton(icon, wholeWidth, icon.Width, id)
+            : ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, new Vector2(icon.Width, icon.Height), id)))
+        {
+            Util.OpenLink(link);
+        }
+
+        var hasDate = ImageLoader.GetTexture($"https://img.shields.io/github/release-date/{userName}/{repository}?style=for-the-badge", out var releaseDate);
+
+        var hasCount = ImageLoader.GetTexture($"https://img.shields.io/github/downloads/{userName}/{repository}/latest/total?style=for-the-badge&label=", out var downloadCount);
+
+        var style = ImGui.GetStyle();
+        var spacing = style.ItemSpacing;
+        style.ItemSpacing = Vector2.Zero;
+        if (center)
+        {
+            float width = 0;
+            if (hasDate) width += releaseDate.Width;
+            if (hasCount) width += downloadCount.Width;
+            var ratio = MathF.Min(1, wholeWidth / width);
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                if (hasDate && ImGuiHelper.NoPaddingNoColorImageButton(releaseDate.ImGuiHandle, new Vector2(releaseDate.Width, releaseDate.Height) * ratio, id))
+                {
+                    Util.OpenLink(link);
+                }
+                if (hasDate && hasCount) ImGui.SameLine();
+                if (hasCount && ImGuiHelper.NoPaddingNoColorImageButton(downloadCount.ImGuiHandle, new Vector2(downloadCount.Width, downloadCount.Height) * ratio, id))
+                {
+                    Util.OpenLink(link);
+                }
+            }, wholeWidth, width * ratio);
+        }
+        else
+        {
+            if (hasDate && ImGuiHelper.NoPaddingNoColorImageButton(releaseDate.ImGuiHandle, new Vector2(releaseDate.Width, releaseDate.Height), id))
+            {
+                Util.OpenLink(link);
+            }
+            if (hasDate && hasCount) ImGui.SameLine();
+            if (hasCount && ImGuiHelper.NoPaddingNoColorImageButton(downloadCount.ImGuiHandle, new Vector2(downloadCount.Width, downloadCount.Height), id))
+            {
+                Util.OpenLink(link);
+            }
+        }
+        style.ItemSpacing = spacing;
+    }
+
+    internal static string ToCommandStr(OtherCommandType type, string str, string extra = "")
+    {
+        var result = Service.COMMAND + " " + type.ToString() + " " + str;
+        if (!string.IsNullOrEmpty(extra)) result += " " + extra;
+        return result;
+    }
+
+
+    internal static void DrawTerritoryHeader()
+    {
+        using var font = ImRaii.PushFont(DrawingExtensions.GetFont(21));
+
+        using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+
+        const int iconSize = 32;
+        var contentFinder = DataCenter.ContentFinder;
+        var territoryName = DataCenter.TerritoryName;
+        if (contentFinder != null && !string.IsNullOrEmpty(contentFinder.Name))
+        {
+            territoryName += $" ({DataCenter.ContentFinderName})";
+        }
+        var icon = DataCenter.ContentFinder?.ContentType?.Value?.Icon ?? 23;
+        if (icon == 0) icon = 23;
+        var getIcon = ImageLoader.GetTexture(icon, out var texture);
+        ImGuiHelper.DrawItemMiddle(() =>
+        {
+            if (getIcon)
+            {
+                ImGui.Image(texture.ImGuiHandle, Vector2.One * 28 * Scale);
+                ImGui.SameLine();
+            }
+            ImGui.Text(territoryName);
+        }, ImGui.GetWindowWidth(), ImGui.CalcTextSize(territoryName).X + ImGui.GetStyle().ItemSpacing.X + iconSize);
+    }
+
+    internal static void DrawContentFinder(ContentFinderCondition? content)
+    {
+        var badge = content?.Image;
+        if (badge != null && badge.Value != 0
+            && ImageLoader.GetTexture(badge.Value, out var badgeTexture))
+        {
+            var wholeWidth = ImGui.GetWindowWidth();
+            var size = new Vector2(badgeTexture.Width, badgeTexture.Height) * MathF.Min(1, MathF.Min(480, wholeWidth) / badgeTexture.Width);
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.Image(badgeTexture.ImGuiHandle, size);
+            }, wholeWidth, size.X);
+        }
+    }
+
+    internal static void DrawSupporterWarning()
+    {
+        if (DownloadHelper.IsSupporter) return;
+
+        using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+
+        ImGui.TextWrapped(UiString.SupporterOnlyWarning.Local());
+    }
+
+    internal static uint ChangeAlpha(uint color)
+    {
+        var c = ImGui.ColorConvertU32ToFloat4(color);
+        c.W = 0.55f;
+        return ImGui.ColorConvertFloat4ToU32(c);
     }
 }

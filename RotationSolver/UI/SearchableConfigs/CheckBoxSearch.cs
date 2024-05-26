@@ -30,7 +30,7 @@ internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params
             AdditionalDraw = () =>
             {
                 if (DataCenter.RightNowRotation == null) return;
-                RotationConfigWindow.DrawSupporterWarning();
+                ImGuiHelperRS.DrawSupporterWarning();
                 GetCondition()?.DrawMain(DataCenter.RightNowRotation);
             };
         }

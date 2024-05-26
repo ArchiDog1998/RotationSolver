@@ -8,6 +8,7 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Drawing;
 using RotationSolver.Basic.Configuration.TerritoryAction;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
+using RotationSolver.UI.ConfigWindows;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
 using XIVDrawer.Vfx;

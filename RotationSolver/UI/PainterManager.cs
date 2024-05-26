@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.UI.ConfigWindows;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 using XIVDrawer;
@@ -351,7 +352,7 @@ internal static class PainterManager
 
             item!.Center = p;
             item!.Radius = beneficialRadius * ratio;
-            item!.Color = p == RotationConfigWindow.HoveredPosition ? hColor : color;
+            item!.Color = p == ListItem.HoveredPosition ? hColor : color;
 
             if (index >= BeneficialItems.Length) break;
         }

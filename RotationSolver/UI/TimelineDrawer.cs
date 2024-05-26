@@ -4,6 +4,7 @@ using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
@@ -11,7 +12,6 @@ using RotationSolver.Updaters;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
 using XIVDrawer;
-using Lumina.Excel.GeneratedSheets;
 
 namespace RotationSolver.UI;
 
@@ -51,7 +51,7 @@ internal static class TimelineDrawer
             }, UiString.ConfigWindow_Condition_DutyName.Local(), imFont, ImGuiColors.DalamudYellow);
         }, ImGui.GetWindowWidth(), width);
 
-        RotationConfigWindow.DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
+        ImGuiHelperRS.DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
 
         var territoryConfig = OtherConfiguration.GetTerritoryConfigById(_territoryId);
 
@@ -93,7 +93,7 @@ internal static class TimelineDrawer
 
         RotationSolverPlugin._rotationConfigWindow?.Collection.DrawItems((int)UiString.TimelineRaidTime);
 
-        RotationConfigWindow.DrawSupporterWarning();
+        ImGuiHelperRS.DrawSupporterWarning();
 
         using var table = ImRaii.Table("Rotation Solver List Timeline", 4, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
         if (table)

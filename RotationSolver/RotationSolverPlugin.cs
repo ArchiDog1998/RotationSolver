@@ -9,6 +9,7 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.UI;
+using RotationSolver.UI.ConfigWindows;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 
