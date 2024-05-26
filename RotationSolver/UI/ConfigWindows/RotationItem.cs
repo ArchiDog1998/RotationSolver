@@ -1,4 +1,4 @@
-﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
@@ -17,16 +17,12 @@ public class RotationItem : ConfigWindowItemRS
 
     public override uint Icon => 4;
 
-
     private static readonly CollapsingHeaderGroup _rotationHeader = new(new()
         {
             { () => UiString.ConfigWindow_Rotation_Description.Local(), DrawRotationDescription },
-
             { GetRotationStatusHead,  DrawRotationStatus },
-
             { () => UiString.ConfigWindow_Rotation_Configuration.Local(), DrawRotationConfiguration },
             { () => UiString.ConfigWindow_Rotation_Rating.Local(), DrawRotationRating },
-
             { () => UiString.ConfigWindow_Rotation_Information.Local(), DrawRotationInformation },
         });
 
@@ -189,7 +185,6 @@ public class RotationItem : ConfigWindowItemRS
         ImGuiHelper.DrawItemMiddle(() =>
         {
             DrawRate("RS RATING", rate, ratings.Count, ImGuiColors.DalamudYellow, "Rotation Solver All Rating");
-
         }, wholeWidth, width);
 
         if (Player.Available)
@@ -306,7 +301,7 @@ public class RotationItem : ConfigWindowItemRS
             ImGui.GetStyle().ItemSpacing = spacing;
 
             var radius = size.Y * 0.2f;
-            var wholeWidth = ImGui.GetWindowSize().X - size.X - 2 * radius;
+            var wholeWidth = ImGui.GetWindowSize().X - size.X - (2 * radius);
             var step = new Vector2(wholeWidth / count, size.Y);
             var shift = new Vector2(0, size.Y * 0.2f);
 
@@ -332,11 +327,11 @@ public class RotationItem : ConfigWindowItemRS
 
             ImGui.GetWindowDrawList().AddRect(veryStart + shift, start + new Vector2(0, size.Y) - shift, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudWhite2), radius);
 
-            var linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio1, 0);
-            ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - 2 * shift.Y), uint.MaxValue, 3);
+            var linePt = veryStart + shift + new Vector2(radius + (wholeWidth * ratio1), 0);
+            ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - (2 * shift.Y)), uint.MaxValue, 3);
 
-            linePt = veryStart + shift + new Vector2(radius + wholeWidth * ratio2, 0);
-            ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - 2 * shift.Y), uint.MaxValue, 3);
+            linePt = veryStart + shift + new Vector2(radius + (wholeWidth * ratio2), 0);
+            ImGui.GetWindowDrawList().AddLine(linePt, linePt + new Vector2(0, step.Y - (2 * shift.Y)), uint.MaxValue, 3);
 
             return result;
         }
@@ -397,7 +392,6 @@ public class RotationItem : ConfigWindowItemRS
                     }
                     ImGui.Text(" - " + info.Author);
                 }
-
             }, wholeWidth, _groupWidth);
 
             _groupWidth = ImGui.GetItemRectSize().X;
