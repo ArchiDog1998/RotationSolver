@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.Internal;
@@ -190,7 +190,6 @@ public class RotationConfigWindow : ConfigWindow
                     await stream.CopyToAsync(fs);
                 }
 
-
                 _loadingList.Remove(name);
             });
         }
@@ -208,7 +207,7 @@ public class RotationConfigWindow : ConfigWindow
 
     protected override bool GetLogo(out IDalamudTextureWrap texture)
     {
-        var frame = Environment.TickCount / 34 % FRAME_COUNT;
+        var frame = (Environment.TickCount / 34) % FRAME_COUNT;
         if (frame <= 0) frame += FRAME_COUNT;
 
         return GetLocalImage(Service.Config.DrawIconAnimation
@@ -242,7 +241,7 @@ public class RotationConfigWindow : ConfigWindow
         const string slash = " - ";
         var gameVersionSize = ImGui.CalcTextSize(slash + rot.GameVersion).X + ImGui.GetStyle().ItemSpacing.X;
         var gameVersion = UiString.ConfigWindow_Helper_GameVersion.Local() + ": ";
-        var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rot.GameVersion).X + iconSize + ImGui.GetStyle().ItemSpacing.X * 3 < wholeWidth;
+        var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rot.GameVersion).X + iconSize + (ImGui.GetStyle().ItemSpacing.X * 3) < wholeWidth;
         if (drawCenter) gameVersionSize += ImGui.CalcTextSize(gameVersion).X + ImGui.GetStyle().ItemSpacing.X;
 
         var horizonalWholeWidth = Math.Max(comboSize, gameVersionSize) + iconSize + ImGui.GetStyle().ItemSpacing.X;
@@ -279,7 +278,6 @@ public class RotationConfigWindow : ConfigWindow
                     ImGui.SameLine();
                 }
                 ImGui.Text(rot.GameVersion);
-
             }, wholeWidth, horizonalWholeWidth);
         }
     }
@@ -308,7 +306,7 @@ public class RotationConfigWindow : ConfigWindow
 
         if (ImageLoader.GetTexture(rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.GetIcon(), out var texture))
         {
-            ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
+            ImGui.SetCursorPos(cursor + (Vector2.One * iconSize / 2));
 
             ImGui.Image(texture.ImGuiHandle, Vector2.One * iconSize / 2);
         }
@@ -609,7 +607,6 @@ public class RotationConfigWindow : ConfigWindow
             }
         }, width, textWidth);
 
-
         text = UiString.ConfigWindow_About_OpenConfigFolder.Local();
         textWidth = ImGuiHelpers.GetButtonSize(text).X;
         ImGuiHelper.DrawItemMiddle(() =>
@@ -627,7 +624,6 @@ public class RotationConfigWindow : ConfigWindow
         => _allDispelStatus ??= Service.GetSheet<Status>()
                     .Where(s => s.CanDispel)
                     .ToArray();
-
 
     private static Status[]? _allStatus = null;
     internal static Status[] AllStatus
@@ -660,7 +656,7 @@ public class RotationConfigWindow : ConfigWindow
             using var child = ImRaii.Child("Rotation Solver Add Status", new Vector2(-1, 400 * Scale));
             if (child)
             {
-                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * Scale + ImGui.GetStyle().ItemSpacing.X)));
+                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / ((size * 3 / 4 * Scale) + ImGui.GetStyle().ItemSpacing.X)));
                 var index = 0;
 
                 var searchingKey = searching;
@@ -683,7 +679,6 @@ public class RotationConfigWindow : ConfigWindow
             }
         }
     }
-
 
     protected override ConfigWindowItem[] GetItems() =>
     [
