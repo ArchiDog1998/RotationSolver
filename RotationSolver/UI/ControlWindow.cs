@@ -1,4 +1,4 @@
-﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
@@ -238,13 +238,13 @@ internal class ControlWindow : CtrlWindow
         {
             if (subGroup)
             {
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, (width / 2) - (strWidth / 2)));
                 ImGui.TextColored(color, str);
 
                 var help = command.Local();
                 string baseId = "ImgButton" + command.ToString();
 
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, (strWidth / 2) - (width / 2)));
 
                 if (IconSet.GetTexture(gcd, out var texture))
                 {
@@ -309,7 +309,7 @@ internal class ControlWindow : CtrlWindow
     static void DrawCommandAction(IDalamudTextureWrap texture, SpecialCommandType command, Vector4 color, string helpAddition = "")
     {
         var abilityW = Service.Config.ControlWindow0GCDSize;
-        var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
+        var width = abilityW + (ImGui.GetStyle().ItemInnerSpacing.X * 2);
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
 
@@ -322,7 +322,7 @@ internal class ControlWindow : CtrlWindow
         {
             if (subGroup)
             {
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, (width / 2) - (strWidth / 2)));
                 ImGui.TextColored(color, str);
 
                 var help = command.Local();
@@ -332,9 +332,8 @@ internal class ControlWindow : CtrlWindow
                 }
                 string baseId = "ImgButton" + command.ToString();
 
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, (strWidth / 2) - (width / 2)));
                 if (texture != null) DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
-
             }
         }
 
@@ -357,7 +356,7 @@ internal class ControlWindow : CtrlWindow
     static void DrawCommandAction(uint iconId, StateCommandType command, Vector4 color)
     {
         var abilityW = Service.Config.ControlWindow0GCDSize;
-        var width = abilityW + ImGui.GetStyle().ItemInnerSpacing.X * 2;
+        var width = abilityW + (ImGui.GetStyle().ItemInnerSpacing.X * 2);
         var str = command.ToString();
         var strWidth = ImGui.CalcTextSize(str).X;
 
@@ -367,7 +366,7 @@ internal class ControlWindow : CtrlWindow
         {
             if (group)
             {
-                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, width / 2 - strWidth / 2));
+                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, (width / 2) - (strWidth / 2)));
                 ImGui.TextColored(color, str);
 
                 var help = command.Local();
@@ -375,7 +374,7 @@ internal class ControlWindow : CtrlWindow
 
                 if (ImageLoader.GetTexture(iconId, out var texture))
                 {
-                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, strWidth / 2 - width / 2));
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, (strWidth / 2) - (width / 2)));
                     DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
                 }
             }
@@ -464,7 +463,7 @@ internal class ControlWindow : CtrlWindow
         if (!group) return;
 
         var str = "Next Action";
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (width / 2) - (ImGui.CalcTextSize(str).X / 2));
         ImGui.TextColored(ImGuiColors.DalamudYellow, str);
 
         NextActionWindow.DrawGcdCooldown(width, true);
