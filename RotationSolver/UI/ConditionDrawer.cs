@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -30,7 +30,7 @@ internal static class ConditionDrawer
 
     internal static void DrawCondition(bool? tag, string id, ref bool isNot)
     {
-        float size = IconSize * (1 + 8 / 82);
+        float size = IconSize * (1 + (8 / 82));
         if (!tag.HasValue)
         {
             if (ImageLoader.GetTexture("ui/uld/image2.tex", out var texture) || IconSet.GetTexture(0u, out texture))
@@ -60,7 +60,7 @@ internal static class ConditionDrawer
 
     internal static void DrawCondition(bool? tag)
     {
-        float size = IconSize * (1 + 8 / 82);
+        float size = IconSize * (1 + (8 / 82));
 
         if (!tag.HasValue)
         {
@@ -484,13 +484,13 @@ internal static class ConditionDrawer
             void Delete()
             {
                 conditionSet.Conditions.RemoveAt(i);
-            };
+            }
 
             void Up()
             {
                 conditionSet.Conditions.RemoveAt(i);
                 conditionSet.Conditions.Insert(Math.Max(0, i - 1), condition);
-            };
+            }
 
             void Down()
             {
@@ -788,7 +788,6 @@ internal static class ConditionDrawer
 
                 DrawDragFloat(ConfigUnitType.Seconds, $"s##Seconds{targetCondition.GetHashCode()}", ref targetCondition.DistanceOrTime);
                 break;
-
 
             case TargetConditionType.StatusEndGCD:
                 ImGui.SameLine();
