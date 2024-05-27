@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
@@ -45,7 +45,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
         float width = 0;
         using (var font = ImRaii.PushFont(imFont))
         {
-            width = ImGui.CalcTextSize(name).X + ImGui.GetStyle().ItemSpacing.X * 2;
+            width = ImGui.CalcTextSize(name).X + (ImGui.GetStyle().ItemSpacing.X * 2);
         }
 
         ImGuiHelper.DrawItemMiddle(() =>
@@ -174,13 +174,13 @@ public class TimelineConfigItem : ConfigWindowItemRS
                         void Delete()
                         {
                             timeLineItems.RemoveAt(i);
-                        };
+                        }
 
                         void Up()
                         {
                             timeLineItems.RemoveAt(i);
                             timeLineItems.Insert(Math.Max(0, i - 1), timeLineItem);
-                        };
+                        }
 
                         void Down()
                         {
@@ -309,13 +309,13 @@ public class TimelineConfigItem : ConfigWindowItemRS
                 void Delete()
                 {
                     set.Conditions.RemoveAt(i);
-                };
+                }
 
                 void Up()
                 {
                     set.Conditions.RemoveAt(i);
                     set.Conditions.Insert(Math.Max(0, i - 1), condition);
-                };
+                }
 
                 void Down()
                 {
@@ -336,7 +336,6 @@ public class TimelineConfigItem : ConfigWindowItemRS
                     (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
                     (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
                     (UiString.ConfigWindow_Actions_Copy.Local(), Copy, ["Ctrl"]));
-
 
                 ConditionDrawer.DrawCondition(condition.IsTrue(timelineItem));
 
