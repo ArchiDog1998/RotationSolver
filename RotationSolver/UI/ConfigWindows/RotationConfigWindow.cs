@@ -348,7 +348,18 @@ public class RotationConfigWindow : ConfigWindow
                             });
                         }
                     }
+
                     ImGui.SameLine();
+
+                    DownloadHelper.GetRating(r, out var rate);
+
+                    using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.MiedingerMid)))
+                    {
+                        ImGui.TextColored(ImGuiColors.DalamudYellow, rate);
+                    }
+
+                    ImGui.SameLine();
+
                     ImGui.PushStyleColor(ImGuiCol.Text, r.GetCustomAttribute<BetaRotationAttribute>() == null
                         ? ImGuiColors.DalamudWhite : ImGuiColors.DalamudOrange);
                     if (ImGui.Selectable(rAttr.Name))
@@ -378,8 +389,6 @@ public class RotationConfigWindow : ConfigWindow
         warning += "\n \n" + UiString.ConfigWindow_Helper_SwitchRotation.Local();
         ImguiTooltips.HoveredTooltip(warning);
     }
-
-
 
     #region About
     private static readonly SortedList<uint, string> CountStringPair = new()
