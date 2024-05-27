@@ -42,7 +42,6 @@ public static partial class RSCommands
         var strs = str.Split(' ');
         var settingName = strs[0];
         var value = strs.LastOrDefault();
-
         foreach (var property in typeof(Configs).GetRuntimeProperties().Where(p => p.GetMethod?.IsPublic ?? false))
         {
             if (!settingName.Equals(property.Name, StringComparison.OrdinalIgnoreCase))
@@ -53,28 +52,44 @@ public static partial class RSCommands
                 type = typeof(bool);
 
             object convertedValue = null;
-            try
+            bool valueParsedSuccessfully = true;
+
+            if (type.IsEnum)
             {
-                if (type.IsEnum)
+                valueParsedSuccessfully = Enum.TryParse(type, value, ignoreCase: true, out var parsedEnum);
+                if (valueParsedSuccessfully)
                 {
-                    convertedValue = Enum.Parse(type, value, ignoreCase: true);
+                    convertedValue = parsedEnum;
                 }
-                else
+            }
+            else
+            {
+                try
                 {
                     convertedValue = Convert.ChangeType(value, type);
                 }
+                catch
+                {
+                    valueParsedSuccessfully = false;
+                }
             }
-            catch
+
+            if (!valueParsedSuccessfully)
             {
                 if (type == typeof(bool))
                 {
-                    // Toggle the boolean value if no value is specified
                     var config = property.GetValue(Service.Config) as ConditionBoolean;
                     if (config != null)
                     {
                         config.Value = !config.Value;
                         convertedValue = config.Value;
                     }
+                }
+                else if (type.IsEnum)
+                {
+                    // If invalid enum value provided - increment to the next enum value
+                    var currentEnumValue = (Enum)property.GetValue(Service.Config);
+                    convertedValue = GetNextEnumValue(currentEnumValue);
                 }
             }
 
@@ -86,7 +101,6 @@ public static partial class RSCommands
                 continue;
             }
 
-            // If it's a ConditionBoolean, handle it specifically
             if (property.PropertyType == typeof(ConditionBoolean))
             {
                 var relay = (ConditionBoolean)property.GetValue(Service.Config)!;
@@ -97,12 +111,20 @@ public static partial class RSCommands
             property.SetValue(Service.Config, convertedValue);
             value = convertedValue.ToString();
 
-            // Notify the user of the change
             Svc.Chat.Print(string.Format(UiString.CommandsChangeSettingsValue.Local(), property.Name, value));
+
             return;
         }
 
         Svc.Chat.PrintError(UiString.CommandsCannotFindConfig.Local());
+    }
+
+    private static Enum GetNextEnumValue(Enum currentEnumValue)
+    {
+        var enumValues = Enum.GetValues(currentEnumValue.GetType()).Cast<Enum>().ToArray();
+        var nextIndex = Array.IndexOf(enumValues, currentEnumValue) + 1;
+
+        return enumValues.Length == nextIndex ? enumValues[0] : enumValues[nextIndex];
     }
 
     private static void ToggleActionCommand(string str)
