@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
@@ -124,7 +124,7 @@ public class ListItem : ConfigWindowItemRS
                 void Delete()
                 {
                     actions.RemoveAt(j);
-                };
+                }
 
                 var popUpKey = $"ActionPopup{group.GetHashCode()}{j}";
                 ConditionDrawer.ActionSelectorPopUp(popUpKey, _actionGrpActionsList, DataCenter.RightNowRotation, item => actions[j] = item.ID);
@@ -197,7 +197,6 @@ public class ListItem : ConfigWindowItemRS
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_NoCastingStatusDesc.Local());
             DrawStatusList(nameof(OtherConfiguration.NoCastingStatus), OtherConfiguration.NoCastingStatus, RotationConfigWindow.BadStatus);
-
         }
     }
 
@@ -255,7 +254,7 @@ public class ListItem : ConfigWindowItemRS
             OtherConfiguration.Save();
         }, notLoadId);
 
-        var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (24 * Scale + ImGui.GetStyle().ItemSpacing.X)));
+        var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / ((24 * Scale) + ImGui.GetStyle().ItemSpacing.X)));
         var index = 0;
 
         if (ImageLoader.GetTexture(16220, out var text))
@@ -408,7 +407,6 @@ public class ListItem : ConfigWindowItemRS
         }
     }
 
-
     private static void DrawListTerritories()
     {
         if (Svc.ClientState == null) return;
@@ -439,7 +437,7 @@ public class ListItem : ConfigWindowItemRS
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_NoHostileDesc.Local());
 
-            var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
+            var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - (10 * Scale);
 
             if (!OtherConfiguration.NoHostileNames.TryGetValue(territoryId, out var libs))
             {
@@ -479,7 +477,7 @@ public class ListItem : ConfigWindowItemRS
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_NoProvokeDesc.Local());
 
-            width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
+            width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - (10 * Scale);
 
             if (!OtherConfiguration.NoProvokeNames.TryGetValue(territoryId, out libs))
             {
@@ -533,7 +531,7 @@ public class ListItem : ConfigWindowItemRS
                     [
                         .. pts,
                         FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
-                            ->RaycastEx(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
+                            ->RaycastEx(&hit, point + (Vector3.UnitY * 5), -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
                     ];
                     OtherConfiguration.SaveBeneficialPositions();
                 }
