@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
@@ -82,13 +82,13 @@ internal static class TerritoryActionDrawer
                 void Delete()
                 {
                     moveAction.Points.RemoveAt(i);
-                };
+                }
 
                 void Up()
                 {
                     moveAction.Points.RemoveAt(i);
                     moveAction.Points.Insert(Math.Max(0, i - 1), point);
-                };
+                }
 
                 void Down()
                 {
@@ -168,13 +168,13 @@ internal static class TerritoryActionDrawer
             void Delete()
             {
                 drawingItem.DrawingGetters.RemoveAt(i);
-            };
+            }
 
             void Up()
             {
                 drawingItem.DrawingGetters.RemoveAt(i);
                 drawingItem.DrawingGetters.Insert(Math.Max(0, i - 1), item);
-            };
+            }
 
             void Down()
             {
@@ -353,7 +353,6 @@ internal static class TerritoryActionDrawer
                     staticDrawing.Position = pos;
                 }
             }
-
 
             var rot = staticDrawing.Rotation / MathF.PI * 180f;
             if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Degree, "Rotation: ##" + drawing.GetHashCode(), ref rot))
@@ -700,5 +699,4 @@ internal static class TerritoryActionDrawer
             textDrawing.BackgroundColor = value;
         }
     }
-
 }
