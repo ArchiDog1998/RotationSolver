@@ -100,6 +100,13 @@ internal class SocialUpdater
         if (!Player.Available) return;
         if (!Player.Object.IsJobCategory(JobRole.Tank) && !Player.Object.IsJobCategory(JobRole.Healer)) return;
 
+        var message = Service.InvalidUseString;
+        if (!string.IsNullOrEmpty(message))
+        {
+            message.ShowWarning();
+            return;
+        }
+
         if (DataCenter.IsInHighEndDuty)
         {
             string.Format(UiString.HighEndWarning.Local(),
