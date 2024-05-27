@@ -1,4 +1,4 @@
-﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
@@ -52,7 +52,7 @@ public class BasicItem : ConfigWindowItemRS
             ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Basic_AnimationLockTime.Local());
         }
 
-        drawList.AddLine(lineStart - new Vector2(0, spacingHeight), lineStart + new Vector2(0, pingHeight * 2 + spacingHeight / 2), IDEAL_CLICK_TIME_COLOR, 1.5f);
+        drawList.AddLine(lineStart - new Vector2(0, spacingHeight), lineStart + new Vector2(0, (pingHeight * 2) + (spacingHeight / 2)), IDEAL_CLICK_TIME_COLOR, 1.5f);
 
         rectStart = lineStart + new Vector2(-advanceTime * sizePerTime, pingHeight);
         size = new Vector2(advanceTime * sizePerTime, pingHeight);
@@ -77,7 +77,7 @@ public class BasicItem : ConfigWindowItemRS
         while (time < advanceTime)
         {
             var start = lineStart + new Vector2((time - advanceTime) * sizePerTime, 0);
-            drawList.AddLine(start + new Vector2(0, pingHeight), start + new Vector2(0, pingHeight * 2 + spacingHeight), CLICK_TIME_COLOR, 2.5f);
+            drawList.AddLine(start + new Vector2(0, pingHeight), start + new Vector2(0, (pingHeight * 2) + spacingHeight), CLICK_TIME_COLOR, 2.5f);
 
             time += clickTime;
         }
@@ -128,14 +128,14 @@ public class BasicItem : ConfigWindowItemRS
             ImguiTooltips.ShowTooltip(typeof(Configs).GetProperty(nameof(Configs.WeaponDelay))!.Local());
         }
         drawList.AddLine(lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, -spacingHeight), lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime,
-            pingHeight * 2 + spacingHeight), IDEAL_CLICK_TIME_COLOR, 2);
+            (pingHeight * 2) + spacingHeight), IDEAL_CLICK_TIME_COLOR, 2);
 
         ImGui.PushFont(DrawingExtensions.GetFont(20));
         const string gcdText = "GCD";
         var size = ImGui.CalcTextSize(gcdText);
-        ImGui.SetCursorPos(startCursorPt + new Vector2(sizePerTime * actionAhead + (gcdSize - size.X) / 2, (gcdSize - size.Y) / 2));
+        ImGui.SetCursorPos(startCursorPt + new Vector2((sizePerTime * actionAhead) + ((gcdSize - size.X) / 2), (gcdSize - size.Y) / 2));
         ImGui.Text(gcdText);
-        ImGui.SetCursorPos(startCursorPt + new Vector2(wholeWidth - gcdSize + (gcdSize - size.X) / 2, (gcdSize - size.Y) / 2));
+        ImGui.SetCursorPos(startCursorPt + new Vector2(wholeWidth - gcdSize + ((gcdSize - size.X) / 2), (gcdSize - size.Y) / 2));
         ImGui.Text(gcdText);
         ImGui.PopFont();
 
@@ -148,14 +148,14 @@ public class BasicItem : ConfigWindowItemRS
         var time = timeStep;
         while (time < gcdTime - timeStep)
         {
-            var isLast = time + 2 * timeStep > gcdTime;
+            var isLast = time + (2 * timeStep) > gcdTime;
             if (isLast)
             {
                 time = gcdTime - timeStep;
             }
 
             ImGuiHelper.DrawActionOverlay(startCursorPt + new Vector2(sizePerTime * (actionAhead + time), 0), ogcdSize, 0);
-            ImGui.SetCursorPos(startCursorPt + new Vector2(sizePerTime * (actionAhead + time) + (ogcdSize - size.X) / 2, (ogcdSize - size.Y) / 2));
+            ImGui.SetCursorPos(startCursorPt + new Vector2((sizePerTime * (actionAhead + time)) + ((ogcdSize - size.X) / 2), (ogcdSize - size.Y) / 2));
 
             ImGui.PushFont(DrawingExtensions.GetFont(14));
             ImGui.Text(ogcdText);
@@ -168,7 +168,7 @@ public class BasicItem : ConfigWindowItemRS
             time += timeStep;
         }
 
-        ImGui.SetCursorPosY(startCursorPt.Y + gcdSize + pingHeight * 2 + 2 * spacingHeight + ImGui.GetStyle().ItemSpacing.Y);
+        ImGui.SetCursorPosY(startCursorPt.Y + gcdSize + (pingHeight * 2) + (2 * spacingHeight) + ImGui.GetStyle().ItemSpacing.Y);
 
         ImGui.Spacing();
 
@@ -216,7 +216,7 @@ public class BasicItem : ConfigWindowItemRS
 
             var toggle = value ? FontAwesomeIcon.ArrowUp : FontAwesomeIcon.ArrowDown;
             var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X
-                - ImGuiEx.CalcIconSize(toggle).X - ImGui.GetStyle().ItemSpacing.X * 2 - 20 * Scale;
+                - ImGuiEx.CalcIconSize(toggle).X - (ImGui.GetStyle().ItemSpacing.X * 2) - (20 * Scale);
 
             ImGui.SetNextItemWidth(width);
             ImGui.InputTextWithHint($"##Rotation Solver Named Condition{i}", UiString.ConfigWindow_Condition_ConditionName.Local(),
