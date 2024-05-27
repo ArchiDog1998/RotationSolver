@@ -9,7 +9,7 @@ namespace RotationSolver.UI.ConfigWindows;
 [Description("ChangeLog")]
 public partial class ChangeLogItem : ConfigWindowItemRS
 {
-    private static string OpenLink = $"https://github.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/blob/main/CHANGELOG.md",
+    private static readonly string OpenLink = $"https://github.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/blob/main/CHANGELOG.md",
         DownloadLind = $"https://raw.githubusercontent.com/{XIVConfigUIMain.UserName}/{XIVConfigUIMain.RepoName}/main/CHANGELOG.md";
 
     private enum LineType : byte
@@ -25,11 +25,20 @@ public partial class ChangeLogItem : ConfigWindowItemRS
 
     public override void Draw(ConfigWindow window)
     {
+        using var color = ImRaii.PushColor(ImGuiCol.Button, 0);
+        var style = ImGui.GetStyle();
+
         var changeLog = GetChangeLog();
         if (string.IsNullOrEmpty(changeLog)) return;
 
         var lines = changeLog.Split('\n')
             .Where(s => !string.IsNullOrEmpty(s));
+
+        var padding = style.FramePadding;
+        style.FramePadding = default;
+
+        var spacing = style.ItemSpacing;
+        style.ItemSpacing = default;
 
         foreach (var s in lines)
         {
@@ -39,13 +48,18 @@ public partial class ChangeLogItem : ConfigWindowItemRS
 
             var fontSize = type switch
             {
-                LineType.Header => FontSize.First,
-                LineType.Version => FontSize.Second,
-                LineType.Category => FontSize.Third,
-                _ => FontSize.Fourth,
+                LineType.Header => FontSize.Second,
+                LineType.Version => FontSize.Third,
+                LineType.Category => FontSize.Fourth,
+                _ => FontSize.Fifth,
             };
 
-            using var font = ImRaii.PushFont(ImGuiHelper.GetFont(fontSize));
+            IDisposable? font = null;
+
+            if(fontSize != FontSize.Fifth)
+            {
+                font = ImRaii.PushFont(ImGuiHelper.GetFont(fontSize));
+            }
 
             if (type == LineType.Header)
             {
@@ -56,9 +70,19 @@ public partial class ChangeLogItem : ConfigWindowItemRS
             }
             else
             {
+                if(type == LineType.Item)
+                {
+                    ImGui.Text("  ");
+                    ImGui.SameLine();
+                }
                 DrawLine(line);
             }
+
+            font?.Dispose();
         }
+
+        style.FramePadding = padding;
+        style.ItemSpacing = spacing;
     }
 
     private static void DrawLine(string text)
@@ -75,9 +99,10 @@ public partial class ChangeLogItem : ConfigWindowItemRS
             ImGui.SameLine();
             DrawButton(buttonStr);
             ImGui.SameLine();
+            matched = regex.Match(text);
         }
 
-        ImGui.NewLine();
+        ImGui.Text(text);
     }
 
     private static void DrawButton(string buttonStr)
@@ -111,7 +136,7 @@ public partial class ChangeLogItem : ConfigWindowItemRS
         else if (line.StartsWith("* "))
         {
             line = line[2..];
-            return LineType.Category;
+            return LineType.Item;
         }
         else
         {

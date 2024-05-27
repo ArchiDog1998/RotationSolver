@@ -4,6 +4,7 @@ using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
+using ECommons.Automation;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
@@ -197,22 +198,7 @@ internal static class MajorUpdater
         var notification = (AtkUnitBase*)Svc.GameGui.GetAddonByName("_Notification", 1);
         if (notification == null) return;
 
-        var atkValues = (AtkValue*)Marshal.AllocHGlobal(2 * sizeof(AtkValue));
-        atkValues[0].Type = atkValues[1].Type = FFXIVClientStructs.FFXIV.Component.GUI.ValueType.Int;
-        atkValues[0].Int = 0;
-        atkValues[1].Int = 2;
-        try
-        {
-            notification->FireCallback(2, atkValues);
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Warning(ex, "Failed to close the window!");
-        }
-        finally
-        {
-            Marshal.FreeHGlobal(new IntPtr(atkValues));
-        }
+        Callback.Fire(notification, false, 0, 2);
     }
 
     static DateTime _nextOpenTime = DateTime.Now;
