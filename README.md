@@ -18,10 +18,9 @@ https://raw.githubusercontent.com/ArchiDog1998/DalamudPlugins/main/pluginmaster.
 > This plugin will not be fully open source, so the base library will not be fully public. 
 >
 
-For now there are three ways to get it:
+For now there are two ways to get it:
 - Try the community version of [Rotation Solver Reborn](https://github.com/FFXIV-CombatReborn/RotationSolverReborn) (not mine). 
 - Build it by yourself from the release files.
-- Buy the built dev version for $2 in [Ko-fi](https://ko-fi.com/s/7cf5ff0de3) and follow the instructions there to help you run it within Dalamud.
 
 On relaunch there will be 2 versions:
 
