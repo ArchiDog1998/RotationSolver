@@ -64,16 +64,16 @@ internal class SocialUpdater
 
     static async void DutyState_DutyCompleted(object? sender, ushort e)
     {
+        if (Service.Config.AutoOffWhenDutyCompleted)
+        {
+            RSCommands.CancelState();
+        }
+
         if (DataCenter.PartyMembers.Length < 2) return;
 
         await Task.Delay(new Random().Next(4000, 6000));
 
         Service.Config.DutyEnd.AddMacro();
-
-        if (Service.Config.AutoOffWhenDutyCompleted)
-        {
-            RSCommands.CancelState();
-        }
     }
 
     static void ClientState_TerritoryChanged(ushort id)
