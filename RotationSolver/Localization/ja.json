@@ -571,7 +571,6 @@
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Condition_DutyName": "Duty Name",
   "RotationSolver.Basic.Data.UiString.HighEndWarning": "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!",
   "RotationSolver.Basic.Data.UiString.AvariceWarning": "Avarice addon was not detected, please install it if you want to get the positional indicators for Rotation Solver!",
-  "RotationSolver.Basic.Data.UiString.TextToTalkWarning": "TextToTalk addon was not detected, please install it to make Rotation Solver give audio notifications!",
   "RotationSolver.Basic.Data.UiString.ForcedEnableCondition": "Use Forced Enable Condition",
   "RotationSolver.Basic.Data.UiString.ForcedEnableConditionDesc": "The conditions of forced to make it true.",
   "RotationSolver.Basic.Data.UiString.ForcedDisableCondition": "Use Forced Disable Condition",
@@ -789,5 +788,6 @@
   "RotationSolver.UI.ConfigWindows.ExtraItem": "Extra",
   "RotationSolver.UI.ConfigWindows.DebugItem": "Debug",
   "RotationSolver.UI.ConfigWindows.ChangeLogItem": "ChangeLog",
-  "RotationSolver.Basic.Data.UiString.CantFarmThisDuty": "The duty {0} can only be farmed by supporters! Please do it next day!"
+  "RotationSolver.Basic.Data.UiString.CantFarmThisDuty": "The duty {0} can only be farmed by supporters! Please do it next day!",
+  "RotationSolver.Basic.Configuration.ConfigsName.VoiceVolume": "The Audio voice volume"
 }
