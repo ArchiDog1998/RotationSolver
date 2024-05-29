@@ -53,6 +53,7 @@ public static partial class RSCommands
         {
             case StateCommandType.Off:
                 DataCenter.State = false;
+                DataCenter.IsManual = false;
                 break;
 
             case StateCommandType.Auto:
