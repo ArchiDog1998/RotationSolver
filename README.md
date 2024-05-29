@@ -12,6 +12,7 @@ The official relaunch of this plugin will be available at this link along with t
 ```
 https://raw.githubusercontent.com/ArchiDog1998/DalamudPlugins/main/pluginmaster.json
 ```
+[![Discord](https://discordapp.com/api/guilds/1228953752585637908/embed.png?style=banner2)](https://discord.gg/9D4E8eZW5g)
 
 > [! IMPORTANT]
 >
