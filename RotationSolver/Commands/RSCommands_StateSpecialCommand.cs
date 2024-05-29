@@ -92,6 +92,6 @@ public static partial class RSCommands
         T type = doingSomething(role);
 
         //Saying out.
-        if (Service.Config.SayOutStateChanged) SpeechHelper.Speak(sayout(type, role));
+        SpeechHelper.Speak(sayout(type, role));
     }
 }

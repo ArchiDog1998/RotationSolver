@@ -1,41 +1,39 @@
-﻿using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Game.Text.SeStringHandling.Payloads;
-using Dalamud.Plugin;
-using ECommons.DalamudServices;
-using ECommons.Reflection;
+﻿using System.Diagnostics;
+using System.Text;
 
 namespace RotationSolver.Helpers;
 
 internal static class SpeechHelper
 {
-    static IDalamudPlugin? _textToTalk = null;
-    static MethodInfo? _say = null;
-    static object? _manager = null;
-    static MethodInfo? _stop = null;
-
     internal static void Speak(string text)
     {
-        if (_textToTalk == null)
+        if (!Service.Config.SayOutStateChanged) return;
+
+        ExecuteCommand(
+        $@"Add-Type -AssemblyName System.speech; 
+               $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; 
+               $speak.Volume = ""{Service.Config.VoiceVolume}"";
+               $speak.Speak(""{text}"");");
+
+        static void ExecuteCommand(string command)
         {
-            if (!DalamudReflector.TryGetDalamudPlugin("TextToTalk", out _textToTalk))
+            string path = Path.GetTempPath() + Guid.NewGuid() + ".ps1";
+
+            // make sure to be using System.Text
+            using StreamWriter sw = new(path, false, Encoding.UTF8);
+            sw.Write(command);
+
+            ProcessStartInfo start = new()
             {
-                return;
-            }
-        }
+                FileName = @"C:\Windows\System32\windowspowershell\v1.0\powershell.exe",
+                LoadUserProfile = false,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                Arguments = $"-executionpolicy bypass -File {path}",
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
 
-        _say ??= _textToTalk?.GetType().GetRuntimeMethods().FirstOrDefault(m => m.Name == "Say");
-        _manager ??= _textToTalk?.GetType().GetRuntimeFields().FirstOrDefault(m => m.Name == "backendManager")?.GetValue(_textToTalk);
-        _stop ??= _manager?.GetType().GetRuntimeMethods().FirstOrDefault(m => m.Name == "CancelAllSpeech");
-
-        try
-        {
-            _stop?.Invoke(_manager, []);
-
-            _say?.Invoke(_textToTalk, [null, new SeString(new TextPayload("Rotation Solver")), text, 2]);
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Warning(ex, "Something wrong with TTT.");
+            Process.Start(start);
         }
     }
 }
