@@ -28,7 +28,7 @@ On relaunch there will be 2 versions:
 - Free edition (for most of the game)
 - Supporter edition (which will have support for extra/endgame features)
 	- Get it on [Patreon](https://www.patreon.com/ArchiDog1998) for a monthly subscription
-	- Get it on [Ko-fi](https://ko-fi.com/s/7cf5ff0de3) for either a subscription
+	- Get it on [Ko-fi](https://ko-fi.com/s/7cf5ff0de3) for a subscription
 
 
 ## Description
@@ -67,7 +67,7 @@ I don't know why. I just used the [GetIsTargetable](https://github.com/aers/FFXI
 
 ## Links
 
-If you have any questions about how to use Rotation Solver, please check the [Wiki](https://archidog1998.github.io/RotationSolver.Templates/#/) or read the wall of text on the [Discord](https://notavaliablefornow).
+If you have any questions about how to use Rotation Solver, please check the [Wiki](https://archidog1998.github.io/RotationSolver.Templates/#/) or read the wall of text on the [Discord](https://discord.gg/9D4E8eZW5g).
 
 The rotation files are [here](https://github.com/ArchiDog1998/FFXIVRotations). If you want to, use them as a guideline, but please don't copy them, make your own rotation.
 
