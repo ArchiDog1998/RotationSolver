@@ -788,5 +788,6 @@
   "RotationSolver.UI.ConfigWindows.ExtraItem": "Extra",
   "RotationSolver.UI.ConfigWindows.DebugItem": "Debug",
   "RotationSolver.UI.ConfigWindows.ChangeLogItem": "ChangeLog",
-  "RotationSolver.Basic.Data.UiString.CantFarmThisDuty": "The duty {0} can only be farmed by supporters! Please do it next day!"
+  "RotationSolver.Basic.Data.UiString.CantFarmThisDuty": "The duty {0} can only be farmed by supporters! Please do it next day!",
+  "RotationSolver.Basic.Configuration.ConfigsName.VoiceVolume": "The Audio voice volume"
 }
