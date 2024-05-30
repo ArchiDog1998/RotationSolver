@@ -116,7 +116,7 @@ internal static class MajorUpdater
                     }
                 }),
                 new UIForegroundPayload(31),
-                new TextPayload("AE Assist 2.0"),
+                new TextPayload("AE Assist 3.0"),
                 UIForegroundPayload.UIForegroundOff,
                 RawPayload.LinkTerminator,
                 new TextPayload("！"));
@@ -131,10 +131,6 @@ internal static class MajorUpdater
         if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "Avarice"))
         {
             UiString.AvariceWarning.Local().ShowWarning(0);
-        }
-        if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "TextToTalk"))
-        {
-            UiString.TextToTalkWarning.Local().ShowWarning(0);
         }
     }
 
