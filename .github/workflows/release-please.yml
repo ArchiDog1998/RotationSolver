@@ -50,14 +50,6 @@ jobs:
         with:
           path: .\RotationSolver\bin\Release\net8.0-windows\RotationSolver\
 
-      - name: publish on version change
-        id: publish_nuget
-        uses: alirezanet/publish-nuget@v3.0.4
-        with:
-          PROJECT_FILE_PATH: RotationSolver.Basic/RotationSolver.Basic.csproj
-          VERSION_FILE_PATH: Directory.Build.props
-          NUGET_KEY: ${{secrets.nuget_api_key}}
-
   release:
     name: release
     needs: [release-please, build]
@@ -65,6 +57,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
 
       - name: Download Build Artifact
         uses: actions/download-artifact@v3
