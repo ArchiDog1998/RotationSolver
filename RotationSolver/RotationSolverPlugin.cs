@@ -116,7 +116,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Service.Config.Save();
 
         ECommonsMain.Dispose();
-
     }
 
     private void OnOpenConfigUi()
