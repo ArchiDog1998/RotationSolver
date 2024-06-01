@@ -7,8 +7,6 @@
 ![Github License](https://img.shields.io/github/license/ArchiDog1998/RotationSolver.svg?label=License&style=for-the-badge)
 ![Github Commits](https://img.shields.io/github/commits-since/ArchiDog1998/RotationSolver/latest/main?style=for-the-badge)
 
-The official relaunch of this plugin will be available at this link along with the release of the 7.0 :boat:Dawntrail :boat: expansion!
-
 ```
 https://raw.githubusercontent.com/ArchiDog1998/DalamudPlugins/main/pluginmaster.json
 ```
@@ -19,11 +17,8 @@ https://raw.githubusercontent.com/ArchiDog1998/DalamudPlugins/main/pluginmaster.
 > This plugin will not be fully open source, so the base library will not be fully public. 
 >
 
-For now there are two ways to get it:
-- Try the community version of [Rotation Solver Reborn](https://github.com/FFXIV-CombatReborn/RotationSolverReborn) (not mine). 
-- Build it by yourself from the release files.
 
-On relaunch there will be 2 versions:
+There will be 2 versions:
 
 - Free edition (for most of the game)
 - Supporter edition (which will have support for extra/endgame features)
