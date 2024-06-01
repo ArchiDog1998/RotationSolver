@@ -323,7 +323,6 @@
   "RotationSolver.Data.UiString.ConfigWindow_EventItem": "Event",
   "RotationSolver.Data.UiString.ConfigWindow_Extra_Others": "Others",
   "RotationSolver.Basic.Configuration.ConfigsName.PoslockCasting": "Locks the movement when casting or when doing some other actions.",
-  "RotationSolver.Basic.Configuration.ConfigsName.ReplaceIcon": "Replaces the action icon.",
   "RotationSolver.Basic.Configuration.ConfigsName.UseStopCasting": "Stops casting when the target is dead.",
   "RotationSolver.Basic.Configuration.ConfigsName.AutoOpenChest": "Auto opens treasure chests.",
   "RotationSolver.Basic.Configuration.ConfigsName.PosPassageOfArms": "Boolean PosPassageOfArms",
