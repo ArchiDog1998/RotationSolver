@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/ArchiDog1998/RotationSolver/compare/v1.0.0...v1.0.1) (2024-06-01)
+
+
+### Bug Fixes
+
+* raise the version. ([ff57ca6](https://github.com/ArchiDog1998/RotationSolver/commit/ff57ca6e1605db4a771597e7bc44b700afcd0e6b))
+
 ## 4.3.0 (2024-06-01)
 
 
