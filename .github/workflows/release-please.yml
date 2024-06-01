@@ -13,10 +13,9 @@ jobs:
       upload_url: ${{ steps.rp.outputs.upload_url }}
     steps:
       - id: rp
-        uses: google-github-actions/release-please-action@v3
+        uses: googleapis/release-please-action@v4
         with:
-          release-type: node
-          package-name: release-please-action
+          release-type: simple
 
   build:
     name : build
