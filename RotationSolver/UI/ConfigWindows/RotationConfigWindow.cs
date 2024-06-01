@@ -440,6 +440,16 @@ public class RotationConfigWindow : ConfigWindow
             }, width, ImGui.CalcTextSize(countStr).X);
         }
 
+        {
+            using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.8f, 0.95f, 1));
+            var countStr = string.Format(UiString.ConfigWindow_About_UserCount.Local(), DownloadHelper.UsersHash.Length);
+
+            ImGuiHelper.DrawItemMiddle(() =>
+            {
+                ImGui.TextWrapped(countStr);
+            }, width, ImGui.CalcTextSize(countStr).X);
+        }
+
         if (!DownloadHelper.IsSupporter)
         {
             var notSupporter = UiString.NotSupporterWarning.Local();
