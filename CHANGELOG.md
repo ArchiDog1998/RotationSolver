@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.0.1](https://github.com/ArchiDog1998/RotationSolver/compare/v5.0.0...v5.0.1) (2024-06-02)
+
+
+### Bug Fixes
+
+* add supporting thanks. ([7926862](https://github.com/ArchiDog1998/RotationSolver/commit/79268628498c6d90a16e08b9e856aa4a73a53a64))
+* add the users count feature. ([d042b9c](https://github.com/ArchiDog1998/RotationSolver/commit/d042b9c9b93abb522b9ed762fd2bebc6f43fc1fb))
+* remove the icon replace feature, it may occur crash. ([5700c1b](https://github.com/ArchiDog1998/RotationSolver/commit/5700c1b4ebc40256c8475f0b462b49be9b5d1564))
+* the version. ([ecf17b3](https://github.com/ArchiDog1998/RotationSolver/commit/ecf17b3622edc01cb8ac98a6b7acce6134b29435))
+
 ## [5.0.0](https://github.com/ArchiDog1998/RotationSolver/compare/v4.0.0...v5.0.0) (2024-06-01)
 
 
