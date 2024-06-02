@@ -441,7 +441,7 @@ public class RotationConfigWindow : ConfigWindow
         }
 
         {
-            using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 0.8f, 0.95f, 1));
+            using var color = ImRaii.PushColor(ImGuiCol.Text, new Vector4(0.2f, 1f, 0.95f, 1));
             var countStr = string.Format(UiString.ConfigWindow_About_UserCount.Local(), DownloadHelper.UsersHash.Length);
 
             ImGuiHelper.DrawItemMiddle(() =>
@@ -450,13 +450,14 @@ public class RotationConfigWindow : ConfigWindow
             }, width, ImGui.CalcTextSize(countStr).X);
         }
 
-        if (!DownloadHelper.IsSupporter)
         {
-            var notSupporter = UiString.NotSupporterWarning.Local();
+            var isSupporter = DownloadHelper.IsSupporter;
+
+            var notSupporter = isSupporter ? UiString.ThanksForSupporting.Local() : UiString.NotSupporterWarning.Local();
 
             ImGuiHelper.DrawItemMiddle(() =>
             {
-                using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+                using var color = ImRaii.PushColor(ImGuiCol.Text, isSupporter ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudRed);
                 ImGui.TextWrapped(notSupporter);
             }, width, ImGui.CalcTextSize(notSupporter).X);
         }
