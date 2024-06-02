@@ -38,7 +38,6 @@ internal static class MajorUpdater
         RotationSolverPlugin.UpdateDisplayWindow();
         if (!IsValid)
         {
-            TargetUpdater.ClearTarget();
             ActionUpdater.ClearNextAction();
             CustomRotation.MoveTarget = null;
             return;

@@ -1,10 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Objects.Enums;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
 using RotationSolver.Basic.Rotations.Duties;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -17,16 +20,11 @@ internal static class DataCenter
     private static uint _hostileTargetId = GameObject.InvalidGameObjectId;
 
     public static bool IsActivated() => State || IsManual || Service.Config.TeachingMode;
+
     internal static BattleChara? HostileTarget
     {
-        get
-        {
-            return Svc.Objects.SearchById(_hostileTargetId) as BattleChara;
-        }
-        set
-        {
-            _hostileTargetId = value?.ObjectId ?? GameObject.InvalidGameObjectId;
-        }
+        get => Svc.Objects.SearchById(_hostileTargetId) as BattleChara;
+        set => _hostileTargetId = value?.ObjectId ?? GameObject.InvalidGameObjectId;
     }
 
     internal static List<uint> PrioritizedNameIds { get; set; } = new();
@@ -64,7 +62,9 @@ internal static class DataCenter
     /// Only recorded 15s hps.
     /// </summary>
     public const int HP_RECORD_TIME = 240;
-    internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } = new(HP_RECORD_TIME + 1);
+
+    internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } =
+        new(HP_RECORD_TIME + 1);
 
     public static ICustomRotation? RightNowRotation { get; internal set; }
     public static DutyRotation? RightNowDutyRotation { get; internal set; }
@@ -72,11 +72,12 @@ internal static class DataCenter
     public static Dictionary<string, DateTime> SystemWarnings { get; set; } = new();
 
     internal static bool NoPoslock => Svc.Condition[ConditionFlag.OccupiedInEvent]
-        || !Service.Config.PoslockCasting
-        //Key cancel.
-        || Svc.KeyState[Service.Config.PoslockModifier.ToVirtual()]
-        //Gamepad cancel.
-        || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.R1) >= 0.5f;
+                                      || !Service.Config.PoslockCasting
+                                      //Key cancel.
+                                      || Svc.KeyState[Service.Config.PoslockModifier.ToVirtual()]
+                                      //Gamepad cancel.
+                                      || Svc.GamepadState.Raw(Dalamud.Game.ClientState.GamePad.GamepadButtons.R1) >=
+                                      0.5f;
 
     internal static DateTime EffectTime { private get; set; } = DateTime.Now;
     internal static DateTime EffectEndTime { private get; set; } = DateTime.Now;
@@ -88,12 +89,14 @@ internal static class DataCenter
     internal static Dictionary<ulong, uint> HealHP { get; set; } = [];
     internal static Dictionary<ulong, uint> ApplyStatus { get; set; } = [];
     internal static uint MPGain { get; set; }
+
     internal static bool HasApplyStatus(uint id, StatusID[] ids)
     {
         if (InEffectTime && ApplyStatus.TryGetValue(id, out var statusId))
         {
             if (ids.Any(s => (ushort)s == statusId)) return true;
         }
+
         return false;
     }
 
@@ -108,7 +111,9 @@ internal static class DataCenter
     public static string ContentFinderName => ContentFinder?.Name?.RawString ?? "Duty";
 
     public static bool IsInHighEndDuty => ContentFinder?.HighEndDuty ?? false;
-    public static TerritoryContentType TerritoryContentType => (TerritoryContentType)(ContentFinder?.ContentType?.Value?.RowId ?? 0);
+
+    public static TerritoryContentType TerritoryContentType =>
+        (TerritoryContentType)(ContentFinder?.ContentType?.Value?.RowId ?? 0);
 
     public static AutoStatus MergedStatus => AutoStatus | CommandStatus;
 
@@ -119,20 +124,24 @@ internal static class DataCenter
 
     private static List<NextAct> NextActs = [];
     public static IAction? ActionSequencerAction { private get; set; }
+
     public static IAction? CommandNextAction
     {
         get
         {
             var next = NextActs.FirstOrDefault();
 
-            while (next != null && NextActs.Count > 0 && (next.DeadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.Act)))
+            while (next != null && NextActs.Count > 0 &&
+                   (next.DeadTime < DateTime.Now || IActionHelper.IsLastAction(true, next.Act)))
             {
                 NextActs.RemoveAt(0);
                 next = NextActs.FirstOrDefault();
             }
+
             return next?.Act ?? ActionSequencerAction;
         }
     }
+
     public static Job Job => Player.Job;
 
     public static JobRole Role => Service.GetSheet<ClassJob>().GetRow((uint)Job)?.GetJobRole() ?? JobRole.None;
@@ -149,6 +158,7 @@ internal static class DataCenter
         {
             NextActs[index] = newItem;
         }
+
         NextActs = [.. NextActs.OrderBy(i => i.DeadTime)];
     }
 
@@ -156,6 +166,7 @@ internal static class DataCenter
 
     public static unsafe ActionID LastComboAction => (ActionID)ActionManager.Instance()->Combo.Action;
     public static unsafe float ComboTime => ActionManager.Instance()->Combo.Timer;
+
     public static TargetingType TargetingType
     {
         get
@@ -182,8 +193,8 @@ internal static class DataCenter
             try
             {
                 if (Service.Config.ChangeTargetForFate && (IntPtr)FateManager.Instance() != IntPtr.Zero
-                    && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
-                    && Player.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
+                                                       && (IntPtr)FateManager.Instance()->CurrentFate != IntPtr.Zero
+                                                       && Player.Level <= FateManager.Instance()->CurrentFate->MaxLevel)
                 {
                     return FateManager.Instance()->CurrentFate->FateId;
                 }
@@ -192,23 +203,28 @@ internal static class DataCenter
             {
                 Svc.Log.Error(ex.StackTrace ?? ex.Message);
             }
+
             return 0;
         }
     }
 
     #region GCD
+
     public static float DefaultGCDTotal => ActionManagerHelper.GetDefaultRecastTime();
 
-    public static float DefaultGCDRemain => ActionManagerHelper.GetDefaultRecastTime() - ActionManagerHelper.GetDefaultRecastTimeElapsed();
+    public static float DefaultGCDRemain =>
+        ActionManagerHelper.GetDefaultRecastTime() - ActionManagerHelper.GetDefaultRecastTimeElapsed();
 
     public static float DefaultGCDElapsed => ActionManagerHelper.GetDefaultRecastTimeElapsed();
 
-    public static float ActionAhead => Service.Config.OverrideActionAheadTimer ? Service.Config.Action4Head : CalculatedActionAhead;
+    public static float ActionAhead =>
+        Service.Config.OverrideActionAheadTimer ? Service.Config.Action4Head : CalculatedActionAhead;
 
     public static float CalculatedActionAhead => DefaultGCDTotal * 0.25f;
 
     public static float GCDTime(uint gcdCount = 0, float offset = 0)
-        => ActionManagerHelper.GetDefaultRecastTime() * gcdCount + offset;
+        => ActionManagerHelper.GetDefaultRecastTime();
+
     #endregion
 
 
@@ -221,12 +237,10 @@ internal static class DataCenter
     public static double SpecialTimeLeft => Service.Config.SpecialDuration - SpecialTimeElapsed;
 
     static SpecialCommandType _specialType = SpecialCommandType.EndSpecial;
+
     internal static SpecialCommandType SpecialType
     {
-        get
-        {
-            return SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
-        }
+        get => SpecialTimeLeft < 0 ? SpecialCommandType.EndSpecial : _specialType;
         set
         {
             _specialType = value;
@@ -249,12 +263,13 @@ internal static class DataCenter
 
     internal static float CombatTimeRaw { get; set; }
     private static DateTime _startRaidTime = DateTime.MinValue;
+
     internal static float RaidTimeRaw
     {
         get
         {
             if (_startRaidTime == DateTime.MinValue) return 0;
-            return (float)(DateTime.Now - _startRaidTime).TotalSeconds;    
+            return (float)(DateTime.Now - _startRaidTime).TotalSeconds;
         }
         set
         {
@@ -275,77 +290,195 @@ internal static class DataCenter
 
     internal static TimelineItem[] TimelineItems { get; set; } = [];
 
-    public static BattleChara[] PartyMembers { get; internal set; } = [];
-    public static BattleChara[] AllianceMembers { get; internal set; } = [];
-    public static BattleChara[] AllHostileTargets { get; internal set; } = [];
+    public unsafe static BattleChara[] PartyMembers => AllianceMembers.Where(ObjectHelper.IsParty)
+        .Where(b => b.Character()->CharacterData.OnlineStatus != 15 && b.IsTargetable).ToArray();
 
-    public static BattleChara? InterruptTarget { get; internal set; }
+    public unsafe static BattleChara[] AllianceMembers => AllTargets.Where(ObjectHelper.IsAlliance)
+        .Where(b => b.Character()->CharacterData.OnlineStatus != 15 && b.IsTargetable).ToArray();
 
-    public static BattleChara? ProvokeTarget { get; internal set; }
-    public static BattleChara? DeathTarget { get; internal set; }
-    public static BattleChara? DispelTarget { get; internal set; }
+    public static BattleChara[] AllHostileTargets
+    {
+        get
+        {
+            return AllTargets.Where(b =>
+            {
+                if (!b.IsEnemy()) return false;
 
-    public static ObjectListDelay<BattleChara> AllTargets { get; } = new(() => Service.Config.TargetDelay);
+                //Dead.
+                if (b.CurrentHp <= 1) return false;
+
+                if (!b.IsTargetable) return false;
+                
+                if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
+                return true;
+            }).ToArray();
+        }
+    }
+
+    public static BattleChara? InterruptTarget =>
+        AllHostileTargets.FirstOrDefault(ObjectHelper.CanInterrupt);
+
+    public static BattleChara? ProvokeTarget => AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke);
+
+    public static BattleChara? DeathTarget
+    {
+        get
+        {
+            var deathAll = AllianceMembers.GetDeath();
+            var deathParty = PartyMembers.GetDeath();
+            
+            if (deathParty.Any())
+            {
+                var deathT = deathParty.GetJobCategory(JobRole.Tank);
+
+                if (deathT.Count() > 1)
+                {
+                    return deathT.FirstOrDefault();
+                }
+
+                var deathH = deathParty.GetJobCategory(JobRole.Healer);
+
+                if (deathH.Any()) return deathH.FirstOrDefault();
+
+                if (deathT.Any()) return deathT.FirstOrDefault();
+
+                return deathParty.FirstOrDefault();
+            }
+
+            if (deathAll.Any() && Service.Config.RaiseAll)
+            {
+                var deathAllH = deathAll.GetJobCategory(JobRole.Healer);
+                if (deathAllH.Any()) return deathAllH.FirstOrDefault();
+
+                var deathAllT = deathAll.GetJobCategory(JobRole.Tank);
+                if (deathAllT.Any()) return deathAllT.FirstOrDefault();
+
+                return deathAll.FirstOrDefault();
+            }
+
+            return null;
+
+        }
+    }
+
+    public static BattleChara? DispelTarget
+    {
+        get
+        {
+            var weakenPeople = DataCenter.PartyMembers.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
+            var dyingPeople = weakenPeople.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
+
+            return dyingPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault()
+                                      ?? weakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
+        }
+    }
+
+    public static BattleChara[] AllTargets => Svc.Objects.OfType<BattleChara>().GetObjectInRadius(30)
+        .Where(o => !o.IsDummy() || !Service.Config.DisableTargetDummys).ToArray();
 
     public static uint[] TreasureCharas { get; internal set; } = [];
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
     public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;
-    public static int NumberOfHostilesInRange { get; internal set; }
-    public static int NumberOfHostilesInMaxRange { get; internal set; }
-    public static int NumberOfAllHostilesInRange { get; internal set; }
-    public static int NumberOfAllHostilesInMaxRange { get; internal set; }
-    public static bool MobsTime { get; internal set; }
+    public static int NumberOfHostilesInRange => AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
+    public static int NumberOfHostilesInMaxRange => AllHostileTargets.Count(o => o.DistanceToPlayer() <= 25);
+    public static int NumberOfAllHostilesInRange => AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
+    public static int NumberOfAllHostilesInMaxRange => AllHostileTargets.Count(o => o.DistanceToPlayer() <= 25);
+    public static bool MobsTime => AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
+                                   >= Service.Config.AutoDefenseNumber;
 
-    private static float _averageTimeToKill;
-    public static float AverageTimeToKill 
+    public static bool AreHostilesCastingKnockback => AllHostileTargets.Any(IsHostileCastingKnockback);
+    
+    public static float JobRange
     {
-        get => _averageTimeToKill;
-        internal set
+        get
         {
-            _averageTimeToKill = value;
-
-            foreach (var item in TimelineItems)
+            float radius = 25;
+            if (!Player.Available) return radius;
+           
+            switch (DataCenter.Role)
             {
-                if (item.Time < RaidTimeRaw) continue;
-                if (item.Name is not "--untargetable--") continue;
-
-                var time = item.Time - RaidTimeRaw;
-                TimeToUntargetable = MathF.Min(time, _averageTimeToKill);
-                return;
+                case JobRole.Tank:
+                case JobRole.Melee:
+                    radius = 3;
+                    break;
             }
+            return radius;
+        }
+    }
 
-            TimeToUntargetable = _averageTimeToKill;
+    public static float AverageTimeToKill
+    {
+        get
+        {
+            return DataCenter.AllHostileTargets.Select(b => b.GetTimeToKill()).Where(v => !float.IsNaN(v)).Average();
         }
     }
 
     public static float TimeToUntargetable { get; private set; }
 
-    public static bool IsHostileCastingAOE { get; internal set; }
+    public static bool IsHostileCastingAOE => IsCastingAreaVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingArea);
 
-    public static bool IsHostileCastingToTank { get; internal set; }
+    public static bool IsHostileCastingToTank => IsCastingTankVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingTank);
 
-    public static bool IsHostileCastingKnockback { get; internal set; }
-
-    public static bool HasPet { get; internal set; }
+    public static bool HasPet
+    {
+        get
+        {
+            var mayPet = AllTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.ObjectId);
+            return mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
+        }
+    }
 
     public static unsafe bool HasCompanion => (IntPtr)Player.BattleChara != IntPtr.Zero
-                                           && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(Player.BattleChara) != IntPtr.Zero;
+                                              && (IntPtr)CharacterManager.Instance()->LookupBuddyByOwnerObject(
+                                                  Player.BattleChara) != IntPtr.Zero;
 
     #region HP
-    public static Dictionary<uint, float> RefinedHP { get; internal set; } = [];
 
-    public static IEnumerable<float> PartyMembersHP { get; internal set; } = [];
-    public static float PartyMembersMinHP { get; internal set; }
-    public static float PartyMembersAverHP { get; internal set; }
-    public static float PartyMembersDifferHP { get; internal set; }
+    public static Dictionary<uint, float> RefinedHP => PartyMembers
+        .ToDictionary(p => p.ObjectId, GetPartyMemberHPRatio);
+    
+    private static Dictionary<uint, uint> _lastHp = [];
+    private static float GetPartyMemberHPRatio(BattleChara member)
+    {
+        if (member == null) return 0;
 
-    public static bool HPNotFull { get; internal set; }
+        if (!DataCenter.InEffectTime
+            || !DataCenter.HealHP.TryGetValue(member.ObjectId, out var hp))
+        {
+            return (float)member.CurrentHp / member.MaxHp;
+        }
 
-    public static uint CurrentMp { get; internal set; }
+        var rightHp = member.CurrentHp;
+        if (rightHp > 0)
+        {
+            if (!_lastHp.TryGetValue(member.ObjectId, out var lastHp)) lastHp = rightHp;
+
+            if (rightHp - lastHp == hp)
+            {
+                DataCenter.HealHP.Remove(member.ObjectId);
+                return (float)member.CurrentHp / member.MaxHp;
+            }
+            return Math.Min(1, (hp + rightHp) / (float)member.MaxHp);
+        }
+        return (float)member.CurrentHp / member.MaxHp;
+    }
+
+    public static IEnumerable<float> PartyMembersHP => RefinedHP.Values.Where(r => r > 0);
+    public static float PartyMembersMinHP => PartyMembersHP.Any() ? DataCenter.PartyMembersHP.Min() : 0;
+    public static float PartyMembersAverHP => PartyMembersHP.Average();
+    public static float PartyMembersDifferHP => (float)Math.Sqrt(DataCenter.PartyMembersHP.Average(d => Math.Pow(d - DataCenter.PartyMembersAverHP, 2)));
+
+    public static bool HPNotFull => PartyMembersMinHP < 1;
+
+    public static uint CurrentMp => Math.Min(10000, Player.Object.CurrentMp + MPGain);
+
     #endregion
+
     internal static Queue<MacroItem> Macros { get; } = new Queue<MacroItem>();
 
     #region Action Record
+
     const int QUEUECAPACITY = 32;
     private static readonly Queue<ActionRec> _actions = new(QUEUECAPACITY);
     private static readonly Queue<DamageRec> _damages = new(QUEUECAPACITY);
@@ -384,6 +517,7 @@ internal static class DataCenter
     public static ActionID LastAbility { get; private set; } = 0;
 
     public const float DefaultAnimationLock = 0.6f;
+
     internal static unsafe void AddActionRec(Action act)
     {
         if (!Player.Available) return;
@@ -408,6 +542,7 @@ internal static class DataCenter
         {
             _actions.Dequeue();
         }
+
         _timeLastActionUsed = DateTime.Now;
         _actions.Enqueue(new ActionRec(_timeLastActionUsed, act));
     }
@@ -431,12 +566,93 @@ internal static class DataCenter
         {
             _damages.Dequeue();
         }
+
         _damages.Enqueue(new DamageRec(DateTime.Now, damageRatio));
     }
 
     internal static DateTime KnockbackFinished { get; set; } = DateTime.MinValue;
     internal static DateTime KnockbackStart { get; set; } = DateTime.MinValue;
+
     #endregion
 
     internal static SortedList<string, string> AuthorHashes { get; set; } = [];
+    
+        private static bool IsCastingTankVfx()
+    {
+        return IsCastingVfx(s =>
+        {
+            if (!s.Path.StartsWith("vfx/lockon/eff/tank_lockon")) return false;
+            if (!Player.Available) return false;
+            if (Player.Object.IsJobCategory(JobRole.Tank) && s.ObjectId != Player.Object.ObjectId) return false;
+
+            return true;
+        });
+    }
+    private static bool IsCastingAreaVfx()
+    {
+        return IsCastingVfx(s => s.Path.StartsWith("vfx/lockon/eff/coshare"));
+    }
+
+    private static bool IsCastingVfx(Func<VfxNewData, bool> isVfx)
+    {
+        if (isVfx == null) return false;
+        try
+        {
+            foreach (var item in DataCenter.VfxNewData.Reverse())
+            {
+                if (item.TimeDuration.TotalSeconds is > 1 and < 5)
+                {
+                    if (isVfx(item)) return true;
+                }
+            }
+        }
+        catch
+        {
+
+        }
+
+        return false;
+    }
+
+    private static bool IsHostileCastingTank(BattleChara h)
+    {
+        return IsHostileCastingBase(h, (act) =>
+        {
+            return OtherConfiguration.HostileCastingTank.Contains(act.RowId)
+                || h.CastTargetObjectId == h.TargetObjectId;
+        });
+    }
+
+    private static bool IsHostileCastingArea(BattleChara h)
+    {
+        return IsHostileCastingBase(h, (act) =>
+        {
+            return OtherConfiguration.HostileCastingArea.Contains(act.RowId);
+        });
+    }
+
+    public static bool IsHostileCastingKnockback(BattleChara h)
+    {
+        return IsHostileCastingBase(h, (act) =>
+        {
+            return OtherConfiguration.HostileCastingKnockback.Contains(act.RowId);
+        });
+    }
+
+    private static bool IsHostileCastingBase(BattleChara h, Func<Action, bool> check)
+    {
+        if (!h.IsCasting) return false;
+
+        if (h.IsCastInterruptible) return false;
+        var last = h.TotalCastTime - h.CurrentCastTime;
+        var t = last - DataCenter.DefaultGCDTotal;
+
+        if (!(h.TotalCastTime > 2.5 &&
+            t > 0 && t < DataCenter.GCDTime(2))) return false;
+
+        var action = Service.GetSheet<Action>().GetRow(h.CastActionId);
+        if (action == null) return false;
+        return check?.Invoke(action) ?? false;
+    }
+
 }

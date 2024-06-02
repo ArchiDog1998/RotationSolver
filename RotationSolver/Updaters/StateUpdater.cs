@@ -115,7 +115,7 @@ internal static class StateUpdater
                     status |= AutoStatus.DefenseArea;
                 }
 
-                if (DataCenter.IsHostileCastingKnockback && !hasTimeline && Service.Config.UseKnockback)
+                if (DataCenter.AreHostilesCastingKnockback && !hasTimeline && Service.Config.UseKnockback)
                 {
                     status |= AutoStatus.AntiKnockback;
                 }
