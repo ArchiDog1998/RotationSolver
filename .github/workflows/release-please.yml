@@ -62,6 +62,16 @@ jobs:
       - name: Download Build Artifact
         uses: actions/download-artifact@v3
 
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release-please.outputs.upload_url }}
+          asset_path: artifact/latest.zip
+          asset_name: latest.zip
+          asset_content_type: application/zip
+
       - name: Trigger Repo Update
         uses: peter-evans/repository-dispatch@v2
         with:
