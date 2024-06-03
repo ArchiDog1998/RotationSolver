@@ -14,16 +14,14 @@ internal static partial class TargetUpdater
     static readonly ObjectListDelay<BattleChara> 
         _raisePartyTargets = new(() => Service.Config.RaiseDelay),
         _raiseAllTargets = new(() => Service.Config.RaiseDelay);
-    internal unsafe static void UpdateTarget()
+    internal static void UpdateTarget()
     {
-        UpdateTimeToKill(DataCenter.AllHostileTargets);
-
-        UpdateNamePlate(DataCenter.AllTargets);
+        UpdateTimeToKill();
     }
 
     private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;
     private static readonly TimeSpan _timeToKillSpan = TimeSpan.FromSeconds(0.5);
-    private static void UpdateTimeToKill(IEnumerable<BattleChara> allTargets)
+    private static void UpdateTimeToKill()
     {
         var now = DateTime.Now;
         if (now - _lastUpdateTimeToKill < _timeToKillSpan) return;
@@ -34,20 +32,7 @@ internal static partial class TargetUpdater
             DataCenter.RecordedHP.Dequeue();
         }
 
-        DataCenter.RecordedHP.Enqueue((now, new SortedList<uint, float>(allTargets.Where(b => b != null && b.CurrentHp != 0).ToDictionary(b => b.ObjectId, b => b.GetHealthRatio()))));
+        DataCenter.RecordedHP.Enqueue((now, new SortedList<uint, float>(DataCenter.AllTargets.Where(b => b != null && b.CurrentHp != 0).ToDictionary(b => b.ObjectId, b => b.GetHealthRatio()))));
     }
-
-
-    private static void UpdateNamePlate(IEnumerable<BattleChara> allTargets)
-    {
-        List<uint> charas = new(5);
-        //60687 - 60691 For treasure hunt.
-        for (int i = 60687; i <= 60691; i++)
-        {
-            var b = allTargets.FirstOrDefault(obj => obj.GetNamePlateIcon() == i);
-            if (b == null || b.CurrentHp == 0) continue;
-            charas.Add(b.ObjectId);
-        }
-        DataCenter.TreasureCharas = [.. charas];
-    }
+    
 }

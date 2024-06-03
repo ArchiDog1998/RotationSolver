@@ -376,7 +376,23 @@ internal static class DataCenter
     public static BattleChara[] AllTargets => Svc.Objects.OfType<BattleChara>().GetObjectInRadius(30)
         .Where(o => !o.IsDummy() || !Service.Config.DisableTargetDummys).ToArray();
 
-    public static uint[] TreasureCharas { get; internal set; } = [];
+    public static uint[] TreasureCharas
+    {
+        get
+        {
+            List<uint> charas = new(5);
+            //60687 - 60691 For treasure hunt.
+            for (int i = 60687; i <= 60691; i++)
+            {
+                var b = AllTargets.FirstOrDefault(obj => obj.GetNamePlateIcon() == i);
+                if (b == null || b.CurrentHp == 0) continue;
+                charas.Add(b.ObjectId);
+            }
+
+            return charas.ToArray();
+        }
+    }
+
     public static bool HasHostilesInRange => NumberOfHostilesInRange > 0;
     public static bool HasHostilesInMaxRange => NumberOfHostilesInMaxRange > 0;
     public static int NumberOfHostilesInRange => AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
@@ -410,15 +426,14 @@ internal static class DataCenter
     {
         get
         {
-            return DataCenter.AllHostileTargets.Select(b => b.GetTimeToKill()).Where(v => !float.IsNaN(v)).Average();
+            var validTimes = AllHostileTargets.Select(b => b.GetTimeToKill()).Where(v => !float.IsNaN(v)).ToList();
+            return validTimes.Any() ? validTimes.Average() : 0; 
         }
     }
 
-    public static float TimeToUntargetable { get; private set; }
+    public static bool IsHostileCastingAOE => IsCastingAreaVfx() || AllHostileTargets.Any(IsHostileCastingArea);
 
-    public static bool IsHostileCastingAOE => IsCastingAreaVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingArea);
-
-    public static bool IsHostileCastingToTank => IsCastingTankVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingTank);
+    public static bool IsHostileCastingToTank => IsCastingTankVfx() || AllHostileTargets.Any(IsHostileCastingTank);
 
     public static bool HasPet
     {
@@ -465,9 +480,9 @@ internal static class DataCenter
     }
 
     public static IEnumerable<float> PartyMembersHP => RefinedHP.Values.Where(r => r > 0);
-    public static float PartyMembersMinHP => PartyMembersHP.Any() ? DataCenter.PartyMembersHP.Min() : 0;
+    public static float PartyMembersMinHP => PartyMembersHP.Any() ? PartyMembersHP.Min() : 0;
     public static float PartyMembersAverHP => PartyMembersHP.Average();
-    public static float PartyMembersDifferHP => (float)Math.Sqrt(DataCenter.PartyMembersHP.Average(d => Math.Pow(d - DataCenter.PartyMembersAverHP, 2)));
+    public static float PartyMembersDifferHP => (float)Math.Sqrt(PartyMembersHP.Average(d => Math.Pow(d - PartyMembersAverHP, 2)));
 
     public static bool HPNotFull => PartyMembersMinHP < 1;
 
@@ -515,8 +530,6 @@ internal static class DataCenter
     public static ActionID LastGCD { get; private set; } = 0;
 
     public static ActionID LastAbility { get; private set; } = 0;
-
-    public const float DefaultAnimationLock = 0.6f;
 
     internal static unsafe void AddActionRec(Action act)
     {

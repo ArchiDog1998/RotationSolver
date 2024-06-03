@@ -69,8 +69,6 @@ internal class SocialUpdater
 
     static async void DutyState_DutyCompleted(object? sender, ushort e)
     {
-        if (DataCenter.PartyMembers.Length < 2) return;
-
         await Task.Delay(new Random().Next(4000, 6000));
 
         Service.Config.DutyEnd.AddMacro();
