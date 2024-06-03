@@ -32,7 +32,7 @@ internal static class StateUpdater
     private static AutoStatus StatusFromAutomatic()
     {
         var territoryConfig = OtherConfiguration.TerritoryConfig;
-        var hasTimeline = territoryConfig.Timeline.Any(p => p.Value.Any(i => i is not DrawingTimelineItem));
+        var hasTimeline = territoryConfig.HasTimeline;
 
         AutoStatus status = AutoStatus.None;
 

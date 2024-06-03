@@ -25,6 +25,8 @@
       "Trigger": []
     }
   },
+  "AutoHeal": true,
+  "AutoDefense": true,
   "Config": {
     "Timeline": {},
     "Trigger": []
