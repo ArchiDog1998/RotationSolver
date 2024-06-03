@@ -31,7 +31,8 @@ internal static class StateUpdater
 
     private static AutoStatus StatusFromAutomatic()
     {
-        var hasTimeline = OtherConfiguration.TerritoryConfig.Timeline.Any(p => p.Value.Any(i => i is not DrawingTimelineItem));
+        var territoryConfig = OtherConfiguration.TerritoryConfig;
+        var hasTimeline = territoryConfig.Timeline.Any(p => p.Value.Any(i => i is not DrawingTimelineItem));
 
         AutoStatus status = AutoStatus.None;
 
@@ -52,7 +53,7 @@ internal static class StateUpdater
             }
         }
 
-        var noHeal = DataCenter.Role is JobRole.Healer && hasTimeline;
+        var noHeal = hasTimeline && !territoryConfig.AutoHeal;
         if (DataCenter.HPNotFull && CanUseHealAction && !noHeal)
         {
             var singleAbility = ShouldHealSingle(StatusHelper.SingleHots,
@@ -111,12 +112,13 @@ internal static class StateUpdater
         {
             if (Service.Config.UseDefenseAbility)
             {
-                if (DataCenter.IsHostileCastingAOE && !hasTimeline)
+                var noDefense = hasTimeline && !territoryConfig.AutoDefense;
+                if (DataCenter.IsHostileCastingAOE && !noDefense)
                 {
                     status |= AutoStatus.DefenseArea;
                 }
 
-                if (DataCenter.IsHostileCastingKnockback && !hasTimeline && Service.Config.UseKnockback)
+                if (DataCenter.IsHostileCastingKnockback && !noDefense && Service.Config.UseKnockback)
                 {
                     status |= AutoStatus.AntiKnockback;
                 }

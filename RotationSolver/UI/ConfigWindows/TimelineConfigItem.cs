@@ -98,6 +98,19 @@ public class TimelineConfigItem : ConfigWindowItemRS
 
         RotationSolverPlugin._rotationConfigWindow?.Collection.DrawItems((int)UiString.TimelineRaidTime);
 
+        var boolean = territoryConfig.AutoHeal;
+        if(ImGui.Checkbox(UiString.AutoHealOnTimeline.Local(), ref boolean))
+        {
+            territoryConfig.AutoHeal = boolean;
+        }
+
+        ImGui.SameLine();
+        boolean = territoryConfig.AutoDefense;
+        if (ImGui.Checkbox(UiString.AutoDefenseOnTimeline.Local(), ref boolean))
+        {
+            territoryConfig.AutoDefense = boolean;
+        }
+
         ImGuiHelperRS.DrawSupporterWarning();
 
         using var table = ImRaii.Table("Rotation Solver List Timeline", 4, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.ScrollY);
