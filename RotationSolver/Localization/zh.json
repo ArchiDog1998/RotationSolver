@@ -789,5 +789,6 @@
   "RotationSolver.UI.ConfigWindows.ChangeLogItem": "ChangeLog",
   "RotationSolver.Basic.Data.UiString.CantFarmThisDuty": "The duty {0} can only be farmed by supporters! Please do it next day!",
   "RotationSolver.Basic.Configuration.ConfigsName.VoiceVolume": "The Audio voice volume",
-  "RotationSolver.Basic.Data.UiString.ConfigWindow_About_UserCount": "There are {0} RS users among the world!"
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_About_UserCount": "There are {0} RS users among the world!",
+  "RotationSolver.Basic.Data.UiString.ThanksForSupporting": "Thank you for supporting!"
 }
