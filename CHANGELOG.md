@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.0.2](https://github.com/ArchiDog1998/RotationSolver/compare/v5.0.1...v5.0.2) (2024-06-04)
+
+
+### Bug Fixes
+
+* add rotation file version check. ([fca2b40](https://github.com/ArchiDog1998/RotationSolver/commit/fca2b40f0eb43668f4532425774a744701648414))
+* add timeline auto heal and defense options. ([f1cc1c2](https://github.com/ArchiDog1998/RotationSolver/commit/f1cc1c2c62dd2e94d62851bd6c697ecba876731c))
+* serilog fix. ([101785c](https://github.com/ArchiDog1998/RotationSolver/commit/101785cfe8bb926715c6c69d65610b41fae1612e))
+* timeline auto heal or auto defense fix. ([38c9a78](https://github.com/ArchiDog1998/RotationSolver/commit/38c9a78f592041f9db17117a7a991671ed276b68))
+
 ## [5.0.1](https://github.com/ArchiDog1998/RotationSolver/compare/v5.0.0...v5.0.1) (2024-06-02)
 
 
