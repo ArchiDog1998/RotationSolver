@@ -792,5 +792,21 @@
   "RotationSolver.Basic.Data.UiString.ConfigWindow_About_UserCount": "There are {0} RS users among the world!",
   "RotationSolver.Basic.Data.UiString.ThanksForSupporting": "Thank you for supporting!",
   "RotationSolver.Basic.Data.UiString.AutoHealOnTimeline": "Auto heal on timeline",
-  "RotationSolver.Basic.Data.UiString.AutoDefenseOnTimeline": "Auto defense on timeline"
+  "RotationSolver.Basic.Data.UiString.AutoDefenseOnTimeline": "Auto defense on timeline",
+  "RotationSolver.Basic.Data.UiString.AssemblyLowVersion": "This rotation's dependency is too LOW, which may cause some errors. Please update this rotations!",
+  "RotationSolver.Basic.Data.UiString.AssemblyHighVersion": "This rotation's dependency is too HIGH, which may cause some errors. Please update the Rotation Solver!",
+  "RotationSolver.Basic.Actions.TargetType.None": "None",
+  "RotationSolver.Basic.Actions.TargetType.Interrupt": "Interrupt",
+  "RotationSolver.Basic.Actions.TargetType.Provoke": "Provoke",
+  "RotationSolver.Basic.Actions.TargetType.Death": "Death",
+  "RotationSolver.Basic.Actions.TargetType.Dispel": "Dispel",
+  "RotationSolver.Basic.Actions.TargetType.Move": "可移动",
+  "RotationSolver.Basic.Actions.TargetType.BeAttacked": "BeAttacked",
+  "RotationSolver.Basic.Actions.TargetType.Heal": "Heal",
+  "RotationSolver.Basic.Actions.TargetType.Tank": "Tank",
+  "RotationSolver.Basic.Actions.TargetType.Melee": "Melee",
+  "RotationSolver.Basic.Actions.TargetType.Range": "Range",
+  "RotationSolver.Basic.Actions.TargetType.Physical": "Physical",
+  "RotationSolver.Basic.Actions.TargetType.Magical": "Magical",
+  "RotationSolver.Basic.Actions.TargetType.Self": "Self"
 }
