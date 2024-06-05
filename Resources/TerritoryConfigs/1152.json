@@ -172,8 +172,9 @@
       "Timeline": {
         "16": [
           {
-            "StateAction": {
-              "State": 3
+            "ActionAction": {
+              "ID": 0,
+              "TargetType": 0
             },
             "Condition": {
               "Type": 0,

@@ -45,6 +45,14 @@ internal static class TerritoryActionDrawer
                     }
                     ImGuiHelper.DrawActionOverlay(cursor, ConditionDrawer.IconSize, 1);
                 }
+
+                ImGui.SameLine();
+
+                var type = actionAction.TargetType;
+                if(ConditionDrawer.DrawByteEnum("##Target Type" + actionAction.GetHashCode(), ref type))
+                {
+                    actionAction.TargetType = type;
+                }
             }
         }
         else if (action is StateAction stateItem)

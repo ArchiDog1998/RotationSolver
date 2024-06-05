@@ -74,14 +74,23 @@ public static partial class RSCommands
     {
         var strs = str.Split('-');
 
-        if (strs != null && strs.Length == 2 && double.TryParse(strs[1], out var time))
+        if (strs != null && strs.Length >= 2 && double.TryParse(strs[1], out var time))
         {
+            var type = TargetType.None;
+            if(strs.Length == 3)
+            {
+                if(Enum.TryParse<TargetType>(strs[2], out var t))
+                {
+                    type = t;
+                }
+            }
+
             var actName = strs[0];
             foreach (var iAct in RotationUpdater.RightRotationActions)
             {
                 if (actName == iAct.Name)
                 {
-                    DataCenter.AddCommandAction(iAct, time);
+                    DataCenter.AddCommandAction(iAct, time, type);
 
                     if (Service.Config.ShowToastsAboutDoAction)
                     {
