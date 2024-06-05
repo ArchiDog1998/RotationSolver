@@ -108,12 +108,7 @@ public static partial class RSCommands
                 if (tar != null && tar != Player.Object && tar.IsEnemy())
                 {
                     DataCenter.HostileTarget = tar;
-                    if (!DataCenter.IsManual
-                        && (Service.Config.SwitchTargetFriendly || ((Svc.Targets.Target?.IsEnemy() ?? true)
-                        || Svc.Targets.Target?.GetObjectKind() == Dalamud.Game.ClientState.Objects.Enums.ObjectKind.Treasure)))
-                    {
-                        Svc.Targets.Target = tar;
-                    }
+                    Svc.Targets.Target = tar;
                 }
             }
 
