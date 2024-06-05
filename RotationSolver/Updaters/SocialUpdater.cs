@@ -82,6 +82,7 @@ internal class SocialUpdater
 
         var territory = Service.GetSheet<TerritoryType>().GetRow(id);
         _canSaying = territory?.ContentFinderCondition?.Value?.RowId != 0;
+        _users.Clear();
 
         DataCenter.Territory = territory;
 

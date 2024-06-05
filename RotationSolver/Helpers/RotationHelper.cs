@@ -8,12 +8,22 @@ namespace RotationSolver.Helpers;
 internal static class RotationHelper
 {
     private static readonly Dictionary<Assembly, AssemblyInfo> _assemblyInfos = [];
+    private static readonly Dictionary<Assembly, UiString> _assemblyVersionWarnings = [];
 
     public static List<LoadedAssembly> LoadedCustomRotations { get; } = [];
 
     private static readonly Version? RsVersion = GetRSBasicVersion(typeof(RotationHelper).Assembly);
 
-    public static Version? GetRSBasicVersion(Assembly assembly)
+    public static UiString GetWarning(this Assembly assembly)
+    {
+        if (_assemblyVersionWarnings.TryGetValue(assembly, out var info))
+        {
+            return info;
+        }
+        return UiString.None;
+    }
+
+    private static Version? GetRSBasicVersion(Assembly assembly)
     {
         return assembly.GetReferencedAssemblies().Where(n => n.Name == "RotationSolver.Basic").FirstOrDefault()?.Version;
     }
@@ -72,16 +82,29 @@ internal static class RotationHelper
         var version = GetRSBasicVersion(assembly);
         if (version is not null && RsVersion is not null)
         {
-            if(version.Major < RsVersion.Major
+            UiString warning;
+            if (version.Major == RsVersion.Major
+                || version.Minor == RsVersion.Minor
+                || version.Build == RsVersion.Build)
+            {
+                warning = UiString.None;
+            }
+            else if (version.Major < RsVersion.Major
                 || version.Minor < RsVersion.Minor
                 || version.Build < RsVersion.Build)
             {
-                Svc.Log.Error($"The assembly from \"{filePath}\" may be too old, please update it.");
+                warning = UiString.AssemblyLowVersion;
                 if (existingAssembly != null)
                 {
                     return existingAssembly;
                 }
             }
+            else
+            {
+                warning = UiString.AssemblyHighVersion;
+            }
+
+            _assemblyVersionWarnings[assembly] = warning;
         }
 
         var assemblyName = assembly.GetName().Name;

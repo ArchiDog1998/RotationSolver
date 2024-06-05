@@ -4,6 +4,7 @@ using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using Octokit;
 using RotationSolver.Helpers;
 using System.Diagnostics;
 using XIVConfigUI;
@@ -40,8 +41,15 @@ public class RotationItem : ConfigWindowItemRS
 
         var wholeWidth = ImGui.GetWindowWidth();
         var type = rotation.GetType();
-        var info = type.Assembly.GetInfo();
 
+        var warning = type.Assembly.GetWarning();
+        if (warning == UiString.None)
+        {
+            using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+            ImGui.TextWrapped(string.Format(rotation.WhyNotValid, warning.Local()));
+        }
+
+        var info = type.Assembly.GetInfo();
         if (!string.IsNullOrEmpty(rotation.WhyNotValid))
         {
             var author = info.Author;

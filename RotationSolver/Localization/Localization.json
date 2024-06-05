@@ -792,5 +792,7 @@
   "RotationSolver.Basic.Data.UiString.ConfigWindow_About_UserCount": "There are {0} RS users among the world!",
   "RotationSolver.Basic.Data.UiString.ThanksForSupporting": "Thank you for supporting!",
   "RotationSolver.Basic.Data.UiString.AutoHealOnTimeline": "Auto heal on timeline",
-  "RotationSolver.Basic.Data.UiString.AutoDefenseOnTimeline": "Auto defense on timeline"
+  "RotationSolver.Basic.Data.UiString.AutoDefenseOnTimeline": "Auto defense on timeline",
+  "RotationSolver.Basic.Data.UiString.AssemblyLowVersion": "This rotation's dependency is too LOW, which may cause some errors. Please update this rotations!",
+  "RotationSolver.Basic.Data.UiString.AssemblyHighVersion": "This rotation's dependency is too HIGH, which may cause some errors. Please update the Rotation Solver!"
 }
