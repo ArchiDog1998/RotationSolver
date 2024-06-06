@@ -4,7 +4,6 @@ using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
-using Octokit;
 using RotationSolver.Helpers;
 using System.Diagnostics;
 using XIVConfigUI;
@@ -211,21 +210,34 @@ public class RotationItem : ConfigWindowItemRS
             if (popup.Success)
             {
                 var count = (float)ratings.Count;
-                foreach (var item in ratings.GroupBy(i => i.Value).OrderByDescending(g => g.Key))
+
+                var pairs = ratings.GroupBy(i => i.Value).ToDictionary(g => g.Key, g => g.Count());
+
+                float? rateWidth = null; 
+
+                for (byte i = 0; i <= 10; i++)
                 {
+                    if (!pairs.TryGetValue(i, out var rateCount)) rateCount = 0;
+                    var r = rateCount / count;
+
                     using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.MiedingerMid)))
                     {
-                        ImGui.Text(item.Key.ToString());
+                        ImGui.Text(i.ToString());
+                        rateWidth ??= ImGui.CalcTextSize("10").X;
                     }
 
-                    ImGui.SameLine();
-
-                    var c = item.Count();
-                    var r = c / count;
+                    if (rateWidth.HasValue)
+                    {
+                        ImGui.SameLine(rateWidth.Value);
+                    }
+                    else
+                    {
+                        ImGui.SameLine();
+                    }
 
                     using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Sixth, GameFontFamily.MiedingerMid)))
                     {
-                        ImGui.ProgressBar(r, new(400, 20), $"{r:P1}({c:N0})");
+                        ImGui.ProgressBar(r, new(400, 20), $"{r:P1}({rateCount:N0})");
                     }
                 }
             }
@@ -266,11 +278,11 @@ public class RotationItem : ConfigWindowItemRS
 
         if (DrawRating((float)rotation.AverageCountOfLastUsing, rotation.MaxCountOfLastUsing, 10))
         {
-            ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Rotation_Rating_CountOfLastUsing.Local());
+            ImGuiHelper.ShowTooltip(UiString.ConfigWindow_Rotation_Rating_CountOfLastUsing.Local());
         }
         if (DrawRating((float)rotation.AverageCountOfCombatTimeUsing, rotation.MaxCountOfCombatTimeUsing, 20))
         {
-            ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Rotation_Rating_CountOfCombatTimeUsing.Local());
+            ImGuiHelper.ShowTooltip(UiString.ConfigWindow_Rotation_Rating_CountOfCombatTimeUsing.Local());
         }
 
         static bool DrawRating(float value1, int value2, float max)
