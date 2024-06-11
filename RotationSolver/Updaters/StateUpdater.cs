@@ -1,8 +1,6 @@
-﻿using ECommons.DalamudServices;
-using ECommons.GameHelpers;
+﻿using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Condition;
-using RotationSolver.Basic.Configuration.Timeline;
 using System.Runtime.CompilerServices;
 
 namespace RotationSolver.Updaters;
@@ -137,7 +135,8 @@ internal static class StateUpdater
                         status |= AutoStatus.DefenseSingle;
                     }
                 }
-                else if (DataCenter.Role == JobRole.Tank) // defense self.
+
+                if (DataCenter.Role == JobRole.Tank) // defense self.
                 {
                     var movingHere = (float)DataCenter.NumberOfHostilesInRange / DataCenter.NumberOfHostilesInMaxRange > 0.3f;
 
