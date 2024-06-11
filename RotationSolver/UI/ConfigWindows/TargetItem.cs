@@ -30,45 +30,44 @@ public class TargetItem : ConfigWindowItemRS
     {
         if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "Add Hostile"))
         {
-            Service.Config.TargetingTypes.Add(TargetingType.Big);
+            Service.Config.TargetingWays.Add(TargetingType.Big);
         }
         ImGui.SameLine();
         ImGui.TextWrapped(UiString.ConfigWindow_Param_HostileDesc.Local());
 
-        for (int i = 0; i < Service.Config.TargetingTypes.Count; i++)
+        for (int i = 0; i < Service.Config.TargetingWays.Count; i++)
         {
-            var targetType = Service.Config.TargetingTypes[i];
+            var targetType = Service.Config.TargetingWays[i];
 
             void Delete()
             {
-                Service.Config.TargetingTypes.RemoveAt(i);
+                Service.Config.TargetingWays.RemoveAt(i);
             };
 
             void Up()
             {
-                Service.Config.TargetingTypes.RemoveAt(i);
-                Service.Config.TargetingTypes.Insert(Math.Max(0, i - 1), targetType);
+                Service.Config.TargetingWays.RemoveAt(i);
+                Service.Config.TargetingWays.Insert(Math.Max(0, i - 1), targetType);
             };
             void Down()
             {
-                Service.Config.TargetingTypes.RemoveAt(i);
-                Service.Config.TargetingTypes.Insert(Math.Min(Service.Config.TargetingTypes.Count - 1, i + 1), targetType);
+                Service.Config.TargetingWays.RemoveAt(i);
+                Service.Config.TargetingWays.Insert(Math.Min(Service.Config.TargetingWays.Count - 1, i + 1), targetType);
             }
 
             var key = $"Targeting Type Pop Up: {i}";
 
             ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
-                (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]));
+                (LocalString.Remove.Local(), Delete, ["Delete"]),
+                (LocalString.MoveUp.Local(), Up, ["↑"]),
+                (LocalString.MoveDown.Local(), Down, ["↓"]));
 
-            var names = Enum.GetNames(typeof(TargetingType));
-            var targingType = (int)Service.Config.TargetingTypes[i];
-            var text = UiString.ConfigWindow_Param_HostileCondition.Local();
-            ImGui.SetNextItemWidth(ImGui.CalcTextSize(text).X + 30 * Scale);
-            if (ImGui.Combo(text + "##HostileCondition" + i.ToString(), ref targingType, names, names.Length))
+            var targetingWay = Service.Config.TargetingWays[i];
+            var targingType = targetingWay.TargetingType;
+
+            if(ConditionDrawer.DrawByteEnum("##HostileCondition" + i.ToString(), ref targingType))
             {
-                Service.Config.TargetingTypes[i] = (TargetingType)targingType;
+                targetingWay.TargetingType = targingType;
             }
 
             ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,

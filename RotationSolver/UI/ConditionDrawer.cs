@@ -169,7 +169,9 @@ internal static class ConditionDrawer
         ImGuiHelperRS.SearchCombo(popId, name, ref searchTxt, actions, i => LocalManager.Local(i), selectAction, UiString.ConfigWindow_Actions_MemberName.Local());
     }
 
-    public static float IconSizeRaw => ImGuiHelpers.GetButtonSize("H").Y;
+    private static float IconSizeRaw => ImGuiHelpers.GetButtonSize("H").Y;
+
+    [Obsolete]
     public static float IconSize => IconSizeRaw * ImGuiHelpers.GlobalScale;
     private const int count = 8;
     public static void ActionSelectorPopUp(string popUpId, CollapsingHeaderGroup group, ICustomRotation rotation, Action<IAction> action, Action? others = null)
@@ -507,10 +509,10 @@ internal static class ConditionDrawer
             var key = $"Condition Pop Up: {condition.GetHashCode()}";
 
             ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
-                (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
-                (UiString.ConfigWindow_Actions_Copy.Local(), Copy, ["Ctrl"]));
+                (LocalString.Remove.Local(), Delete, ["Delete"]),
+                (LocalString.MoveUp.Local(), Up, ["↑"]),
+                (LocalString.MoveDown.Local(), Down, ["↓"]),
+                (LocalString.CopyToClipboard.Local(), Copy, ["Ctrl"]));
 
             if (condition is DelayCondition delay)
             {
@@ -551,7 +553,7 @@ internal static class ConditionDrawer
                 AddOneCondition<RotationCondition>();
                 AddOneCondition<NamedCondition>();
                 AddOneCondition<TerritoryCondition>();
-                if (ImGui.Selectable(UiString.ActionSequencer_FromClipboard.Local()))
+                if (ImGui.Selectable(LocalString.FromClipboard.Local()))
                 {
                     var str = ImGui.GetClipboardText();
                     try

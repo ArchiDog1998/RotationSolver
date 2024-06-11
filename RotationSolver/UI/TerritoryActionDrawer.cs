@@ -107,9 +107,9 @@ internal static class TerritoryActionDrawer
                 var key = $"Point Pop Up: {moveAction.Points.GetHashCode()}";
 
                 ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                    (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
-                    (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                    (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]));
+                    (LocalString.Remove.Local(), Delete, ["Delete"]),
+                    (LocalString.MoveUp.Local(), Up, ["↑"]),
+                    (LocalString.MoveDown.Local(), Down, ["↓"]));
 
                 if (ImageLoader.GetTexture(10, out var texture))
                 {
@@ -199,10 +199,10 @@ internal static class TerritoryActionDrawer
             var key = $"DrawingItem Pop Up: {item.GetHashCode()}";
 
             ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
-                (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
-                (UiString.ConfigWindow_Actions_Copy.Local(), Copy, ["Ctrl"]));
+                (LocalString.Remove.Local(), Delete, ["Delete"]),
+                (LocalString.MoveUp.Local(), Up, ["↑"]),
+                (LocalString.MoveDown.Local(), Down, ["↓"]),
+                (LocalString.CopyToClipboard.Local(), Copy, ["Ctrl"]));
 
             if (ImageLoader.GetTexture(30, out var texture))
             {
@@ -254,7 +254,7 @@ internal static class TerritoryActionDrawer
                 {
                     AddOneCondition<ActionDrawingGetter>();
                 }
-                if (ImGui.Selectable(UiString.ActionSequencer_FromClipboard.Local()))
+                if (ImGui.Selectable(LocalString.FromClipboard.Local()))
                 {
                     var str = ImGui.GetClipboardText();
                     try

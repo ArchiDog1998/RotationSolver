@@ -170,20 +170,7 @@
     },
     "SMN": {
       "Timeline": {
-        "16": [
-          {
-            "ActionAction": {
-              "ID": 0,
-              "TargetType": 0
-            },
-            "Condition": {
-              "Type": 0,
-              "Conditions": []
-            },
-            "Time": 3.0,
-            "Duration": 3.0
-          }
-        ],
+        "16": [],
         "26.1": [],
         "29.2": [],
         "42.3": [],

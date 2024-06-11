@@ -62,7 +62,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
 
         ImGui.Separator();
 
-        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
+        if (ImGui.Button(LocalString.CopyToClipboard.Local()))
         {
             var str = JsonConvert.SerializeObject(territoryConfig, Formatting.Indented);
             ImGui.SetClipboardText(str);
@@ -70,7 +70,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
 
         ImGui.SameLine();
 
-        if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
+        if (ImGui.Button(LocalString.FromClipboard.Local()))
         {
             var str = ImGui.GetClipboardText();
             try
@@ -214,9 +214,9 @@ public class TimelineConfigItem : ConfigWindowItemRS
                         var key = $"TimelineItem Pop Up: {timeLineItem.GetHashCode()}";
 
                         ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                            (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
-                            (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                            (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
+                            (LocalString.Remove.Local(), Delete, ["Delete"]),
+                            (LocalString.MoveUp.Local(), Up, ["↑"]),
+                            (LocalString.MoveDown.Local(), Down, ["↓"]),
                             (UiString.TimelineExecute.Local(), Execute, ["→"]));
 
                         ConditionDrawer.DrawCondition(timeLineItem.InPeriod(item));
@@ -345,10 +345,10 @@ public class TimelineConfigItem : ConfigWindowItemRS
                 var key = $"Condition Pop Up: {condition.GetHashCode()}";
 
                 ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                    (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
-                    (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                    (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
-                    (UiString.ConfigWindow_Actions_Copy.Local(), Copy, ["Ctrl"]));
+                    (LocalString.Remove.Local(), Delete, ["Delete"]),
+                    (LocalString.MoveUp.Local(), Up, ["↑"]),
+                    (LocalString.MoveDown.Local(), Down, ["↓"]),
+                    (LocalString.CopyToClipboard.Local(), Copy, ["Ctrl"]));
 
                 ConditionDrawer.DrawCondition(condition.IsTrue(timelineItem));
 
@@ -379,7 +379,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
                 AddOneCondition<TimelineConditionAction>();
                 AddOneCondition<TimelineConditionTargetCount>();
 
-                if (ImGui.Selectable(UiString.ActionSequencer_FromClipboard.Local()))
+                if (ImGui.Selectable(LocalString.FromClipboard.Local()))
                 {
                     var str = ImGui.GetClipboardText();
                     try

@@ -30,7 +30,7 @@ public class TriggerItem : ConfigWindowItemRS
 
         ImGui.Separator();
 
-        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
+        if (ImGui.Button(LocalString.CopyToClipboard.Local()))
         {
             var str = JsonConvert.SerializeObject(_territoryConfig, Formatting.Indented);
             ImGui.SetClipboardText(str);
@@ -38,7 +38,7 @@ public class TriggerItem : ConfigWindowItemRS
 
         ImGui.SameLine();
 
-        if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
+        if (ImGui.Button(LocalString.FromClipboard.Local()))
         {
             var str = ImGui.GetClipboardText();
             try
@@ -160,7 +160,7 @@ public class TriggerItem : ConfigWindowItemRS
 
             var popKey = $"TriggerDataPopup{i}";
             ImGuiHelper.DrawHotKeysPopup(popKey, string.Empty,
-                (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]));
+                (LocalString.Remove.Local(), Delete, ["Delete"]));
 
             if (ImGui.Selectable($"{key}##{i}", key.Equals(TriggerData)))
             {
@@ -232,9 +232,9 @@ public class TriggerItem : ConfigWindowItemRS
                 var key = $"TimelineItem Pop Up: {triggerItem.GetHashCode()}";
 
                 ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                    (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]),
-                    (UiString.ConfigWindow_Actions_MoveUp.Local(), Up, ["↑"]),
-                    (UiString.ConfigWindow_Actions_MoveDown.Local(), Down, ["↓"]),
+                    (LocalString.Remove.Local(), Delete, ["Delete"]),
+                    (LocalString.MoveUp.Local(), Up, ["↑"]),
+                    (LocalString.MoveDown.Local(), Down, ["↓"]),
                     (UiString.TimelineExecute.Local(), Execute, ["→"]));
 
                 ConditionDrawer.DrawCondition(true);

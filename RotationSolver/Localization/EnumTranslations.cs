@@ -48,7 +48,7 @@ internal static class EnumTranslations
 
     internal static string ToStateString(this StateCommandType type, JobRole _) => type switch
     {
-        StateCommandType.Auto => UiString.SpecialCommandType_Smart.Local() + DataCenter.TargetingType.Local(),
+        StateCommandType.Auto => UiString.SpecialCommandType_Smart.Local() + DataCenter.TargetingWay.TargetName,
         StateCommandType.Manual => UiString.SpecialCommandType_Manual.Local(),
         StateCommandType.Cancel => UiString.SpecialCommandType_Off.Local(),
         _ => string.Empty,

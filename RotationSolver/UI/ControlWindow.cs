@@ -55,7 +55,7 @@ internal class ControlWindow : CtrlWindow
 
         ImGui.BeginGroup();
 
-        ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingType.Local());
+        ImGui.TextColored(ImGuiColors.DPSRed, DataCenter.TargetingWay.TargetingType.Local());
 
         var value = Service.Config.IsControlWindowLock ? 0 : 1;
         if (ImGuiHelperRS.SelectableCombo("Rotation Solver Lock the Control Window",

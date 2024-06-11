@@ -4,6 +4,7 @@ using Dalamud.Interface.Utility.Raii;
 
 namespace RotationSolver.UI;
 
+[Obsolete]
 internal static class ImguiTooltips
 {
     const ImGuiWindowFlags TOOLTIP_FLAG =

@@ -43,7 +43,7 @@ public static partial class RSCommands
                     {
                         index = Service.Config.TargetingIndex + 1;
                     }
-                    index %= Service.Config.TargetingTypes.Count;
+                    index %= Service.Config.TargetingWays.Count;
                     Service.Config.TargetingIndex = index;
                 }
             }

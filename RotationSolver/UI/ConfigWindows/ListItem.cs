@@ -66,7 +66,7 @@ public class ListItem : ConfigWindowItemRS
             var cmd = ImGuiHelperRS.ToCommandStr(OtherCommandType.ToggleActionGroup, $"{group.Name} true");
 
             ImGuiHelper.DrawHotKeysPopup(keyGrp, cmd,
-                (UiString.ConfigWindow_List_Remove.Local(), DeleteActionGroup, ["Delete"]));
+                (LocalString.Remove.Local(), DeleteActionGroup, ["Delete"]));
             using (var grp = ImRaii.Group())
             {
                 var isChecked = group.Enable;
@@ -142,7 +142,7 @@ public class ListItem : ConfigWindowItemRS
                     }
 
                     ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                        (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]));
+                        (LocalString.Remove.Local(), Delete, ["Delete"]));
 
                     ImGuiHelper.DrawActionOverlay(cursor, ConditionDrawer.IconSize, 1);
 
@@ -202,7 +202,7 @@ public class ListItem : ConfigWindowItemRS
 
     private static void FromClipBoardButton(HashSet<uint> items)
     {
-        if (ImGui.Button(UiString.ConfigWindow_Actions_Copy.Local()))
+        if (ImGui.Button(LocalString.CopyToClipboard.Local()))
         {
             try
             {
@@ -216,7 +216,7 @@ public class ListItem : ConfigWindowItemRS
 
         ImGui.SameLine();
 
-        if (ImGui.Button(UiString.ActionSequencer_FromClipboard.Local()))
+        if (ImGui.Button(LocalString.FromClipboard.Local()))
         {
             try
             {
@@ -278,7 +278,7 @@ public class ListItem : ConfigWindowItemRS
 
             var key = "Status" + status!.RowId.ToString();
 
-            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Delete, ["Delete"]));
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalString.Remove.Local(), Delete, ["Delete"]));
 
             if (ImageLoader.GetTexture(status.Icon, out var texture, notLoadId))
             {
@@ -365,7 +365,7 @@ public class ListItem : ConfigWindowItemRS
 
             var key = "Action" + action!.RowId.ToString();
 
-            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Reset, ["Delete"]));
+            ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalString.Remove.Local(), Reset, ["Delete"]));
 
             ImGui.Selectable($"{action.Name} ({action.RowId})");
 
@@ -544,7 +544,7 @@ public class ListItem : ConfigWindowItemRS
 
                 var key = "Beneficial Positions" + i.ToString();
 
-                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), Reset, ["Delete"]));
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalString.Remove.Local(), Reset, ["Delete"]));
 
                 ImGui.Selectable(pts[i].ToString());
 

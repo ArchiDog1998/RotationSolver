@@ -124,7 +124,7 @@ public class RotationConfigWindow : ConfigWindow
             else
             {
                 var key = "Condition Set At " + i.ToString();
-                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (UiString.ConfigWindow_List_Remove.Local(), DeleteFile, ["Delete"]));
+                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalString.Remove.Local(), DeleteFile, ["Delete"]));
 
                 if (ImGui.Selectable(combos[i].Name))
                 {
