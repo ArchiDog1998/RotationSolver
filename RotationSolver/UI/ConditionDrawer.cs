@@ -169,10 +169,7 @@ internal static class ConditionDrawer
         ImGuiHelperRS.SearchCombo(popId, name, ref searchTxt, actions, i => LocalManager.Local(i), selectAction, UiString.ConfigWindow_Actions_MemberName.Local());
     }
 
-    private static float IconSizeRaw => ImGuiHelpers.GetButtonSize("H").Y;
-
-    [Obsolete]
-    public static float IconSize => IconSizeRaw * ImGuiHelpers.GlobalScale;
+    public static float IconSize => XIVConfigUI.ConditionConfigs.ConditionDrawer.IconSize;
     private const int count = 8;
     public static void ActionSelectorPopUp(string popUpId, CollapsingHeaderGroup group, ICustomRotation rotation, Action<IAction> action, Action? others = null)
     {
@@ -736,7 +733,7 @@ internal static class ConditionDrawer
         {
             targetCondition.Status = status;
             targetCondition.StatusId = (StatusID)targetCondition.Status.RowId;
-        }, size: IconSizeRaw);
+        }, size: IconSize);
 
         void DrawStatusIcon()
         {

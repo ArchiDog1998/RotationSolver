@@ -63,19 +63,19 @@ internal static class ActionUpdater
         switch (value.Action.CastType)
         {
             //case 1:
-            case 2:
+            case 2 when Service.Config.ShowCircleTarget:
                 circle.Owner = target;
                 circle.UpdateScale(size);
                 circle.Enable = true;
                 break;
 
-            case 3:
+            case 3 when Service.Config.ShowSectorTarget:
                 sector.Target = target;
                 sector.UpdateScale(size);
                 sector.Enable = true;
                 break;
 
-            case 4:
+            case 4 when Service.Config.ShowRectangleTarget:
                 size.X = value.Action.XAxisModifier / 2;
                 rectangle.Target = target;
                 rectangle.UpdateScale(size);
@@ -142,14 +142,11 @@ internal static class ActionUpdater
         WrongAction = NextAction = NextGCDAction = null;
     }
 
-    private static List<uint> actionOverrideList;
+    private static List<uint>? actionOverrideList;
 
     private static void SetAction(uint id)
     {
-        if (actionOverrideList == null)
-        {
-            actionOverrideList = Svc.PluginInterface.GetOrCreateData("Avarice.ActionOverride", () => new List<uint>());
-        }
+        actionOverrideList ??= Svc.PluginInterface.GetOrCreateData("Avarice.ActionOverride", () => new List<uint>());
 
         if (actionOverrideList.Count == 0)
         {
