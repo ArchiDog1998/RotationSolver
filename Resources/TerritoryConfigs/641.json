@@ -23,6 +23,22 @@
     "SMN": {
       "Timeline": {},
       "Trigger": []
+    },
+    "NIN": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "SCH": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "MNK": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "DRG": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "AutoHeal": true,

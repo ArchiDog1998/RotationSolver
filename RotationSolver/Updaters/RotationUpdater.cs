@@ -515,10 +515,6 @@ internal static class RotationUpdater
                 DataCenter.RightNowRotation = instance;
             }
             DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
-            if (rotation != null)
-            {
-                Service.Config.RotationChoice = rotation.FullName;
-            }
             return;
         }
 
@@ -556,7 +552,20 @@ internal static class RotationUpdater
                 });
 
             var name = isPvP ? Service.Config.PvPRotationChoice : Service.Config.RotationChoice;
-            return GetChosenType(rotations, name);
+            var rotation = GetChosenType(rotations, name);
+
+            if (rotation != null)
+            {
+                if (isPvP)
+                {
+                    Service.Config.PvPRotationChoice = rotation.FullName;
+                }
+                else
+                {
+                    Service.Config.RotationChoice = rotation.FullName;
+                }
+            }
+            return rotation;
         }
     }
 
