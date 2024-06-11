@@ -28,8 +28,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static readonly List<IDisposable> _dis = [];
     public static string Name => "Rotation Solver";
 
-    public static DalamudLinkPayload OpenLinkPayload { get; private set; } = null!;
-    public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }
     public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
@@ -61,11 +59,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Watcher.Enable();
         OtherConfiguration.Init();
 
-        OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
+        WarningHelper.OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
         {
             if (id == 0) OpenConfigWindow();
         });
-        HideWarningLinkPayload = pluginInterface.AddChatLinkHandler(1, (id, str) =>
+        WarningHelper.HideWarningLinkPayload = pluginInterface.AddChatLinkHandler(1, (id, str) =>
         {
             if (id == 1)
             {

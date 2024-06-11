@@ -228,7 +228,7 @@ internal class SocialUpdater
             UIForegroundPayload.UIForegroundOff);
 
         protected static SeString RotationSolver => new(new IconPayload(BitmapFontIcon.DPS),
-            RotationSolverPlugin.OpenLinkPayload,
+            WarningHelper.OpenLinkPayload,
             new UIForegroundPayload(31),
             new TextPayload("Rotation Solver"),
             UIForegroundPayload.UIForegroundOff,

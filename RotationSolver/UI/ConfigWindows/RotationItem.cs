@@ -215,7 +215,7 @@ public class RotationItem : ConfigWindowItemRS
 
                 float? rateWidth = null; 
 
-                for (byte i = 0; i <= 10; i++)
+                for (byte i = 1; i <= 10; i++)
                 {
                     if (!pairs.TryGetValue(i, out var rateCount)) rateCount = 0;
                     var r = rateCount / count;
@@ -223,7 +223,7 @@ public class RotationItem : ConfigWindowItemRS
                     using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(FontSize.Fifth, GameFontFamily.MiedingerMid)))
                     {
                         ImGui.Text(i.ToString());
-                        rateWidth ??= ImGui.CalcTextSize("10").X;
+                        rateWidth ??= ImGui.CalcTextSize("10").X + ImGui.GetStyle().FramePadding.X + ImGui.GetStyle().WindowPadding.X;
                     }
 
                     if (rateWidth.HasValue)
