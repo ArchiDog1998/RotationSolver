@@ -33,7 +33,7 @@ internal static class ImGuiHelperRS
         }
         if (ImGui.IsItemHovered())
         {
-            ImguiTooltips.ShowTooltip($"{UiString.ConfigWindow_Helper_RunCommand.Local()}: {cmdStr}\n{UiString.ConfigWindow_Helper_CopyCommand.Local()}: {cmdStr}");
+            ImGuiHelper.ShowTooltip($"{UiString.ConfigWindow_Helper_RunCommand.Local()}: {cmdStr}\n{UiString.ConfigWindow_Helper_CopyCommand.Local()}: {cmdStr}");
 
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Right))
             {

@@ -271,7 +271,7 @@ public class TriggerItem : ConfigWindowItemRS
                 {
                     ImGui.OpenPopup("PopupTriggerButton" + isJob);
                 }
-                ImguiTooltips.HoveredTooltip(UiString.AddTerritoryActionButton.Local());
+                ImGuiHelper.HoveredTooltip(UiString.AddTerritoryActionButton.Local());
 
                 using var popUp = ImRaii.Popup("PopupTriggerButton" + isJob);
                 if (!popUp) return;

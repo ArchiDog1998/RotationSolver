@@ -407,7 +407,7 @@ internal class ControlWindow : CtrlWindow
             Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
         ImGuiHelper.DrawActionOverlay(cursor, width, IconSet.GetTexture(0u, out var text) && text.ImGuiHandle == handle ? -1 : 1);
-        ImguiTooltips.HoveredTooltip(help);
+        ImGuiHelper.HoveredTooltip(help);
     }
 
     static void DrawIAction(nint handle, string id, float width, StateCommandType command, string help)
@@ -418,7 +418,7 @@ internal class ControlWindow : CtrlWindow
             Svc.Commands.ProcessCommand(command.GetCommandStr());
         }
         ImGuiHelper.DrawActionOverlay(cursor, width, 1);
-        ImguiTooltips.HoveredTooltip(help);
+        ImGuiHelper.HoveredTooltip(help);
     }
 
     internal static (Vector2, Vector2) DrawIAction(IAction? action, float width, float percent, bool isAdjust = true)
@@ -452,7 +452,7 @@ internal class ControlWindow : CtrlWindow
         }
         var size = ImGui.GetItemRectSize();
         ImGuiHelper.DrawActionOverlay(cursor, width, action == null ? -1 : percent);
-        ImguiTooltips.HoveredTooltip(desc);
+        ImGuiHelper.HoveredTooltip(desc);
 
         return (cursor, size);
     }

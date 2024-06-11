@@ -240,7 +240,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
                         {
                             ImGui.OpenPopup("PopupTimelineButton" + item.Time + isJob);
                         }
-                        ImguiTooltips.HoveredTooltip(UiString.AddTerritoryActionButton.Local());
+                        ImGuiHelper.HoveredTooltip(UiString.AddTerritoryActionButton.Local());
 
                         using var popUp = ImRaii.Popup("PopupTimelineButton" + item.Time + isJob);
                         if (popUp)
@@ -277,7 +277,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
         {
             TerritoryActionDrawer._openedTab = isOpen ? 0 : timeLineItem.GetHashCode();
         }
-        ImguiTooltips.HoveredTooltip(UiString.TimelineItemCondition.Local());
+        ImGuiHelper.HoveredTooltip(UiString.TimelineItemCondition.Local());
 
         ImGui.SameLine();
 
@@ -370,7 +370,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
                 {
                     ImGui.OpenPopup("Popup" + set.GetHashCode().ToString());
                 }
-                ImguiTooltips.HoveredTooltip(UiString.AddTimelineCondition.Local());
+                ImGuiHelper.HoveredTooltip(UiString.AddTimelineCondition.Local());
 
                 using var popUp = ImRaii.Popup("Popup" + set.GetHashCode().ToString());
                 if (!popUp) return;

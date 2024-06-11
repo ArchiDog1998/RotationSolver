@@ -41,7 +41,7 @@ public class BasicItem : ConfigWindowItemRS
         drawList.AddRectFilled(lineStart, lineStart + size, ImGuiHelperRS.ChangeAlpha(PING_COLOR));
         if (ImGuiHelperRS.IsInRect(lineStart, size))
         {
-            ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Basic_Ping.Local());
+            ImGuiHelper.ShowTooltip(UiString.ConfigWindow_Basic_Ping.Local());
         }
 
         var rectStart = lineStart + new Vector2(ping * sizePerTime, 0);
@@ -49,7 +49,7 @@ public class BasicItem : ConfigWindowItemRS
         drawList.AddRectFilled(rectStart, rectStart + size, ImGuiHelperRS.ChangeAlpha(LOCK_TIME_COLOR));
         if (ImGuiHelperRS.IsInRect(rectStart, size))
         {
-            ImguiTooltips.ShowTooltip(UiString.ConfigWindow_Basic_AnimationLockTime.Local());
+            ImGuiHelper.ShowTooltip(UiString.ConfigWindow_Basic_AnimationLockTime.Local());
         }
 
         drawList.AddLine(lineStart - new Vector2(0, spacingHeight), lineStart + new Vector2(0, (pingHeight * 2) + (spacingHeight / 2)), IDEAL_CLICK_TIME_COLOR, 1.5f);
@@ -59,7 +59,7 @@ public class BasicItem : ConfigWindowItemRS
         drawList.AddRectFilled(rectStart, rectStart + size, ImGuiHelperRS.ChangeAlpha(color));
         if (ImGuiHelperRS.IsInRect(rectStart, size))
         {
-            ImguiTooltips.ShowTooltip(() =>
+            ImGuiHelper.ShowTooltip(() =>
             {
                 ImGui.TextWrapped(UiString.ConfigWindow_Basic_ClickingDuration.Local());
 
@@ -125,7 +125,7 @@ public class BasicItem : ConfigWindowItemRS
         drawList.AddRect(start, start + rectSize, uint.MaxValue, 0, ImDrawFlags.Closed, 2);
         if (ImGuiHelperRS.IsInRect(start, rectSize))
         {
-            ImguiTooltips.ShowTooltip(typeof(Configs).GetProperty(nameof(Configs.WeaponDelay))!.Local());
+            ImGuiHelper.ShowTooltip(typeof(Configs).GetProperty(nameof(Configs.WeaponDelay))!.Local());
         }
         drawList.AddLine(lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, -spacingHeight), lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime,
             (pingHeight * 2) + spacingHeight), IDEAL_CLICK_TIME_COLOR, 2);

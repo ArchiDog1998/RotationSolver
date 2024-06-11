@@ -267,7 +267,7 @@ public class ListItem : ConfigWindowItemRS
             {
                 if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
             }
-            ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_List_AddStatus.Local());
+            ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_List_AddStatus.Local());
         }
 
         foreach (var status in statuses.Select(a => Service.GetSheet<Status>().GetRow(a))
@@ -394,7 +394,7 @@ public class ListItem : ConfigWindowItemRS
                     var selected = ImGui.Selectable($"{action.Name} ({action.RowId})");
                     if (ImGui.IsItemHovered())
                     {
-                        ImguiTooltips.ShowTooltip($"{action.Name} ({action.RowId})");
+                        ImGuiHelper.ShowTooltip($"{action.Name} ({action.RowId})");
                         if (selected)
                         {
                             actions.Add(action.RowId);

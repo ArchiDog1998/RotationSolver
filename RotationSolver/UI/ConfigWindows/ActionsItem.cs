@@ -134,7 +134,7 @@ public class ActionsItem : ConfigWindowItemRS
                 {
                     config.TimeToKill = ttk;
                 }
-                ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
+                ImGuiHelper.HoveredTooltip(ConfigUnitType.Seconds.Local());
 
                 var ttu = config.TimeToUntargetable;
                 ImGui.SetNextItemWidth(Scale * 150);
@@ -143,7 +143,7 @@ public class ActionsItem : ConfigWindowItemRS
                 {
                     config.TimeToUntargetable = ttu;
                 }
-                ImguiTooltips.HoveredTooltip(ConfigUnitType.Seconds.Local());
+                ImGuiHelper.HoveredTooltip(ConfigUnitType.Seconds.Local());
 
                 if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
                 {
@@ -183,7 +183,7 @@ public class ActionsItem : ConfigWindowItemRS
                 {
                     config.AutoHealRatio = ratio;
                 }
-                ImguiTooltips.HoveredTooltip(ConfigUnitType.Percent.Local());
+                ImGuiHelper.HoveredTooltip(ConfigUnitType.Percent.Local());
 
             }
         }

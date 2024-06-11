@@ -115,7 +115,7 @@ public class RotationsItem : ConfigWindowItemRS
                     if (ImageLoader.GetTexture(IconSet.GetJobIcon(jobs.Key, IconType.Framed), out var texture, 62574))
                         ImGui.Image(texture.ImGuiHandle, Vector2.One * 30 * Scale);
 
-                    ImguiTooltips.HoveredTooltip(string.Join('\n', jobs.Select(t => t.GetCustomAttribute<UIAttribute>()?.Name ?? t.Name)));
+                    ImGuiHelper.HoveredTooltip(string.Join('\n', jobs.Select(t => t.GetCustomAttribute<UIAttribute>()?.Name ?? t.Name)));
                 }
 
                 ImGui.TableNextColumn();

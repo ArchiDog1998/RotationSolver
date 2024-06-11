@@ -60,7 +60,7 @@ internal class SearchableConfigRS : SearchableConfig
         if (ImageLoader.GetTexture(IconSet.GetJobIcon(job, IconType.Framed), out var texture))
         {
             ImGui.Image(texture.ImGuiHandle, Vector2.One * 24 * ImGuiHelpers.GlobalScale);
-            ImguiTooltips.HoveredTooltip(UiString.JobConfigTip.Local());
+            ImGuiHelper.HoveredTooltip(UiString.JobConfigTip.Local());
         }
     }
 }

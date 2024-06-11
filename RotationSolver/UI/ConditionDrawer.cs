@@ -40,7 +40,7 @@ internal static class ConditionDrawer
                     isNot = !isNot;
                 }
 
-                ImguiTooltips.HoveredTooltip(string.Format(UiString.ActionSequencer_NotDescription.Local(), isNot));
+                ImGuiHelper.HoveredTooltip(string.Format(UiString.ActionSequencer_NotDescription.Local(), isNot));
             }
         }
         else
@@ -53,7 +53,7 @@ internal static class ConditionDrawer
                 {
                     isNot = !isNot;
                 }
-                ImguiTooltips.HoveredTooltip(string.Format(UiString.ActionSequencer_NotDescription.Local(), isNot));
+                ImGuiHelper.HoveredTooltip(string.Format(UiString.ActionSequencer_NotDescription.Local(), isNot));
             }
         }
     }
@@ -145,7 +145,7 @@ internal static class ConditionDrawer
         {
             tooltip += "\n";
         }
-        ImguiTooltips.HoveredTooltip(tooltip + type.Local());
+        ImGuiHelper.HoveredTooltip(tooltip + type.Local());
 
         return result;
     }
@@ -214,7 +214,7 @@ internal static class ConditionDrawer
                     var name = item.Name;
                     if (!string.IsNullOrEmpty(name))
                     {
-                        ImguiTooltips.HoveredTooltip(name);
+                        ImGuiHelper.HoveredTooltip(name);
                     }
                 }
             });
@@ -253,7 +253,7 @@ internal static class ConditionDrawer
             condition.DelayMin = Math.Max(Math.Min(condition.DelayMin, condition.DelayMax), MIN);
             condition.DelayMax = Math.Min(Math.Max(condition.DelayMin, condition.DelayMax), MAX);
         }
-        ImguiTooltips.HoveredTooltip(UiString.ActionSequencer_Delay_Description.Local() +
+        ImGuiHelper.HoveredTooltip(UiString.ActionSequencer_Delay_Description.Local() +
             "\n" + ConfigUnitType.Seconds.Local());
 
         ImGui.SameLine();
@@ -262,7 +262,7 @@ internal static class ConditionDrawer
         ImGui.DragFloat($"##Offset Delay {condition.GetHashCode()}", ref condition.DelayOffset, 0.1f, MIN, MAX,
             $"{condition.DelayOffset:F1}{ConfigUnitType.Seconds.ToSymbol()}");
 
-        ImguiTooltips.HoveredTooltip(UiString.ActionSequencer_Offset_Description.Local() +
+        ImGuiHelper.HoveredTooltip(UiString.ActionSequencer_Offset_Description.Local() +
     "\n" + ConfigUnitType.Seconds.Local());
     }
 
@@ -355,7 +355,7 @@ internal static class ConditionDrawer
                     var tooltip = trait.Name;
                     if (!string.IsNullOrEmpty(tooltip))
                     {
-                        ImguiTooltips.HoveredTooltip(tooltip);
+                        ImGuiHelper.HoveredTooltip(tooltip);
                     }
                 }
             }
@@ -369,7 +369,7 @@ internal static class ConditionDrawer
                 if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
             }
             ImGuiHelper.DrawActionOverlay(cursor, IconSize, -1);
-            ImguiTooltips.HoveredTooltip(name);
+            ImGuiHelper.HoveredTooltip(name);
         }
 
         ImGui.SameLine();
@@ -403,7 +403,7 @@ internal static class ConditionDrawer
                 if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
             }
             ImGuiHelper.DrawActionOverlay(cursor, IconSize, 1);
-            ImguiTooltips.HoveredTooltip(name);
+            ImGuiHelper.HoveredTooltip(name);
         }
 
         ImGui.SameLine();
@@ -724,7 +724,7 @@ internal static class ConditionDrawer
 
             var description = targetCondition._action != null ? string.Format(UiString.ActionSequencer_ActionTarget.Local(), targetCondition._action.Name)
                 : targetCondition.TargetType.Local();
-            ImguiTooltips.HoveredTooltip(description);
+            ImGuiHelper.HoveredTooltip(description);
         }
 
         ImGui.SameLine();
@@ -747,7 +747,7 @@ internal static class ConditionDrawer
                 {
                     if (!ImGui.IsPopupOpen(popupId)) ImGui.OpenPopup(popupId);
                 }
-                ImguiTooltips.HoveredTooltip(targetCondition.Status?.Name ?? string.Empty);
+                ImGuiHelper.HoveredTooltip(targetCondition.Status?.Name ?? string.Empty);
             }
         }
 

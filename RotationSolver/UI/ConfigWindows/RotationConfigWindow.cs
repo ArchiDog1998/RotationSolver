@@ -72,7 +72,7 @@ public class RotationConfigWindow : ConfigWindow
         {
             ImGui.OpenPopup(popUpId);
         }
-        ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_DutyRotationDesc.Local());
+        ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_DutyRotationDesc.Local());
 
         using var popup = ImRaii.Popup(popUpId);
         if (!popup) return;
@@ -103,7 +103,7 @@ public class RotationConfigWindow : ConfigWindow
         {
             ImGui.OpenPopup(popUpId);
         }
-        ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_ConditionSetDesc.Local());
+        ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_ConditionSetDesc.Local());
 
         using var popup = ImRaii.Popup(popUpId);
         if (!popup) return;
@@ -151,7 +151,7 @@ public class RotationConfigWindow : ConfigWindow
         }
 
         ImGui.PopFont();
-        ImguiTooltips.HoveredTooltip(UiString.ActionSequencer_Load.Local());
+        ImGuiHelper.HoveredTooltip(UiString.ActionSequencer_Load.Local());
     }
 
     private const int FRAME_COUNT = 180;
@@ -295,7 +295,7 @@ public class RotationConfigWindow : ConfigWindow
         }
         if (ImGui.IsItemHovered())
         {
-            ImguiTooltips.ShowTooltip(() =>
+            ImGuiHelper.ShowTooltip(() =>
             {
                 ImGui.Text(rotation.Name + $" ({rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Name})");
                 rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.Draw();
@@ -342,7 +342,7 @@ public class RotationConfigWindow : ConfigWindow
                         ImGui.Image(texture.ImGuiHandle, Vector2.One * 20 * Scale);
                         if (ImGui.IsItemHovered())
                         {
-                            ImguiTooltips.ShowTooltip(() =>
+                            ImGuiHelper.ShowTooltip(() =>
                             {
                                 rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.Draw();
                             });
@@ -373,7 +373,7 @@ public class RotationConfigWindow : ConfigWindow
                             Service.Config.RotationChoice = r.FullName;
                         }
                     }
-                    ImguiTooltips.HoveredTooltip(rAttr.Description);
+                    ImGuiHelper.HoveredTooltip(rAttr.Description);
                     ImGui.PopStyleColor();
                 }
             }
@@ -387,7 +387,7 @@ public class RotationConfigWindow : ConfigWindow
         if (rotation.IsBeta()) warning += "\n" + UiString.ConfigWindow_Rotation_BetaRotation.Local();
 
         warning += "\n \n" + UiString.ConfigWindow_Helper_SwitchRotation.Local();
-        ImguiTooltips.HoveredTooltip(warning);
+        ImGuiHelper.HoveredTooltip(warning);
     }
 
     #region About
@@ -574,17 +574,17 @@ public class RotationConfigWindow : ConfigWindow
                 if (item.Type.HasFlag(CompatibleType.Skill_Usage))
                 {
                     ImGui.TextColored(ImGuiColors.DalamudYellow, CompatibleType.Skill_Usage.ToString().Replace('_', ' '));
-                    ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_About_Compatibility_Mistake.Local());
+                    ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_About_Compatibility_Mistake.Local());
                 }
                 if (item.Type.HasFlag(CompatibleType.Skill_Selection))
                 {
                     ImGui.TextColored(ImGuiColors.DalamudOrange, CompatibleType.Skill_Selection.ToString().Replace('_', ' '));
-                    ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_About_Compatibility_Mislead.Local());
+                    ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_About_Compatibility_Mislead.Local());
                 }
                 if (item.Type.HasFlag(CompatibleType.Crash))
                 {
                     ImGui.TextColored(ImGuiColors.DalamudRed, CompatibleType.Crash.ToString().Replace('_', ' '));
-                    ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_About_Compatibility_Crash.Local());
+                    ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_About_Compatibility_Crash.Local());
                 }
             }
         }
@@ -688,7 +688,7 @@ public class RotationConfigWindow : ConfigWindow
                             clicked?.Invoke(status);
                             ImGui.CloseCurrentPopup();
                         }
-                        ImguiTooltips.HoveredTooltip($"{status.Name} ({status.RowId})");
+                        ImGuiHelper.HoveredTooltip($"{status.Name} ({status.RowId})");
                     }
                 }
             }

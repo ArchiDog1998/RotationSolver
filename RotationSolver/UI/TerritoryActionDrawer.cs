@@ -242,7 +242,7 @@ internal static class TerritoryActionDrawer
             {
                 ImGui.OpenPopup("PopupDrawingButton" + drawingItem.GetHashCode());
             }
-            ImguiTooltips.HoveredTooltip(UiString.AddDrawingTimelineButton.Local());
+            ImGuiHelper.HoveredTooltip(UiString.AddDrawingTimelineButton.Local());
 
             using var popUp = ImRaii.Popup("PopupDrawingButton" + drawingItem.GetHashCode());
             if (popUp)
