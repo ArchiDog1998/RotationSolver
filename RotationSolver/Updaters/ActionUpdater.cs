@@ -53,6 +53,7 @@ internal static class ActionUpdater
         circle.Enable = sector.Enable = rectangle.Enable = false;
         circle.Owner = sector.Owner = rectangle.Owner = player;
 
+        if (!Service.Config.UseOverlayWindow) return;
         if (!Service.Config.ShowTarget) return;
         if (value == null) return;
 
