@@ -312,9 +312,6 @@ internal enum UiString
     [Description("Actions")]
     ConfigWindow_Timeline_Actions,
 
-    [Description("OOOps! RSR clicked the wrong action ({0})!")]
-    ClickingMistakeMessage,
-
     [Description("Ability")]
     ActionAbility,
 

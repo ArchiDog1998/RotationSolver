@@ -486,11 +486,6 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
     public float TargetIconSize { get; set; } = 0.3f;
 
-    [UI("How likely is it that RSR will click the wrong action. (To be removed)",
-        Filter = BasicParams)]
-    [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
-    public float MistakeRatio { get; set; } = 0;
-
     [UI("Heal tank first if their HP is lower than this.",
         Filter = HealingActionCondition, Section = 1,
         PvEFilter = JobFilterType.Healer, PvPFilter = JobFilterType.Healer)]

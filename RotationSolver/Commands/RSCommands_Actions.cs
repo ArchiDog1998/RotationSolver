@@ -55,16 +55,8 @@ public static partial class RSCommands
             return;
         }
 
-        var wrong = new Random().NextDouble() < Service.Config.MistakeRatio && ActionUpdater.WrongAction != null;
-        var nextAction = wrong ? ActionUpdater.WrongAction : ActionUpdater.NextAction;
+        var nextAction = ActionUpdater.NextAction;
         if (nextAction == null) return;
-
-        if (wrong)
-        {
-            Svc.Toasts.ShowError(string.Format(UiString.ClickingMistakeMessage.Local(), nextAction));
-            ControlWindow.Wrong = nextAction;
-            ControlWindow.DidTime = DateTime.Now;
-        }
 
 #if DEBUG
         //if (nextAction is BaseAction acti)

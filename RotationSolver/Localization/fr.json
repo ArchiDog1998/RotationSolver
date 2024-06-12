@@ -171,7 +171,6 @@
   "ShowNextActionWindowName": "Show Next Action Window",
   "ShowCooldownWindowName": "Show Cooldown Window",
   "UseAdditionalConditionsName": "Use additional conditions",
-  "MistakeRatioName": "How likely is it that RS will click the wrong action.",
   "NotInCombatDelayName": "The range of random delay for Not In Combat.",
   "UseWorkTaskName": "Use work task for acceleration.",
   "ToggleManualName": "Make /rotation Manual as a toggle command.",
