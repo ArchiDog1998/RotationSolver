@@ -39,6 +39,14 @@
     "DRG": {
       "Timeline": {},
       "Trigger": []
+    },
+    "WHM": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "GNB": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "AutoHeal": true,
