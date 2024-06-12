@@ -653,5 +653,14 @@
   "RotationSolver.Basic.Actions.TargetType.Magical": "Magical",
   "RotationSolver.Basic.Actions.TargetType.Self": "Self",
   "RotationSolver.Basic.Data.TargetingType.Close": "Closest",
-  "RotationSolver.Basic.Configuration.Drawing.ActionDrawingGetter": "Action Drawing"
+  "RotationSolver.Basic.Configuration.Drawing.ActionDrawingGetter": "Action Drawing",
+  "RotationSolver.Basic.Configuration.ConfigsName.ShowCircleTarget": "Show circle drawing.",
+  "RotationSolver.Basic.Configuration.ConfigsName.ShowSectorTarget": "Show sector drawing.",
+  "RotationSolver.Basic.Configuration.ConfigsName.ShowRectangleTarget": "Show rectangle drawing.",
+  "RotationSolver.Basic.Data.UiString.DeleteWarning": "If you wanna delete Rotation Solver, you'd better disable \"{0}\" first.",
+  "XIVConfigUI.LocalString.Remove": "Remove",
+  "XIVConfigUI.LocalString.MoveUp": "Move Up",
+  "XIVConfigUI.LocalString.MoveDown": "Move Down",
+  "XIVConfigUI.LocalString.CopyToClipboard": "Copy to Clipboard",
+  "XIVConfigUI.LocalString.FromClipboard": "From Clipboard"
 }
