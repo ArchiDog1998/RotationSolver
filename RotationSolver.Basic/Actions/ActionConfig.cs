@@ -50,9 +50,4 @@ public class ActionConfig()
     /// Is this action in the cd window.
     /// </summary>
     public bool IsInCooldown { get; set; } = true;
-
-    /// <summary>
-    /// Is this action should be a mistake action.
-    /// </summary>
-    public bool IsInMistake { get; set; }
 }

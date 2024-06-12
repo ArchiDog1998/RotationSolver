@@ -123,9 +123,6 @@ internal enum UiString
     [Description("Show on CD window")]
     ConfigWindow_Actions_ShowOnCDWindow,
 
-    [Description("Can be used by mistake")]
-    ConfigWindow_Actions_IsInMistake,
-
     [Description("TTK that this action needs the target be before it is used.")]
     ConfigWindow_Actions_TTK,
 
