@@ -510,18 +510,14 @@ internal static class RotationUpdater
             if (rotation != DataCenter.RightNowRotation?.GetType())
             {
                 DataCenter.RightNowRotation?.Dispose();
-                var instance = GetRotation(rotation);
-                instance?.OnTerritoryChanged();
-                DataCenter.RightNowRotation = instance;
+                DataCenter.RightNowRotation = GetRotation(rotation);
             }
-            DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
             return;
         }
 
         CustomRotation.MoveTarget = null;
         DataCenter.RightNowRotation?.Dispose();
         DataCenter.RightNowRotation = null;
-        DataCenter.Job = DataCenter.RightNowRotation?.Job ?? Job.ADV;
 
         static ICustomRotation? GetRotation(Type? t)
         {
@@ -552,20 +548,7 @@ internal static class RotationUpdater
                 });
 
             var name = isPvP ? Service.Config.PvPRotationChoice : Service.Config.RotationChoice;
-            var rotation = GetChosenType(rotations, name);
-
-            if (rotation != null)
-            {
-                if (isPvP)
-                {
-                    Service.Config.PvPRotationChoice = rotation.FullName;
-                }
-                else
-                {
-                    Service.Config.RotationChoice = rotation.FullName;
-                }
-            }
-            return rotation;
+            return GetChosenType(rotations, name);
         }
     }
 
