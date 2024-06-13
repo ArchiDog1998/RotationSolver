@@ -1436,17 +1436,6 @@ public partial class RotationConfigWindow : Window
             {
                 var config = a.Config;
 
-                if (Service.Config.MistakeRatio > 0
-                    && !a.Setting.IsFriendly
-                    && a.Setting.TargetType != TargetType.Move)
-                {
-                    var enable = config.IsInMistake;
-                    if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_IsInMistake.Local()}##{a.Name}InMistake", ref enable))
-                    {
-                        config.IsInMistake = enable;
-                    }
-                }
-
                 ImGui.Separator();
 
                 var ttk = config.TimeToKill;

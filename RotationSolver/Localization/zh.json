@@ -171,7 +171,6 @@
   "ShowNextActionWindowName": "显示下一个动作窗口",
   "ShowCooldownWindowName": "显示冷却窗口",
   "UseAdditionalConditionsName": "使用附加条件",
-  "MistakeRatioName": "有多大的可能性RS会点击错误的技能。",
   "NotInCombatDelayName": "设置脱战的随机延迟范围。",
   "UseWorkTaskName": "使用WorkTask来加速。",
   "ToggleManualName": "将/rotation Manual作为切换命令。",
