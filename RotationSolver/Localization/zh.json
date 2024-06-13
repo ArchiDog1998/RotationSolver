@@ -662,5 +662,10 @@
   "XIVConfigUI.LocalString.MoveUp": "Move Up",
   "XIVConfigUI.LocalString.MoveDown": "Move Down",
   "XIVConfigUI.LocalString.CopyToClipboard": "Copy to Clipboard",
-  "XIVConfigUI.LocalString.FromClipboard": "从剪贴板冲粘贴"
+  "XIVConfigUI.LocalString.FromClipboard": "从剪贴板冲粘贴",
+  "DefaultRotations.Healer.WHM_DefaultName.UseLilyWhenFull": "Use Lily at max stacks.",
+  "DefaultRotations.Healer.WHM_DefaultName.UsePreRegen": "Regen on Tank at 5 seconds remaining on Countdown.",
+  "DefaultRotations.Tank.PLD_DefaultName.UseDivineVeilPre": "Use Divine Veil at 15 seconds remaining on Countdown",
+  "DefaultRotations.Tank.PLD_DefaultName.UseHolyWhenAway": "Use Holy Circle or Holy Spirit when out of melee range",
+  "DefaultRotations.Tank.PLD_DefaultName.UseShieldBash": "Use Shield Bash when Low Blow is cooling down"
 }
