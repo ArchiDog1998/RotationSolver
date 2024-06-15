@@ -700,5 +700,7 @@
   "RotationSolver.Basic.Data.LogicalType.NotAll": "!&&",
   "RotationSolver.Basic.Data.LogicalType.NotAny": "! | | ",
   "RotationSolver.Basic.Configuration.Target.TargetingConditionSetName.Type": "Logical Type",
-  "RotationSolver.Basic.Configuration.Target.TargetingItemName.ConditionSet": "Condition"
+  "RotationSolver.Basic.Configuration.Target.TargetingItemName.ConditionSet": "Target Condition",
+  "XIVConfigUI.LocalString.List": "List",
+  "RotationSolver.Basic.Configuration.Target.TargetingConditionName.Value": "Value"
 }

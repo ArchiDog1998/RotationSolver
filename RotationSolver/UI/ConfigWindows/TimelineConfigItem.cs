@@ -385,7 +385,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
                     try
                     {
                         var s = JsonConvert.DeserializeObject<ITimelineCondition>
-                            (str, new ITimelineConditionConverter())!;
+                            (str, GeneralJsonConverter.Instance)!;
                         set.Conditions.Add(s);
                     }
                     catch (Exception ex)

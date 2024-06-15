@@ -260,7 +260,7 @@ internal static class TerritoryActionDrawer
                     try
                     {
                         var s = JsonConvert.DeserializeObject<BaseDrawingGetter>
-                            (str, new BaseDrawingGetterConverter())!;
+                            (str, GeneralJsonConverter.Instance)!;
                         drawingItem.DrawingGetters.Add(s);
                     }
                     catch (Exception ex)

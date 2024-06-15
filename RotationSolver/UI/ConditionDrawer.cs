@@ -555,7 +555,7 @@ internal static class ConditionDrawer
                     var str = ImGui.GetClipboardText();
                     try
                     {
-                        var set = JsonConvert.DeserializeObject<ICondition>(str, new IConditionConverter())!;
+                        var set = JsonConvert.DeserializeObject<ICondition>(str, GeneralJsonConverter.Instance)!;
                         conditionSet.Conditions.Add(set);
                     }
                     catch (Exception ex)
