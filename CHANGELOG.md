@@ -1,5 +1,22 @@
 # Changelog
 
+## [5.0.3](https://github.com/ArchiDog1998/RotationSolver/compare/v5.0.2...v5.0.3) (2024-06-13)
+
+
+### Bug Fixes
+
+* add more configs for target related drawings. ([d603768](https://github.com/ArchiDog1998/RotationSolver/commit/d603768846d14a09eca7ba57988751292447f81d))
+* add rotations version warning. ([3cd8a87](https://github.com/ArchiDog1998/RotationSolver/commit/3cd8a871f8006f6ad20e884f1bdc246e8c6e4d21))
+* add the target type things. ([8a3272d](https://github.com/ArchiDog1998/RotationSolver/commit/8a3272d0568bc499d3199e919bcd959fb2ed71ff))
+* better rating popup. ([43acacd](https://github.com/ArchiDog1998/RotationSolver/commit/43acacde1127fa3ccf539c70a544c76cddbc15c4))
+* config fix.. ([6e5c7d5](https://github.com/ArchiDog1998/RotationSolver/commit/6e5c7d5e27148d08762bb4d46d5d122e01def22f))
+* defense single for tanks. ([09a80a0](https://github.com/ArchiDog1998/RotationSolver/commit/09a80a06565f4dff19f8c0352086ed69a78203e6))
+* make rotation updater simple. ([8fae4ef](https://github.com/ArchiDog1998/RotationSolver/commit/8fae4ef3d0a2ed3dad8dc70ad4cfcc170d065b4a))
+* rotation choice fix. ([9148385](https://github.com/ArchiDog1998/RotationSolver/commit/9148385cd9be9bd6c72bc9e1653785c8d85895c9))
+* try to add the condition drawer. ([589f5ae](https://github.com/ArchiDog1998/RotationSolver/commit/589f5aef6de3fef0a74e77e3f94e773811b5d95f))
+* use overlay window for target related drawing  fix. ([288e2f5](https://github.com/ArchiDog1998/RotationSolver/commit/288e2f5aca403b6e198715fa48cc80abae8a4993))
+* warning fix and rating ui fix. ([1b6ede1](https://github.com/ArchiDog1998/RotationSolver/commit/1b6ede11ed6660ab49afb4344b62d99081fee2eb))
+
 ## [5.0.2](https://github.com/ArchiDog1998/RotationSolver/compare/v5.0.1...v5.0.2) (2024-06-04)
 
 
