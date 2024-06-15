@@ -615,7 +615,7 @@ internal static class TerritoryActionDrawer
                 break;
         }
 
-        RotationConfigWindow.StatusPopUp(key, RotationConfigWindow.BadStatus, ref _statusSearching, s => getter.Status = s.RowId);
+        ImGuiHelperRS.StatusPopUp(key, StatusHelper.BadStatus, ref _statusSearching, s => getter.Status = s.RowId);
 
         if (getter.Status != 0)
         {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Dalamud.Interface.Windowing;
+using System.ComponentModel;
 using XIVConfigUI;
 
 namespace RotationSolver.UI.ConfigWindows;
@@ -15,7 +16,7 @@ public class TargetItem : ConfigWindowItemRS
         _targetHeader ??= new(new()
             {
                 {  () =>UiString.ConfigWindow_Target_Config.Local(), () => DrawTargetConfig(window) },
-                {  () =>UiString.ConfigWindow_List_Hostile.Local(), DrawTargetHostile },
+                {  () =>UiString.ConfigWindow_List_Hostile.Local(), () => DrawTargetHostile(window) },
             });
         _targetHeader?.Draw();
     }
@@ -25,8 +26,9 @@ public class TargetItem : ConfigWindowItemRS
         window.Collection.DrawItems((int)UiString.ConfigWindow_Target_Config);
     }
 
-    private static void DrawTargetHostile()
+    private static void DrawTargetHostile(ConfigWindow window)
     {
+        window.Collection.DrawItems((int)UiString.ConfigWindow_List_Hostile);
         XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(Service.Config.TargetingWays);
     }
 }

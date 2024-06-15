@@ -58,6 +58,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();
+        ImGuiHelperRS.Init();
 
         WarningHelper.OpenLinkPayload = pluginInterface.AddChatLinkHandler(0, (id, str) =>
         {

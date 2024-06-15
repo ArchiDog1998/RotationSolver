@@ -181,22 +181,22 @@ public class ListItem : ConfigWindowItemRS
             ImGui.TableNextColumn();
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_InvincibilityDesc.Local());
-            DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, RotationConfigWindow.AllStatus);
+            DrawStatusList(nameof(OtherConfiguration.InvincibleStatus), OtherConfiguration.InvincibleStatus, StatusHelper.AllStatus);
 
             ImGui.TableNextColumn();
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_PriorityDesc.Local());
-            DrawStatusList(nameof(OtherConfiguration.PriorityStatus), OtherConfiguration.PriorityStatus, RotationConfigWindow.AllStatus);
+            DrawStatusList(nameof(OtherConfiguration.PriorityStatus), OtherConfiguration.PriorityStatus, StatusHelper.AllStatus);
 
             ImGui.TableNextColumn();
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_DangerousStatusDesc.Local());
-            DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, RotationConfigWindow.AllDispelStatus);
+            DrawStatusList(nameof(OtherConfiguration.DangerousStatus), OtherConfiguration.DangerousStatus, StatusHelper.AllDispelStatus);
 
             ImGui.TableNextColumn();
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_NoCastingStatusDesc.Local());
-            DrawStatusList(nameof(OtherConfiguration.NoCastingStatus), OtherConfiguration.NoCastingStatus, RotationConfigWindow.BadStatus);
+            DrawStatusList(nameof(OtherConfiguration.NoCastingStatus), OtherConfiguration.NoCastingStatus, StatusHelper.BadStatus);
         }
     }
 
@@ -248,7 +248,7 @@ public class ListItem : ConfigWindowItemRS
 
         var popupId = "Rotation Solver Popup" + name;
 
-        RotationConfigWindow.StatusPopUp(popupId, allStatus, ref _statusSearching, status =>
+        ImGuiHelperRS.StatusPopUp(popupId, allStatus, ref _statusSearching, status =>
         {
             statuses.Add(status.RowId);
             OtherConfiguration.Save();

@@ -1,6 +1,8 @@
-﻿using Dalamud.Interface.Colors;
+﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.LanguageHelpers;
@@ -16,6 +18,50 @@ namespace RotationSolver.UI;
 internal static class ImGuiHelperRS
 {
     private static float Scale => ImGuiHelpers.GlobalScale;
+
+    static string _statusSearching = string.Empty;
+    public static void Init()
+    {
+        XIVConfigUI.ConditionConfigs.ConditionDrawer.CustomDrawings[typeof(StatusID)] = (obj, property) =>
+        {
+            var value = (uint)(property.GetValue(obj) as StatusID?)!.Value;
+
+            var key = "Status PopUp " + property.Name + obj.GetHashCode();
+            var status = Svc.Data.GetExcelSheet<Status>()?.GetRow(value);
+            if (ImageLoader.GetTexture(value == 0 ? 16220 : status?.Icon ?? 10100, out var texture, 10100))
+            {
+                if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(XIVConfigUI.ConditionConfigs.ConditionDrawer.IconSize * 3 / 4, XIVConfigUI.ConditionConfigs.ConditionDrawer.IconSize), "Status" + value.ToString()))
+                {
+                    ImGui.OpenPopup(key);
+                }
+
+                ImGuiHelper.ExecuteHotKeysPopup(key + "Edit", string.Empty, $"{status?.Name ?? "Unknown"} ({value})", false,
+                    (() => property.SetValue(obj, StatusID.None), [VirtualKey.DELETE]));
+            }
+
+            Status[] statusList = [];
+
+            if (Svc.Targets.Target is BattleChara battle)
+            {
+                statusList = [..battle.StatusList.Select(s => s.GameData)];
+            }
+
+            if (statusList.Length == 0)
+            {
+                var type = property.GetCustomAttribute<StatusSourceAttribute>()?.Type ?? StatusType.AllStatus;
+                statusList = type switch
+                {
+                    StatusType.BadStatus => StatusHelper.BadStatus,
+                    StatusType.AllDispelStatus => StatusHelper.AllDispelStatus,
+                    _ => StatusHelper.AllStatus,
+                };
+            }
+
+            StatusPopUp(key, statusList, ref _statusSearching, s => property.SetValue(obj, (StatusID)s.RowId));
+
+            return null;
+        };
+    }
 
     [Obsolete]
     internal static void SetNextWidthWithName(string name)
@@ -359,4 +405,41 @@ internal static class ImGuiHelperRS
         c.W = 0.55f;
         return ImGui.ColorConvertFloat4ToU32(c);
     }
+
+    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100, float size = 32)
+    {
+        using var popup = ImRaii.Popup(popupId);
+        if (popup)
+        {
+            ImGui.SetNextItemWidth(200 * Scale);
+            ImGui.InputTextWithHint("##Searching the status", UiString.ConfigWindow_List_StatusNameOrId.Local(), ref searching, 128);
+
+            ImGui.Spacing();
+
+            using var child = ImRaii.Child("Rotation Solver Add Status", new Vector2(-1, 400 * Scale));
+            if (!child) return;
+
+            var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * Scale + ImGui.GetStyle().ItemSpacing.X)));
+            var index = 0;
+
+            var searchingKey = searching;
+            foreach (var status in allStatus.OrderByDescending(s => Searchable.Similarity(s.Name + " " + s.RowId.ToString(), searchingKey)))
+            {
+                if (ImageLoader.GetTexture(status.Icon, out var texture, notLoadId))
+                {
+                    if (index++ % count != 0)
+                    {
+                        ImGui.SameLine();
+                    }
+                    if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(size * 3 / 4, size) * Scale, "Adding" + status.RowId.ToString()))
+                    {
+                        clicked?.Invoke(status);
+                        ImGui.CloseCurrentPopup();
+                    }
+                    ImGuiHelper.HoveredTooltip($"{status.Name} ({status.RowId})");
+                }
+            }
+        }
+    }
+
 }

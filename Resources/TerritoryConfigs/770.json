@@ -1,0 +1,18 @@
+{
+  "_jobConfigs": {
+    "MCH": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "ADV": {
+      "Timeline": {},
+      "Trigger": []
+    }
+  },
+  "AutoHeal": true,
+  "AutoDefense": true,
+  "Config": {
+    "Timeline": {},
+    "Trigger": []
+  }
+}

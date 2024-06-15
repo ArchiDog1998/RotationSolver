@@ -7,7 +7,6 @@ using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Condition;
-using RotationSolver.UI.ConfigWindows;
 using RotationSolver.Updaters;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
@@ -729,7 +728,7 @@ internal static class ConditionDrawer
 
         var popupId = "Status Finding Popup" + targetCondition.GetHashCode().ToString();
 
-        RotationConfigWindow.StatusPopUp(popupId, AllStatus, ref searchTxt, status =>
+        ImGuiHelperRS.StatusPopUp(popupId, AllStatus, ref searchTxt, status =>
         {
             targetCondition.Status = status;
             targetCondition.StatusId = (StatusID)targetCondition.Status.RowId;

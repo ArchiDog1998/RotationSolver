@@ -633,67 +633,13 @@ public class RotationConfigWindow : ConfigWindow
     }
     #endregion
 
-    private static Status[]? _allDispelStatus = null;
-    internal static Status[] AllDispelStatus
-        => _allDispelStatus ??= Service.GetSheet<Status>()
-                    .Where(s => s.CanDispel)
-                    .ToArray();
-
-
-    private static Status[]? _allStatus = null;
-    internal static Status[] AllStatus
-        => _allStatus ??= Service.GetSheet<Status>()
-                    .Where(s => !s.CanDispel && !s.LockMovement && !s.IsGaze && !s.IsFcBuff
-                        && !string.IsNullOrEmpty(s.Name.ToString()) && s.Icon != 0)
-                    .ToArray();
-
     private static GAction[]? _allActions = null;
     internal static GAction[] AllActions
         => _allActions ??= Service.GetSheet<GAction>()
                     .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction
                     && a.ClassJob.Value == null && a.Cast100ms > 0)
                     .ToArray();
-    private static Status[]? _badStatus = null;
-    internal static Status[] BadStatus
-        => _badStatus ??= Service.GetSheet<Status>()
-                    .Where(s => s.StatusCategory == 2 && s.Icon != 0)
-                    .ToArray();
-    internal static void StatusPopUp(string popupId, Status[] allStatus, ref string searching, Action<Status> clicked, uint notLoadId = 10100, float size = 32)
-    {
-        using var popup = ImRaii.Popup(popupId);
-        if (popup)
-        {
-            ImGui.SetNextItemWidth(200 * Scale);
-            ImGui.InputTextWithHint("##Searching the status", UiString.ConfigWindow_List_StatusNameOrId.Local(), ref searching, 128);
 
-            ImGui.Spacing();
-
-            using var child = ImRaii.Child("Rotation Solver Add Status", new Vector2(-1, 400 * Scale));
-            if (child)
-            {
-                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * Scale + ImGui.GetStyle().ItemSpacing.X)));
-                var index = 0;
-
-                var searchingKey = searching;
-                foreach (var status in allStatus.OrderByDescending(s => Searchable.Similarity(s.Name + " " + s.RowId.ToString(), searchingKey)))
-                {
-                    if (ImageLoader.GetTexture(status.Icon, out var texture, notLoadId))
-                    {
-                        if (index++ % count != 0)
-                        {
-                            ImGui.SameLine();
-                        }
-                        if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(size * 3 / 4, size) * Scale, "Adding" + status.RowId.ToString()))
-                        {
-                            clicked?.Invoke(status);
-                            ImGui.CloseCurrentPopup();
-                        }
-                        ImGuiHelper.HoveredTooltip($"{status.Name} ({status.RowId})");
-                    }
-                }
-            }
-        }
-    }
 
 
     protected override ConfigWindowItem[] GetItems() =>

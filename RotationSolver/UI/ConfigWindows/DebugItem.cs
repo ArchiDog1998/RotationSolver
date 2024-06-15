@@ -66,6 +66,7 @@ public unsafe class DebugItem : ConfigWindowItemRS
         ImGui.Text("Moving: " + DataCenter.IsMoving.ToString());
         ImGui.Text("Stop Moving: " + DataCenter.StopMovingRaw.ToString());
 
+        ImGui.Text("Territory: " + DataCenter.TerritoryName.ToString() + " " + DataCenter.Territory?.RowId);
         ImGui.Text("TerritoryType: " + DataCenter.TerritoryContentType.ToString());
         ImGui.Text("DPSTaken: " + DataCenter.DPSTaken.ToString());
         ImGui.Text("TimeToNext: " + DataCenter.NextAbilityToNextGCD.ToString());
