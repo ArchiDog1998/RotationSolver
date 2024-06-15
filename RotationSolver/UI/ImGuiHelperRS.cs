@@ -16,6 +16,8 @@ namespace RotationSolver.UI;
 internal static class ImGuiHelperRS
 {
     private static float Scale => ImGuiHelpers.GlobalScale;
+
+    [Obsolete]
     internal static void SetNextWidthWithName(string name)
     {
         ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X + 30 * ImGuiHelpers.GlobalScale));
@@ -139,6 +141,7 @@ internal static class ImGuiHelperRS
         child?.Dispose();
     }
 
+    [Obsolete]
     public static unsafe bool SelectableCombo(string popUp, string[] items, ref int index, ImFontPtr? font = null, Vector4? color = null)
     {
         var count = items.Length;
@@ -183,6 +186,7 @@ internal static class ImGuiHelperRS
         return result;
     }
 
+    [Obsolete]
     public static unsafe bool SelectableButton(string name, ImFontPtr? font = null, Vector4? color = null)
     {
         List<IDisposable> disposables = new(2);

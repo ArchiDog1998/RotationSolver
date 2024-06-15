@@ -41,6 +41,12 @@ public static partial class RSCommands
                 {
                     if (index == -1)
                     {
+                        for (index = Service.Config.TargetingIndex + 1; 
+                        index < Service.Config.TargetingIndex + Service.Config.TargetingWays.Count; index++)
+                        {
+                            var i = index % Service.Config.TargetingWays.Count;
+                            if (Service.Config.TargetingWays[i].IsInLoop) break;
+                        }
                         index = Service.Config.TargetingIndex + 1;
                     }
                     index %= Service.Config.TargetingWays.Count;

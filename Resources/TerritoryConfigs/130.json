@@ -1,0 +1,18 @@
+{
+  "_jobConfigs": {
+    "NIN": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "AST": {
+      "Timeline": {},
+      "Trigger": []
+    }
+  },
+  "AutoHeal": true,
+  "AutoDefense": true,
+  "Config": {
+    "Timeline": {},
+    "Trigger": []
+  }
+}

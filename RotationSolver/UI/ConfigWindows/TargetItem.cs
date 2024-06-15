@@ -1,9 +1,8 @@
-﻿using Dalamud.Game.ClientState.Keys;
-using ECommons.ImGuiMethods;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using XIVConfigUI;
 
 namespace RotationSolver.UI.ConfigWindows;
+
 [Description("Target")]
 public class TargetItem : ConfigWindowItemRS
 {
@@ -28,52 +27,6 @@ public class TargetItem : ConfigWindowItemRS
 
     private static void DrawTargetHostile()
     {
-        if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "Add Hostile"))
-        {
-            Service.Config.TargetingWays.Add(TargetingType.Big);
-        }
-        ImGui.SameLine();
-        ImGui.TextWrapped(UiString.ConfigWindow_Param_HostileDesc.Local());
-
-        for (int i = 0; i < Service.Config.TargetingWays.Count; i++)
-        {
-            var targetType = Service.Config.TargetingWays[i];
-
-            void Delete()
-            {
-                Service.Config.TargetingWays.RemoveAt(i);
-            };
-
-            void Up()
-            {
-                Service.Config.TargetingWays.RemoveAt(i);
-                Service.Config.TargetingWays.Insert(Math.Max(0, i - 1), targetType);
-            };
-            void Down()
-            {
-                Service.Config.TargetingWays.RemoveAt(i);
-                Service.Config.TargetingWays.Insert(Math.Min(Service.Config.TargetingWays.Count - 1, i + 1), targetType);
-            }
-
-            var key = $"Targeting Type Pop Up: {i}";
-
-            ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                (LocalString.Remove.Local(), Delete, ["Delete"]),
-                (LocalString.MoveUp.Local(), Up, ["↑"]),
-                (LocalString.MoveDown.Local(), Down, ["↓"]));
-
-            var targetingWay = Service.Config.TargetingWays[i];
-            var targingType = targetingWay.TargetingType;
-
-            if(ConditionDrawer.DrawByteEnum("##HostileCondition" + i.ToString(), ref targingType))
-            {
-                targetingWay.TargetingType = targingType;
-            }
-
-            ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
-                (Delete, [VirtualKey.DELETE]),
-                (Up, [VirtualKey.UP]),
-                (Down, [VirtualKey.DOWN]));
-        }
+        XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(Service.Config.TargetingWays);
     }
 }

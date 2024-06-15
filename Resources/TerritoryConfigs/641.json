@@ -47,6 +47,10 @@
     "GNB": {
       "Timeline": {},
       "Trigger": []
+    },
+    "MCH": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "AutoHeal": true,
