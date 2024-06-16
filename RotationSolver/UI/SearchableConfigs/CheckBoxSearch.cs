@@ -31,7 +31,7 @@ internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params
             {
                 if (DataCenter.RightNowRotation == null) return;
                 ImGuiHelperRS.DrawSupporterWarning();
-                GetCondition()?.DrawMain(DataCenter.RightNowRotation);
+                XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(GetCondition());
             };
         }
 
@@ -99,7 +99,7 @@ internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params
     {
         if (AlwaysShowChildren)
         {
-            ConditionDrawer.DrawCondition(Condition);
+            XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(Condition);
             ImGui.SameLine();
         }
         base.DrawMiddle();

@@ -34,57 +34,57 @@ public class AutoItem : ConfigWindowItemRS
         {
             {
                 () => UiString.ConfigWindow_Auto_HealAreaConditionSet.Local(),
-                () => DataCenter.RightSet.HealAreaConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.HealAreaConditionSet)
             },
 
             {
                 () => UiString.ConfigWindow_Auto_HealSingleConditionSet.Local(),
-                () => DataCenter.RightSet.HealSingleConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.HealSingleConditionSet)
             },
 
             {
                 () => UiString.ConfigWindow_Auto_DefenseAreaConditionSet.Local(),
-                () => DataCenter.RightSet.DefenseAreaConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.DefenseAreaConditionSet)
             },
 
             {
                 () => UiString.ConfigWindow_Auto_DefenseSingleConditionSet.Local(),
-                () => DataCenter.RightSet.DefenseSingleConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.DefenseSingleConditionSet)
             },
 
             {
                 () =>  UiString.ConfigWindow_Auto_DispelStancePositionalConditionSet.Local(),
-                () => DataCenter.RightSet.DispelStancePositionalConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.DispelStancePositionalConditionSet)
             },
 
             {
                 () =>  UiString.ConfigWindow_Auto_RaiseShirkConditionSet.Local(),
-                () => DataCenter.RightSet.RaiseShirkConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.RaiseShirkConditionSet)
             },
 
             {
                 () => UiString.ConfigWindow_Auto_MoveForwardConditionSet.Local(),
-                () => DataCenter.RightSet.MoveForwardConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.MoveForwardConditionSet)
             },
 
             {
                 () => UiString.ConfigWindow_Auto_MoveBackConditionSet.Local(),
-                () => DataCenter.RightSet.MoveBackConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.MoveBackConditionSet)
             },
 
             {
                 () => UiString.ConfigWindow_Auto_AntiKnockbackConditionSet.Local(),
-                () => DataCenter.RightSet.AntiKnockbackConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.AntiKnockbackConditionSet)
             },
 
             {
                 () => UiString.ConfigWindow_Auto_SpeedConditionSet.Local(),
-                () => DataCenter.RightSet.SpeedConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.SpeedConditionSet)
             },
 
             {
                 () => UiString.ConfigWindow_Auto_LimitBreakConditionSet.Local(),
-                () => DataCenter.RightSet.LimitBreakConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.LimitBreakConditionSet)
             },
         })
     {

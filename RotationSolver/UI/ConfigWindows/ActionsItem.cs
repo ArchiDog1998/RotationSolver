@@ -261,22 +261,20 @@ public class ActionsItem : ConfigWindowItemRS
             {
                 ImGui.TextWrapped(UiString.ConfigWindow_Actions_ForcedConditionSet_Description.Local());
 
-                var rotation = DataCenter.RightNowRotation;
                 var set = DataCenter.RightSet;
 
-                if (set == null || _activeAction == null || rotation == null) return;
-                set.GetCondition(_activeAction.ID)?.DrawMain(rotation);
+                if (set == null || _activeAction == null) return;
+                XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(set.GetCondition(_activeAction.ID));
             } },
 
             { () => UiString.ConfigWindow_Actions_DisabledConditionSet.Local(), () =>
             {
                 ImGui.TextWrapped(UiString.ConfigWindow_Actions_DisabledConditionSet_Description.Local());
 
-                var rotation = DataCenter.RightNowRotation;
                 var set = DataCenter.RightSet;
 
-                if (set == null || _activeAction == null || rotation == null) return;
-                set.GetDisabledCondition(_activeAction.ID)?.DrawMain(rotation);
+                if (set == null || _activeAction == null) return;
+                XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(set.GetDisabledCondition(_activeAction.ID));
             } },
         })
     {

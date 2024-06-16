@@ -8,6 +8,7 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using System.ComponentModel;
 using XIVConfigUI;
+using XIVConfigUI.ConditionConfigs;
 using XIVConfigUI.SearchableConfigs;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
@@ -127,7 +128,7 @@ public class ListItem : ConfigWindowItemRS
                 }
 
                 var popUpKey = $"ActionPopup{group.GetHashCode()}{j}";
-                ConditionDrawer.ActionSelectorPopUp(popUpKey, _actionGrpActionsList, DataCenter.RightNowRotation, item => actions[j] = item.ID);
+                ImGuiHelperRS.ActionSelectorPopUp(popUpKey, _actionGrpActionsList, DataCenter.RightNowRotation, item => actions[j] = item.ID);
 
                 if (((ActionID)action).GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
                 {

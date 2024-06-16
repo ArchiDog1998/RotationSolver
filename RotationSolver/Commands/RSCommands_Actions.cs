@@ -229,18 +229,18 @@ public static partial class RSCommands
         }
 
         //Auto switch conditions.
-        else if (DataCenter.RightSet.SwitchCancelConditionSet?.IsTrue(DataCenter.RightNowRotation) ?? false)
+        else if (DataCenter.RightSet.SwitchCancelConditionSet?.IsTrue() ?? false)
         {
             CancelState();
         }
-        else if (DataCenter.RightSet.SwitchManualConditionSet?.IsTrue(DataCenter.RightNowRotation) ?? false)
+        else if (DataCenter.RightSet.SwitchManualConditionSet?.IsTrue() ?? false)
         {
             if (!DataCenter.State)
             {
                 DoStateCommandType(StateCommandType.Manual);
             }
         }
-        else if (DataCenter.RightSet.SwitchAutoConditionSet?.IsTrue(DataCenter.RightNowRotation) ?? false)
+        else if (DataCenter.RightSet.SwitchAutoConditionSet?.IsTrue() ?? false)
         {
             if (!DataCenter.State)
             {

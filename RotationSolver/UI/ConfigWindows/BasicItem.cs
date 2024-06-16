@@ -179,15 +179,15 @@ public class BasicItem : ConfigWindowItemRS
         {
             {
                 () => UiString.ConfigWindow_Basic_SwitchCancelConditionSet.Local(),
-                () => DataCenter.RightSet.SwitchCancelConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.SwitchCancelConditionSet)
             },
             {
                 () => UiString.ConfigWindow_Basic_SwitchManualConditionSet.Local(),
-                () => DataCenter.RightSet.SwitchManualConditionSet?.DrawMain(DataCenter.RightNowRotation)
+                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.SwitchManualConditionSet)
             },
             {
                () =>  UiString.ConfigWindow_Basic_SwitchAutoConditionSet.Local(),
-               () => DataCenter.RightSet.SwitchAutoConditionSet?.DrawMain(DataCenter.RightNowRotation)
+               () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.SwitchAutoConditionSet)
             },
         })
     {
@@ -238,7 +238,7 @@ public class BasicItem : ConfigWindowItemRS
 
             if (value && DataCenter.RightNowRotation != null)
             {
-                DataCenter.RightSet.NamedConditions[i].Condition?.DrawMain(DataCenter.RightNowRotation);
+                XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.NamedConditions[i].Condition);
             }
         }
         if (removeIndex > -1)

@@ -7,10 +7,11 @@ using ECommons.DalamudServices;
 using ECommons.LanguageHelpers;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Configuration.TerritoryAction;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Commands;
+using RotationSolver.Updaters;
 using XIVConfigUI;
+using XIVConfigUI.ConditionConfigs;
 using XIVConfigUI.SearchableConfigs;
 using XIVDrawer;
 
@@ -28,7 +29,7 @@ internal static class ImGuiHelperRS
 
     public static void Init()
     {
-        XIVConfigUI.ConditionConfigs.ConditionDrawer.CustomDrawings[typeof(StatusID)] = (obj, property) =>
+        ConditionDrawer.CustomDrawings[typeof(StatusID)] = (obj, property) =>
         {
             var value = (uint)(property.GetValue(obj) as StatusID?)!.Value;
 
@@ -36,7 +37,7 @@ internal static class ImGuiHelperRS
             var status = Svc.Data.GetExcelSheet<Status>()?.GetRow(value);
             if (ImageLoader.GetTexture(value == 0 ? 16220 : status?.Icon ?? 10100, out var texture, 10100))
             {
-                if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(XIVConfigUI.ConditionConfigs.ConditionDrawer.IconSize * 3 / 4, XIVConfigUI.ConditionConfigs.ConditionDrawer.IconSize), "Status" + value.ToString()))
+                if (ImGuiHelper.NoPaddingNoColorImageButton(texture.ImGuiHandle, new Vector2(ConditionDrawer.IconSize * 3 / 4, ConditionDrawer.IconSize), "Status" + value.ToString()))
                 {
                     ImGui.OpenPopup(key);
                 }
@@ -68,14 +69,15 @@ internal static class ImGuiHelperRS
             return null;
         };
 
-        XIVConfigUI.ConditionConfigs.ConditionDrawer.CustomDrawings[typeof(ActionID)] = (obj, property) =>
+        ConditionDrawer.CustomDrawings[typeof(ActionID)] = (obj, property) =>
         {
+            var value = (property.GetValue(obj) as ActionID?)!.Value;
+
             if (obj.GetType().GetRuntimeProperty(nameof(TimelineConditionBase.TimelineItem)) is PropertyInfo info) // TimelineItem
             {
-                var value = (uint)(property.GetValue(obj) as ActionID?)!.Value;
                 if (info.GetValue(obj) is not TimelineItem timelineItem) return null;
 
-                var index = Array.IndexOf(timelineItem.ActionIDs, value);
+                var index = Array.IndexOf(timelineItem.ActionIDs, (uint)value);
                 var actionNames = timelineItem.ActionIDs.Select(i => (Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.GetRow(i)?.Name.RawString ?? "Unnamed Action") + $" ({i})").ToArray();
 
                 if (ImGuiHelper.SelectableCombo("Action ##Select Action" + obj.GetHashCode(), actionNames, ref index))
@@ -83,23 +85,22 @@ internal static class ImGuiHelperRS
                     property.SetValue(obj, (ActionID)timelineItem.ActionIDs[index]);
                 }
             }
-            else if(obj is ActionAction actionAction)
+            else //From the rotations.
             {
                 if (DataCenter.RightNowRotation == null) return null;
 
-                var popUpKey = $"Action Finder{actionAction.GetHashCode()}";
-                ConditionDrawer.ActionSelectorPopUp(popUpKey, _territoryActionsList, DataCenter.RightNowRotation, item => actionAction.ID = (ActionID)item.ID);
+                var popUpKey = $"Action Finder{obj.GetHashCode()}";
+                ImGuiHelperRS.ActionSelectorPopUp(popUpKey, _territoryActionsList, DataCenter.RightNowRotation, item => property.SetValue(obj, (ActionID)item.ID));
 
-                if (actionAction.ID.GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
+                if (value.GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
                 {
                     var cursor = ImGui.GetCursorPos();
-                    if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, actionAction.GetHashCode().ToString()))
+                    if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, obj.GetHashCode().ToString()))
                     {
                         if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
                     }
                     ImGuiHelper.DrawActionOverlay(cursor, ConditionDrawer.IconSize, 1);
                 }
-
             }
             return null;
         };
@@ -484,4 +485,52 @@ internal static class ImGuiHelperRS
         }
     }
 
+    private const int count = 8;
+    public static void ActionSelectorPopUp(string popUpId, CollapsingHeaderGroup group, ICustomRotation rotation, Action<IAction> action, System.Action? others = null)
+    {
+        if (group == null) return;
+
+        using var popUp = ImRaii.Popup(popUpId);
+
+        if (!popUp.Success) return;
+
+        others?.Invoke();
+
+        group.ClearCollapsingHeader();
+
+        foreach (var pair in RotationUpdater.GroupActions(rotation.AllBaseActions.Where(i => i.Action.IsInJob()))!)
+        {
+            group.AddCollapsingHeader(() => pair.Key, () =>
+            {
+                var index = 0;
+                foreach (var item in pair.OrderBy(t => t.ID))
+                {
+                    if (!IconSet.GetTexture((ActionID)item.ID, out var icon)) continue;
+
+                    if (index++ % count != 0)
+                    {
+                        ImGui.SameLine();
+                    }
+
+                    using (var group = ImRaii.Group())
+                    {
+                        var cursor = ImGui.GetCursorPos();
+                        if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, item.GetHashCode().ToString()))
+                        {
+                            action?.Invoke(item);
+                            ImGui.CloseCurrentPopup();
+                        }
+                        ImGuiHelper.DrawActionOverlay(cursor, ConditionDrawer.IconSize, 1);
+                    }
+
+                    var name = item.Name;
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        ImGuiHelper.HoveredTooltip(name);
+                    }
+                }
+            });
+        }
+        group.Draw();
+    }
 }
