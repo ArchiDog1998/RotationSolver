@@ -2,12 +2,13 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
-using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.LanguageHelpers;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration.TerritoryAction;
+using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Commands;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
@@ -20,6 +21,11 @@ internal static class ImGuiHelperRS
     private static float Scale => ImGuiHelpers.GlobalScale;
 
     static string _statusSearching = string.Empty;
+    private static readonly CollapsingHeaderGroup _territoryActionsList = new()
+    {
+        HeaderSize = FontSize.Fifth,
+    };
+
     public static void Init()
     {
         XIVConfigUI.ConditionConfigs.ConditionDrawer.CustomDrawings[typeof(StatusID)] = (obj, property) =>
@@ -59,6 +65,42 @@ internal static class ImGuiHelperRS
 
             StatusPopUp(key, statusList, ref _statusSearching, s => property.SetValue(obj, (StatusID)s.RowId));
 
+            return null;
+        };
+
+        XIVConfigUI.ConditionConfigs.ConditionDrawer.CustomDrawings[typeof(ActionID)] = (obj, property) =>
+        {
+            if (obj.GetType().GetRuntimeProperty(nameof(TimelineConditionBase.TimelineItem)) is PropertyInfo info) // TimelineItem
+            {
+                var value = (uint)(property.GetValue(obj) as ActionID?)!.Value;
+                if (info.GetValue(obj) is not TimelineItem timelineItem) return null;
+
+                var index = Array.IndexOf(timelineItem.ActionIDs, value);
+                var actionNames = timelineItem.ActionIDs.Select(i => (Svc.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.GetRow(i)?.Name.RawString ?? "Unnamed Action") + $" ({i})").ToArray();
+
+                if (ImGuiHelper.SelectableCombo("Action ##Select Action" + obj.GetHashCode(), actionNames, ref index))
+                {
+                    property.SetValue(obj, (ActionID)timelineItem.ActionIDs[index]);
+                }
+            }
+            else if(obj is ActionAction actionAction)
+            {
+                if (DataCenter.RightNowRotation == null) return null;
+
+                var popUpKey = $"Action Finder{actionAction.GetHashCode()}";
+                ConditionDrawer.ActionSelectorPopUp(popUpKey, _territoryActionsList, DataCenter.RightNowRotation, item => actionAction.ID = (ActionID)item.ID);
+
+                if (actionAction.ID.GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
+                {
+                    var cursor = ImGui.GetCursorPos();
+                    if (ImGuiHelper.NoPaddingNoColorImageButton(icon.ImGuiHandle, Vector2.One * ConditionDrawer.IconSize, actionAction.GetHashCode().ToString()))
+                    {
+                        if (!ImGui.IsPopupOpen(popUpKey)) ImGui.OpenPopup(popUpKey);
+                    }
+                    ImGuiHelper.DrawActionOverlay(cursor, ConditionDrawer.IconSize, 1);
+                }
+
+            }
             return null;
         };
     }

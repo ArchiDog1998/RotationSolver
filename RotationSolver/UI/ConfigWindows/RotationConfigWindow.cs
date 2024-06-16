@@ -8,7 +8,6 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
-using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Helpers;
 using RotationSolver.UI.SearchableConfigs;
@@ -52,6 +51,7 @@ public class RotationConfigWindow : ConfigWindow
     {
         Service.Config.Save();
         ActionSequencerUpdater.SaveFiles();
+        Basic.Configuration.Position.ClearDrawings();
         base.OnClose();
     }
 

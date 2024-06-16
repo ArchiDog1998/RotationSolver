@@ -4,6 +4,7 @@ using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Trigger;
+using RotationSolver.Basic.Data;
 using RotationSolver.Basic.Record;
 using System.ComponentModel;
 using XIVConfigUI;
@@ -186,116 +187,9 @@ public class TriggerItem : ConfigWindowItemRS
                 break;
             }
         }
-
         if (data == null) return;
 
-        DrawItems(data, IsJob);
-
-        static void DrawItems(List<BaseTriggerItem> triggerItems, bool isJob)
-        {
-            AddButton();
-            for (int i = 0; i < triggerItems.Count; i++)
-            {
-                if (i != 0)
-                {
-                    ImGui.Separator();
-                }
-                var triggerItem = triggerItems[i];
-
-                void Delete()
-                {
-                    triggerItems.RemoveAt(i);
-                };
-
-                void Up()
-                {
-                    triggerItems.RemoveAt(i);
-                    triggerItems.Insert(Math.Max(0, i - 1), triggerItem);
-                };
-
-                void Down()
-                {
-                    triggerItems.RemoveAt(i);
-                    triggerItems.Insert(Math.Min(triggerItems.Count, i + 1), triggerItem);
-                }
-
-                void Execute()
-                {
-                    Task.Run(async () =>
-                    {
-                        triggerItem.TerritoryAction.Enable();
-                        await Task.Delay(3000);
-                        triggerItem.TerritoryAction.Disable();
-                    });
-                }
-
-                var key = $"TimelineItem Pop Up: {triggerItem.GetHashCode()}";
-
-                ImGuiHelper.DrawHotKeysPopup(key, string.Empty,
-                    (LocalString.Remove.Local(), Delete, ["Delete"]),
-                    (LocalString.MoveUp.Local(), Up, ["↑"]),
-                    (LocalString.MoveDown.Local(), Down, ["↓"]),
-                    (UiString.TimelineExecute.Local(), Execute, ["→"]));
-
-                ConditionDrawer.DrawCondition(true);
-
-                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, true,
-                    (Delete, [VirtualKey.DELETE]),
-                    (Up, [VirtualKey.UP]),
-                    (Down, [VirtualKey.DOWN]),
-                    (Execute, [VirtualKey.RIGHT]));
-
-                ImGui.SameLine();
-                using var grp = ImRaii.Group();
-
-                var time = triggerItem.StartTime;
-                if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $" ##Time{triggerItem.GetHashCode()}", ref time, UiString.TriggerItemTime.Local()))
-                {
-                    triggerItem.StartTime = time;
-                }
-
-                ImGui.SameLine();
-
-                var duration = triggerItem.Duration;
-                if (ConditionDrawer.DrawDragFloat(ConfigUnitType.Seconds, $"##Duration{triggerItem.GetHashCode()}", ref duration, UiString.TimelineItemDuration.Local()))
-                {
-                    triggerItem.Duration = duration;
-                }
-
-                TerritoryActionDrawer.DrawTerritoryAction(triggerItem.TerritoryAction, []);
-            }
-
-            void AddButton()
-            {
-                if (ImGuiEx.IconButton(FontAwesomeIcon.Plus, "AddTriggerButton" + isJob))
-                {
-                    ImGui.OpenPopup("PopupTriggerButton" + isJob);
-                }
-                ImGuiHelper.HoveredTooltip(UiString.AddTerritoryActionButton.Local());
-
-                using var popUp = ImRaii.Popup("PopupTriggerButton" + isJob);
-                if (!popUp) return;
-
-                if (isJob)
-                {
-                    AddOneCondition<ActionTriggerItem>();
-                }
-                AddOneCondition<StateTriggerItem>();
-                AddOneCondition<DrawingTriggerItem>();
-                AddOneCondition<MacroTriggerItem>();
-                AddOneCondition<MoveTriggerItem>();
-                AddOneCondition<PathfindTriggerItem>();
-
-                void AddOneCondition<T>() where T : BaseTriggerItem
-                {
-                    if (ImGui.Selectable(typeof(T).Local()))
-                    {
-                        triggerItems.Add(Activator.CreateInstance<T>());
-                        ImGui.CloseCurrentPopup();
-                    }
-                }
-            }
-        }
+        XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(data);
     }
 
 }
