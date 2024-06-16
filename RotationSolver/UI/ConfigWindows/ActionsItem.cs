@@ -176,15 +176,17 @@ public class ActionsItem : ConfigWindowItemRS
                     }
                 }
 
-                var ratio = config.AutoHealRatio;
-                ImGui.SetNextItemWidth(Scale * 150);
-                if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_HealRatio.Local()}##{a}",
-                    ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
+                if (a.Setting.IsFriendly)
                 {
-                    config.AutoHealRatio = ratio;
+                    var ratio = config.AutoHealRatio;
+                    ImGui.SetNextItemWidth(Scale * 150);
+                    if (ImGui.DragFloat($"{UiString.ConfigWindow_Actions_HealRatio.Local()}##{a}",
+                        ref ratio, 0.002f, 0, 1, $"{ratio * 100:F1}{ConfigUnitType.Percent.ToSymbol()}"))
+                    {
+                        config.AutoHealRatio = ratio;
+                    }
+                    ImGuiHelper.HoveredTooltip(ConfigUnitType.Percent.Local());
                 }
-                ImGuiHelper.HoveredTooltip(ConfigUnitType.Percent.Local());
-
             }
         }
 
