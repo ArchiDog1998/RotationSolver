@@ -51,7 +51,7 @@ public class RotationConfigWindow : ConfigWindow
     {
         Service.Config.Save();
         ActionSequencerUpdater.SaveFiles();
-        Basic.Configuration.Position.ClearDrawings();
+        DrawerHelper.ClearDrawings();
         base.OnClose();
     }
 
