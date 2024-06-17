@@ -1,6 +1,7 @@
 ﻿using RotationSolver.Basic.Configuration;
 using System.ComponentModel;
 using XIVConfigUI;
+using XIVConfigUI.ConditionConfigs;
 
 namespace RotationSolver.UI.ConfigWindows;
 
@@ -37,30 +38,13 @@ public class ExtraItem : ConfigWindowItemRS
 
         ImGui.Text(UiString.ConfigWindow_Events_DutyStart.Local());
         ImGui.SameLine();
-        Service.Config.DutyStart.DisplayMacro();
+        ConditionDrawer.Draw(Service.Config.DutyStart);
 
         ImGui.Text(UiString.ConfigWindow_Events_DutyEnd.Local());
         ImGui.SameLine();
-        Service.Config.DutyEnd.DisplayMacro();
+        ConditionDrawer.Draw(Service.Config.DutyEnd);
 
         ImGui.Separator();
-
-        ActionEventInfo? remove = null;
-        foreach (var eve in Service.Config.Events)
-        {
-            eve.DisplayEvent();
-
-            ImGui.SameLine();
-
-            if (ImGui.Button($"{UiString.ConfigWindow_Events_RemoveEvent.Local()}##RemoveEvent{eve.GetHashCode()}"))
-            {
-                remove = eve;
-            }
-            ImGui.Separator();
-        }
-        if (remove != null)
-        {
-            Service.Config.Events.Remove(remove);
-        }
+        ConditionDrawer.Draw(Service.Config.Events);
     }
 }

@@ -118,7 +118,7 @@ public class RotationConfigWindow : ConfigWindow
 
             if (combos[i].Name == set.Name)
             {
-                ImGuiHelperRS.SetNextWidthWithName(set.Name);
+                ImGuiHelper.SetNextWidthWithName(set.Name);
                 ImGui.InputText("##MajorConditionSet", ref set.Name, 100);
             }
             else

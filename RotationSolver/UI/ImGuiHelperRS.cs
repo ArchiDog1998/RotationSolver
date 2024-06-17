@@ -4,9 +4,7 @@ using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
-using ECommons.LanguageHelpers;
 using Lumina.Excel.GeneratedSheets;
-using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Commands;
 using RotationSolver.Updaters;
@@ -106,12 +104,6 @@ internal static class ImGuiHelperRS
         };
     }
 
-    [Obsolete]
-    internal static void SetNextWidthWithName(string name)
-    {
-        ImGui.SetNextItemWidth(Math.Max(80 * ImGuiHelpers.GlobalScale, ImGui.CalcTextSize(name).X + 30 * ImGuiHelpers.GlobalScale));
-    }
-
     const float INDENT_WIDTH = 180;
 
     internal static void DisplayCommandHelp(this Enum command, string extraCommand = "", Func<Enum, string>? getHelp = null, bool sameLine = true)
@@ -151,38 +143,9 @@ internal static class ImGuiHelperRS
         }
     }
 
-    public static void DisplayMacro(this MacroInfo info)
-    {
-        ImGui.SetNextItemWidth(50);
-        if (ImGui.DragInt($"{UiString.ConfigWindow_Events_MacroIndex.Local()}##MacroIndex{info.GetHashCode()}",
-            ref info.MacroIndex, 1, -1, 99))
-        {
-            Service.Config.Save();
-        }
-
-        ImGui.SameLine();
-
-        if (ImGui.Checkbox($"{UiString.ConfigWindow_Events_ShareMacro.Local()}##ShareMacro{info.GetHashCode()}",
-            ref info.IsShared))
-        {
-            Service.Config.Save();
-        }
-    }
-
-    public static void DisplayEvent(this ActionEventInfo info)
-    {
-        if (ImGui.InputText($"{UiString.ConfigWindow_Events_ActionName.Local()}##ActionName{info.GetHashCode()}",
-            ref info.Name, 100))
-        {
-            Service.Config.Save();
-        }
-
-        info.DisplayMacro();
-    }
-
     public static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] items, Func<T, string> getSearchName, Action<T> selectAction, string searchingHint, ImFontPtr? font = null, Vector4? color = null)
     {
-        if (SelectableButton(name + "##" + popId, font, color))
+        if (ImGuiHelper.SelectableButton(name + "##" + popId, font, color))
         {
             if (!ImGui.IsPopupOpen(popId)) ImGui.OpenPopup(popId);
         }
@@ -197,7 +160,7 @@ internal static class ImGuiHelperRS
 
         if (items == null || items.Length == 0)
         {
-            ImGui.TextColored(ImGuiColors.DalamudRed, "ConfigWindow_Condition_NoItemsWarning".Loc("There are no items!"));
+            ImGui.TextColored(ImGuiColors.DalamudRed, UiString.ConfigWindow_Condition_NoItemsWarning.Local());
             return;
         }
 
@@ -229,77 +192,7 @@ internal static class ImGuiHelperRS
         }
         child?.Dispose();
     }
-
-    [Obsolete]
-    public static unsafe bool SelectableCombo(string popUp, string[] items, ref int index, ImFontPtr? font = null, Vector4? color = null)
-    {
-        var count = items.Length;
-        var originIndex = index;
-        index = Math.Max(0, index) % count;
-        var name = items[index] + "##" + popUp;
-
-        var result = originIndex != index;
-
-        if (SelectableButton(name, font, color))
-        {
-            if (count < 3)
-            {
-                index = (index + 1) % count;
-                result = true;
-            }
-            else
-            {
-                if (!ImGui.IsPopupOpen(popUp)) ImGui.OpenPopup(popUp);
-            }
-        }
-
-        if (ImGui.IsItemHovered())
-        {
-            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-        }
-
-        ImGui.SetNextWindowSizeConstraints(Vector2.Zero, Vector2.One * 500);
-        if (ImGui.BeginPopup(popUp))
-        {
-            for (int i = 0; i < count; i++)
-            {
-                if (ImGui.Selectable(items[i]))
-                {
-                    index = i;
-                    result = true;
-                }
-            }
-            ImGui.EndPopup();
-        }
-
-        return result;
-    }
-
-    [Obsolete]
-    public static unsafe bool SelectableButton(string name, ImFontPtr? font = null, Vector4? color = null)
-    {
-        List<IDisposable> disposables = new(2);
-        if (font != null)
-        {
-            disposables.Add(ImRaii.PushFont(font.Value));
-        }
-        if (color != null)
-        {
-            disposables.Add(ImRaii.PushColor(ImGuiCol.Text, color.Value));
-        }
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderActive)));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGui.ColorConvertFloat4ToU32(*ImGui.GetStyleColorVec4(ImGuiCol.HeaderHovered)));
-        ImGui.PushStyleColor(ImGuiCol.Button, 0);
-        var result = ImGui.Button(name);
-        ImGui.PopStyleColor(3);
-        foreach (var item in disposables)
-        {
-            item.Dispose();
-        }
-
-        return result;
-    }
-
+    
     public static bool IsInRect(Vector2 leftTop, Vector2 size)
     {
         var pos = ImGui.GetMousePos() - leftTop;
