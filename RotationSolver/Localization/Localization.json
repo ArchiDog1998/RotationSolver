@@ -672,5 +672,17 @@
   "RotationSolver.Basic.Configuration.Drawing.TextDrawingName.Scale": "Scale",
   "RotationSolver.Basic.Configuration.Drawing.TextDrawingName.BackgroundColor": "Bg Color",
   "RotationSolver.Basic.Configuration.Drawing.TextDrawingName.Color": "Color",
-  "RotationSolver.Basic.Configuration.Drawing.TextDrawingName.Corner": "Corner"
+  "RotationSolver.Basic.Configuration.Drawing.TextDrawingName.Corner": "Corner",
+  "RotationSolver.Basic.Configuration.Drawing.StaticDrawingGetterName.Path": "Path",
+  "RotationSolver.Basic.Configuration.Drawing.StaticDrawingGetterName.Position": "Position",
+  "RotationSolver.Basic.Configuration.Drawing.StaticDrawingGetterName.Rotation": "Rotation",
+  "RotationSolver.Basic.Configuration.Drawing.StaticDrawingGetterName.Scale": "Scale",
+  "RotationSolver.Basic.Configuration.Drawing.StaticDrawingGetterName.PlaceOnObject": "On Object",
+  "RotationSolver.Basic.Configuration.Drawing.StaticDrawingGetterName.Target": "Target",
+  "RotationSolver.Basic.Configuration.Drawing.StaticDrawingGetterName.Text": "Text",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionBase": "Timeline Condition",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction": "Action Condition",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionMapEffect": "Map Effect Condition",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet": "Condition Set",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "Target Count Condition"
 }

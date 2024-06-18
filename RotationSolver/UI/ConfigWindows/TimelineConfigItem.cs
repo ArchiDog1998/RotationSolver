@@ -59,7 +59,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
 
         if (ImGui.Button(LocalString.CopyToClipboard.Local()))
         {
-            var str = JsonConvert.SerializeObject(territoryConfig, Formatting.Indented);
+            var str = JsonHelper.SerializeObject(territoryConfig);
             ImGui.SetClipboardText(str);
         }
 

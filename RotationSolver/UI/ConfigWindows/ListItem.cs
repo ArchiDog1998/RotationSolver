@@ -207,7 +207,7 @@ public class ListItem : ConfigWindowItemRS
         {
             try
             {
-                ImGui.SetClipboardText(JsonConvert.SerializeObject(items));
+                ImGui.SetClipboardText(JsonHelper.SerializeObject(items));
             }
             catch (Exception ex)
             {
@@ -221,7 +221,7 @@ public class ListItem : ConfigWindowItemRS
         {
             try
             {
-                foreach (var aId in JsonConvert.DeserializeObject<uint[]>(ImGui.GetClipboardText())!)
+                foreach (var aId in JsonHelper.DeserializeObject<uint[]>(ImGui.GetClipboardText())!)
                 {
                     items.Add(aId);
                 }

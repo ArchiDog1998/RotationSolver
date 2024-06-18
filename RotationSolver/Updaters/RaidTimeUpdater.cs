@@ -7,6 +7,7 @@ using RotationSolver.UI;
 using RotationSolver.UI.ConfigWindows;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using XIVConfigUI;
 
 namespace RotationSolver.Updaters;
 internal static partial class RaidTimeUpdater
@@ -391,7 +392,7 @@ internal static partial class RaidTimeUpdater
 
         var str = await message.Content.ReadAsStringAsync();
 
-        return JsonConvert.DeserializeObject<RaidLangs>(str) ?? new();
+        return JsonHelper.DeserializeObject<RaidLangs>(str) ?? new();
     }
 
     static async Task<TimelineItem[]> DownloadRaidTimeAsync(string path, RaidLangs lang)

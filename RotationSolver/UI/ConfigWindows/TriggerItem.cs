@@ -33,7 +33,7 @@ public class TriggerItem : ConfigWindowItemRS
 
         if (ImGui.Button(LocalString.CopyToClipboard.Local()))
         {
-            var str = JsonConvert.SerializeObject(_territoryConfig, Formatting.Indented);
+            var str = JsonHelper.SerializeObject(_territoryConfig);
             ImGui.SetClipboardText(str);
         }
 
