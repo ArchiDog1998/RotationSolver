@@ -142,57 +142,7 @@ internal static class ImGuiHelperRS
             }
         }
     }
-
-    public static void SearchCombo<T>(string popId, string name, ref string searchTxt, T[] items, Func<T, string> getSearchName, Action<T> selectAction, string searchingHint, ImFontPtr? font = null, Vector4? color = null)
-    {
-        if (ImGuiHelper.SelectableButton(name + "##" + popId, font, color))
-        {
-            if (!ImGui.IsPopupOpen(popId)) ImGui.OpenPopup(popId);
-        }
-
-        if (ImGui.IsItemHovered())
-        {
-            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-        }
-
-        using var popUp = ImRaii.Popup(popId);
-        if (!popUp.Success) return;
-
-        if (items == null || items.Length == 0)
-        {
-            ImGui.TextColored(ImGuiColors.DalamudRed, UiString.ConfigWindow_Condition_NoItemsWarning.Local());
-            return;
-        }
-
-        var searchingKey = searchTxt;
-
-        var members = items.Select(m => (m, getSearchName(m)))
-            .OrderByDescending(s => Searchable.Similarity(s.Item2, searchingKey));
-
-        ImGui.SetNextItemWidth(Math.Max(50 * ImGuiHelpers.GlobalScale, members.Max(i => ImGuiHelpers.GetButtonSize(i.Item2).X)));
-        ImGui.InputTextWithHint("##Searching the member", searchingHint, ref searchTxt, 128);
-
-        ImGui.Spacing();
-
-        ImRaii.IEndObject? child = null;
-        if (members.Count() >= 15)
-        {
-            ImGui.SetNextWindowSizeConstraints(new Vector2(0, 300), new Vector2(500, 300));
-            child = ImRaii.Child(popId);
-            if (!child) return;
-        }
-
-        foreach (var member in members)
-        {
-            if (ImGui.Selectable(member.Item2))
-            {
-                selectAction?.Invoke(member.m);
-                ImGui.CloseCurrentPopup();
-            }
-        }
-        child?.Dispose();
-    }
-    
+  
     public static bool IsInRect(Vector2 leftTop, Vector2 size)
     {
         var pos = ImGui.GetMousePos() - leftTop;

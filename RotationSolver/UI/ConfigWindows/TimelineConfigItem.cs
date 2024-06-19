@@ -45,10 +45,11 @@ public class TimelineConfigItem : ConfigWindowItemRS
 
         ImGuiHelper.DrawItemMiddle(() =>
         {
-            ImGuiHelperRS.SearchCombo("##Choice the specific dungeon", name, ref _territorySearch, territories, GetName, t =>
+            var index = Array.IndexOf(territories, rightTerritory);
+            if(ImGuiHelper.SelectableCombo("##Choice the specific dungeon", [..territories.Select(GetName)], ref index, imFont, ImGuiColors.DalamudYellow))
             {
-                _territoryId = t?.RowId ?? 0;
-            }, UiString.ConfigWindow_Condition_DutyName.Local(), imFont, ImGuiColors.DalamudYellow);
+                _territoryId = territories[index]?.RowId ?? 0;
+            }
         }, ImGui.GetWindowWidth(), width);
 
         ImGuiHelperRS.DrawContentFinder(rightTerritory?.ContentFinderCondition.Value);
