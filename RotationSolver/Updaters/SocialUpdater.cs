@@ -176,25 +176,28 @@ internal class SocialUpdater
                 await Task.Delay(100);
             }
 
-            Svc.Targets.Target = entity.player;
             _users.Add(entity.player);
 
             if (Service.Config.SayHelloToAll && !saidAuthors.Contains(entity.Hash)
                 && !OtherConfiguration.RotationSolverRecord.SaidUsers.Contains(entity.Hash))
             {
+                Svc.Targets.Target = entity.player;
                 ECommons.Automation.Chat.Instance.SendMessage($"/{_macroToAuthor[new Random().Next(_macroToAuthor.Count)]} <t>");
+                await Task.Delay(new Random().Next(800, 1200));
+                Svc.Targets.Target = null;
             }
 
-            Svc.Chat.Print(new Dalamud.Game.Text.XivChatEntry()
+            if (Service.Config.RemindToAll)
             {
-                Message = entity.GetMessage(),
-                Type = Dalamud.Game.Text.XivChatType.Notice,
-            });
-            UIModule.PlaySound(20, 0, 0, 0);
-            entity.Dispose();
+                Svc.Chat.Print(new Dalamud.Game.Text.XivChatEntry()
+                {
+                    Message = entity.GetMessage(),
+                    Type = Dalamud.Game.Text.XivChatType.Notice,
+                });
+                UIModule.PlaySound(20, 0, 0, 0);
+            }
 
-            await Task.Delay(new Random().Next(800, 1200));
-            Svc.Targets.Target = null;
+            entity.Dispose();
             await Task.Delay(new Random().Next(800, 1200));
         }
     }
