@@ -14,7 +14,9 @@ https://raw.githubusercontent.com/ArchiDog1998/DalamudPlugins/main/pluginmaster.
 
 > [! IMPORTANT]
 >
-> This plugin will not be fully open source, so the base library will not be fully public. 
+> This plugin will not be fully open source, so the base library will not be fully public.
+> 
+> If you really want to see the source code of it, please contact me in [Discord](https://discord.gg/9D4E8eZW5g).
 >
 
 
@@ -23,7 +25,7 @@ There will be 2 versions:
 - Free edition (for most of the game)
 - Supporter edition (which will have support for extra/endgame features)
 	- Get it on [Patreon](https://www.patreon.com/ArchiDog1998) for a monthly subscription
-	- Get it on [Ko-fi](https://ko-fi.com/s/7cf5ff0de3) for a subscription
+	- Get it on [Ko-fi](https://ko-fi.com/B0B0IN5DX) for a subscription
 
 
 ## Description
