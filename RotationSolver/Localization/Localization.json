@@ -684,5 +684,8 @@
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction": "Action Condition",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionMapEffect": "Map Effect Condition",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet": "Condition Set",
-  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "Target Count Condition"
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "Target Count Condition",
+  "RotationSolver.Basic.Data.TargetHostileType.AllTargetsCanAttack": "All targets that are in range for any abilities",
+  "RotationSolver.Basic.Data.TargetHostileType.TargetsHaveTarget": "Previously engaged targets (engages on countdown timer)",
+  "RotationSolver.Basic.Configuration.ConfigsName.RemindToAll": "Remind me when I across Rotation Solver users."
 }
