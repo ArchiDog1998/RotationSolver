@@ -1,4 +1,6 @@
-﻿using Dalamud.Interface.Utility.Raii;
+﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Utility.Raii;
+using ECommons.DalamudServices;
 using RotationSolver.Updaters;
 using System.ComponentModel;
 using XIVConfigUI;
@@ -263,6 +265,11 @@ public class ActionsItem : ConfigWindowItemRS
             {
                 ImGui.TextWrapped(UiString.ConfigWindow_Actions_ForcedConditionSet_Description.Local());
 
+                if (!DownloadHelper.IsSupporter)
+                {
+                    var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
+                    ImGui.TextWrapped(UiString.SupporterOnlyWarning.Local());
+                }
                 var set = DataCenter.RightSet;
 
                 if (set == null || _activeAction == null) return;
@@ -277,6 +284,22 @@ public class ActionsItem : ConfigWindowItemRS
 
                 if (set == null || _activeAction == null) return;
                 XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(set.GetDisabledCondition(_activeAction.ID));
+            } },
+
+            { () => _activeAction is IBaseAction ? UiString.ConfigWindow_Actions_PriorityTargeting.Local() : string.Empty, () =>
+            {
+                ImGui.TextWrapped(UiString.ConfigWindow_Actions_PriorityTargeting_Description.Local());
+
+                if (_activeAction is not IBaseAction action) return;
+                XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(action.Config.PriorityTargeting);
+            } },
+
+            { () => _activeAction is IBaseAction ? UiString.ConfigWindow_Actions_CantTargeting.Local() : string.Empty, () =>
+            {
+                ImGui.TextWrapped(UiString.ConfigWindow_Actions_CantTargeting_Description.Local());
+
+                if (_activeAction is not IBaseAction action) return;
+                XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(action.Config.CantTargeting);
             } },
         })
     {

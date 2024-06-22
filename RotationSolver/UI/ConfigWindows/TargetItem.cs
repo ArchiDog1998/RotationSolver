@@ -1,6 +1,6 @@
-﻿using Dalamud.Interface.Windowing;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using XIVConfigUI;
+using XIVConfigUI.ConditionConfigs;
 
 namespace RotationSolver.UI.ConfigWindows;
 
@@ -15,10 +15,33 @@ public class TargetItem : ConfigWindowItemRS
     {
         _targetHeader ??= new(new()
             {
-                {  () =>UiString.ConfigWindow_Target_Config.Local(), () => DrawTargetConfig(window) },
-                {  () =>UiString.ConfigWindow_List_Hostile.Local(), () => DrawTargetHostile(window) },
+                {  () => UiString.ConfigWindow_Target_Priority.Local(), () => DrawTargetPriority(window) },
+                {  () => UiString.ConfigWindow_Target_Cant.Local(), () => DrawTargetCant(window) },
+                {  () => UiString.ConfigWindow_Target_Config.Local(), () => DrawTargetConfig(window) },
+                {  () => UiString.ConfigWindow_List_Hostile.Local(), () => DrawTargetHostile(window) },
             });
         _targetHeader?.Draw();
+    }
+
+    private static void DrawTargetPriority(ConfigWindow window)
+    {
+        window.Collection.DrawItems((int)UiString.ConfigWindow_Target_Priority);
+
+        ImGui.Separator();
+
+        ImGui.TextWrapped(UiString.ConfigWindow_Actions_PriorityTargeting_Description.Local());
+        ConditionDrawer.Draw(Service.Config.PriorityTargeting);
+    }
+
+    private static void DrawTargetCant(ConfigWindow window)
+    {
+        window.Collection.DrawItems((int)UiString.ConfigWindow_Target_Cant);
+
+        ImGui.Separator();
+
+        ImGui.TextWrapped(UiString.ConfigWindow_Actions_CantTargeting_Description.Local());
+
+        ConditionDrawer.Draw(Service.Config.CantTargeting);
     }
 
     private static void DrawTargetConfig(ConfigWindow window)
