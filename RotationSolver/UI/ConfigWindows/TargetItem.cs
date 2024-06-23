@@ -18,6 +18,7 @@ public class TargetItem : ConfigWindowItemRS
                 {  () => UiString.ConfigWindow_Target_Priority.Local(), () => DrawTargetPriority(window) },
                 {  () => UiString.ConfigWindow_Target_Cant.Local(), () => DrawTargetCant(window) },
                 {  () => UiString.ConfigWindow_Target_Config.Local(), () => DrawTargetConfig(window) },
+                {  () => UiString.ConfigWindow_Basic_NamedConditions.Local(), () => DrawNamedConditions(window) },
                 {  () => UiString.ConfigWindow_List_Hostile.Local(), () => DrawTargetHostile(window) },
             });
         _targetHeader?.Draw();
@@ -52,6 +53,11 @@ public class TargetItem : ConfigWindowItemRS
     private static void DrawTargetHostile(ConfigWindow window)
     {
         window.Collection.DrawItems((int)UiString.ConfigWindow_List_Hostile);
-        XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(Service.Config.TargetingWays);
+        ConditionDrawer.Draw(Service.Config.TargetingWays);
+    }
+
+    private static void DrawNamedConditions(ConfigWindow window)
+    {
+        ConditionDrawer.Draw(Service.Config.NamedTargetingConditions);
     }
 }

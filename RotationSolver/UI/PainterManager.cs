@@ -34,8 +34,8 @@ internal static class PainterManager
             }
             else
             {
-                if (Service.Config.CantTargeting.IsTrue(gameObject)) return 61502;
-                if (Service.Config.PriorityTargeting.IsTrue(gameObject)) return 61480;
+                if (gameObject.IsNoTarget()) return 61502;
+                if (gameObject.IsTopPriority()) return 61480;
             }
 
             return 61510;

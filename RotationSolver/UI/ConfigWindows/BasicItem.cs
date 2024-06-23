@@ -5,6 +5,7 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Condition;
 using System.ComponentModel;
 using XIVConfigUI;
+using XIVConfigUI.ConditionConfigs;
 using XIVDrawer;
 
 namespace RotationSolver.UI.ConfigWindows;
@@ -179,15 +180,15 @@ public class BasicItem : ConfigWindowItemRS
         {
             {
                 () => UiString.ConfigWindow_Basic_SwitchCancelConditionSet.Local(),
-                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.SwitchCancelConditionSet)
+                () => ConditionDrawer.Draw(DataCenter.RightSet.SwitchCancelConditionSet)
             },
             {
                 () => UiString.ConfigWindow_Basic_SwitchManualConditionSet.Local(),
-                () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.SwitchManualConditionSet)
+                () => ConditionDrawer.Draw(DataCenter.RightSet.SwitchManualConditionSet)
             },
             {
                () =>  UiString.ConfigWindow_Basic_SwitchAutoConditionSet.Local(),
-               () => XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.SwitchAutoConditionSet)
+               () => ConditionDrawer.Draw(DataCenter.RightSet.SwitchAutoConditionSet)
             },
         })
     {
@@ -202,51 +203,7 @@ public class BasicItem : ConfigWindowItemRS
     private static readonly Dictionary<int, bool> _isOpen = [];
     private static void DrawBasicNamedConditions()
     {
-        if (!DataCenter.RightSet.NamedConditions.Any(c => string.IsNullOrEmpty(c.Name)))
-        {
-            DataCenter.RightSet.NamedConditions = [.. DataCenter.RightSet.NamedConditions, (string.Empty, new ConditionSet())];
-        }
-
-        ImGui.Spacing();
-
-        int removeIndex = -1;
-        for (int i = 0; i < DataCenter.RightSet.NamedConditions.Length; i++)
-        {
-            var value = _isOpen.TryGetValue(i, out var open) && open;
-
-            var toggle = value ? FontAwesomeIcon.ArrowUp : FontAwesomeIcon.ArrowDown;
-            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X
-                - ImGuiEx.CalcIconSize(toggle).X - (ImGui.GetStyle().ItemSpacing.X * 2) - (20 * Scale);
-
-            ImGui.SetNextItemWidth(width);
-            ImGui.InputTextWithHint($"##Rotation Solver Named Condition{i}", UiString.ConfigWindow_Condition_ConditionName.Local(),
-                ref DataCenter.RightSet.NamedConditions[i].Name, 1024);
-
-            ImGui.SameLine();
-
-            if (ImGuiEx.IconButton(toggle, $"##Rotation Solver Toggle Named Condition{i}"))
-            {
-                _isOpen[i] = value = !value;
-            }
-
-            ImGui.SameLine();
-
-            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Named Condition{i}"))
-            {
-                removeIndex = i;
-            }
-
-            if (value && DataCenter.RightNowRotation != null)
-            {
-                XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(DataCenter.RightSet.NamedConditions[i].Condition);
-            }
-        }
-        if (removeIndex > -1)
-        {
-            var list = DataCenter.RightSet.NamedConditions.ToList();
-            list.RemoveAt(removeIndex);
-            DataCenter.RightSet.NamedConditions = [.. list];
-        }
+        ConditionDrawer.Draw(DataCenter.RightSet.NamedConditions);
     }
 
     private static void DrawBasicOthers(ConfigWindow window)
