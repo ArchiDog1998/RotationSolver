@@ -4,6 +4,7 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Updaters;
@@ -210,25 +211,11 @@ public class RotationsItem : ConfigWindowItemRS
 
         ImGui.Spacing();
 
-        var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - 10 * Scale;
+        var width = ImGui.GetWindowWidth();
 
-        int removeIndex = -1;
-        for (int i = 0; i < Service.Config.OtherLibs.Length; i++)
+        if (ImGuiHelperRS.DrawStringList(Service.Config.OtherLibs, width, UiString.ConfigWindow_Rotations_Library))
         {
-            ImGui.SetNextItemWidth(width);
-            ImGui.InputTextWithHint($"##Rotation Solver OtherLib{i}", UiString.ConfigWindow_Rotations_Library.Local(), ref Service.Config.OtherLibs[i], 1024);
-            ImGui.SameLine();
-
-            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove OtherLibs{i}"))
-            {
-                removeIndex = i;
-            }
-        }
-        if (removeIndex > -1)
-        {
-            var list = Service.Config.OtherLibs.ToList();
-            list.RemoveAt(removeIndex);
-            Service.Config.OtherLibs = [.. list];
+            OtherConfiguration.SaveTerritoryConfigs();
         }
     }
 }

@@ -42,7 +42,7 @@ internal abstract class TargetDrawingItem
 
         for (int i = 0; i < Math.Min(Drawings.Length, targets.Length); i++)
         {
-            if (Drawings[i] is not Drawing3DImage item) continue;
+            var item = Drawings[i];
             var obj = targets[i];
 
             var iconId = GetIcon(obj);

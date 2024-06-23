@@ -4,6 +4,7 @@ using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
+using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
 using RotationSolver.Commands;
@@ -375,5 +376,42 @@ internal static class ImGuiHelperRS
             });
         }
         group.Draw();
+    }
+
+    public static bool DrawStringList(List<string> names, float width, UiString tooltip)
+    {
+        width -= ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X + ImGui.GetStyle().ItemSpacing.X + (10 * Scale);
+
+        var changed = false;
+        //Add one.
+        if (!names.Any(string.IsNullOrEmpty))
+        {
+            names.Add(string.Empty);
+            changed = true;
+        }
+
+        int removeIndex = -1;
+        for (int i = 0; i < names.Count; i++)
+        {
+            var name = names[i];
+            ImGui.SetNextItemWidth(width);
+            if (ImGui.InputTextWithHint($"##{names.GetHashCode()} Name {i}", tooltip.Local(), ref name, 1024))
+            {
+                names[i] = name;
+                changed = true;
+            }
+            ImGui.SameLine();
+
+            if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##{names.GetHashCode()} Remove Name {i}"))
+            {
+                removeIndex = i;
+            }
+        }
+        if (removeIndex > -1)
+        {
+            names.RemoveAt(removeIndex);
+            changed = true;
+        }
+        return changed;
     }
 }

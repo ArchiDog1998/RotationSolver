@@ -116,14 +116,32 @@ public class ActionsItem : ConfigWindowItemRS
             {
                 var config = a.Config;
 
+                var custom = config.UseCustomTargetingData;
+                if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_CustomTargetingData.Local()}##{a.Name}CustomTargetData", ref custom))
+                {
+                    config.UseCustomTargetingData = custom;
+                }
+
+                if (custom)
+                {
+                    ImGui.SameLine();
+
+                    var names = Service.Config.TargetingWays.Select(i => i.TargetName).ToArray();
+                    var index = Array.IndexOf(names, config.TargetingDataName);
+                    if(ImGuiHelper.SelectableCombo($"{a.Name}CustomTargetDataPopup", names, ref index))
+                    {
+                        config.TargetingDataName = names[index];
+                    }
+                }
+
                 if (Service.Config.MistakeRatio > 0
                     && !a.Setting.IsFriendly
                     && a.Setting.TargetType != TargetType.Move)
                 {
-                    var enable = config.IsInMistake;
-                    if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_IsInMistake.Local()}##{a.Name}InMistake", ref enable))
+                    var mistake = config.IsInMistake;
+                    if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_IsInMistake.Local()}##{a.Name}InMistake", ref mistake))
                     {
-                        config.IsInMistake = enable;
+                        config.IsInMistake = mistake;
                     }
                 }
 

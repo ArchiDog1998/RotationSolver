@@ -275,14 +275,14 @@ internal static class PainterManager
 
     private static void UpdateBeneficial()
     {
-        if (!Service.Config.ShowBeneficialPositions
-            || Svc.ClientState == null || !Player.Available
-            || !OtherConfiguration.BeneficialPositions.TryGetValue(Svc.ClientState.TerritoryType, out var pts))
+        foreach (var item in BeneficialItems)
         {
-            foreach (var item in BeneficialItems)
-            {
-                item.Enable = false;
-            }
+            item.Enable = false;
+        }
+
+        if (!Service.Config.ShowBeneficialPositions
+            || Svc.ClientState == null || !Player.Available)
+        {
             return;
         }
 
@@ -292,18 +292,17 @@ internal static class PainterManager
         var color = ImGui.GetColorU32(Service.Config.BeneficialPositionColor);
         var hColor = ImGui.GetColorU32(Service.Config.HoveredBeneficialPositionColor);
 
-        int index = 0;
-        foreach (var p in pts)
+        var pts = OtherConfiguration.TerritoryConfig.BeneficialPositions;
+
+        for (int i = 0; i < Math.Min(BeneficialItems.Length, pts.Count); i++)
         {
-            if (Vector3.Distance(Player.Object.Position, p) > 80) continue;
+            var item = BeneficialItems[i];
+            var p = pts[i];
 
-            var item = BeneficialItems[index++];
-
-            item!.Center = p;
-            item!.Radius = beneficialRadius * ratio;
-            item!.Color = p == ListItem.HoveredPosition ? hColor : color;
-
-            if (index >= BeneficialItems.Length) break;
+            item.Center = p;
+            item.Radius = beneficialRadius * ratio;
+            item.Color = p == ListItem.HoveredPosition ? hColor : color;
+            item.Enable = true;
         }
     }
 

@@ -438,87 +438,27 @@ public class ListItem : ConfigWindowItemRS
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_NoHostileDesc.Local());
 
-            var width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - (10 * Scale);
+            var width = ImGui.GetColumnWidth();
 
-            if (!OtherConfiguration.NoHostileNames.TryGetValue(territoryId, out var libs))
+            if(ImGuiHelperRS.DrawStringList(OtherConfiguration.TerritoryConfig.NoHostileNames, width, UiString.ConfigWindow_List_NoHostilesName))
             {
-                OtherConfiguration.NoHostileNames[territoryId] = libs = [];
+                OtherConfiguration.SaveTerritoryConfigs();
             }
 
-            //Add one.
-            if (!libs.Any(string.IsNullOrEmpty))
-            {
-                OtherConfiguration.NoHostileNames[territoryId] = [.. libs, string.Empty];
-            }
-
-            int removeIndex = -1;
-            for (int i = 0; i < libs.Length; i++)
-            {
-                ImGui.SetNextItemWidth(width);
-                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Target Name {i}", UiString.ConfigWindow_List_NoHostilesName.Local(), ref libs[i], 1024))
-                {
-                    OtherConfiguration.NoHostileNames[territoryId] = libs;
-                    OtherConfiguration.SaveNoHostileNames();
-                }
-                ImGui.SameLine();
-
-                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Target Name {i}"))
-                {
-                    removeIndex = i;
-                }
-            }
-            if (removeIndex > -1)
-            {
-                var list = libs.ToList();
-                list.RemoveAt(removeIndex);
-                OtherConfiguration.NoHostileNames[territoryId] = [.. list];
-                OtherConfiguration.SaveNoHostileNames();
-            }
             ImGui.TableNextColumn();
 
             ImGui.TextWrapped(UiString.ConfigWindow_List_NoProvokeDesc.Local());
 
-            width = ImGui.GetColumnWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X - (10 * Scale);
+            width = ImGui.GetColumnWidth();
 
-            if (!OtherConfiguration.NoProvokeNames.TryGetValue(territoryId, out libs))
+            if (ImGuiHelperRS.DrawStringList(OtherConfiguration.TerritoryConfig.NoProvokeNames, width, UiString.ConfigWindow_List_NoProvokeName))
             {
-                OtherConfiguration.NoProvokeNames[territoryId] = libs = [];
-            }
-            //Add one.
-            if (!libs.Any(string.IsNullOrEmpty))
-            {
-                OtherConfiguration.NoProvokeNames[territoryId] = [.. libs, string.Empty];
-            }
-            removeIndex = -1;
-            for (int i = 0; i < libs.Length; i++)
-            {
-                ImGui.SetNextItemWidth(width);
-                if (ImGui.InputTextWithHint($"##Rotation Solver Territory Provoke Name {i}", UiString.ConfigWindow_List_NoProvokeName.Local(), ref libs[i], 1024))
-                {
-                    OtherConfiguration.NoProvokeNames[territoryId] = libs;
-                    OtherConfiguration.SaveNoProvokeNames();
-                }
-                ImGui.SameLine();
-
-                if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##Rotation Solver Remove Territory Provoke Name {i}"))
-                {
-                    removeIndex = i;
-                }
-            }
-            if (removeIndex > -1)
-            {
-                var list = libs.ToList();
-                list.RemoveAt(removeIndex);
-                OtherConfiguration.NoProvokeNames[territoryId] = [.. list];
-                OtherConfiguration.SaveNoProvokeNames();
+                OtherConfiguration.SaveTerritoryConfigs();
             }
 
             ImGui.TableNextColumn();
 
-            if (!OtherConfiguration.BeneficialPositions.TryGetValue(territoryId, out var pts))
-            {
-                OtherConfiguration.BeneficialPositions[territoryId] = pts = [];
-            }
+            var pts = OtherConfiguration.TerritoryConfig.BeneficialPositions;
 
             if (ImGui.Button(UiString.ConfigWindow_List_AddPosition.Local()) && Player.Available) unsafe
                 {
@@ -527,19 +467,15 @@ public class ListItem : ConfigWindowItemRS
 
                     RaycastHit hit = default;
 
-                    OtherConfiguration.BeneficialPositions[territoryId]
-                    =
-                    [
-                        .. pts,
-                        FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
-                            ->RaycastEx(&hit, point + (Vector3.UnitY * 5), -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
-                    ];
-                    OtherConfiguration.SaveBeneficialPositions();
+                    pts.Add(FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
+                            ->RaycastEx(&hit, point + (Vector3.UnitY * 5), -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point);
+
+                    OtherConfiguration.SaveTerritoryConfigs();
                 }
 
             HoveredPosition = Vector3.Zero;
-            removeIndex = -1;
-            for (int i = 0; i < pts.Length; i++)
+            var removeIndex = -1;
+            for (int i = 0; i < pts.Count; i++)
             {
                 void Reset() => removeIndex = i;
 
@@ -558,10 +494,8 @@ public class ListItem : ConfigWindowItemRS
             }
             if (removeIndex > -1)
             {
-                var list = pts.ToList();
-                list.RemoveAt(removeIndex);
-                OtherConfiguration.BeneficialPositions[territoryId] = [.. list];
-                OtherConfiguration.SaveBeneficialPositions();
+                pts.RemoveAt(removeIndex);
+                OtherConfiguration.SaveTerritoryConfigs();
             }
         }
     }

@@ -722,5 +722,8 @@
   "RotationSolver.Basic.Configuration.NamedItem`1[[RotationSolver.Basic.Configuration.Condition.ConditionSet, RotationSolver.Basic, Version=5.0.2.0, Culture=neutral, PublicKeyToken=null]]": "Named Item",
   "RotationSolver.Basic.Configuration.NamedItem`1[[RotationSolver.Basic.Configuration.Condition.ConditionSet, RotationSolver.Basic, Version=5.0.2.0, Culture=neutral, PublicKeyToken=null]]Name.Name": "Name",
   "RotationSolver.Basic.Configuration.NamedItem`1[[RotationSolver.Basic.Configuration.Condition.ConditionSet, RotationSolver.Basic, Version=5.0.2.0, Culture=neutral, PublicKeyToken=null]]Name.Item": "Item",
-  "RotationSolver.Basic.Configuration.Target.TargetingNamedCondition": "Named Condition"
+  "RotationSolver.Basic.Configuration.Target.TargetingNamedCondition": "Named Condition",
+  "RotationSolver.Basic.Configuration.Target.TargetingNamedConditionName.ConditionName": "Condition",
+  "RotationSolver.Basic.Configuration.Condition.TerritoryCondition": "Territory Condition",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CustomTargetingData": "Custom Targeting Way"
 }
