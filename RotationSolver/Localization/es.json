@@ -684,5 +684,14 @@
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionAction": "Condición de acción",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionMapEffect": "Map Effect Condition",
   "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSet": "Condition Set",
-  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "Target Count Condition"
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionTargetCount": "Target Count Condition",
+  "RotationSolver.Basic.Data.TargetHostileType.AllTargetsCanAttack": "All targets that are in range for any abilities",
+  "RotationSolver.Basic.Data.TargetHostileType.TargetsHaveTarget": "Previously engaged targets (engages on countdown timer)",
+  "RotationSolver.Basic.Configuration.ConfigsName.RemindToAll": "Remind me when I across Rotation Solver users.",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_PriorityTargeting": "Priority Target Conditions",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_PriorityTargeting_Description": "Conditions for the target that you want to prioritize.",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CantTargeting": "No Target Conditions",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CantTargeting_Description": "Conditions for the target that you don't want to target.",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Target_Priority": "Priority Target",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Target_Cant": "No Target"
 }
