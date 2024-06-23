@@ -3,8 +3,10 @@ using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using RotationSolver.Updaters;
 using System.ComponentModel;
+using System.Drawing;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.GroupPoseModule;
 
 namespace RotationSolver.UI.ConfigWindows;
 [Description("Actions")]
@@ -81,36 +83,51 @@ public class ActionsItem : ConfigWindowItemRS
         DrawConfigsOfAction();
         DrawActionDebug();
 
-        ImGui.TextWrapped(UiString.ConfigWindow_Actions_ConditionDescription.Local());
-        _sequencerList?.Draw();
+        _sequencerList?.Draw(UiString.ConfigWindow_Actions_ConditionDescription.Local());
 
         static void DrawConfigsOfAction()
         {
             if (_activeAction == null) return;
 
-            var enable = _activeAction.IsEnabled;
-            if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
+            var height = ImGui.GetCursorPosY();
+            using (var grp = ImRaii.Group())
             {
-                _activeAction.IsEnabled = enable;
+                var enable = _activeAction.IsEnabled;
+                if (ImGui.Checkbox($"{_activeAction.Name}##{_activeAction.Name} Enabled", ref enable))
+                {
+                    _activeAction.IsEnabled = enable;
+                }
+
+                const string key = "Action Enable Popup";
+                var cmd = ImGuiHelperRS.ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString()!);
+                ImGuiHelper.DrawHotKeysPopup(key, cmd);
+                ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
+
+                enable = _activeAction.IsInCD;
+                if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_ShowOnCDWindow.Local()}##{_activeAction.Name}InCooldown", ref enable))
+                {
+                    _activeAction.IsInCD = enable;
+                }
             }
 
-            const string key = "Action Enable Popup";
-            var cmd = ImGuiHelperRS.ToCommandStr(OtherCommandType.ToggleActions, _activeAction.ToString()!);
-            ImGuiHelper.DrawHotKeysPopup(key, cmd);
-            ImGuiHelper.ExecuteHotKeysPopup(key, cmd, string.Empty, false);
+            height = ImGui.GetCursorPosY() - height;
 
-            enable = _activeAction.IsInCD;
-            if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_ShowOnCDWindow.Local()}##{_activeAction.Name}InCooldown", ref enable))
+            var nextCursor = ImGui.GetCursorPos();
+            if (_activeAction.GetTexture(out var icon))
             {
-                _activeAction.IsInCD = enable;
+                ImGui.SameLine();
+                var cursor = ImGui.GetCursorPos();
+                var width = ImGui.GetColumnWidth();
+                ImGui.SetCursorPos(cursor += new Vector2(width - height - 10 * Scale, 0));
+                ImGui.Image(icon.ImGuiHandle, Vector2.One * height);
+                ImGuiHelper.DrawActionOverlay(cursor, height, 1);
             }
+            ImGui.SetCursorPos(nextCursor);
 
             if (_activeAction is IBaseAction a)
             {
                 DrawConfigsOfBaseAction(a);
             }
-
-            ImGui.Separator();
 
             static void DrawConfigsOfBaseAction(IBaseAction a)
             {
@@ -128,7 +145,7 @@ public class ActionsItem : ConfigWindowItemRS
 
                     var names = Service.Config.TargetingWays.Select(i => i.TargetName).ToArray();
                     var index = Array.IndexOf(names, config.TargetingDataName);
-                    if(ImGuiHelper.SelectableCombo($"{a.Name}CustomTargetDataPopup", names, ref index))
+                    if (ImGuiHelper.SelectableCombo($"{a.Name}CustomTargetDataPopup", names, ref index))
                     {
                         config.TargetingDataName = names[index];
                     }
@@ -213,6 +230,7 @@ public class ActionsItem : ConfigWindowItemRS
         static void DrawActionDebug()
         {
             if (!Service.Config.InDebug) return;
+            ImGui.Separator();
 
             if (_activeAction is IBaseAction action)
             {

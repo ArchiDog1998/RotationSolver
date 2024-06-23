@@ -231,7 +231,7 @@
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CheckStatus": "Should this action check if it was not already used by another player.",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_GcdCount": "How many gcds are needed to add the status.",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_HealRatio": "The HP ratio to auto heal",
-  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_ConditionDescription": "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Conditions will be ignored.",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_ConditionDescription": "Forced Conditions have a higher priority. If Forced Conditions are met, Disabled Conditions will be ignored.\nNo Target Conditions have a higher priority. If No Target Conditions are met, Priority Target Conditions will be ignored.",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_ForcedConditionSet": "Forced Conditions",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_ForcedConditionSet_Description": "Conditions for forced automatic use of action.",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_DisabledConditionSet": "Disabled Condition",
