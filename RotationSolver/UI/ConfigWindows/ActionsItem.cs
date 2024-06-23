@@ -149,6 +149,7 @@ public class ActionsItem : ConfigWindowItemRS
                     {
                         config.TargetingDataName = names[index];
                     }
+                    ImGuiHelper.HoveredTooltip(UiString.ConfigWindow_Actions_CustomTargetingData_Description.Local());
                 }
 
                 if (Service.Config.MistakeRatio > 0

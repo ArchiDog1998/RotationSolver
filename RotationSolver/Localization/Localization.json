@@ -725,5 +725,6 @@
   "RotationSolver.Basic.Configuration.Target.TargetingNamedCondition": "Named Condition",
   "RotationSolver.Basic.Configuration.Target.TargetingNamedConditionName.ConditionName": "Condition",
   "RotationSolver.Basic.Configuration.Condition.TerritoryCondition": "Territory Condition",
-  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CustomTargetingData": "Custom Targeting Way"
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CustomTargetingData": "Custom Targeting Way",
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CustomTargetingData_Description": "The list is in Target - Hostile"
 }

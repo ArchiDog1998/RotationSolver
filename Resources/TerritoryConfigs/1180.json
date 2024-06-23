@@ -177,6 +177,9 @@
       "Trigger": []
     }
   },
+  "NoHostileNames": [],
+  "NoProvokeNames": [],
+  "BeneficialPositions": [],
   "AutoHeal": true,
   "AutoDefense": true,
   "Config": {
