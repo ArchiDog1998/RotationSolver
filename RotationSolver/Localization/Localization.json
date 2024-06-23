@@ -713,5 +713,6 @@
   "RotationSolver.Basic.Helpers.HeadMarker.Attack7": "Attack7",
   "RotationSolver.Basic.Helpers.HeadMarker.Attack8": "Attack8",
   "RotationSolver.Basic.Configuration.Target.TargetingMarkerConditionName.Marker": "Marker",
-  "RotationSolver.Basic.Configuration.Target.TargetingDataDescription": "Click to show the filtered targets among all game objects"
+  "RotationSolver.Basic.Configuration.Target.TargetingDataDescription": "Click to show the filtered targets among all game objects",
+  "RotationSolver.Basic.Configuration.Target.TargetingItemDescription": "Click to show the filtered targets among all game objects"
 }

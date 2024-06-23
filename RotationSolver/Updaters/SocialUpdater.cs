@@ -8,7 +8,6 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
-using RotationSolver.Helpers;
 using System.Diagnostics.CodeAnalysis;
 using XIVConfigUI;
 

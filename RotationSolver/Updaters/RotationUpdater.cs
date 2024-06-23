@@ -556,8 +556,6 @@ internal static class RotationUpdater
     {
         var rotation = types.FirstOrDefault(r => r.FullName == name);
 
-        rotation ??= types.FirstOrDefault(r => r.Assembly.FullName!.Contains("SupportersRotations", StringComparison.OrdinalIgnoreCase));
-
         rotation ??= types.FirstOrDefault(r => r.Assembly.FullName!.Contains("DefaultRotations", StringComparison.OrdinalIgnoreCase));
 
         rotation ??= types.FirstOrDefault();

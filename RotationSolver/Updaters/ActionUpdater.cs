@@ -166,8 +166,8 @@ internal static class ActionUpdater
         UpdateCombatTime();
         UpdateSlots();
         UpdateMoving();
-        UpdateMPTimer();
     }
+
     private unsafe static void UpdateSlots()
     {
         for (int i = 0; i < DataCenter.BluSlots.Length; i++)
@@ -264,29 +264,6 @@ internal static class ActionUpdater
         //Casting time.
         if (DataCenter.WeaponElapsed < 0.3) DataCenter.CastingTotal = castTotal;
         if (weaponTotal > 0 && DataCenter.WeaponElapsed > 0.2) DataCenter.WeaponTotal = weaponTotal;
-    }
-
-    static uint _lastMP = 0;
-    static DateTime _lastMPUpdate = DateTime.Now;
-
-    internal static float MPUpdateElapsed => (float)(DateTime.Now - _lastMPUpdate).TotalSeconds % 3;
-
-    private static void UpdateMPTimer()
-    {
-        var player = Player.Object;
-        if (player == null) return;
-
-        //不是黑魔不考虑啊
-        if (player.ClassJob.Id != (uint)ECommons.ExcelServices.Job.BLM) return;
-
-        //有醒梦，就算了啊
-        if (player.HasStatus(true, StatusID.LucidDreaming)) return;
-
-        if (_lastMP < player.CurrentMp)
-        {
-            _lastMPUpdate = DateTime.Now;
-        }
-        _lastMP = player.CurrentMp;
     }
 
     internal unsafe static bool CanDoAction()
