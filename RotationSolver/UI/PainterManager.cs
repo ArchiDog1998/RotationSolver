@@ -15,6 +15,60 @@ namespace RotationSolver.UI;
 
 internal static class PainterManager
 {
+    private class TargetsDrawingItem : TargetDrawingItem
+    {
+        public override bool Show => Service.Config.ShowHostilesIcons;
+
+        public override GameObject[] Targets => DataCenter.AllHostileTargets;
+
+        public override float Height => Service.Config.HostileIconHeight;
+
+        public override float Size => Service.Config.HostileIconSize;
+
+        protected override uint GetIcon(GameObject gameObject)
+        {
+            if (ActionUpdater.NextAction is IBaseAction act)
+            {
+                if (act.Config.CantAttack(gameObject)) return 61502;
+                if (act.Config.IsTopPriority(gameObject)) return 61480;
+            }
+            else
+            {
+                if (Service.Config.CantTargeting.IsTrue(gameObject)) return 61502;
+                if (Service.Config.PriorityTargeting.IsTrue(gameObject)) return 61480;
+            }
+
+            return 61510;
+        }
+    }
+
+    private class AllianceDrawingItem : TargetDrawingItem
+    {
+        public override bool Show => Service.Config.ShowAllianceIcons;
+
+        public override GameObject[] Targets => DataCenter.AllianceMembers.Where(i => i.ObjectId != Player.Object?.ObjectId).ToArray();
+
+        public override float Height => Service.Config.AllianceIconHeight;
+
+        public override float Size => Service.Config.AllianceIconSize;
+
+        protected override uint GetIcon(GameObject gameObject) => 61515;
+    }
+
+
+    private class UsersDrawingItem : TargetDrawingItem
+    {
+        public override bool Show => Service.Config.ShowUsersIcons;
+
+        public override GameObject[] Targets => SocialUpdater._users.ToArray();
+
+        public override float Height => Service.Config.UserIconHeight;
+
+        public override float Size => Service.Config.UserIconSize;
+
+        protected override uint GetIcon(GameObject gameObject) => 61501;
+    }
+
     static DrawingHighlightHotbar? _highLight;
     static Drawing3DImage? _stateImage;
     public static HashSet<uint> ActionIds => _highLight?.ActionIds ?? [];
@@ -44,9 +98,7 @@ internal static class PainterManager
 
     readonly static Drawing3DCircularSector[] BeneficialItems = new Drawing3DCircularSector[64];
     readonly static Drawing3DText[] TargetTexts = new Drawing3DText[64];
-    readonly static Drawing3DImage[] TargetsDrawings = new Drawing3DImage[64];
-    readonly static Drawing3DImage[] AllianceDrawings = new Drawing3DImage[64];
-    readonly static Drawing3DImage[] UsersDrawings = new Drawing3DImage[64];
+    readonly static List<TargetDrawingItem> TargetDrawings = [];
 
     public static void Init()
     {
@@ -55,30 +107,7 @@ internal static class PainterManager
         {
             TargetTexts[i] = new Drawing3DText(string.Empty, default);
         }
-        for (int i = 0; i < TargetsDrawings.Length; i++)
-        {
-            TargetsDrawings[i] = new Drawing3DImage(null, Vector3.Zero)
-            {
-                Enable = false,
-                MustInViewRange = true,
-            };
-        }
-        for (int i = 0; i < UsersDrawings.Length; i++)
-        {
-            UsersDrawings[i] = new Drawing3DImage(null, Vector3.Zero)
-            {
-                Enable = false,
-                MustInViewRange = true,
-            };
-        }
-        for (int i = 0; i < AllianceDrawings.Length; i++)
-        {
-            AllianceDrawings[i] = new Drawing3DImage(null, Vector3.Zero)
-            {
-                Enable = false,
-                MustInViewRange = true,
-            };
-        }
+
         for (int i = 0; i < BeneficialItems.Length; i++)
         {
             BeneficialItems[i] = new Drawing3DCircularSector(default, 0, 0, 3)
@@ -87,6 +116,10 @@ internal static class PainterManager
                 IsFill = false,
             };
         }
+
+        TargetDrawings.Add(new AllianceDrawingItem());
+        TargetDrawings.Add(new TargetsDrawingItem());
+        TargetDrawings.Add(new UsersDrawingItem());
 
         _highLight = new();
         UpdateSettings();
@@ -168,11 +201,13 @@ internal static class PainterManager
         XIVDrawerMain.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
         XIVDrawerMain.ViewPadding = Service.Config.WindowPadding;
 
+        foreach (var target in TargetDrawings)
+        {
+            target.Update();
+        }
+
         UpdateTargetTexts();
         UpdateTarget();
-        UpdateHostileIcons();
-        UpdatAllayIcons();
-        UpdateUsersIcons();
         UpdateBeneficial();
     }
 
@@ -235,92 +270,6 @@ internal static class PainterManager
             _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
             _target.Center = act.Target.Position ?? Player.Object.Position;
             _target.Radius = targetRadius * ratio;
-        }
-    }
-
-    private static unsafe void UpdateHostileIcons()
-    {
-        foreach (var item in TargetsDrawings)
-        {
-            item.Enable = false;
-        }
-
-        if (!Service.Config.ShowHostilesIcons)
-        {
-            return;
-        }
-
-        if (!ImageLoader.GetTexture(61510, out var hostileIcon)) return;
-
-        for (int i = 0; i < Math.Min(TargetsDrawings.Length, DataCenter.AllHostileTargets.Length); i++)
-        {
-            if (TargetsDrawings[i] is not Drawing3DImage item) continue;
-
-            var obj = DataCenter.AllHostileTargets[i];
-
-            item.Enable = true;
-            item.Image = hostileIcon;
-            item.Position = obj.Position + new Vector3(0,
-                    Service.Config.HostileIconHeight, 0);
-            item.Size = Service.Config.HostileIconSize;
-        }
-    }
-
-    private static unsafe void UpdatAllayIcons()
-    {
-        foreach (var item in AllianceDrawings)
-        {
-            item.Enable = false;
-        }
-
-        if (!Service.Config.ShowAllianceIcons)
-        {
-            return;
-        }
-
-        if (!ImageLoader.GetTexture(61515, out var hostileIcon)) return;
-
-        var alliance = DataCenter.AllianceMembers.Where(i => i.ObjectId != Player.Object?.ObjectId).ToArray();
-
-        for (int i = 0; i < Math.Min(AllianceDrawings.Length, alliance.Length); i++)
-        {
-            if (AllianceDrawings[i] is not Drawing3DImage item) continue;
-
-            var obj = alliance[i];
-
-            item.Enable = true;
-            item.Image = hostileIcon;
-            item.Position = obj.Position + new Vector3(0,
-                    Service.Config.AllianceIconHeight, 0);
-            item.Size = Service.Config.AllianceIconSize;
-        }
-    }
-
-    private static unsafe void UpdateUsersIcons()
-    {
-        foreach (var item in UsersDrawings)
-        {
-            item.Enable = false;
-        }
-
-        if (!Service.Config.ShowUsersIcons)
-        {
-            return;
-        }
-
-        if (!ImageLoader.GetTexture(61551, out var hostileIcon)) return;
-
-        for (int i = 0; i < Math.Min(UsersDrawings.Length, SocialUpdater._users.Count); i++)
-        {
-            if (UsersDrawings[i] is not Drawing3DImage item) continue;
-
-            var obj = SocialUpdater._users[i];
-
-            item.Enable = true;
-            item.Image = hostileIcon;
-            item.Position = obj.Position + new Vector3(0,
-                    Service.Config.UserIconHeight, 0);
-            item.Size = Service.Config.UserIconSize;
         }
     }
 
