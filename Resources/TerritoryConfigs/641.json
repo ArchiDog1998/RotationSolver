@@ -15,6 +15,14 @@
   "NoProvokeNames": [
     ""
   ],
+  "PriorityTargeting": {
+    "Conditions": [],
+    "Type": 0
+  },
+  "CantTargeting": {
+    "Conditions": [],
+    "Type": 0
+  },
   "BeneficialPositions": [],
   "AutoHeal": true,
   "AutoDefense": true,

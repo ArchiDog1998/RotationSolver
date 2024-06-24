@@ -1,9 +1,6 @@
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
-using ECommons.GameHelpers;
-using ECommons.ImGuiMethods;
-using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using System.ComponentModel;
@@ -412,93 +409,82 @@ public class ListItem : ConfigWindowItemRS
     {
         if (Svc.ClientState == null) return;
 
-        var territoryId = Svc.ClientState.TerritoryType;
-
         ImGuiHelperRS.DrawTerritoryHeader();
         ImGuiHelperRS.DrawContentFinder(DataCenter.ContentFinder);
 
-        using var table = ImRaii.Table("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
-        if (table)
-        {
-            ImGui.TableSetupScrollFreeze(0, 1);
-            ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_NoHostile.Local());
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_NoProvoke.Local());
-
-            ImGui.TableNextColumn();
-            ImGui.TableHeader(UiString.ConfigWindow_List_BeneficialPositions.Local());
-
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-
-            ImGui.TextWrapped(UiString.ConfigWindow_List_NoHostileDesc.Local());
-
-            var width = ImGui.GetColumnWidth();
-
-            if(ImGuiHelperRS.DrawStringList(OtherConfiguration.TerritoryConfig.NoHostileNames, width, UiString.ConfigWindow_List_NoHostilesName))
-            {
-                OtherConfiguration.SaveTerritoryConfigs();
-            }
-
-            ImGui.TableNextColumn();
-
-            ImGui.TextWrapped(UiString.ConfigWindow_List_NoProvokeDesc.Local());
-
-            width = ImGui.GetColumnWidth();
-
-            if (ImGuiHelperRS.DrawStringList(OtherConfiguration.TerritoryConfig.NoProvokeNames, width, UiString.ConfigWindow_List_NoProvokeName))
-            {
-                OtherConfiguration.SaveTerritoryConfigs();
-            }
-
-            ImGui.TableNextColumn();
-
-            var pts = OtherConfiguration.TerritoryConfig.BeneficialPositions;
-
-            if (ImGui.Button(UiString.ConfigWindow_List_AddPosition.Local()) && Player.Available) unsafe
-                {
-                    var point = Player.Object.Position;
-                    int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
-
-                    RaycastHit hit = default;
-
-                    pts.Add(FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
-                            ->RaycastEx(&hit, point + (Vector3.UnitY * 5), -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point);
-
-                    OtherConfiguration.SaveTerritoryConfigs();
-                }
-
-            HoveredPosition = Vector3.Zero;
-            var removeIndex = -1;
-            for (int i = 0; i < pts.Count; i++)
-            {
-                void Reset() => removeIndex = i;
-
-                var key = "Beneficial Positions" + i.ToString();
-
-                ImGuiHelper.DrawHotKeysPopup(key, string.Empty, (LocalString.Remove.Local(), Reset, ["Delete"]));
-
-                ImGui.Selectable(pts[i].ToString());
-
-                if (ImGui.IsItemHovered())
-                {
-                    HoveredPosition = pts[i];
-                }
-
-                ImGuiHelper.ExecuteHotKeysPopup(key, string.Empty, string.Empty, false, (Reset, [VirtualKey.DELETE]));
-            }
-            if (removeIndex > -1)
-            {
-                pts.RemoveAt(removeIndex);
-                OtherConfiguration.SaveTerritoryConfigs();
-            }
-        }
+        DrawListTerritoryList();
+        _targetHeader?.Draw();
     }
+
+    private static void DrawListTerritoryList()
+    {
+        using var table = ImRaii.Table("Rotation Solver List Territories", 3, ImGuiTableFlags.BordersInner | ImGuiTableFlags.Resizable | ImGuiTableFlags.SizingStretchSame);
+        if (!table) return;
+
+        ImGui.TableSetupScrollFreeze(0, 1);
+        ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+
+        ImGui.TableNextColumn();
+        ImGui.TableHeader(UiString.ConfigWindow_List_NoHostile.Local());
+
+        ImGui.TableNextColumn();
+        ImGui.TableHeader(UiString.ConfigWindow_List_NoProvoke.Local());
+
+        ImGui.TableNextColumn();
+        ImGui.TableHeader(UiString.ConfigWindow_List_BeneficialPositions.Local());
+
+        ImGui.TableNextRow();
+
+        ImGui.TableNextColumn();
+
+        ImGui.TextWrapped(UiString.ConfigWindow_List_NoHostileDesc.Local());
+
+        var width = ImGui.GetColumnWidth();
+
+        if (ImGuiHelperRS.DrawStringList(OtherConfiguration.TerritoryConfig.NoHostileNames, width, UiString.ConfigWindow_List_NoHostilesName))
+        {
+            OtherConfiguration.SaveTerritoryConfigs();
+        }
+
+        ImGui.TableNextColumn();
+
+        ImGui.TextWrapped(UiString.ConfigWindow_List_NoProvokeDesc.Local());
+
+        width = ImGui.GetColumnWidth();
+
+        if (ImGuiHelperRS.DrawStringList(OtherConfiguration.TerritoryConfig.NoProvokeNames, width, UiString.ConfigWindow_List_NoProvokeName))
+        {
+            OtherConfiguration.SaveTerritoryConfigs();
+        }
+
+        ImGui.TableNextColumn();
+
+        var pts = OtherConfiguration.TerritoryConfig.BeneficialPositions;
+
+        ConditionDrawer.Draw(pts);
+    }
+
+    private static readonly CollapsingHeaderGroup? _targetHeader = new(new()
+    {
+         { () => UiString.ConfigWindow_Target_Priority.Local(), () => DrawTargetPriority() },
+         { () => UiString.ConfigWindow_Target_Cant.Local(), () => DrawTargetCant() },
+    })
+    {
+        HeaderSize = FontSize.Fourth,
+    };
+
+    private static void DrawTargetPriority()
+    {
+        ImGui.TextWrapped(UiString.ConfigWindow_Actions_PriorityTargeting_Description.Local());
+        ConditionDrawer.Draw(OtherConfiguration.TerritoryConfig.PriorityTargeting);
+    }
+
+    private static void DrawTargetCant()
+    {
+        ImGui.TextWrapped(UiString.ConfigWindow_Actions_CantTargeting_Description.Local());
+        ConditionDrawer.Draw(OtherConfiguration.TerritoryConfig.CantTargeting);
+    }
+
     #endregion
 
 }
