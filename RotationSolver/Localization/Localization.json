@@ -726,5 +726,7 @@
   "RotationSolver.Basic.Configuration.Target.TargetingNamedConditionName.ConditionName": "Condition",
   "RotationSolver.Basic.Configuration.Condition.TerritoryCondition": "Territory Condition",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CustomTargetingData": "Custom Targeting Way",
-  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CustomTargetingData_Description": "The list is in Target - Hostile"
+  "RotationSolver.Basic.Data.UiString.ConfigWindow_Actions_CustomTargetingData_Description": "The list is in Target - Hostile",
+  "DefaultRotations.Ranged.MCH_DefaultName.ReassembleCountDownTime": "Reassemble countdown time",
+  "DefaultRotations.Ranged.MCH_DefaultName.MCH_Reassemble": "Use Reassemble with ChainSaw"
 }
