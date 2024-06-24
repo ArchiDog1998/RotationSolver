@@ -394,13 +394,17 @@ internal static class ImGuiHelperRS
         for (int i = 0; i < names.Count; i++)
         {
             var name = names[i];
-            ImGui.SetNextItemWidth(width);
-            if (ImGui.InputTextWithHint($"##{names.GetHashCode()} Name {i}", tooltip.Local(), ref name, 1024))
+
+            if (width > 0)
             {
-                names[i] = name;
-                changed = true;
+                ImGui.SetNextItemWidth(width);
+                if (ImGui.InputTextWithHint($"##{names.GetHashCode()} Name {i}", tooltip.Local(), ref name, 1024))
+                {
+                    names[i] = name;
+                    changed = true;
+                }
+                ImGui.SameLine();
             }
-            ImGui.SameLine();
 
             if (ImGuiEx.IconButton(FontAwesomeIcon.Ban, $"##{names.GetHashCode()} Remove Name {i}"))
             {
