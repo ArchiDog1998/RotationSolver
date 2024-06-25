@@ -12,7 +12,7 @@ internal static class StateUpdater
         //Job
         || (DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
         && Service.Config.AutoHeal
-        && (DataCenter.InCombat && CustomRotation.IsLongerThan(Service.Config.AutoHealTimeToKill)
+        && (DataCenter.InCombat && CombatData.IsLongerThan(Service.Config.AutoHealTimeToKill)
             || Service.Config.HealOutOfCombat);
 
     public static void UpdateState()
@@ -191,7 +191,7 @@ internal static class StateUpdater
 
         if (Service.Config.AutoTankStance && DataCenter.Role == JobRole.Tank
             && !DataCenter.AllianceMembers.Any(t => t.IsJobCategory(JobRole.Tank) && t.CurrentHp != 0 && t.HasStatus(false, StatusHelper.TankStanceStatus))
-            && !CustomRotation.HasTankStance)
+            && !CombatData.HasTankStance)
         {
             status |= AutoStatus.TankStance;
         }

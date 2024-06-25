@@ -182,7 +182,7 @@ public unsafe class DebugItem : ConfigWindowItemRS
     private static unsafe void DrawOthers()
     {
         ImGui.Text("Combat Time: " + DataCenter.CombatTimeRaw.ToString());
-        ImGui.Text("Limit Break: " + CustomRotation.LimitBreakLevel.ToString());
+        ImGui.Text("Limit Break: " + CombatData.LimitBreakLevel.ToString());
     }
 
     private static void DrawAction(ActionID id, string type)

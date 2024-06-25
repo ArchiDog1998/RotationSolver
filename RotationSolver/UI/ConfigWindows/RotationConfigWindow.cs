@@ -190,7 +190,6 @@ public class RotationConfigWindow : ConfigWindow
                     await stream.CopyToAsync(fs);
                 }
 
-
                 _loadingList.Remove(name);
             });
         }
@@ -279,7 +278,6 @@ public class RotationConfigWindow : ConfigWindow
                     ImGui.SameLine();
                 }
                 ImGui.Text(rot.GameVersion);
-
             }, wholeWidth, horizonalWholeWidth);
         }
     }
@@ -308,9 +306,9 @@ public class RotationConfigWindow : ConfigWindow
 
         if (ImageLoader.GetTexture(rotation.GetType().GetCustomAttribute<RotationAttribute>()!.Type.GetIcon(), out var texture))
         {
-            ImGui.SetCursorPos(cursor + Vector2.One * iconSize / 2);
-
-            ImGui.Image(texture.ImGuiHandle, Vector2.One * iconSize / 2);
+            var iconSizeVec = Vector2.One * iconSize / 2;
+            ImGui.SetCursorPos(cursor + iconSizeVec);
+            ImGui.Image(texture.ImGuiHandle, iconSizeVec);
         }
     }
 
@@ -620,7 +618,6 @@ public class RotationConfigWindow : ConfigWindow
             }
         }, width, textWidth);
 
-
         text = UiString.ConfigWindow_About_OpenConfigFolder.Local();
         textWidth = ImGuiHelpers.GetButtonSize(text).X;
         ImGuiHelper.DrawItemMiddle(() =>
@@ -639,8 +636,6 @@ public class RotationConfigWindow : ConfigWindow
                     .Where(a => !string.IsNullOrEmpty(a.Name) && !a.IsPvP && !a.IsPlayerAction
                     && a.ClassJob.Value == null && a.Cast100ms > 0)
                     .ToArray();
-
-
 
     protected override ConfigWindowItem[] GetItems() =>
     [
