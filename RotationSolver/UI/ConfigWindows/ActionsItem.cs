@@ -1,4 +1,4 @@
-﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using RotationSolver.Updaters;
@@ -33,7 +33,7 @@ public class ActionsItem : ConfigWindowItemRS
             if (DataCenter.RightNowRotation != null && RotationUpdater.AllGroupedActions != null)
             {
                 var size = 30 * Scale;
-                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (size * 1.1f + ImGui.GetStyle().ItemSpacing.X)));
+                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / ((size * 1.1f) + ImGui.GetStyle().ItemSpacing.X)));
                 foreach (var pair in RotationUpdater.AllGroupedActions)
                 {
                     _actionsList.AddCollapsingHeader(() => pair.Key, () =>
@@ -59,7 +59,7 @@ public class ActionsItem : ConfigWindowItemRS
                             if (ImageLoader.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
                             {
                                 var offset = new Vector2(1 / 12f, 1 / 6f);
-                                ImGui.SetCursorPos(cursor + new Vector2(0.6f, 0.7f) * size);
+                                ImGui.SetCursorPos(cursor + (new Vector2(0.6f, 0.7f) * size));
                                 ImGui.Image(texture.ImGuiHandle, Vector2.One * size * 0.5f,
                                     new Vector2(item.IsEnabled ? 0 : 0.5f, 0) + offset,
                                     new Vector2(item.IsEnabled ? 0.5f : 1, 1) - offset);
@@ -118,7 +118,7 @@ public class ActionsItem : ConfigWindowItemRS
                 ImGui.SameLine();
                 var cursor = ImGui.GetCursorPos();
                 var width = ImGui.GetColumnWidth();
-                ImGui.SetCursorPos(cursor += new Vector2(width - height - 10 * Scale, 0));
+                ImGui.SetCursorPos(cursor += new Vector2(width - height - (10 * Scale), 0));
                 ImGui.Image(icon.ImGuiHandle, Vector2.One * height);
                 ImGuiHelper.DrawActionOverlay(cursor, height, 1);
             }
@@ -235,7 +235,6 @@ public class ActionsItem : ConfigWindowItemRS
 
             if (_activeAction is IBaseAction action)
             {
-
                 try
                 {
                     ImGui.Text("ID: " + action.Info.ID.ToString());
@@ -263,7 +262,6 @@ public class ActionsItem : ConfigWindowItemRS
                 }
                 catch
                 {
-
                 }
             }
             else if (_activeAction is IBaseItem item)
@@ -283,7 +281,6 @@ public class ActionsItem : ConfigWindowItemRS
                 }
                 catch
                 {
-
                 }
             }
         }
@@ -312,7 +309,6 @@ public class ActionsItem : ConfigWindowItemRS
                 if (set == null || _activeAction == null) return;
                 XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(set.GetCondition(_activeAction.ID));
             } },
-
             { () => UiString.ConfigWindow_Actions_DisabledConditionSet.Local(), () =>
             {
                 ImGui.TextWrapped(UiString.ConfigWindow_Actions_DisabledConditionSet_Description.Local());
@@ -322,7 +318,6 @@ public class ActionsItem : ConfigWindowItemRS
                 if (set == null || _activeAction == null) return;
                 XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(set.GetDisabledCondition(_activeAction.ID));
             } },
-
             { () => _activeAction is IBaseAction ? UiString.ConfigWindow_Actions_PriorityTargeting.Local() : string.Empty, () =>
             {
                 ImGui.TextWrapped(UiString.ConfigWindow_Actions_PriorityTargeting_Description.Local());
@@ -330,7 +325,6 @@ public class ActionsItem : ConfigWindowItemRS
                 if (_activeAction is not IBaseAction action) return;
                 XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(action.Config.PriorityTargeting);
             } },
-
             { () => _activeAction is IBaseAction ? UiString.ConfigWindow_Actions_CantTargeting.Local() : string.Empty, () =>
             {
                 ImGui.TextWrapped(UiString.ConfigWindow_Actions_CantTargeting_Description.Local());
