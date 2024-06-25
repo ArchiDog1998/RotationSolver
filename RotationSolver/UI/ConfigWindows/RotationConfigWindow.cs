@@ -2,6 +2,7 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
@@ -156,7 +157,7 @@ public class RotationConfigWindow : ConfigWindow
 
     private const int FRAME_COUNT = 180;
     private static readonly List<string> _loadingList = new(FRAME_COUNT);
-    private static readonly Dictionary<string, IDalamudTextureWrap> _logosWrap = new(FRAME_COUNT + 1);
+    private static readonly Dictionary<string, ISharedImmediateTexture> _logosWrap = new(FRAME_COUNT + 1);
     private static bool GetLocalImage(string name, out IDalamudTextureWrap texture)
     {
         var dir = $"{Svc.PluginInterface.ConfigDirectory.FullName}\\Images";
@@ -167,9 +168,9 @@ public class RotationConfigWindow : ConfigWindow
 
         if (File.Exists(file))
         {
-            if (!_logosWrap.ContainsKey(file))
+            if (!_logosWrap.TryGetValue(name, out var v))
             {
-                _logosWrap[name] = Svc.PluginInterface.UiBuilder.LoadImage(file);
+                _logosWrap[name] = Svc.Texture.GetFromFile(file);
             }
         }
         else if (!_loadingList.Contains(name))
@@ -193,8 +194,8 @@ public class RotationConfigWindow : ConfigWindow
                 _loadingList.Remove(name);
             });
         }
-
-        return _logosWrap.TryGetValue(name, out texture!);
+        texture = null!;
+        return _logosWrap.TryGetValue(name, out var share) && share.TryGetWrap(out texture!, out _);
     }
 
     protected override bool DrawSubHeader(float wholeWidth)
@@ -205,13 +206,28 @@ public class RotationConfigWindow : ConfigWindow
         return true;
     }
 
+    private IDalamudTextureWrap? lastTexture = null;
     protected override bool GetLogo(out IDalamudTextureWrap texture)
     {
         var frame = Environment.TickCount / 34 % FRAME_COUNT;
         if (frame <= 0) frame += FRAME_COUNT;
 
-        return GetLocalImage(Service.Config.DrawIconAnimation
+        var result = GetLocalImage(Service.Config.DrawIconAnimation
                     ? frame.ToString("D4") : "Logo", out texture);
+        if (result)
+        {
+            lastTexture = texture;
+            return true;
+        }
+        else if(lastTexture != null)
+        {
+            texture = lastTexture;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     protected override void DrawHeader(float wholeWidth, float iconSize)

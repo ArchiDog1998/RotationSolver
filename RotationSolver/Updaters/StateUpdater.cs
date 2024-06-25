@@ -125,7 +125,7 @@ internal static class StateUpdater
                 {
                     if (DataCenter.PartyMembers.Any((tank) =>
                     {
-                        var attackingTankObj = DataCenter.AllHostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
+                        var attackingTankObj = DataCenter.AllHostileTargets.Where(t => t.TargetObjectId == tank.EntityId);
 
                         if (attackingTankObj.Count() != 1) return false;
 

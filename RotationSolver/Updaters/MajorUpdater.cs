@@ -214,9 +214,9 @@ internal static class MajorUpdater
             if ((ObjectKind)address->ObjectKind != ObjectKind.Treasure) return false;
 
             //Opened!
-            foreach (var item in Loot.Instance()->ItemArraySpan)
+            foreach (var item in Loot.Instance()->Items)
             {
-                if (item.ChestObjectId == o.ObjectId) return false;
+                if (item.ChestObjectId == o.EntityId) return false;
             }
 
             return true;
@@ -224,10 +224,10 @@ internal static class MajorUpdater
 
         if (treasure == null) return;
         if (DateTime.Now < _nextOpenTime) return;
-        if (treasure.ObjectId == _lastChest && DateTime.Now - _nextOpenTime < TimeSpan.FromSeconds(10)) return;
+        if (treasure.EntityId == _lastChest && DateTime.Now - _nextOpenTime < TimeSpan.FromSeconds(10)) return;
 
         _nextOpenTime = DateTime.Now.AddSeconds(new Random().NextDouble() + 0.2);
-        _lastChest = treasure.ObjectId;
+        _lastChest = treasure.EntityId;
 
         try
         {

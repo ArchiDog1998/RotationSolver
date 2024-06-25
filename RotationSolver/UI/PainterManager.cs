@@ -46,7 +46,7 @@ internal static class PainterManager
     {
         public override bool Show => Service.Config.ShowAllianceIcons;
 
-        public override GameObject[] Targets => DataCenter.AllianceMembers.Where(i => i.ObjectId != Player.Object?.ObjectId).ToArray();
+        public override GameObject[] Targets => DataCenter.AllianceMembers.Where(i => i.EntityId != Player.Object?.EntityId).ToArray();
 
         public override float Height => Service.Config.AllianceIconHeight;
 

@@ -147,7 +147,7 @@ internal class SocialUpdater
     private static async void SayHelloToUsers()
     {
         var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
-            .Where(c => c.ObjectId != Player.Object.ObjectId)
+            .Where(c => c.EntityId != Player.Object.EntityId)
             .Select(player => (player, player.EncryptString()));
 
         IEnumerable<ChatEntity> entities = players

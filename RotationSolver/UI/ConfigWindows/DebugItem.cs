@@ -84,7 +84,7 @@ public unsafe class DebugItem : ConfigWindowItemRS
 
         foreach (var status in Player.Object.StatusList)
         {
-            var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+            var source = status.SourceId == Player.Object.EntityId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
         }
     }
@@ -147,7 +147,7 @@ public unsafe class DebugItem : ConfigWindowItemRS
 
             foreach (var status in b.StatusList)
             {
-                var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+                var source = status.SourceId == Player.Object.EntityId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
                 ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
         }

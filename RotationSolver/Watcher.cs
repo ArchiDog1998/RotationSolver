@@ -153,12 +153,12 @@ public static class Watcher
         if (source is not BattleChara battle) return;
         if (battle is PlayerCharacter) return;
         if (battle.SubKind == 9) return; //Friend!
-        if (Svc.Objects.SearchById(battle.ObjectId) is PlayerCharacter) return;
+        if (Svc.Objects.SearchById(battle.EntityId) is PlayerCharacter) return;
 
         Recorder.Enqueue(new ActionEffectSetData(set));
 
         var damageRatio = set.TargetEffects
-            .Where(e => e.TargetID == Player.Object.ObjectId)
+            .Where(e => e.TargetID == Player.Object.EntityId)
             .SelectMany(e => new EffectEntry[]
             {
                 e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]
@@ -172,7 +172,7 @@ public static class Watcher
 
         foreach (var effect in set.TargetEffects)
         {
-            if (effect.TargetID != Player.Object.ObjectId) continue;
+            if (effect.TargetID != Player.Object.EntityId) continue;
             if (effect.GetSpecificTypeEffect(ActionEffectType.Knockback, out var entry))
             {
                 var knock = Svc.Data.GetExcelSheet<Knockback>()?.GetRow(entry.value);
@@ -198,7 +198,7 @@ public static class Watcher
             if (type is ActionCate.Spell or ActionCate.Weaponskill or ActionCate.Ability)
             {
                 if (set.TargetEffects.Count(e =>
-                    DataCenter.PartyMembers.Any(p => p.ObjectId == e.TargetID)
+                    DataCenter.PartyMembers.Any(p => p.EntityId == e.TargetID)
                     && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
                     && (effect.value > 0 || (effect.param0 & 6) == 6))
                     == DataCenter.PartyMembers.Length)
@@ -215,7 +215,7 @@ public static class Watcher
 
     private static void ActionFromSelf(ActionEffectSet set)
     {
-        if (set.Source.ObjectId != Player.Object.ObjectId) return;
+        if (set.Source.EntityId != Player.Object.EntityId) return;
         if (set.Header.ActionType != ActionType.Action && set.Header.ActionType != ActionType.Item) return;
         if (set.Action == null) return;
         if ((ActionCate)set.Action.ActionCategory.Value!.RowId == ActionCate.Autoattack) return;
@@ -243,7 +243,7 @@ public static class Watcher
         {
             DataCenter.ApplyStatus[effect.Key] = effect.Value;
         }
-        DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Player.Object.ObjectId).Sum(i => i.Value);
+        DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Player.Object.EntityId).Sum(i => i.Value);
         DataCenter.EffectTime = DateTime.Now;
         DataCenter.EffectEndTime = DateTime.Now.AddSeconds(set.Header.AnimationLockTime + 1);
 

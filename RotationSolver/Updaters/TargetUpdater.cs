@@ -40,7 +40,7 @@ internal static partial class TargetUpdater
             DataCenter.RecordedHP.Dequeue();
         }
 
-        DataCenter.RecordedHP.Enqueue((now, new SortedList<uint, float>(allTargets.Where(b => b != null && b.CurrentHp != 0).ToDictionary(b => b.ObjectId, b => b.GetHealthRatio()))));
+        DataCenter.RecordedHP.Enqueue((now, new SortedList<uint, float>(allTargets.Where(b => b != null && b.CurrentHp != 0).ToDictionary(b => b.EntityId, b => b.GetHealthRatio()))));
     }
 
     internal static void ClearTarget()
@@ -143,7 +143,7 @@ internal static partial class TargetUpdater
         {
             if (!s.Path.StartsWith("vfx/lockon/eff/tank_lockon")) return false;
             if (!Player.Available) return false;
-            if (Player.Object.IsJobCategory(JobRole.Tank) && s.Object?.ObjectId != Player.Object.ObjectId) return false;
+            if (Player.Object.IsJobCategory(JobRole.Tank) && s.Object?.EntityId != Player.Object.EntityId) return false;
 
             return true;
         });
@@ -221,7 +221,7 @@ internal static partial class TargetUpdater
         DataCenter.AllianceMembers = allTargets.Where(ObjectHelper.IsAlliance).ToArray();
         DataCenter.PartyMembers = DataCenter.AllianceMembers.Where(ObjectHelper.IsParty).ToArray();
 
-        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.ObjectId);
+        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.EntityId);
         DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
 
         _raiseAllTargets.Delay(DataCenter.AllianceMembers.GetDeath());
@@ -235,7 +235,7 @@ internal static partial class TargetUpdater
             ?? weakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
 
         DataCenter.RefinedHP = DataCenter.PartyMembers
-            .ToDictionary(p => p.ObjectId, GetPartyMemberHPRatio);
+            .ToDictionary(p => p.EntityId, GetPartyMemberHPRatio);
         DataCenter.PartyMembersHP = DataCenter.RefinedHP.Values.Where(r => r > 0);
 
         if (DataCenter.PartyMembersHP.Any())
@@ -251,7 +251,7 @@ internal static partial class TargetUpdater
         DataCenter.PartyMembersMinHP = DataCenter.PartyMembersHP.Any() ? DataCenter.PartyMembersHP.Min() : 0;
         DataCenter.HPNotFull = DataCenter.PartyMembersMinHP < 1;
 
-        _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.ObjectId, p => p.CurrentHp);
+        _lastHp = DataCenter.PartyMembers.ToDictionary(p => p.EntityId, p => p.CurrentHp);
 
         if (DataCenter.InEffectTime)
         {
@@ -309,7 +309,7 @@ internal static partial class TargetUpdater
         if (member == null) return 0;
 
         if (!DataCenter.InEffectTime
-            || !DataCenter.HealHP.TryGetValue(member.ObjectId, out var hp))
+            || !DataCenter.HealHP.TryGetValue(member.EntityId, out var hp))
         {
             return (float)member.CurrentHp / member.MaxHp;
         }
@@ -317,11 +317,11 @@ internal static partial class TargetUpdater
         var rightHp = member.CurrentHp;
         if (rightHp > 0)
         {
-            if (!_lastHp.TryGetValue(member.ObjectId, out var lastHp)) lastHp = rightHp;
+            if (!_lastHp.TryGetValue(member.EntityId, out var lastHp)) lastHp = rightHp;
 
             if (rightHp - lastHp == hp)
             {
-                DataCenter.HealHP.Remove(member.ObjectId);
+                DataCenter.HealHP.Remove(member.EntityId);
                 return (float)member.CurrentHp / member.MaxHp;
             }
             return Math.Min(1, (hp + rightHp) / (float)member.MaxHp);
@@ -338,7 +338,7 @@ internal static partial class TargetUpdater
         {
             var b = allTargets.FirstOrDefault(obj => obj.GetNamePlateIcon() == i);
             if (b == null || b.CurrentHp == 0) continue;
-            charas.Add(b.ObjectId);
+            charas.Add(b.EntityId);
         }
         DataCenter.TreasureCharas = [.. charas];
     }

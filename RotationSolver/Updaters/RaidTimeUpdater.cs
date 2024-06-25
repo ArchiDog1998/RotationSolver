@@ -1,4 +1,7 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.Text;
+using Dalamud.Game.Text.SeStringHandling;
+using ECommons.ChatMethods;
 using ECommons.DalamudServices;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json.Linq;
@@ -35,7 +38,7 @@ internal static partial class RaidTimeUpdater
         foreach (var obj in DataCenter.AllTargets)
         {
             if (obj is PlayerCharacter) continue;
-            var id = obj.ObjectId;
+            var id = obj.EntityId;
             var newInCombat = obj.InCombat();
 
             if (_isInCombat.TryGetValue(id, out var inCombat)
@@ -123,10 +126,32 @@ internal static partial class RaidTimeUpdater
         Svc.GameNetwork.NetworkMessage -= GameNetwork_NetworkMessage;
         Svc.Chat.ChatMessage -= Chat_ChatMessage;
     }
-
     private static void DutyState_DutyWiped(object? _, ushort e)
     {
         DataCenter.RaidTimeRaw = -1;
+    }
+
+    private static void Chat_ChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled)
+    {
+        var name = GetNameFromObjectId((uint)timestamp);
+
+#if DEBUG
+        Svc.Log.Debug(sender.TextValue.ToString());
+#endif
+
+        foreach (var item in DataCenter.TimelineItems)
+        {
+            if (!item.IsInWindow) continue;
+            if (item.Type is not TimelineType.GameLog) continue;
+
+            var typeString = ((uint)type).ToString("X4");
+            if (!item["code", typeString]) continue;
+            if (!item["name", name]) continue;
+            if (!item["line", message.TextValue]) continue;
+
+            item.UpdateRaidTimeOffset();
+            break;
+        }
     }
 
     private static void Chat_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)

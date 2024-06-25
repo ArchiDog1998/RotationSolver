@@ -9,6 +9,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule;
 
 namespace RotationSolver.Updaters;
 
@@ -97,8 +98,8 @@ internal static class PreviewUpdater
     {
         if (hot.HasValue)
         {
-            if (hot.Value.IconTypeA != HotbarSlotType.CraftAction && hot.Value.IconTypeA != HotbarSlotType.Action) return false;
-            if (hot.Value.IconTypeB != HotbarSlotType.CraftAction && hot.Value.IconTypeB != HotbarSlotType.Action) return false;
+            if (hot.Value.OriginalApparentSlotType != HotbarSlotType.CraftAction && hot.Value.OriginalApparentSlotType != HotbarSlotType.Action) return false;
+            if (hot.Value.ApparentSlotType != HotbarSlotType.CraftAction && hot.Value.ApparentSlotType != HotbarSlotType.Action) return false;
         }
 
         return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
@@ -117,18 +118,18 @@ internal static class PreviewUpdater
         {
             if (intPtr == IntPtr.Zero) continue;
             var actionBar = (AddonActionBarBase*)intPtr;
-            var hotBar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBarsSpan[hotBarIndex];
+            var hotBar = Framework.Instance()->UIModule->GetRaptureHotbarModule()->HotBars[hotBarIndex];
             var slotIndex = 0;
 
-            foreach (var slot in actionBar->ActionBarSlotVector.Span)
+            foreach (var slot in actionBar->ActionBarSlotVector.AsSpan())
             {
                 var highLightId = 0x53550000 + index;
 
-                if (doingSomething(slot, hotBarIndex > 9 ? null : hotBar.SlotsSpan[slotIndex], (uint)highLightId))
+                if (doingSomething(slot, hotBarIndex > 9 ? null : hotBar.Slots[slotIndex], (uint)highLightId))
                 {
                     var iconAddon = slot.Icon;
                     if ((IntPtr)iconAddon == IntPtr.Zero) continue;
-                    if (!iconAddon->AtkResNode.IsVisible) continue;
+                    if (!iconAddon->AtkResNode.IsVisible()) continue;
                     actionBar->PulseActionBarSlot(slotIndex);
                     UIModule.PlaySound(12, 0, 0, 0);
                 }
