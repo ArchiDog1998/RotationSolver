@@ -665,5 +665,6 @@
   "System.ConsoleModifiers.None": "Ninguna",
   "System.ConsoleModifiers.Alt": "Alt",
   "System.ConsoleModifiers.Shift": "Shift",
-  "System.ConsoleModifiers.Control": "Control"
+  "System.ConsoleModifiers.Control": "Control",
+  "RotationSolver.Basic.Data.OtherCommandType.NextAction": "Do the next action"
 }
