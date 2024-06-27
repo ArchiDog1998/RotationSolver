@@ -1,4 +1,4 @@
-﻿using ECommons.GameHelpers;
+using ECommons.GameHelpers;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Condition;
 using System.Runtime.CompilerServices;
@@ -10,10 +10,10 @@ internal static class StateUpdater
         //PvP
         (DataCenter.IsPvP)
         //Job
-        || (DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
+        || ((DataCenter.Role == JobRole.Healer || Service.Config.UseHealWhenNotAHealer)
         && Service.Config.AutoHeal
-        && (DataCenter.InCombat && CombatData.IsLongerThan(Service.Config.AutoHealTimeToKill)
-            || Service.Config.HealOutOfCombat);
+        && ((DataCenter.InCombat && CombatData.IsLongerThan(Service.Config.AutoHealTimeToKill))
+            || Service.Config.HealOutOfCombat));
 
     public static void UpdateState()
     {
@@ -229,7 +229,7 @@ internal static class StateUpdater
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static float Lerp(float a, float b, float ratio)
     {
-        return a + (b - a) * ratio;
+        return a + ((b - a) * ratio);
     }
 
     private static AutoStatus StatusFromCmdOrCondition()

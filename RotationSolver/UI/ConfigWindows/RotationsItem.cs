@@ -1,4 +1,4 @@
-﻿using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
@@ -169,7 +169,7 @@ public class RotationsItem : ConfigWindowItemRS
 
             var changed = false;
 
-            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - ImGui.GetStyle().ItemSpacing.X * 3 - 10 * Scale;
+            var width = ImGui.GetWindowWidth() - ImGuiEx.CalcIconSize(FontAwesomeIcon.Ban).X - (ImGui.GetStyle().ItemSpacing.X * 3) - (10 * Scale);
             width /= 3;
 
             ImGui.SetNextItemWidth(width);

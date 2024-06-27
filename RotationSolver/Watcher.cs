@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Hooking;
 using Dalamud.Plugin.Ipc;
 using ECommons.DalamudServices;
@@ -83,7 +83,6 @@ public static class Watcher
                 var effect = new VfxNewData(obj, path);
                 Recorder.Enqueue(effect);
             }
-
         }
         catch (Exception e)
         {

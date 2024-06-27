@@ -1,4 +1,4 @@
-﻿using Dalamud.Interface.Utility.Raii;
+using Dalamud.Interface.Utility.Raii;
 using RotationSolver.Updaters;
 using XIVDrawer;
 
@@ -11,7 +11,7 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
         if (DataCenter.RightNowRotation == null) return;
 
         var width = Service.Config.CooldownWindowIconSize;
-        var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / (width * (1 + 6 / 82) + ImGui.GetStyle().ItemSpacing.X)));
+        var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / ((width * (1 + (6 / 82))) + ImGui.GetStyle().ItemSpacing.X)));
 
         if (RotationUpdater.AllGroupedActions == null) return;
 
@@ -72,8 +72,8 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
         {
             if (!Service.Config.UseOriginalCooldown)
             {
-                var ratio = recast == 0 || !act.EnoughLevel ? 0 : elapsed % recast / recast;
-                var startPos = new Vector2(pos.X + size.X * ratio, pos.Y) + winPos;
+                var ratio = recast == 0 || !act.EnoughLevel ? 0 : (elapsed % recast) / recast;
+                var startPos = new Vector2(pos.X + (size.X * ratio), pos.Y) + winPos;
                 ImGui.GetWindowDrawList().AddRectFilled(startPos,
                     new Vector2(pos.X + size.X, pos.Y + size.Y) + winPos, progressCol);
 
@@ -81,9 +81,9 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
             }
 
             using var font = ImRaii.PushFont(DrawingExtensions.GetFont(Service.Config.CooldownFontSize));
-            string time = recast == 0 ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
+            string time = recast == 0 ? "0" : ((int)(recast - (elapsed % recast)) + 1).ToString();
             var strSize = ImGui.CalcTextSize(time);
-            var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;
+            var fontPos = new Vector2(pos.X + (size.X / 2) - (strSize.X / 2), pos.Y + (size.Y / 2) - (strSize.Y / 2)) + winPos;
 
             TextShade(fontPos, time);
         }
@@ -92,7 +92,7 @@ internal class CooldownWindow() : CtrlWindow(nameof(CooldownWindow))
         {
             for (int i = 0; i < bAct.CD.CurrentCharges; i++)
             {
-                ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + (i + 0.5f) * new Vector2(width / 5, 0), width / 12, white);
+                ImGui.GetWindowDrawList().AddCircleFilled(winPos + pos + ((i + 0.5f) * new Vector2(width / 5, 0)), width / 12, white);
             }
         }
     }

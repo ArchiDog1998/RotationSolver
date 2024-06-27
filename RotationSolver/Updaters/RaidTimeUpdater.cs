@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using ECommons.ChatMethods;
@@ -109,7 +109,6 @@ internal static partial class RaidTimeUpdater
         {
             Svc.Log.Warning(ex, "Failed to download the timelines!");
         }
-
 
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
         ClientState_TerritoryChanged(Svc.ClientState.TerritoryType);

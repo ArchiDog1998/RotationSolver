@@ -1,4 +1,4 @@
-﻿using RotationSolver.Basic.Configuration.Condition;
+using RotationSolver.Basic.Configuration.Condition;
 
 namespace RotationSolver.Updaters;
 
@@ -62,7 +62,6 @@ internal class ActionSequencerUpdater
         }
         catch
         {
-
         }
         foreach (var set in DataCenter.ConditionSets)
         {

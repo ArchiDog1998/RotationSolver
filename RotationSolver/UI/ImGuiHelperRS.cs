@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -233,7 +233,6 @@ internal static class ImGuiHelperRS
         return result;
     }
 
-
     internal static void DrawTerritoryHeader()
     {
         using var font = ImRaii.PushFont(DrawingExtensions.GetFont(21));
@@ -306,7 +305,7 @@ internal static class ImGuiHelperRS
             using var child = ImRaii.Child("Rotation Solver Add Status", new Vector2(-1, 400 * Scale));
             if (!child) return;
 
-            var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / (size * 3 / 4 * Scale + ImGui.GetStyle().ItemSpacing.X)));
+            var count = Math.Max(1, (int)MathF.Floor(ImGui.GetWindowWidth() / ((size * 3 / 4 * Scale) + ImGui.GetStyle().ItemSpacing.X)));
             var index = 0;
 
             var searchingKey = searching;

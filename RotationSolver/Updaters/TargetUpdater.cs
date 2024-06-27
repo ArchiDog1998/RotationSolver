@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
@@ -166,7 +166,6 @@ internal static partial class TargetUpdater
         }
         catch
         {
-
         }
 
         return false;
@@ -301,7 +300,6 @@ internal static partial class TargetUpdater
         }
 
         return null;
-
     }
 
     private static float GetPartyMemberHPRatio(BattleChara member)

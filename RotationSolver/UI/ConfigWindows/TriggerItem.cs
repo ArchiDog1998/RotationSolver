@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
@@ -154,7 +154,7 @@ public class TriggerItem : ConfigWindowItemRS
             void Delete()
             {
                 dict.RemoveAt(i);
-            };
+            }
 
             var pair = dict[i];
             var key = pair.Item1;
@@ -191,5 +191,4 @@ public class TriggerItem : ConfigWindowItemRS
 
         XIVConfigUI.ConditionConfigs.ConditionDrawer.Draw(data);
     }
-
 }

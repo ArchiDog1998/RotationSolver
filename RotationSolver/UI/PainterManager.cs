@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
@@ -54,7 +54,6 @@ internal static class PainterManager
 
         protected override uint GetIcon(GameObject gameObject) => 61515;
     }
-
 
     private class UsersDrawingItem : TargetDrawingItem
     {
