@@ -375,7 +375,7 @@ public static class ObjectHelper
 
     internal static unsafe bool CanSee(this IGameObject b)
     {
-        var point = Player.Object.Position + Vector3.UnitY * Player.GameObject->Height;
+        var point = Player.Object.Position + Vector3.UnitY * Player.IGameObject->Height;
         var tarPt = b.Position + Vector3.UnitY * b.Struct()->Height;
         var direction = tarPt - point;
 
