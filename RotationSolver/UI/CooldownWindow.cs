@@ -1,6 +1,5 @@
 ﻿using Dalamud.Interface.Utility.Raii;
 using RotationSolver.Updaters;
-using XIVPainter;
 
 namespace RotationSolver.UI;
 

@@ -15,7 +15,6 @@ internal partial class Configs : IPluginConfiguration
         BasicAutoSwitch = "BasicAutoSwitch",
         BasicParams = "BasicParams",
         UiInformation = "UiInformation",
-        UiOverlay = "UiOverlay",
         UiWindows = "UiWindows",
         AutoActionUsage = "AutoActionUsage",
         AutoActionCondition = "AutoActionCondition",
@@ -153,22 +152,6 @@ internal partial class Configs : IPluginConfiguration
     [ConditionBool, UI("Automatically use MP Potions", Filter = AutoActionUsage)]
     private static readonly bool _useMpPotions = false;
 
-    [ConditionBool, UI("Draw melee offset",
-        Filter =UiOverlay)]
-    private static readonly bool _drawMeleeOffset = false;
-
-    [ConditionBool, UI("Display move action's target",
-        Filter =UiOverlay)]
-    private static readonly bool _showMoveTarget = false;
-
-    [ConditionBool, UI("Show Target",
-        Filter = UiOverlay)]
-    private static readonly bool _showTarget = false;
-
-    [ConditionBool, UI("Show the target's time to kill.",
-        Parent = nameof(ShowTarget))]
-    private static readonly bool _showTargetTimeToKill = false;
-
     [ConditionBool, UI("Prioritize mob/object targets with attack markers",
         Filter = TargetConfig)]
     private static readonly bool _chooseAttackMark = true;
@@ -181,16 +164,9 @@ internal partial class Configs : IPluginConfiguration
         Filter = TargetConfig)]
     private static readonly bool _filterStopMark = true;
 
-    [ConditionBool, UI ("Show the hostile target icon",
-        Filter = UiOverlay)]
-    private static readonly bool _showHostilesIcons = false;
-
-    [ConditionBool, UI ("Teaching mode (Requires Display UI Overlay)", Filter =UiOverlay)]
+    [ConditionBool, UI ("Teaching mode (Requires Display UI Overlay)", Filter = UiInformation)]
     private static readonly bool _teachingMode = false;
 
-    [ConditionBool, UI("Display UI Overlay", Description = "This top window is used to display some extra information on your game window, such as target's positional, target and sub-target, etc.",
-        Filter = UiOverlay)]
-    private static readonly bool _useOverlayWindow = false;
 
     [ConditionBool, UI("Simulate the effect of pressing abilities",
         Filter =UiInformation)]
@@ -403,12 +379,6 @@ internal partial class Configs : IPluginConfiguration
         Parent = nameof(AutoOpenChest))]
     private static readonly bool _autoCloseChestWindow = true;
 
-    [ConditionBool, UI("Show RSR state icon", Filter = UiOverlay)]
-    private static readonly bool _showStateIcon = false;
-
-    [ConditionBool, UI("Show beneficial AoE locations.", Filter = UiOverlay)]
-    private static readonly bool _showBeneficialPositions = true;
-
     [ConditionBool, UI("Hide all warnings",
         Filter = UiInformation)]
     private static readonly bool _hideWarning = false;
@@ -455,13 +425,6 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 600, ConfigUnitType.Seconds)]
     public float AutoOffAfterCombatTime { get; set; } = 30;
 
-    [UI("Drawing smoothness.", Parent = nameof(UseOverlayWindow))]
-    [Range(0.005f, 0.05f, ConfigUnitType.Yalms, 0.001f)]
-    public float SampleLength { get; set; } = 1;
-
-    [ConditionBool, UI("Use tasks for making the overlay window faster. (EXPERIMENTAL,WILL CAUSE CRASHES) ", Parent = nameof(UseOverlayWindow))]
-    private static readonly bool _useTasksForOverlay = false;
-
     [UI("The angle of your vision cone", Parent = nameof(OnlyAttackInVisionCone))]
     [Range(0, 90, ConfigUnitType.Degree, 0.02f)]
     public float AngleOfVisionCone { get; set; } = 45;
@@ -484,7 +447,6 @@ internal partial class Configs : IPluginConfiguration
     [UI("The size of the next ability that will be used icon.",
         Parent =nameof(ShowTarget))]
     [Range(0, 1, ConfigUnitType.Percent, 0.002f)]
-    public float TargetIconSize { get; set; } = 0.3f;
 
     [UI("Heal tank first if their HP is lower than this.",
         Filter = HealingActionCondition, Section = 1,
@@ -573,11 +535,6 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 60, ConfigUnitType.Seconds, 0.02f)]
     public float DyingTimeToKill { get; set; } = 10;
 
-    [UI("Change the cooldown font size.",
-        Filter = UiInformation)]
-    [Range(9.6f, 96, ConfigUnitType.Pixels, 0.1f)]
-    public float CooldownFontSize { get; set; } = 16;
-
     [UI("Cooldown window icon size")]
     [Range(0, 80, ConfigUnitType.Pixels, 0.2f)]
     public float CooldownWindowIconSize { get; set; } = 30;
@@ -607,22 +564,6 @@ internal partial class Configs : IPluginConfiguration
     [Range(0, 30, ConfigUnitType.Seconds, 0.02f)]
     public float AutoHealTimeToKill { get; set; } = 8f;
 
-    [UI("Hostile Icon height from position", Parent =nameof(ShowHostilesIcons))]
-    [Range(0, 10, ConfigUnitType.Pixels, 0.002f)]
-    public float HostileIconHeight { get; set; } = 0.5f;
-
-    [UI("Hostile Icon size", Parent = nameof(ShowHostilesIcons))]
-    [Range(0.1f, 5, ConfigUnitType.Percent, 0.002f)]
-    public float HostileIconSize { get; set; } = 0.5f;
-
-    [UI("State icon height", Parent =nameof(ShowStateIcon))]
-    [Range(0, 3, ConfigUnitType.Pixels, 0.002f)]
-    public float StateIconHeight { get; set; } = 1;
-
-    [UI("State icon size", Parent = nameof(ShowStateIcon))]
-    [Range(0.1f, 5, ConfigUnitType.Percent, 0.002f)]
-    public float StateIconSize { get; set; } = 0.5f;
-
     [UI("The minimum time between updating RSR information. (Setting too low can negatively effect framerate)",
         Filter = BasicTimer)]
     [JobConfig, Range(0, 0.3f, ConfigUnitType.Seconds, 0.002f)]
@@ -640,12 +581,6 @@ internal partial class Configs : IPluginConfiguration
     [UI("Target color", Parent =nameof(TargetColor))]
     public Vector4 TargetColor { get; set; } = new(1f, 0.2f, 0f, 0.8f);
 
-    [UI("The color of beneficial AoE positions", Parent =nameof(ShowBeneficialPositions))]
-    public Vector4 BeneficialPositionColor { get; set; } = new(0.5f, 0.9f, 0.1f, 0.7f);
-
-    [UI("The color of the hovered beneficial position", Parent = nameof(ShowBeneficialPositions))]
-    public Vector4 HoveredBeneficialPositionColor { get; set; } = new(1f, 0.5f, 0f, 0.8f);
-
     [UI("Locked Control Window's Background", Parent = nameof(ShowControlWindow))]
     public Vector4 ControlWindowLockBg { get; set; } = new (0, 0, 0, 0.55f);
 
@@ -654,9 +589,6 @@ internal partial class Configs : IPluginConfiguration
 
     [UI("Info Window's Background", Filter =UiWindows)]
     public Vector4 InfoWindowBg { get; set; } = new(0, 0, 0, 0.4f);
-
-    [UI("The text color of the time to kill indicator.", Parent =nameof(ShowTargetTimeToKill))]
-    public Vector4 TTKTextColor { get; set; } = new(0f, 1f, 0.8f, 1f);
     #endregion
 
     #region Integer

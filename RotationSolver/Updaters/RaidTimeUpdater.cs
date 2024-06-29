@@ -4,7 +4,6 @@ using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json.Linq;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
-using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.UI;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -104,7 +103,7 @@ internal static partial class RaidTimeUpdater
             var str = client.GetStringAsync($"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Resources/Timelines/{id}.json").Result;
 
             Service.Config.Timeline[id] = JsonConvert.DeserializeObject<Dictionary<float, List<BaseTimelineItem>>>(str,
-                    new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())!;
+                    new BaseTimelineItemConverter(), new ITimelineConditionConverter())!;
         }
         catch (Exception ex)
         {
@@ -374,10 +373,6 @@ internal static partial class RaidTimeUpdater
     private static async void ClientState_TerritoryChanged(ushort id)
     {
         _isInCombat.Clear();
-        if (PathForRaids.ContainsKey(id))
-        {
-            TimelineDrawer._territoryId = id;
-        }
         try
         {
             DataCenter.TimelineItems = await GetRaidAsync(id) ?? [];

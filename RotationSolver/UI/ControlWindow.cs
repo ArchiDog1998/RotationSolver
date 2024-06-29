@@ -7,7 +7,6 @@ using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using XIVPainter;
 
 namespace RotationSolver.UI;
 
@@ -466,7 +465,7 @@ internal class ControlWindow : CtrlWindow
                     ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), ImGuiHelper.Black);
                 }
 
-                using var font = ImRaii.PushFont(DrawingExtensions.GetFont(Service.Config.CooldownFontSize));
+                using var font = ImRaii.PushFont(ImGui.GetFont());
                 string time = recast == 0 ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
                 var strSize = ImGui.CalcTextSize(time);
                 var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;

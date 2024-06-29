@@ -288,7 +288,7 @@ public static class ObjectHelper
     {
         if (obj == null) return false;
 
-        if (obj.IsDummy() && !Service.Config.ShowTargetTimeToKill) return true;
+        if (obj.IsDummy()) return true;
 
         //Fate
         if (obj.GetTimeToKill(true) >= Service.Config.BossTimeToKill) return true;
@@ -304,7 +304,7 @@ public static class ObjectHelper
     {
         if (obj == null) return false;
 
-        if (obj.IsDummy() && !Service.Config.ShowTargetTimeToKill) return true;
+        if (obj.IsDummy()) return true;
 
         //Icon
         if (obj.GetObjectNPC()?.Rank is 1 or 2 /*or 4*/ or 6) return true;
@@ -320,7 +320,7 @@ public static class ObjectHelper
     public static bool IsDying(this BattleChara b)
     {
         if (b == null) return false;
-        if (b.IsDummy() && !Service.Config.ShowTargetTimeToKill) return false;
+        if (b.IsDummy()) return false;
         return b.GetTimeToKill() <= Service.Config.DyingTimeToKill || b.GetHealthRatio() < 0.02f;
     }
 

@@ -17,7 +17,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using XIVPainter;
 
 namespace RotationSolver.UI
 {
@@ -128,7 +127,7 @@ namespace RotationSolver.UI
             var windowWidth = ImGui.GetWindowWidth();
             // Centered title
             var text = UiString.WelcomeWindow_Header.Local();
-            ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 10));
+            ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 10));
             var textSize = ImGui.CalcTextSize(text).X;
             ImGuiHelper.DrawItemMiddle(() =>
             {
@@ -137,7 +136,7 @@ namespace RotationSolver.UI
             ImGui.PopFont();
 
             text = $"Version {_assemblyVersion}";
-            ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 3));
+            ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 3));
             textSize = ImGui.CalcTextSize(text).X;
             ImGuiHelper.DrawItemMiddle(() =>
             {
@@ -146,7 +145,7 @@ namespace RotationSolver.UI
             ImGui.PopFont();
 
             text = Service.Config.FirstTimeSetupDone ? UiString.WelcomeWindow_WelcomeBack.Local() : UiString.WelcomeWindow_Welcome.Local();
-            ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 1));
+            ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 1));
             textSize = ImGui.CalcTextSize(text).X;
             ImGuiHelper.DrawItemMiddle(() =>
             {
@@ -160,7 +159,7 @@ namespace RotationSolver.UI
             if (!Service.Config.FirstTimeSetupDone)
             {
                 text = UiString.WelcomeWindow_FirstTime.Local();
-                ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 3));
+                ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 3));
                 textSize = ImGui.CalcTextSize(text).X;
                 ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudOrange);
                 ImGui.TextWrapped(text);
@@ -183,7 +182,7 @@ namespace RotationSolver.UI
                 }
 
                 text = UiString.WelcomeWindow_FirstTime2.Local();
-                ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 2));
+                ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 2));
                 textSize = ImGui.CalcTextSize(text).X;
                 ImGuiHelper.DrawItemMiddle(() =>
                 {
@@ -237,7 +236,7 @@ namespace RotationSolver.UI
 
             var commits = changeLog.Commits.OrderByDescending(c => c.CommitData.CommitAuthor.Date).Where(c => !c.CommitData.Message.Contains("Merge pull request"));
             List<string> authors = GetAuthorsFromChangeLogs(commits);
-            ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 1));
+            ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 1));
             ImGui.Text($"You've missed {commits.Count()} changes from {authors.Count()} contributer{(authors.Count() > 1 ? "s" : "")}!");
             ImGui.PopFont();
             foreach (var commit in commits)

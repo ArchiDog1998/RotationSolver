@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver", "RotationS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommons", "ECommons\ECommons\ECommons.csproj", "{8EEA92E7-5D31-47AE-868A-0DCB96BAD31B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XIVPainter", "XIVPainter\XIVPainter\XIVPainter.csproj", "{43F3C89B-8538-4951-A3F7-E79E5970E54C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver.Basic", "RotationSolver.Basic\RotationSolver.Basic.csproj", "{E4895C89-77DB-48CE-81DD-22B7B524EFFA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver.SourceGenerators", "RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj", "{9DC5B596-ED7C-4FF7-AC3C-B3DB79BC3B86}"
