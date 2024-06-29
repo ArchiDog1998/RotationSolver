@@ -142,9 +142,9 @@ internal class SocialUpdater
 
     private static readonly ChatEntityComparer _comparer = new();
 
-    internal abstract class ChatEntity(PlayerCharacter character) : IDisposable
+    internal abstract class ChatEntity(IPlayerCharacter character) : IDisposable
     {
-        public readonly PlayerCharacter player = character;
+        public readonly IPlayerCharacter player = character;
 
         public bool CanTarget
         {
@@ -197,7 +197,7 @@ internal class SocialUpdater
             => obj.player.GetHashCode();
     }
 
-    internal class RotationAuthorChatEntity(PlayerCharacter character, string nameDesc) : ChatEntity(character)
+    internal class RotationAuthorChatEntity(IPlayerCharacter character, string nameDesc) : ChatEntity(character)
     {
         private readonly string name = nameDesc;
 
@@ -209,7 +209,7 @@ internal class SocialUpdater
     }
 
 
-    internal class ContributorChatEntity(PlayerCharacter character) 
+    internal class ContributorChatEntity(IPlayerCharacter character) 
         : ChatEntity(character)
     {
         public override SeString GetMessage() =>
@@ -219,7 +219,7 @@ internal class SocialUpdater
             .Append(new SeString(new TextPayload(". So say hello to them!")));
     }
 
-    internal class UserChatEntity(PlayerCharacter character) 
+    internal class UserChatEntity(IPlayerCharacter character) 
         : ChatEntity(character)
     {
         public override BitmapFontIcon Icon => BitmapFontIcon.NewAdventurer;

@@ -28,14 +28,14 @@ internal static partial class RaidTimeUpdater
         UpdateTimelineAddCombat();
     }
 
-    static readonly Dictionary<uint, bool> _isInCombat = [];
+    static readonly Dictionary<ulong, bool> _isInCombat = [];
     private static void UpdateTimelineAddCombat()
     {
         if (DataCenter.TimelineItems.Length == 0) return;
         foreach (var obj in DataCenter.AllTargets)
         {
-            if (obj is PlayerCharacter) continue;
-            var id = obj.ObjectId;
+            if (obj is IPlayerCharacter) continue;
+            var id = obj.GameObjectId;
             var newInCombat = obj.InCombat();
 
             if (_isInCombat.TryGetValue(id, out var inCombat)
@@ -169,9 +169,9 @@ internal static partial class RaidTimeUpdater
         DataCenter.RaidTimeRaw = -1;
     }
 
-    private static void Chat_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)
+    private static void Chat_ChatMessage(Dalamud.Game.Text.XivChatType type, int senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)
     {
-        var name = GetNameFromObjectId(senderId);
+        var name = GetNameFromObjectId((uint)senderId);
 
 #if DEBUG
         //Svc.Log.Debug(sender.TextValue.ToString());
@@ -359,10 +359,10 @@ internal static partial class RaidTimeUpdater
         return *(float*)(dataPtr + offset);
     }
 
-    private static string GetNameFromObjectId(uint id)
+    private static string GetNameFromObjectId(ulong id)
     {
         var obj = Svc.Objects.SearchById(id);
-        var nameId = obj is BattleChara battle ? battle.NameId : 0;
+        var nameId = obj is IBattleChara battle ? battle.NameId : 0;
         var name = Svc.Data.GetExcelSheet<BNpcName>()?.GetRow(nameId)?.Singular.RawString;
 
         if (!string.IsNullOrEmpty(name)) return name;

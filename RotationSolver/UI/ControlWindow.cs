@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using RotationSolver.Basic.Configuration;
@@ -423,7 +424,6 @@ internal class ControlWindow : CtrlWindow
         }
         var size = ImGui.GetItemRectSize();
         var pos = cursor;
-        DrawKeybindOnAction(pos, action?.ID);
 
         if (action == null || !Service.Config.ShowCooldownsAlways)
         {
@@ -483,15 +483,6 @@ internal class ControlWindow : CtrlWindow
 
             return (pos, size);
         }
-    }
-
-    private static void DrawKeybindOnAction(Vector2 pos, uint? @uint)
-    {
-        return;
-        if (@uint == null) return;
-        var keybind = PreviewUpdater.GetActionKeybind(@uint.Value);
-        if (string.IsNullOrEmpty(keybind)) return;
-        ImGuiHelper.TextShade(pos + new Vector2(2, 2), keybind);
     }
 
     static unsafe void DrawNextAction(float gcd, float ability, float width)

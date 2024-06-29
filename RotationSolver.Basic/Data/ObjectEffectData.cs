@@ -4,7 +4,7 @@ namespace RotationSolver.Basic.Data;
 
 internal readonly struct ObjectEffectData
 {
-    public readonly uint ObjectId;
+    public readonly ulong ObjectId;
 
     public readonly ushort Param1, Param2;
 
@@ -12,7 +12,7 @@ internal readonly struct ObjectEffectData
 
     public readonly TimeSpan TimeDuration => DateTime.Now - Time;
 
-    public ObjectEffectData(uint objectId, ushort param1, ushort param2)
+    public ObjectEffectData(ulong objectId, ushort param1, ushort param2)
     {
         Time = DateTime.Now;
         ObjectId = objectId;

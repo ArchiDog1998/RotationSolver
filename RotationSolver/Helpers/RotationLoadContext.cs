@@ -19,7 +19,7 @@ internal class RotationLoadContext(DirectoryInfo? directoryInfo)
         var assemblies = new Assembly[]
         {
             typeof(RotationSolverPlugin).Assembly,
-            typeof(Resolver).Assembly,
+            //typeof(Resolver).Assembly,
             typeof(DalamudPluginInterface).Assembly,
             typeof(DataCenter).Assembly,
             typeof(SheetAttribute).Assembly,

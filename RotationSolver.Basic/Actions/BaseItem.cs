@@ -194,10 +194,10 @@ public class BaseItem : IBaseItem
 
         if (InventoryManager.Instance()->GetInventoryItemCount(ID, true) > 0)
         {
-            return ActionManager.Instance()->UseAction(ActionType.Item, ID + 1000000, Player.Object.ObjectId, A4);
+            return ActionManager.Instance()->UseAction(ActionType.Item, ID + 1000000, Player.Object.GameObjectId, A4);
         }
 
-        return ActionManager.Instance()->UseAction(ActionType.Item, ID, Player.Object.ObjectId, A4);
+        return ActionManager.Instance()->UseAction(ActionType.Item, ID, Player.Object.GameObjectId, A4);
     }
 
     /// <summary>

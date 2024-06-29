@@ -12,15 +12,15 @@ namespace RotationSolver.Basic.Data;
 /// </remarks>
 /// <param name="target"></param>
 /// <param name="macro"></param>
-public unsafe class MacroItem(GameObject? target, RaptureMacroModule.Macro* macro)
+public unsafe class MacroItem(IGameObject? target, RaptureMacroModule.Macro* macro)
 {
-    private GameObject? _lastTarget;
+    private IGameObject? _lastTarget;
     readonly RaptureMacroModule.Macro* _macro = macro;
 
     /// <summary>
     /// The target of this macro.
     /// </summary>
-    public GameObject? Target { get; } = target;
+    public IGameObject? Target { get; } = target;
 
     /// <summary>
     /// Is macro running.

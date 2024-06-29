@@ -185,18 +185,18 @@ public class BaseAction : IBaseAction
             if (adjustId != ID) return false;
             if (!target.Position.HasValue) return false;
 
-            var loc = (FFXIVClientStructs.FFXIV.Common.Math.Vector3)target.Position;
+            var loc = target.Position.HasValue ? target.Position.Value : Vector3.Zero;
 
-            return ActionManager.Instance()->UseActionLocation(ActionType.Action, ID, Player.Object.ObjectId, &loc);
+            return ActionManager.Instance()->UseActionLocation(ActionType.Action, ID, Player.Object.GameObjectId, &loc);
         }
-        else if (Svc.Objects.SearchById(target.Target?.ObjectId 
-            ?? Player.Object?.ObjectId ?? GameObject.InvalidGameObjectId) == null)
+        else if (Svc.Objects.SearchById(target.Target?.GameObjectId 
+            ?? Player.Object?.GameObjectId ?? 0) == null)
         {
             return false;
         }
         else
         {
-            return ActionManager.Instance()->UseAction(ActionType.Action, adjustId, target.Target?.ObjectId ?? GameObject.InvalidGameObjectId);
+            return ActionManager.Instance()->UseAction(ActionType.Action, adjustId, target.Target?.GameObjectId ?? 0);
         }
     }
 

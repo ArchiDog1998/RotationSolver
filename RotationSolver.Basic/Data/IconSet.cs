@@ -5,6 +5,7 @@ using ECommons.ImGuiMethods;
 using Lumina.Excel.GeneratedSheets;
 using Svg;
 using System.Drawing.Imaging;
+using Dalamud.Interface.Textures.TextureWraps;
 
 namespace RotationSolver.Basic.Data;
 

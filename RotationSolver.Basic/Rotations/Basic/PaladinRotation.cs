@@ -41,7 +41,7 @@ partial class PaladinRotation
     {
         setting.CanTarget = o =>
         {
-            if (o is not BattleChara b) return false;
+            if (o is not IBattleChara b) return false;
 
             if (b.IsBossFromIcon() || IsMoving || b.CastActionId == 0) return false;
 

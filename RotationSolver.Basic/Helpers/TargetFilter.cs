@@ -19,7 +19,7 @@ public static class TargetFilter
     /// </summary>
     /// <param name="charas"></param>
     /// <returns></returns>
-    public unsafe static IEnumerable<BattleChara> GetDeath(this IEnumerable<BattleChara> charas) => charas.Where(item =>
+    public unsafe static IEnumerable<IBattleChara> GetDeath(this IEnumerable<IBattleChara> charas) => charas.Where(item =>
         {
             if (item == null) return false;
             if (!item.IsDead) return false;
@@ -31,7 +31,7 @@ public static class TargetFilter
 
             if (!Service.Config.RaiseBrinkOfDeath && item.HasStatus(false, StatusID.BrinkOfDeath)) return false;
 
-            if (DataCenter.AllianceMembers.Any(c => c.CastTargetObjectId == item.ObjectId)) return false;
+            if (DataCenter.AllianceMembers.Any(c => c.CastTargetObjectId == item.GameObjectId)) return false;
 
             return true;
         });
@@ -42,7 +42,7 @@ public static class TargetFilter
     /// <param name="objects"></param>
     /// <param name="roles"></param>
     /// <returns></returns>
-    public static IEnumerable<BattleChara> GetJobCategory(this IEnumerable<BattleChara> objects, params JobRole[] roles)
+    public static IEnumerable<IBattleChara> GetJobCategory(this IEnumerable<IBattleChara> objects, params JobRole[] roles)
         => roles.SelectMany(role => objects.Where(obj => obj.IsJobCategory(role)));
 
     /// <summary>
@@ -51,7 +51,7 @@ public static class TargetFilter
     /// <param name="obj"></param>
     /// <param name="role"></param>
     /// <returns></returns>
-    public static bool IsJobCategory(this GameObject obj, JobRole role)
+    public static bool IsJobCategory(this IGameObject obj, JobRole role)
     {
         SortedSet<byte> validJobs = new(Service.GetSheet<ClassJob>()
             .Where(job => role == job.GetJobRole())
@@ -66,14 +66,14 @@ public static class TargetFilter
     /// <param name="obj"></param>
     /// <param name="validJobs"></param>
     /// <returns></returns>
-    public static bool IsJobs(this GameObject obj, params Job[] validJobs)
+    public static bool IsJobs(this IGameObject obj, params Job[] validJobs)
     {
         return obj.IsJobs(new SortedSet<byte>( validJobs.Select(j => (byte)(uint)j)));
     }
 
-    private static bool IsJobs(this GameObject obj, SortedSet<byte> validJobs)
+    private static bool IsJobs(this IGameObject obj, SortedSet<byte> validJobs)
     {
-        if(obj is not BattleChara b) return false;
+        if(obj is not IBattleChara b) return false;
         return validJobs.Contains((byte?)b.ClassJob.GameData?.RowId ?? 0);
     }
     #endregion
@@ -85,6 +85,6 @@ public static class TargetFilter
     /// <param name="objects"></param>
     /// <param name="radius"></param>
     /// <returns></returns>
-    public static IEnumerable<T> GetObjectInRadius<T>(this IEnumerable<T> objects, float radius) where T : GameObject
+    public static IEnumerable<T> GetObjectInRadius<T>(this IEnumerable<T> objects, float radius) where T : IGameObject
         => objects.Where(o => o.DistanceToPlayer() <= radius);
 }

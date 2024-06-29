@@ -44,7 +44,7 @@ internal class Service : IDisposable
 
     public Service()
     {
-        Svc.Hook.InitializeFromAttributes(this);
+        //Svc.Hook.InitializeFromAttributes(this);
     }
     public static ActionID GetAdjustedActionId(ActionID id)
         => (ActionID)GetAdjustedActionId((uint)id);

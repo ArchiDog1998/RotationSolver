@@ -11,7 +11,7 @@ namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {
-    static readonly ObjectListDelay<BattleChara> 
+    static readonly ObjectListDelay<IBattleChara> 
         _raisePartyTargets = new(() => Service.Config.RaiseDelay),
         _raiseAllTargets = new(() => Service.Config.RaiseDelay);
     internal static void UpdateTarget()
@@ -32,7 +32,7 @@ internal static partial class TargetUpdater
             DataCenter.RecordedHP.Dequeue();
         }
 
-        DataCenter.RecordedHP.Enqueue((now, new SortedList<uint, float>(DataCenter.AllTargets.Where(b => b != null && b.CurrentHp != 0).ToDictionary(b => b.ObjectId, b => b.GetHealthRatio()))));
+        DataCenter.RecordedHP.Enqueue((now, new SortedList<ulong, float>(DataCenter.AllTargets.Where(b => b != null && b.CurrentHp != 0).ToDictionary(b => b.GameObjectId, b => b.GetHealthRatio()))));
     }
     
 }

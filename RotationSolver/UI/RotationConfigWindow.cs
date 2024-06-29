@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
@@ -298,8 +299,8 @@ public partial class RotationConfigWindow : Window
 
     private const int FRAME_COUNT = 180;
     private static readonly List<string> _loadingList = new(FRAME_COUNT);
-    private static readonly Dictionary<string, IDalamudTextureWrap> _logosWrap = new(FRAME_COUNT + 1);
-    private static bool GetLocalImage(string name, out IDalamudTextureWrap texture)
+    private static readonly Dictionary<string, UldWrapper> _logosWrap = new(FRAME_COUNT + 1);
+    private static bool GetLocalImage(string name, out UldWrapper texture)
     {
         var dir = $"{Svc.PluginInterface.ConfigDirectory.FullName}\\Images";
 
@@ -315,7 +316,7 @@ public partial class RotationConfigWindow : Window
         {
             if (!_logosWrap.ContainsKey(file))
             {
-                _logosWrap[name] = Svc.PluginInterface.UiBuilder.LoadImage(file);
+                //_logosWrap[name] = Svc.PluginInterface.UiBuilder;
             }
         }
         else if (!_loadingList.Contains(name))
@@ -366,7 +367,7 @@ public partial class RotationConfigWindow : Window
                 if (GetLocalImage("Logo", out var logo))
                 {
                     ImGui.SetCursorPos(cursor);
-                    ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
+                    //ImGui.Image(logo.LoadTexturePart("/", 0).ImGuiHandle, Vector2.One * size);
                 }
             }, wholeWidth, size);
 
@@ -2313,7 +2314,7 @@ public partial class RotationConfigWindow : Window
                     [
                         .. pts,
                         Framework.Instance()->BGCollisionModule
-                            ->RaycastEx(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
+                            ->RaycastMaterialFilter(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
                     ];
                     OtherConfiguration.SaveBeneficialPositions();
                 }
@@ -2417,7 +2418,7 @@ public partial class RotationConfigWindow : Window
 
         foreach (var status in Player.Object.StatusList)
         {
-            var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+            var source = status.SourceId == Player.Object.GameObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
         }
     }
@@ -2432,7 +2433,7 @@ public partial class RotationConfigWindow : Window
         ImGui.Text($"Your character combat: {Player.Object.InCombat()}");
         foreach (var p in Svc.Party)
         {
-            if (p.GameObject is not BattleChara b) continue;
+            if (p.GameObject is not IBattleChara b) continue;
             ImGui.Text($"In Combat: {b.InCombat()}");
         }
     }
@@ -2450,7 +2451,7 @@ public partial class RotationConfigWindow : Window
                 ImGui.Text("Owner: " + owner.Name.ToString());
             }
         }
-        if (Svc.Targets.Target is BattleChara b)
+        if (Svc.Targets.Target is IBattleChara b)
         {
             ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
             ImGui.Text("Is Boss TTK: " + b.IsBossFromTTK().ToString());
@@ -2480,7 +2481,7 @@ public partial class RotationConfigWindow : Window
 
             foreach (var status in b.StatusList)
             {
-                var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+                var source = status.SourceId == Player.Object.GameObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
                 ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
         }

@@ -47,7 +47,7 @@ public class ActionSetting()
     /// <summary>
     /// Can the target be targeted.
     /// </summary>
-    public Func<BattleChara, bool> CanTarget { get; set; } = t => true;
+    public Func<IBattleChara, bool> CanTarget { get; set; } = t => true;
 
     /// <summary>
     /// The additional not combo ids.

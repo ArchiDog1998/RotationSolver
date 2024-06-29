@@ -23,7 +23,7 @@ internal class TargetCondition : DelayCondition
 
     protected override bool IsTrueInside(ICustomRotation rotation)
     {
-        BattleChara? tar;
+        IBattleChara? tar;
         if (_action != null)
         {
             tar = _action.TargetInfo.FindTarget(true, false)?.Target;
@@ -32,7 +32,7 @@ internal class TargetCondition : DelayCondition
         {
             tar = TargetType switch
             {
-                TargetType.Target => Svc.Targets.Target as BattleChara,
+                TargetType.Target => Svc.Targets.Target as IBattleChara,
                 TargetType.HostileTarget => DataCenter.HostileTarget,
                 TargetType.Player => Player.Object,
                 _ => null,

@@ -20,7 +20,7 @@ internal static class PreviewUpdater
         UpdateCancelCast();
     }
 
-    static DtrBarEntry? _dtrEntry;
+    static IDtrBarEntry? _dtrEntry;
     private static void UpdateEntry()
     {
         var showStr = RSCommands.EntryString;
@@ -58,7 +58,7 @@ internal static class PreviewUpdater
         if (!Player.Object.IsCasting) return;
 
         var tarDead = Service.Config.UseStopCasting
-            && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
+            && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is IBattleChara b
             && b.IsEnemy() && b.CurrentHp == 0;
 
         var statusTimes = Player.Object.StatusTimes(false, [.. OtherConfiguration.NoCastingStatus.Select(i => (StatusID)i)]);
@@ -80,54 +80,20 @@ internal static class PreviewUpdater
         });
     }
 
-    internal static unsafe string GetActionKeybind(uint actionID)
-    {
-        string result = string.Empty; // Initialize result as an empty string to return something even if no keybind is found
 
-        LoopAllSlotBar((bar, hot, index) =>
-        {
-            if (IsActionSlotRight(bar, hot, actionID))
-            {
-                if (hot.HasValue)
-                {
-                    var hotValue = hot.Value;
-                    var keyBind = hotValue.KeybindHint;
-                    var length = DetermineLength(keyBind);
-                    result = SeString.Parse(keyBind, length).ToString();
-                }
-            }
-            return false;
-        });
-
-        return result;
-    }
-
-    // Placeholder for a method to determine the length of the data pointed to by keybindPtr
-    // You need to replace this with your actual logic to get the length
-    private static unsafe int DetermineLength(byte* ptr)
-    {
-        int length = 0;
-        for (byte* temp = ptr; *temp != 0; temp++)
-        {
-            length++;
-        }
-        return length;
-    }
-
-
-    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotBarSlot? hot, uint actionID)
+    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, RaptureHotbarModule.HotbarSlot? hot, uint actionID)
     {
         if (hot.HasValue)
         {
-            if (hot.Value.IconTypeA != HotbarSlotType.CraftAction && hot.Value.IconTypeA != HotbarSlotType.Action) return false;
-            if (hot.Value.IconTypeB != HotbarSlotType.CraftAction && hot.Value.IconTypeB != HotbarSlotType.Action) return false;
+            if (hot.Value.OriginalApparentSlotType != RaptureHotbarModule.HotbarSlotType.CraftAction && hot.Value.OriginalApparentSlotType != RaptureHotbarModule.HotbarSlotType.Action) return false;
+            if (hot.Value.ApparentSlotType != RaptureHotbarModule.HotbarSlotType.CraftAction && hot.Value.ApparentSlotType != RaptureHotbarModule.HotbarSlotType.Action) return false;
         }
 
         return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
     }
 
-    unsafe delegate bool ActionBarAction(ActionBarSlot bar, HotBarSlot? hot, uint highLightID);
-    unsafe delegate bool ActionBarPredicate(ActionBarSlot bar, HotBarSlot* hot);
+    unsafe delegate bool ActionBarAction(ActionBarSlot bar, RaptureHotbarModule.HotbarSlot? hot, uint highLightID);
+    unsafe delegate bool ActionBarPredicate(ActionBarSlot bar, RaptureHotbarModule.HotbarSlot* hot);
     private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
     {
         var index = 0;
@@ -139,18 +105,18 @@ internal static class PreviewUpdater
         {
             if (intPtr == IntPtr.Zero) continue;
             var actionBar = (AddonActionBarBase*)intPtr;
-            var hotBar = Framework.Instance()->GetUiModule()->GetRaptureHotbarModule()->HotBarsSpan[hotBarIndex];
+            var hotBar = Framework.Instance()->GetUIModule()->GetRaptureHotbarModule()->Hotbars[hotBarIndex];
             var slotIndex = 0;
 
             foreach (var slot in actionBar->ActionBarSlotVector.Span)
             {
                 var highLightId = 0x53550000 + index;
 
-                if (doingSomething(slot, hotBarIndex > 9 ? null : hotBar.SlotsSpan[slotIndex], (uint)highLightId))
+                if (doingSomething(slot, hotBarIndex > 9 ? null : hotBar.Slots[slotIndex], (uint)highLightId))
                 {
                     var iconAddon = slot.Icon;
                     if ((IntPtr)iconAddon == IntPtr.Zero) continue;
-                    if (!iconAddon->AtkResNode.IsVisible) continue;
+                    if (!iconAddon->AtkResNode.IsVisible()) continue;
                     actionBar->PulseActionBarSlot(slotIndex);
                     UIModule.PlaySound(12, 0, 0, 0);
                 }
@@ -163,6 +129,6 @@ internal static class PreviewUpdater
 
     public unsafe static void Dispose()
     {
-        _dtrEntry?.Dispose();
+        
     }
 }

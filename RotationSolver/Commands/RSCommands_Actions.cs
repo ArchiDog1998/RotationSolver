@@ -155,7 +155,7 @@ public static partial class RSCommands
             ActionUpdater.AutoCancelTime = DateTime.MinValue;
         }
 
-        var target = DataCenter.AllHostileTargets.FirstOrDefault(t => t.TargetObjectId == Player.Object.ObjectId);
+        var target = DataCenter.AllHostileTargets.FirstOrDefault(t => t.TargetObjectId == Player.Object.GameObjectId);
 
         if (Svc.Condition[ConditionFlag.LoggingOut])
         {
