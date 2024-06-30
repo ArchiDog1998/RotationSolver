@@ -2,10 +2,12 @@
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures;
 using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using ECommons;
 using ECommons.DalamudServices;
@@ -297,54 +299,6 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private const int FRAME_COUNT = 180;
-    private static readonly List<string> _loadingList = new(FRAME_COUNT);
-    private static readonly Dictionary<string, UldWrapper> _logosWrap = new(FRAME_COUNT + 1);
-    private static bool GetLocalImage(string name, out UldWrapper texture)
-    {
-        var dir = $"{Svc.PluginInterface.ConfigDirectory.FullName}\\Images";
-
-        if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-        var file = dir + $"\\{name}.png";
-
-        if (File.Exists(file) && File.GetLastWriteTime(file).AddDays(1) < DateTime.Now)
-        {
-            File.Delete(file);
-        }
-        else if (File.Exists(file))
-        {
-            if (!_logosWrap.ContainsKey(file))
-            {
-                //_logosWrap[name] = Svc.PluginInterface.UiBuilder;
-            }
-        }
-        else if (!_loadingList.Contains(name))
-        {
-            _loadingList.Add(name);
-
-            Task.Run(async () =>
-            {
-                if (!File.Exists(file))
-                {
-                    var url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/{name}.png";
-
-                    using var client = new HttpClient();
-                    var stream = await client.GetStreamAsync(url);
-
-                    using var fs = new FileStream(file, FileMode.CreateNew);
-
-                    await stream.CopyToAsync(fs);
-                }
-
-
-                _loadingList.Remove(name);
-            });
-        }
-
-        return _logosWrap.TryGetValue(name, out texture!);
-    }
-
     private void DrawHeader(float wholeWidth)
     {
         var size = MathF.Max(MathF.Min(wholeWidth, Scale * 128), Scale * MIN_COLUMN_WIDTH);
@@ -361,13 +315,12 @@ public partial class RotationConfigWindow : Window
                     _searchResults = [];
                 }
                 ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_About_Punchline.Local());
-
-                var frame = Environment.TickCount / 34 % FRAME_COUNT;
-                if (frame <= 0) frame += FRAME_COUNT;
-                if (GetLocalImage("Logo", out var logo))
+                
+                var logoUrl = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/Logo.png";
+                if (ThreadLoadImageHandler.TryGetTextureWrap(logoUrl, out var logo))
                 {
                     ImGui.SetCursorPos(cursor);
-                    //ImGui.Image(logo.LoadTexturePart("/", 0).ImGuiHandle, Vector2.One * size);
+                    ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
                 }
             }, wholeWidth, size);
 

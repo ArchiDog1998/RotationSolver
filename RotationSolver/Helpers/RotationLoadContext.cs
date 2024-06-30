@@ -20,7 +20,7 @@ internal class RotationLoadContext(DirectoryInfo? directoryInfo)
         {
             typeof(RotationSolverPlugin).Assembly,
             //typeof(Resolver).Assembly,
-            typeof(DalamudPluginInterface).Assembly,
+            typeof(IDalamudPluginInterface).Assembly,
             typeof(DataCenter).Assembly,
             typeof(SheetAttribute).Assembly,
             typeof(QuestDialogueText).Assembly,

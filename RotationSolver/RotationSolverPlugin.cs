@@ -38,7 +38,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }
 
     internal IPCProvider IPCProvider;
-    public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
+    public RotationSolverPlugin(IDalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, true, out _);
