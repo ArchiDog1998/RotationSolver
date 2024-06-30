@@ -72,7 +72,7 @@ internal static class PreviewUpdater
         if (!Player.Object.IsCasting) return;
 
         var tarDead = Service.Config.UseStopCasting
-            && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
+            && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is IBattleChara b
             && b.IsEnemy() && b.CurrentHp == 0;
 
         var statusTimes = Player.Object.StatusTimes(false, [.. OtherConfiguration.NoCastingStatus.Select(i => (StatusID)i)]);

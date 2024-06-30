@@ -19,23 +19,23 @@ internal static class PainterManager
     {
         public override bool Show => Service.Config.ShowHostilesIcons;
 
-        public override GameObject[] Targets => DataCenter.AllHostileTargets;
+        public override IGameObject[] Targets => DataCenter.AllHostileTargets;
 
         public override float Height => Service.Config.HostileIconHeight;
 
         public override float Size => Service.Config.HostileIconSize;
 
-        protected override uint GetIcon(GameObject gameObject)
+        protected override uint GetIcon(IGameObject IGameObject)
         {
             if (ActionUpdater.NextAction is IBaseAction act)
             {
-                if (act.Config.CantAttack(gameObject)) return 61502;
-                if (act.Config.IsTopPriority(gameObject)) return 61480;
+                if (act.Config.CantAttack(IGameObject)) return 61502;
+                if (act.Config.IsTopPriority(IGameObject)) return 61480;
             }
             else
             {
-                if (gameObject.IsNoTarget()) return 61502;
-                if (gameObject.IsTopPriority()) return 61480;
+                if (IGameObject.IsNoTarget()) return 61502;
+                if (IGameObject.IsTopPriority()) return 61480;
             }
 
             return 61510;
@@ -46,13 +46,13 @@ internal static class PainterManager
     {
         public override bool Show => Service.Config.ShowAllianceIcons;
 
-        public override GameObject[] Targets => DataCenter.AllianceMembers.Where(i => i.EntityId != Player.Object?.EntityId).ToArray();
+        public override IGameObject[] Targets => DataCenter.AllianceMembers.Where(i => i.EntityId != Player.Object?.EntityId).ToArray();
 
         public override float Height => Service.Config.AllianceIconHeight;
 
         public override float Size => Service.Config.AllianceIconSize;
 
-        protected override uint GetIcon(GameObject gameObject) => 61515;
+        protected override uint GetIcon(IGameObject IGameObject) => 61515;
     }
 
 
@@ -60,13 +60,13 @@ internal static class PainterManager
     {
         public override bool Show => Service.Config.ShowUsersIcons;
 
-        public override GameObject[] Targets => SocialUpdater._users.ToArray();
+        public override IGameObject[] Targets => SocialUpdater._users.ToArray();
 
         public override float Height => Service.Config.UserIconHeight;
 
         public override float Size => Service.Config.UserIconSize;
 
-        protected override uint GetIcon(GameObject gameObject) => 61501;
+        protected override uint GetIcon(IGameObject IGameObject) => 61501;
     }
 
     static DrawingHighlightHotbar? _highLight;
@@ -223,10 +223,10 @@ internal static class PainterManager
         uint HealthRatioColor = ImGui.GetColorU32(Service.Config.TTKTextColor);
 
         int index = 0;
-        foreach (GameObject t in DataCenter.AllHostileTargets.OrderBy(ObjectHelper.DistanceToPlayer))
+        foreach (IGameObject t in DataCenter.AllHostileTargets.OrderBy(ObjectHelper.DistanceToPlayer))
         {
-            if (t is not BattleChara b) continue;
-            if (t is PlayerCharacter) continue;
+            if (t is not IBattleChara b) continue;
+            if (t is IPlayerCharacter) continue;
 
             var item = TargetTexts[index++];
 

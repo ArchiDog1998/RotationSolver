@@ -11,7 +11,7 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Record;
 using System.Text.RegularExpressions;
-using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
+using IGameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.IGameObject;
 
 namespace RotationSolver;
 
@@ -22,7 +22,7 @@ public static class Watcher
     private static Hook<OnUseAction>? _useActionHook;
 #endif
 
-    private unsafe delegate long ProcessObjectEffect(GameObject* a1, ushort a2, ushort a3, long a4);
+    private unsafe delegate long ProcessObjectEffect(IGameObject* a1, ushort a2, ushort a3, long a4);
     private static Hook<ProcessObjectEffect>? _processObjectEffectHook;
 
     private delegate IntPtr ActorVfxCreate(string path, IntPtr a2, IntPtr a3, float a4, char a5, ushort a6, char a7);
@@ -103,7 +103,7 @@ public static class Watcher
         }
     }
 
-    private static unsafe long ProcessObjectEffectDetour(GameObject* a1, ushort a2, ushort a3, long a4)
+    private static unsafe long ProcessObjectEffectDetour(IGameObject* a1, ushort a2, ushort a3, long a4)
     {
         try
         {
@@ -150,10 +150,10 @@ public static class Watcher
         //Check Source.
         var source = set.Source;
         if (source == null) return;
-        if (source is not BattleChara battle) return;
-        if (battle is PlayerCharacter) return;
+        if (source is not IBattleChara battle) return;
+        if (battle is IPlayerCharacter) return;
         if (battle.SubKind == 9) return; //Friend!
-        if (Svc.Objects.SearchById(battle.EntityId) is PlayerCharacter) return;
+        if (Svc.Objects.SearchById(battle.EntityId) is IPlayerCharacter) return;
 
         Recorder.Enqueue(new ActionEffectSetData(set));
 

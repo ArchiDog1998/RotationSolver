@@ -1,5 +1,4 @@
 using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using ECommons;
@@ -28,7 +27,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static readonly List<IDisposable> _dis = [];
     public static string Name => "Rotation Solver";
 
-    public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
+    public RotationSolverPlugin(IDalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
         XIVConfigUIMain.Init(pluginInterface, Service.COMMAND, "Open config window.", RSCommands.DoOneCommand,
@@ -81,6 +80,10 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         if (Player.Available)
         {
+            unsafe
+            {
+                //Player.IGameObject->Highlight(FFXIVClientStructs.FFXIV.Client.Game.Object.ObjectHighlightColor.Orange);
+            }
             //_ = XIVPainterMain.ShowOff();
         }
 #endif
