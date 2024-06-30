@@ -666,5 +666,12 @@
   "System.ConsoleModifiers.Alt": "Alt",
   "System.ConsoleModifiers.Shift": "Shift",
   "System.ConsoleModifiers.Control": "Control",
-  "RotationSolver.Basic.Data.OtherCommandType.NextAction": "Do the next action"
+  "RotationSolver.Basic.Data.OtherCommandType.NextAction": "Do the next action",
+  "RotationSolver.Basic.Configuration.Target.TargetingData": "Target Data",
+  "RotationSolver.Basic.Configuration.Target.TargetingDataDescription": "Click to show the target among all game objects",
+  "RotationSolver.Basic.Configuration.Target.TargetingDataName.IsInLoop": "Is In Loop",
+  "RotationSolver.Basic.Configuration.Target.TargetingDataDescription.IsInLoop": "Will it loop when you use the command /rotation auto?",
+  "RotationSolver.Basic.Configuration.Target.TargetingDataName.TargetName": "Nombre",
+  "RotationSolver.Basic.Configuration.Target.TargetingDataName.TargetItems": "Target Items",
+  "RotationSolver.Basic.Configuration.Target.TargetingDataName.TargetingType": "Targeting Type"
 }
