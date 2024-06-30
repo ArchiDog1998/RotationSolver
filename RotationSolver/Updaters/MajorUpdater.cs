@@ -210,7 +210,7 @@ internal static class MajorUpdater
             var dis = Vector3.Distance(player.Position, o.Position) - player.HitboxRadius - o.HitboxRadius;
             if (dis > 0.5f) return false;
 
-            var address = (FFXIVClientStructs.FFXIV.Client.Game.Object.IGameObject*)(void*)o.Address;
+            var address = (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)o.Address;
             if ((ObjectKind)address->ObjectKind != ObjectKind.Treasure) return false;
 
             //Opened!
@@ -233,7 +233,7 @@ internal static class MajorUpdater
         {
             Svc.Targets.Target = treasure;
 
-            TargetSystem.Instance()->InteractWithObject((FFXIVClientStructs.FFXIV.Client.Game.Object.IGameObject*)(void*)treasure.Address);
+            TargetSystem.Instance()->InteractWithObject((FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)(void*)treasure.Address);
 
             Notify.Plain($"Try to open the chest {treasure.Name}");
         }

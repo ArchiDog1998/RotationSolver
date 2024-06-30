@@ -11,7 +11,7 @@ using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Record;
 using System.Text.RegularExpressions;
-using IGameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.IGameObject;
+using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace RotationSolver;
 
@@ -22,7 +22,7 @@ public static class Watcher
     private static Hook<OnUseAction>? _useActionHook;
 #endif
 
-    private unsafe delegate long ProcessObjectEffect(IGameObject* a1, ushort a2, ushort a3, long a4);
+    private unsafe delegate long ProcessObjectEffect(GameObject* a1, ushort a2, ushort a3, long a4);
     private static Hook<ProcessObjectEffect>? _processObjectEffectHook;
 
     private delegate IntPtr ActorVfxCreate(string path, IntPtr a2, IntPtr a3, float a4, char a5, ushort a6, char a7);
@@ -35,16 +35,16 @@ public static class Watcher
         unsafe
         {
 #if DEBUG
-            _useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? EB 64 B1 01", UseActionDetour);
+            _useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? B0 01 EB B6", UseActionDetour);
             //_useActionHook.Enable();
 #endif
-            //From https://github.com/PunishXIV/Splatoon/blob/main/Splatoon/Memory/ObjectEffectProcessor.cs#L14
-            _processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B7 FA", ProcessObjectEffectDetour);
-            _processObjectEffectHook.Enable();
-
             //From https://github.com/0ceal0t/Dalamud-VFXEditor/blob/main/VFXEditor/Interop/Constants.cs#L12
             _actorVfxCreateHook = Svc.Hook.HookFromSignature<ActorVfxCreate>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 0F 29 B4 24 ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B6 AC 24 ?? ?? ?? ?? 0F 28 F3 49 8B F8", ActorVfxNewHandler);
             _actorVfxCreateHook.Enable();
+
+            //From https://github.com/PunishXIV/Splatoon/blob/main/Splatoon/Memory/ObjectEffectProcessor.cs#L14
+            _processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B7 FA", ProcessObjectEffectDetour);
+            _processObjectEffectHook.Enable();
         }
         IpcSubscriber = Svc.PluginInterface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
         IpcSubscriber.Subscribe(UpdateRTTDetour);
@@ -103,7 +103,7 @@ public static class Watcher
         }
     }
 
-    private static unsafe long ProcessObjectEffectDetour(IGameObject* a1, ushort a2, ushort a3, long a4)
+    private static unsafe long ProcessObjectEffectDetour(GameObject* a1, ushort a2, ushort a3, long a4)
     {
         try
         {
