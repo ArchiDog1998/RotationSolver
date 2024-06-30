@@ -114,10 +114,10 @@ partial class MonkRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
-    static partial void ModifyMeditationPvE(ref ActionSetting setting)
-    {
-        setting.UnlockedByQuestID = 66094;
-    }
+    // static partial void ModifyMeditationPvE(ref ActionSetting setting)
+    // {
+    //     setting.UnlockedByQuestID = 66094;
+    // }
 
     static partial void ModifyRockbreakerPvE(ref ActionSetting setting)
     {

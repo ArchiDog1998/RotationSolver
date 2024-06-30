@@ -49,7 +49,7 @@ partial class BlackMageRotation
     /// <summary>
     /// 
     /// </summary>
-    public static bool IsPolyglotStacksMaxed => EnhancedPolyglotTrait.EnoughLevel ? PolyglotStacks == 2 : PolyglotStacks == 1;
+    //public static bool IsPolyglotStacksMaxed => EnhancedPolyglotTrait.EnoughLevel ? PolyglotStacks == 2 : PolyglotStacks == 1;
 
     static float EnochianTimeRaw => JobGauge.EnochianTimer / 1000f;
 
@@ -214,12 +214,12 @@ partial class BlackMageRotation
         setting.StatusNeed = [StatusID.LeyLines];
     }
 
-    static partial void ModifySharpcastPvE(ref ActionSetting setting)
-    {
-        setting.ActionCheck = () => HasHostilesInRange;
-        setting.StatusProvide = [StatusID.Sharpcast];
-        setting.UnlockedByQuestID = 67216;
-    }
+    // static partial void ModifySharpcastPvE(ref ActionSetting setting)
+    // {
+    //     setting.ActionCheck = () => HasHostilesInRange;
+    //     setting.StatusProvide = [StatusID.Sharpcast];
+    //     setting.UnlockedByQuestID = 67216;
+    // }
 
     static partial void ModifyTriplecastPvE(ref ActionSetting setting)
     {

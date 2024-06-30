@@ -68,26 +68,26 @@ partial class AstrologianRotation
         setting.UnlockedByQuestID = 67560;
     }
 
-    static partial void ModifyAstrodynePvE(ref ActionSetting setting)
-    {
-        setting.ActionCheck = () => !Seals.Contains(SealType.NONE);
-        setting.CreateConfig = () => new()
-        {
-            TimeToKill = 10,
-        };
-    }
-
-    static partial void ModifyDrawPvE(ref ActionSetting setting)
-    {
-        setting.ActionCheck = () => DrawnCard == CardType.NONE;
-    }
-
-    static partial void ModifyRedrawPvE(ref ActionSetting setting)
-    {
-        setting.StatusNeed = [StatusID.ClarifyingDraw];
-        setting.ActionCheck = () => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard));
-        setting.UnlockedByQuestID = 67551;
-    }
+    // static partial void ModifyAstrodynePvE(ref ActionSetting setting)
+    // {
+    //     setting.ActionCheck = () => !Seals.Contains(SealType.NONE);
+    //     setting.CreateConfig = () => new()
+    //     {
+    //         TimeToKill = 10,
+    //     };
+    // }
+    //
+    // static partial void ModifyDrawPvE(ref ActionSetting setting)
+    // {
+    //     setting.ActionCheck = () => DrawnCard == CardType.NONE;
+    // }
+    //
+    // static partial void ModifyRedrawPvE(ref ActionSetting setting)
+    // {
+    //     setting.StatusNeed = [StatusID.ClarifyingDraw];
+    //     setting.ActionCheck = () => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard));
+    //     setting.UnlockedByQuestID = 67551;
+    // }
 
     static partial void ModifyMinorArcanaPvE(ref ActionSetting setting)
     {

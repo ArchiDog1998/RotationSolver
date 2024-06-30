@@ -126,15 +126,15 @@ partial class DragoonRotation
         setting.UnlockedByQuestID = 65975;
     }
 
-    static partial void ModifyDragonSightPvE(ref ActionSetting setting)
-    {
-        setting.TargetType = TargetType.Melee;
-        setting.CanTarget = b => b != Player;
-        setting.CreateConfig = () => new()
-        {
-            TimeToKill = 10,
-        };
-    }
+    // static partial void ModifyDragonSightPvE(ref ActionSetting setting)
+    // {
+    //     setting.TargetType = TargetType.Melee;
+    //     setting.CanTarget = b => b != Player;
+    //     setting.CreateConfig = () => new()
+    //     {
+    //         TimeToKill = 10,
+    //     };
+    // }
 
     static partial void ModifyBattleLitanyPvE(ref ActionSetting setting)
     {
@@ -155,10 +155,10 @@ partial class DragoonRotation
         setting.UnlockedByQuestID = 66605;
     }
 
-    static partial void ModifySpineshatterDivePvE(ref ActionSetting setting)
-    {
-        setting.UnlockedByQuestID = 66607;
-    }
+    // static partial void ModifySpineshatterDivePvE(ref ActionSetting setting)
+    // {
+    //     setting.UnlockedByQuestID = 66607;
+    // }
 
     static partial void ModifyDragonfireDivePvE(ref ActionSetting setting)
     {

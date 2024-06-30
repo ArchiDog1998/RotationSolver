@@ -8,7 +8,7 @@ public static class IActionHelper
     internal static ActionID[] MovingActions { get; } =
     [
         ActionID.EnAvantPvE,
-        ActionID.PlungePvE,
+        //ActionID.PlungePvE,
         ActionID.RoughDividePvE,
         ActionID.ThunderclapPvE,
         ActionID.ShukuchiPvE,
@@ -18,7 +18,7 @@ public static class IActionHelper
         ActionID.HissatsuGyotenPvE,
         ActionID.IcarusPvE,
         ActionID.OnslaughtPvE,
-        ActionID.SpineshatterDivePvE,
+        //ActionID.SpineshatterDivePvE,
         ActionID.DragonfireDivePvE,
     ];
 

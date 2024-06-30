@@ -14,16 +14,16 @@ internal class TraitRotationGetter(Lumina.GameData gameData, ClassJob job)
 
     protected override bool AddToList(Trait item)
     {
-        if (item.ClassJobCategory.Row == 0) return false;
+        if (item.ClassJob.Row == 0) return false;
         var name = item.Name.RawString;
         if (string.IsNullOrEmpty(name)) return false;
         if (!name.All(char.IsAscii)) return false;
         if (item.Icon == 0) return false;
 
-        var category = item.ClassJobCategory.Value;
+        var category = item.ClassJob.Value;
         if (category == null) return false;
         var jobName = job.Abbreviation.RawString;
-        return (bool?)category.GetType().GetRuntimeProperty(jobName)?.GetValue(category) ?? false;
+        return category.Abbreviation == jobName;
     }
 
     protected override string ToCode(Trait item)
