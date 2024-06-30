@@ -36,7 +36,7 @@ internal partial class Configs : IPluginConfiguration
     public SortedSet<Job> DisabledJobs { get; private set; } = [];
 
     [JsonIgnore]
-    public static string[] DefaultRotations = ["https://github.com/FFXIV-CombatReborn/LTSDefaults/releases/latest/download/DefaultRotations.dll"];
+    public static string[] DefaultRotations = ["https://github.com/FFXIV-CombatReborn/RebornRotations/releases/latest/download/RebornRotations.dll"];
 
     public string[] RotationLibs { get; set; } = DefaultRotations;
     public List<TargetingType> TargetingTypes { get; set; } = [];
