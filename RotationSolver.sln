@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		manifest.json = manifest.json
 		UpdateDownloads.ts = UpdateDownloads.ts
 		Resources\UsersHash.json = Resources\UsersHash.json
+		.github\workflows\publish.yaml = .github\workflows\publish.yaml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver", "RotationSolver\RotationSolver.csproj", "{99EA3D95-33DC-424F-A9E6-FE6064F11592}"

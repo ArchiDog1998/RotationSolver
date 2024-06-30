@@ -139,6 +139,7 @@ partial class GunbreakerRotation
 
     static partial void ModifyBloodfestPvE(ref ActionSetting setting)
     {
+        setting.StatusProvide = [StatusID.ReadyToReign];
         setting.ActionCheck = () => MaxAmmo - Ammo > 1;
     }
 

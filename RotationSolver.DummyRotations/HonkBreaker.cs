@@ -113,6 +113,8 @@ public class HonkBreaker : GunbreakerRotation
         if (DemonSlicePvE.CanUse(out act)) return true;
 
         if (Player.HasStatus(true, StatusID.NoMercy) && CanUseSonicBreak(out act)) return true;
+        
+        if (Player.HasStatus(true, StatusID.ReadyToRaze) && FatedBrandPvE.CanUse(out act)) return true;
 
         if (Player.HasStatus(true, StatusID.NoMercy) && CanUseDoubleDown(out act)) return true;
 
