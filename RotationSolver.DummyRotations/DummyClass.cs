@@ -13,7 +13,7 @@ using RotationSolver.Basic.Helpers;
 namespace RotationSolver.DummyRotations
 {
     [Rotation("Dummy Rotation", CombatType.PvE, GameVersion = "6.58")]
-    [Api(1)]
+    [Api(2)]
     public class DummyClass : MachinistRotation
     {
         #region Config Options

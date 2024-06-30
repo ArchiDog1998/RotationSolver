@@ -118,13 +118,13 @@ public class BaseAction : IBaseAction
 
     /// <inheritdoc/>
     public bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipComboCheck = false, bool skipCastingCheck = false, 
-        bool usedUp = false, bool onLastAbility = false, bool skipClippingCheck = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0)
+        bool usedUp = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0)
     {
         act = this!;
 
         if (IBaseAction.ActionPreview)
         {
-            skipCastingCheck = skipClippingCheck = true;
+            skipCastingCheck = true;
         }
         else
         {
@@ -134,14 +134,10 @@ public class BaseAction : IBaseAction
         {
             usedUp = true;
         }
-        if (IBaseAction.IgnoreClipping)
-        {
-            skipClippingCheck = true;
-        }
 
         if (!Info.BasicCheck(skipStatusProvideCheck, skipComboCheck, skipCastingCheck)) return false;
 
-        if (!Cooldown.CooldownCheck(usedUp, onLastAbility, skipClippingCheck, gcdCountForAbility)) return false;
+        if (!Cooldown.CooldownCheck(usedUp, gcdCountForAbility)) return false;
 
 
         if (Setting.SpecialType is SpecialActionType.MeleeRange
@@ -159,20 +155,7 @@ public class BaseAction : IBaseAction
 
         return true;
     }
-
-    /// <inheritdoc/>
-    public bool CanUse(out IAction act, CanUseOption option, byte gcdCountForAbility = 0)
-    {
-        return CanUse(out act, 
-            option.HasFlag(CanUseOption.SkipStatusProvideCheck),
-            option.HasFlag(CanUseOption.SkipComboCheck),
-            option.HasFlag(CanUseOption.SkipCastingCheck),
-            option.HasFlag(CanUseOption.UsedUp),
-            option.HasFlag(CanUseOption.OnLastAbility),
-            option.HasFlag(CanUseOption.SkipClippingCheck),
-            option.HasFlag(CanUseOption.SkipAoeCheck),
-            gcdCountForAbility);
-    }
+    
 
     /// <inheritdoc/>
     public unsafe bool Use()

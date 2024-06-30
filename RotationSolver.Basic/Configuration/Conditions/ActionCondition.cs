@@ -36,9 +36,6 @@ internal class ActionCondition : DelayCondition
             case ActionConditionType.RemainGCD:
                 return !_action.Cooldown.WillHaveOneChargeGCD((uint)Param1, Param2); // Smaller
 
-            case ActionConditionType.CanUse:
-                return _action.CanUse(out _, (CanUseOption)Param1);
-
             case ActionConditionType.EnoughLevel:
                 return _action.EnoughLevel;
 

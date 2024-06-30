@@ -408,7 +408,7 @@ internal class ControlWindow : CtrlWindow
                 if (action is IBaseAction act)
                 {
                     IBaseAction.ForceEnable = true;
-                    canDoIt = act.CanUse(out _, usedUp: true, skipClippingCheck: true, skipAoeCheck: true);
+                    canDoIt = act.CanUse(out _, usedUp: true, skipAoeCheck: true);
                     IBaseAction.ForceEnable = false;
                 }
                 else if (action is IBaseItem item)

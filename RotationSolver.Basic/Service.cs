@@ -10,7 +10,7 @@ namespace RotationSolver.Basic;
 internal class Service : IDisposable
 {
     public const string COMMAND = "/rotation", ALTCOMMAND = "/rsr", USERNAME = "FFXIV-CombatReborn", REPO = "RotationSolverReborn";
-    public const int ApiVersion = 1;
+    public const int ApiVersion = 2;
 
     // From https://GitHub.com/PunishXIV/Orbwalker/blame/master/Orbwalker/Memory.cs#L85-L87
     [Signature("F3 0F 10 05 ?? ?? ?? ?? 0F 2E C6 0F 8A", ScanType = ScanType.StaticAddress, Fallibility = Fallibility.Infallible)]
