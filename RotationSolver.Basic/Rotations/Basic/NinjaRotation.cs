@@ -41,11 +41,11 @@ partial class NinjaRotation
         setting.UnlockedByQuestID = 67221;
     }
 
-    static partial void ModifyHuraijinPvE(ref ActionSetting setting)
-    {
-        setting.ActionCheck = () => HutonEndAfterGCD();
-        setting.UnlockedByQuestID = 67224;
-    }
+    // static partial void ModifyHuraijinPvE(ref ActionSetting setting)
+    // {
+    //     setting.ActionCheck = () => HutonEndAfterGCD();
+    //     setting.UnlockedByQuestID = 67224;
+    // }
 
     static partial void ModifyPhantomKamaitachiPvE(ref ActionSetting setting)
     {

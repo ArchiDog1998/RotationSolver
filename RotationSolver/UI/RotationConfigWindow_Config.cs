@@ -9,8 +9,6 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableSettings;
-using RotationSolver.Updaters;
-using XIVPainter;
 
 namespace RotationSolver.UI;
 
@@ -195,10 +193,6 @@ public partial class RotationConfigWindow
         {
             UiString.ConfigWindow_UI_Information.Local,
             () => _allSearchable.DrawItems(Configs.UiInformation)
-        },
-        {
-            UiString.ConfigWindow_UI_Overlay.Local,
-            () =>_allSearchable.DrawItems(Configs.UiOverlay)
         },
         {
             UiString.ConfigWindow_UI_Windows.Local,

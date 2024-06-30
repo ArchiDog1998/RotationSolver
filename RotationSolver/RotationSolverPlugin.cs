@@ -9,7 +9,6 @@ using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Timeline;
 using RotationSolver.Basic.Configuration.Timeline.TimelineCondition;
-using RotationSolver.Basic.Configuration.Timeline.TimelineDrawing;
 using RotationSolver.Basic.IPC;
 using RotationSolver.Commands;
 using RotationSolver.Data;
@@ -18,8 +17,6 @@ using RotationSolver.Localization;
 using RotationSolver.UI;
 using RotationSolver.Updaters;
 using System.Xml.Linq;
-using XIVPainter;
-using XIVPainter.Vfx;
 using WelcomeWindow = RotationSolver.UI.WelcomeWindow;
 
 namespace RotationSolver;
@@ -41,7 +38,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }
 
     internal IPCProvider IPCProvider;
-    public RotationSolverPlugin(DalamudPluginInterface pluginInterface)
+    public RotationSolverPlugin(IDalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, ECommons.Module.DalamudReflector, ECommons.Module.ObjectFunctions);
         ThreadLoadImageHandler.TryGetIconTextureWrap(0, true, out _);
@@ -52,7 +49,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         {
             var oldConfigs = JsonConvert.DeserializeObject<Configs>(
                 File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName),
-                new BaseTimelineItemConverter(), new BaseDrawingGetterConverter(), new ITimelineConditionConverter())
+                new BaseTimelineItemConverter(), new ITimelineConditionConverter())
                 ?? new Configs();
 
             var newConfigs = Configs.Migrate(oldConfigs);
@@ -83,7 +80,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.OpenMainUi += OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
-        PainterManager.Init();
         MajorUpdater.Enable();
         Watcher.Enable();
         OtherConfiguration.Init();
@@ -147,7 +143,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         LocalizationManager.Dispose();
         MajorUpdater.Dispose();
-        PainterManager.Dispose();
         await OtherConfiguration.Save();
 
         ECommonsMain.Dispose();

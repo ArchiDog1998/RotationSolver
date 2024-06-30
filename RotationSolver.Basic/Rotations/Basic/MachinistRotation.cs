@@ -94,6 +94,7 @@ partial class MachinistRotation
 
     static partial void ModifyChainSawPvE(ref ActionSetting setting)
     {
+        setting.StatusProvide = [StatusID.ExcavatorReady];
         setting.CreateConfig = () => new()
         {
             AoeCount = 1,
@@ -145,7 +146,26 @@ partial class MachinistRotation
 
     static partial void ModifyBarrelStabilizerPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Heat <= 50 && InCombat;
+        setting.StatusProvide = [StatusID.Hypercharged, StatusID.FullMetalMachinist];
+        setting.ActionCheck = () => InCombat;
+    }
+
+    static partial void ModifyExcavatorPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.ExcavatorReady];
+        setting.CreateConfig = () => new ActionConfig()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyFullMetalFieldPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.FullMetalMachinist];
+        setting.CreateConfig = () => new ActionConfig()
+        {
+            AoeCount = 1,
+        };
     }
 
     static partial void ModifyTacticianPvE(ref ActionSetting setting)

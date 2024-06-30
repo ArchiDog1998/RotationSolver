@@ -28,7 +28,7 @@ public unsafe struct Countdown
     /// <summary>
     /// The instance about this struct.
     /// </summary>
-    public static unsafe Countdown* Instance => (Countdown*)Framework.Instance()->GetUiModule()->GetAgentModule()->GetAgentByInternalId(AgentId.CountDownSettingDialog);
+    public static unsafe Countdown* Instance => (Countdown*)Framework.Instance()->GetUIModule()->GetAgentModule()->GetAgentByInternalId(AgentId.CountDownSettingDialog);
 
     static RandomDelay _delay = new(() => Service.Config.CountdownDelay);
 

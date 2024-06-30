@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Dalamud.Game;
 
 namespace RotationSolver.Basic.Data;
 internal enum TimelineType : byte
@@ -68,11 +69,11 @@ internal class TimelineItem(float time, string name, TimelineType type, JObject?
         {
             var key = Svc.ClientState.ClientLanguage switch
             {
-                Dalamud.ClientLanguage.Japanese => "ja",
-                Dalamud.ClientLanguage.German => "de",
-                Dalamud.ClientLanguage.French => "fr",
-                (Dalamud.ClientLanguage)4 => "cn", 
-                (Dalamud.ClientLanguage)5 => "ko",
+                ClientLanguage.Japanese => "ja",
+                ClientLanguage.German => "de",
+                ClientLanguage.French => "fr",
+                (ClientLanguage)4 => "cn", 
+                (ClientLanguage)5 => "ko",
                 _ => "",
             };
 

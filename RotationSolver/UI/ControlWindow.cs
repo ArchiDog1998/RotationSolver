@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.DalamudServices;
 using RotationSolver.Basic.Configuration;
@@ -7,7 +8,6 @@ using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.Localization;
 using RotationSolver.Updaters;
-using XIVPainter;
 
 namespace RotationSolver.UI;
 
@@ -408,7 +408,7 @@ internal class ControlWindow : CtrlWindow
                 if (action is IBaseAction act)
                 {
                     IBaseAction.ForceEnable = true;
-                    canDoIt = act.CanUse(out _, usedUp: true, skipClippingCheck: true, skipAoeCheck: true);
+                    canDoIt = act.CanUse(out _, usedUp: true, skipAoeCheck: true);
                     IBaseAction.ForceEnable = false;
                 }
                 else if (action is IBaseItem item)
@@ -424,7 +424,6 @@ internal class ControlWindow : CtrlWindow
         }
         var size = ImGui.GetItemRectSize();
         var pos = cursor;
-        DrawKeybindOnAction(pos, action?.ID);
 
         if (action == null || !Service.Config.ShowCooldownsAlways)
         {
@@ -466,7 +465,7 @@ internal class ControlWindow : CtrlWindow
                     ImGui.GetWindowDrawList().AddLine(startPos, startPos + new Vector2(0, size.Y), ImGuiHelper.Black);
                 }
 
-                using var font = ImRaii.PushFont(DrawingExtensions.GetFont(Service.Config.CooldownFontSize));
+                using var font = ImRaii.PushFont(ImGui.GetFont());
                 string time = recast == 0 ? "0" : ((int)(recast - elapsed % recast) + 1).ToString();
                 var strSize = ImGui.CalcTextSize(time);
                 var fontPos = new Vector2(pos.X + size.X / 2 - strSize.X / 2, pos.Y + size.Y / 2 - strSize.Y / 2) + winPos;
@@ -484,15 +483,6 @@ internal class ControlWindow : CtrlWindow
 
             return (pos, size);
         }
-    }
-
-    private static void DrawKeybindOnAction(Vector2 pos, uint? @uint)
-    {
-        return;
-        if (@uint == null) return;
-        var keybind = PreviewUpdater.GetActionKeybind(@uint.Value);
-        if (string.IsNullOrEmpty(keybind)) return;
-        ImGuiHelper.TextShade(pos + new Vector2(2, 2), keybind);
     }
 
     static unsafe void DrawNextAction(float gcd, float ability, float width)

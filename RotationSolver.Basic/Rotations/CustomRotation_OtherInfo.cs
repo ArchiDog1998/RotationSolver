@@ -1,4 +1,5 @@
 ﻿using Dalamud;
+using Dalamud.Game;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Plugin.Services;
@@ -13,7 +14,7 @@ partial class CustomRotation
     /// <summary>
     /// This is the player.
     /// </summary>
-    protected static PlayerCharacter Player => ECommons.GameHelpers.Player.Object;
+    protected static IPlayerCharacter Player => ECommons.GameHelpers.Player.Object;
 
     /// <summary>
     /// Does player have swift cast, dual cast or triple cast.
@@ -68,12 +69,12 @@ partial class CustomRotation
     /// <summary>
     /// Party member.
     /// </summary>
-    protected static IEnumerable<BattleChara> PartyMembers => DataCenter.PartyMembers;
+    protected static IEnumerable<IBattleChara> PartyMembers => DataCenter.PartyMembers;
 
     /// <summary>
     /// Alliance members.
     /// </summary>
-    protected static IEnumerable<BattleChara> AllianceMembers => DataCenter.AllianceMembers;
+    protected static IEnumerable<IBattleChara> AllianceMembers => DataCenter.AllianceMembers;
 
     /// <summary>
     /// Whether the number of party members is 8.
@@ -105,17 +106,17 @@ partial class CustomRotation
     /// <br>WARNING: You'd better not use it. Because this target isn't the action's target. Try to use <see cref="IBaseAction.Target"/> or <seealso cref="HostileTarget"/> instead after using <seealso cref="IBaseAction.CanUse(out IAction, bool, bool, bool, bool, bool, bool, bool, byte)"/></br>
     /// </summary>
     [Obsolete("You'd better not use it. More information in summary.")]
-    protected static BattleChara Target => Svc.Targets.Target is BattleChara b ? b : Player;
+    protected static IBattleChara Target => Svc.Targets.Target is IBattleChara b ? b : Player;
 
     /// <summary>
     /// The player's target, or null if no valid target. (null clears the target)
     /// </summary>
-    protected static BattleChara? CurrentTarget => Svc.Targets.Target is BattleChara b ? b : null;
+    protected static IBattleChara? CurrentTarget => Svc.Targets.Target is IBattleChara b ? b : null;
 
     /// <summary>
     /// The last attacked hostile target.
     /// </summary>
-    protected static BattleChara? HostileTarget => DataCenter.HostileTarget;
+    protected static IBattleChara? HostileTarget => DataCenter.HostileTarget;
 
     /// <summary>
     /// Is there any hostile target in range? 25 for ranged jobs and healer, 3 for melee and tank.
@@ -156,7 +157,7 @@ partial class CustomRotation
     /// <summary>
     /// All hostile Targets. This is all can attack.
     /// </summary>
-    protected static IEnumerable<BattleChara> AllHostileTargets => DataCenter.AllHostileTargets;
+    protected static IEnumerable<IBattleChara> AllHostileTargets => DataCenter.AllHostileTargets;
 
     /// <summary>
     /// Average dead time of hostiles.
@@ -173,9 +174,9 @@ partial class CustomRotation
         get
         {
             var controller = UIState.Instance()->LimitBreakController;
-            var barValue = *(ushort*)&controller.BarValue;
+            var barValue = *(ushort*)&controller.BarCount;
             if (barValue == 0) return 0;
-            return (byte)(controller.CurrentValue / barValue);
+            return (byte)(controller.BarCount / barValue);
         }
     }
 

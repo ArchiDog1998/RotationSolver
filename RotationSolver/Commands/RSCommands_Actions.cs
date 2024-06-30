@@ -65,7 +65,7 @@ public static partial class RSCommands
 
         if (Service.Config.KeyBoardNoise)
         {
-            PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
+            //PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
         }
 
         if (nextAction.Use())
@@ -77,8 +77,8 @@ public static partial class RSCommands
 
             if (nextAction is BaseAction act)
             {
-                if (Service.Config.KeyBoardNoise)
-                    Task.Run(() => PulseSimulation(nextAction.AdjustedID));
+                //if (Service.Config.KeyBoardNoise)
+                    //Task.Run(() => PulseSimulation(nextAction.AdjustedID));
 
                 if (act.Setting.EndSpecial) ResetSpecial();
 #if DEBUG
@@ -155,7 +155,7 @@ public static partial class RSCommands
             ActionUpdater.AutoCancelTime = DateTime.MinValue;
         }
 
-        var target = DataCenter.AllHostileTargets.FirstOrDefault(t => t.TargetObjectId == Player.Object.ObjectId);
+        var target = DataCenter.AllHostileTargets.FirstOrDefault(t => t.TargetObjectId == Player.Object.GameObjectId);
 
         if (Svc.Condition[ConditionFlag.LoggingOut])
         {

@@ -46,7 +46,7 @@ partial class CustomRotation
         {
             if (TrueNorthPvE.Cooldown.CurrentCharges > 0)
             {
-                if (TrueNorthPvE.CanUse(out act, onLastAbility: true, skipClippingCheck: true, skipComboCheck: true, usedUp: true)) return true;
+                if (TrueNorthPvE.CanUse(out act, skipComboCheck: true, usedUp: true)) return true;
             }
         }
 

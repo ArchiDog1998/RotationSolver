@@ -462,7 +462,7 @@
   "DisableTargetDummysName": "Ignore target dummies",
   "TargetDelayDescription": "(Do not set too low, can rip newly aggro'd dungeon mobs off tanks).",
   "HealthDifferenceDescription": "Basically the health difference between a single party member and the whole party, used for deciding between healing a single party member or AOE healing. Leave this alone if you don't undertand its use.",
-  "RotationSolver.Data.UiString.ConfigWindow_Auto_HealingCondition": "Healing Conditions",
+  "RotationSolver.Data.UiString.ConfigWindow_Auto_HealingCondition": "Healing Condition",
   "RotationSolver.Data.UiString.ConfigWindow_Auto_HealingCondition_Description": "How RSR should use healing abilities",
   "RotationSolver.Data.UiString.ConfigWindow_About_Warnings_Time": "Warning Time",
   "RotationSolver.Data.UiString.ConfigWindow_About_Warnings_Warning": "Warning Message"

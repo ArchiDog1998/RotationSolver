@@ -18,7 +18,7 @@ var gameData = new GameData(@"D:\FFXIV\Game\game\sqpack", new LuminaOptions
 });
 
 var dirInfo = new DirectoryInfo(typeof(Program).Assembly.Location);
-dirInfo = dirInfo.Parent!.Parent!.Parent!.Parent!.Parent!;
+dirInfo = dirInfo.Parent!.Parent!.Parent!.Parent!.Parent!.Parent!;
 
 using var res = new ResXResourceWriter(dirInfo.FullName + "\\RotationSolver.SourceGenerators\\Properties\\Resources.resx");
 
@@ -88,7 +88,7 @@ namespace RotationSolver.Basic.Rotations.Basic;
 """;
 
 var rotations = gameData.GetExcelSheet<ClassJob>()!
-    .Where(job => job.JobIndex > 0)
+    .Where(job => job.JobIndex > 0 && job.RowId is not (41 or 42))
     .Select(job => new RotationGetter(gameData, job).GetCode());
 res.AddResource("Rotation", header + string.Join("\n\n", rotations));
 

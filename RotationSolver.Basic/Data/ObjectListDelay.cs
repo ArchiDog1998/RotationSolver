@@ -11,11 +11,11 @@ namespace RotationSolver.Basic.Data;
 /// </remarks>
 /// <param name="getRange"></param>
 public class ObjectListDelay<T>(Func<(float min, float max)> getRange) 
-    : IEnumerable<T> where T : GameObject
+    : IEnumerable<T> where T : IGameObject
 {
     IEnumerable<T> _list = [];
     readonly Func<(float min, float max)> _getRange = getRange;
-    SortedList<uint, DateTime> _revealTime = [];
+    SortedList<ulong, DateTime> _revealTime = [];
     readonly Random _ran = new(DateTime.Now.Millisecond);
 
     /// <summary>
@@ -39,18 +39,18 @@ public class ObjectListDelay<T>(Func<(float min, float max)> getRange)
     public void Delay(IEnumerable<T> originData)
     {
         var outList = new List<T>(originData.Count());
-        var revealTime = new SortedList<uint, DateTime>();
+        var revealTime = new SortedList<ulong, DateTime>();
         var now = DateTime.Now;
 
         foreach (var item in originData)
         {
-            if (!_revealTime.TryGetValue(item.ObjectId, out var time))
+            if (!_revealTime.TryGetValue(item.GameObjectId, out var time))
             {
                 var (min, max) = _getRange();
                 var delaySecond = min + (float)_ran.NextDouble() * (max - min);
                 time = now + new TimeSpan(0, 0, 0, 0, (int)(delaySecond * 1000));
             }
-            revealTime[item.ObjectId] = time;
+            revealTime[item.GameObjectId] = time;
 
             if (now > time)
             {

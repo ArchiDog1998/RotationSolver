@@ -37,13 +37,12 @@
 		  <Private>False</Private>
 	  </Reference>
 	  
-    <PackageReference Include="DalamudPackager" Version="2.1.12" />
+    <PackageReference Include="DalamudPackager" Version="2.1.13" />
   </ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
 		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic.csproj" />
-		<ProjectReference Include="..\XIVPainter\XIVPainter\XIVPainter.csproj" />
 		
 		<Using Include="Dalamud.Game.ClientState.Objects.Types" />
 		<Using Include="RotationSolver.Basic" />

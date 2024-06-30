@@ -29,8 +29,7 @@ internal static class StateUpdater
 
     private static AutoStatus StatusFromAutomatic()
     {
-        var hasTimeline = Service.Config.TimelineOverride ? Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline)
-            && timeline.Any(p => p.Value.Any(i => i is not DrawingTimeline)) : false;
+        var hasTimeline = Service.Config.TimelineOverride ? Service.Config.Timeline.TryGetValue(Svc.ClientState.TerritoryType, out var timeline) : false;
 
         AutoStatus status = AutoStatus.None;
 
@@ -124,7 +123,7 @@ internal static class StateUpdater
                 {
                     if (DataCenter.PartyMembers.Any((tank) =>
                     {
-                        var attackingTankObj = DataCenter.AllHostileTargets.Where(t => t.TargetObjectId == tank.ObjectId);
+                        var attackingTankObj = DataCenter.AllHostileTargets.Where(t => t.TargetObjectId == tank.GameObjectId);
 
                         if (attackingTankObj.Count() != 1) return false;
 
@@ -201,7 +200,7 @@ internal static class StateUpdater
 
         return status;
     }
-    static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
+    static float GetHealingOfTimeRatio(IBattleChara target, params StatusID[] statusIds)
     {
         const float buffWholeTime = 15;
 
@@ -212,7 +211,7 @@ internal static class StateUpdater
 
     static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float healSingleHot) => DataCenter.PartyMembers.Count(p => ShouldHealSingle(p, hotStatus, healSingle, healSingleHot));
 
-    static bool ShouldHealSingle(BattleChara target, StatusID[] hotStatus, float healSingle, float healSingleHot)
+    static bool ShouldHealSingle(IBattleChara target, StatusID[] hotStatus, float healSingle, float healSingleHot)
     {
         if (target == null) return false;
 

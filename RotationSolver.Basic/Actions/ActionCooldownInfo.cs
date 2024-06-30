@@ -141,7 +141,7 @@ public readonly struct ActionCooldownInfo : ICooldown
         return elapsed + DataCenter.DefaultGCDRemain < time;
     }
 
-    internal bool CooldownCheck(bool isEmpty, bool onLastAbility, bool ignoreClippingCheck, byte gcdCountForAbility)
+    internal bool CooldownCheck(bool isEmpty, byte gcdCountForAbility)
     {
         if (!_action.Info.IsGeneralGCD)
         {

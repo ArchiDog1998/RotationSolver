@@ -65,14 +65,5 @@ public interface IBaseAction : IAction
     /// <param name="gcdCountForAbility">the gcd count for the ability.</param>
     /// <returns>can I use it</returns>
     bool CanUse(out IAction act, bool skipStatusProvideCheck = false, bool skipComboCheck = false, bool skipCastingCheck = false,
-        bool usedUp = false, bool onLastAbility = false, bool skipClippingCheck = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0);
-
-    /// <summary>
-    /// Can I use this action.
-    /// </summary>
-    /// <param name="act">The return action</param>
-    /// <param name="option">The options</param>
-    /// <param name="gcdCountForAbility">the gcd count for the ability.</param>
-    /// <returns>can I use it</returns>
-    bool CanUse(out IAction act, CanUseOption option, byte gcdCountForAbility = 0);
+        bool usedUp = false, bool skipAoeCheck = false, byte gcdCountForAbility = 0);
 }

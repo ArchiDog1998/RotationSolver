@@ -78,8 +78,19 @@ partial class GunbreakerRotation
         setting.SpecialType = SpecialActionType.MeleeRange;
     }
 
+    static partial void ModifyNobleBloodPvE(ref ActionSetting setting)
+    {
+        setting.ComboIds = [ActionID.ReignOfBeastsPvE];
+    }
+
+    static partial void ModifyLionHeartPvE(ref ActionSetting setting)
+    {
+        setting.ComboIds = [ActionID.NobleBloodPvE];
+    }
+
     static partial void ModifyFatedCirclePvE(ref ActionSetting setting)
     {
+        setting.StatusProvide = [ StatusID.ReadyToRaze ];
         setting.ActionCheck = () => Ammo > 0;
     }
 
@@ -99,15 +110,27 @@ partial class GunbreakerRotation
         setting.ActionCheck = Player.IsTargetOnSelf;
     }
 
+    static partial void ModifyGreatNebulaPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = StatusHelper.RampartStatus;
+        setting.ActionCheck = Player.IsTargetOnSelf;
+    }
+
     static partial void ModifyCamouflagePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = Player.IsTargetOnSelf;
+    }
+
+    static partial void ModifySonicBreakPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [ StatusID.ReadyToBreak ];
     }
 
     private protected sealed override IBaseAction TankStance => RoyalGuardPvE;
 
     static partial void ModifyNoMercyPvE(ref ActionSetting setting)
     {
+        setting.StatusProvide = [ StatusID.ReadyToBreak ];
         setting.CreateConfig = () => new()
         {
             TimeToKill = 10,
@@ -116,7 +139,17 @@ partial class GunbreakerRotation
 
     static partial void ModifyBloodfestPvE(ref ActionSetting setting)
     {
+        setting.StatusProvide = [StatusID.ReadyToReign];
         setting.ActionCheck = () => MaxAmmo - Ammo > 1;
+    }
+
+    static partial void ModifyFatedBrandPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.ReadyToRaze];
+        setting.CreateConfig = () => new ActionConfig()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyDemonSlicePvE(ref ActionSetting setting)
@@ -135,7 +168,7 @@ partial class GunbreakerRotation
         };
     }
 
-    static partial void ModifyRoughDividePvE(ref ActionSetting setting)
+    static partial void ModifyTrajectoryPvE(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
     }
@@ -159,10 +192,10 @@ partial class GunbreakerRotation
     }
 
     /// <inheritdoc/>
-    [RotationDesc(ActionID.RoughDividePvE)]
+    [RotationDesc(ActionID.TrajectoryPvE)]
     protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
     {
-        if (RoughDividePvE.CanUse(out act)) return true;
+        if (TrajectoryPvE.CanUse(out act)) return true;
         return false;
     }
 }

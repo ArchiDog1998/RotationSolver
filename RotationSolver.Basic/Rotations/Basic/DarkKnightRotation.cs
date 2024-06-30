@@ -148,11 +148,11 @@ partial class DarkKnightRotation
         };
     }
 
-    static partial void ModifyPlungePvE(ref ActionSetting setting)
-    {
-        setting.SpecialType = SpecialActionType.MovingForward;
-        setting.UnlockedByQuestID = 67597;
-    }
+    // static partial void ModifyPlungePvE(ref ActionSetting setting)
+    // {
+    //     setting.SpecialType = SpecialActionType.MovingForward;
+    //     setting.UnlockedByQuestID = 67597;
+    // }
 
     static partial void ModifyPlungePvP(ref ActionSetting setting)
     {
@@ -202,11 +202,11 @@ partial class DarkKnightRotation
         return base.EmergencyAbility(nextGCD, out act);
     }
 
-    /// <inheritdoc/>
-    [RotationDesc(ActionID.PlungePvE)]
-    protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
-    {
-        if (PlungePvE.CanUse(out act)) return true;
-        return false;
-    }
+    // /// <inheritdoc/>
+    // [RotationDesc(ActionID)]
+    // protected sealed override bool MoveForwardAbility(IAction nextGCD, out IAction? act)
+    // {
+    //     if (PlungePvE.CanUse(out act)) return true;
+    //     return false;
+    // }
 }

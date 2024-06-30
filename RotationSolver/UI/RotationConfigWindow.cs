@@ -2,9 +2,12 @@
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures;
+using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using ECommons;
 using ECommons.DalamudServices;
@@ -23,8 +26,6 @@ using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI.SearchableConfigs;
 using RotationSolver.Updaters;
-using XIVPainter;
-using static System.Net.Mime.MediaTypeNames;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 using Status = Lumina.Excel.GeneratedSheets.Status;
 using TargetType = RotationSolver.Basic.Actions.TargetType;
@@ -298,54 +299,6 @@ public partial class RotationConfigWindow : Window
         }
     }
 
-    private const int FRAME_COUNT = 180;
-    private static readonly List<string> _loadingList = new(FRAME_COUNT);
-    private static readonly Dictionary<string, IDalamudTextureWrap> _logosWrap = new(FRAME_COUNT + 1);
-    private static bool GetLocalImage(string name, out IDalamudTextureWrap texture)
-    {
-        var dir = $"{Svc.PluginInterface.ConfigDirectory.FullName}\\Images";
-
-        if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-        var file = dir + $"\\{name}.png";
-
-        if (File.Exists(file) && File.GetLastWriteTime(file).AddDays(1) < DateTime.Now)
-        {
-            File.Delete(file);
-        }
-        else if (File.Exists(file))
-        {
-            if (!_logosWrap.ContainsKey(file))
-            {
-                _logosWrap[name] = Svc.PluginInterface.UiBuilder.LoadImage(file);
-            }
-        }
-        else if (!_loadingList.Contains(name))
-        {
-            _loadingList.Add(name);
-
-            Task.Run(async () =>
-            {
-                if (!File.Exists(file))
-                {
-                    var url = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/{name}.png";
-
-                    using var client = new HttpClient();
-                    var stream = await client.GetStreamAsync(url);
-
-                    using var fs = new FileStream(file, FileMode.CreateNew);
-
-                    await stream.CopyToAsync(fs);
-                }
-
-
-                _loadingList.Remove(name);
-            });
-        }
-
-        return _logosWrap.TryGetValue(name, out texture!);
-    }
-
     private void DrawHeader(float wholeWidth)
     {
         var size = MathF.Max(MathF.Min(wholeWidth, Scale * 128), Scale * MIN_COLUMN_WIDTH);
@@ -362,10 +315,9 @@ public partial class RotationConfigWindow : Window
                     _searchResults = [];
                 }
                 ImguiTooltips.HoveredTooltip(UiString.ConfigWindow_About_Punchline.Local());
-
-                var frame = Environment.TickCount / 34 % FRAME_COUNT;
-                if (frame <= 0) frame += FRAME_COUNT;
-                if (GetLocalImage("Logo", out var logo))
+                
+                var logoUrl = $"https://raw.githubusercontent.com/{Service.USERNAME}/{Service.REPO}/main/Images/Logo.png";
+                if (ThreadLoadImageHandler.TryGetTextureWrap(logoUrl, out var logo))
                 {
                     ImGui.SetCursorPos(cursor);
                     ImGui.Image(logo.ImGuiHandle, Vector2.One * size);
@@ -557,7 +509,7 @@ public partial class RotationConfigWindow : Window
         {
             if (_searchResults != null && _searchResults.Length != 0)
             {
-                using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(18)))
+                using (var font = ImRaii.PushFont(FontManager.GetFont(18)))
                 {
                     using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
                     ImGui.TextWrapped(UiString.ConfigWindow_Search_Result.Local());
@@ -610,10 +562,6 @@ public partial class RotationConfigWindow : Window
                         DrawTarget();
                         break;
 
-                    case RotationConfigWindowTab.Timeline:
-                        TimelineDrawer.DrawTimeline();
-                        break;
-
                     case RotationConfigWindowTab.Extra:
                         DrawExtra();
                         break;
@@ -635,7 +583,7 @@ public partial class RotationConfigWindow : Window
 
     private static void DrawAbout()
     {
-        using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(18)))
+        using (var font = ImRaii.PushFont(FontManager.GetFont(18)))
         {
             using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
             ImGui.TextWrapped(UiString.ConfigWindow_About_Punchline.Local());
@@ -885,7 +833,7 @@ public partial class RotationConfigWindow : Window
         var desc = rotation.Description;
         if (!string.IsNullOrEmpty(desc))
         {
-            using var font = ImRaii.PushFont(DrawingExtensions.GetFont(15));
+            using var font = ImRaii.PushFont(FontManager.GetFont(15));
             ImGuiEx.TextWrappedCopy(desc);
         }
 
@@ -940,7 +888,7 @@ public partial class RotationConfigWindow : Window
         ImGui.GetStyle().ItemSpacing = Vector2.Zero;
 
         var size = Vector2.Zero;
-        using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(16)))
+        using (var font = ImRaii.PushFont(FontManager.GetFont(16)))
         {
             using (var color = ImRaii.PushColor(ImGuiCol.Text, RatingColors[(int)(ratio1 * count)]))
             {
@@ -1523,8 +1471,8 @@ public partial class RotationConfigWindow : Window
                     ImGui.Text("Recast Elapsed: " + action.Cooldown.RecastTimeElapsedRaw.ToString());
                     ImGui.Text($"Charges: {action.Cooldown.CurrentCharges} / {action.Cooldown.MaxCharges}");
 
-                    ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
-                    ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
+                    ImGui.Text($"Can Use: {action.CanUse(out _)} ");
+                    ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipCastingCheck: true).ToString());
                     ImGui.Text("Target Name: " + action.Target.Target?.Name ?? string.Empty);
                 }
                 catch
@@ -1596,7 +1544,7 @@ public partial class RotationConfigWindow : Window
     {
         var width = ImGui.GetWindowWidth();
 
-        ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 5));
+        ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 5));
         var text = UiString.ConfigWindow_Rotations_Warning.Local();
         var textWidth = ImGuiHelpers.GetButtonSize(text).X;
         ImGuiHelper.DrawItemMiddle(() =>
@@ -1649,7 +1597,7 @@ public partial class RotationConfigWindow : Window
                 });
             }
         }, width, textWidth);
-        ImGui.PushFont(DrawingExtensions.GetFont(ImGui.GetFontSize() + 3));
+        ImGui.PushFont(FontManager.GetFont(ImGui.GetFontSize() + 3));
         ImGui.Text(UiString.ConfigWindow_Rotations_Sources.Local());
         ImGui.PopFont();
         DrawRotationsLibraries();
@@ -2177,7 +2125,7 @@ public partial class RotationConfigWindow : Window
 
         var territoryId = Svc.ClientState.TerritoryType;
 
-        using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(21)))
+        using (var font = ImRaii.PushFont(FontManager.GetFont(21)))
         {
             using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
 
@@ -2319,7 +2267,7 @@ public partial class RotationConfigWindow : Window
                     [
                         .. pts,
                         Framework.Instance()->BGCollisionModule
-                            ->RaycastEx(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
+                            ->RaycastMaterialFilter(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
                     ];
                     OtherConfiguration.SaveBeneficialPositions();
                 }
@@ -2423,7 +2371,7 @@ public partial class RotationConfigWindow : Window
 
         foreach (var status in Player.Object.StatusList)
         {
-            var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+            var source = status.SourceId == Player.Object.GameObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
             ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
         }
     }
@@ -2438,7 +2386,7 @@ public partial class RotationConfigWindow : Window
         ImGui.Text($"Your character combat: {Player.Object.InCombat()}");
         foreach (var p in Svc.Party)
         {
-            if (p.GameObject is not BattleChara b) continue;
+            if (p.GameObject is not IBattleChara b) continue;
             ImGui.Text($"In Combat: {b.InCombat()}");
         }
     }
@@ -2456,7 +2404,7 @@ public partial class RotationConfigWindow : Window
                 ImGui.Text("Owner: " + owner.Name.ToString());
             }
         }
-        if (Svc.Targets.Target is BattleChara b)
+        if (Svc.Targets.Target is IBattleChara b)
         {
             ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
             ImGui.Text("Is Boss TTK: " + b.IsBossFromTTK().ToString());
@@ -2486,7 +2434,7 @@ public partial class RotationConfigWindow : Window
 
             foreach (var status in b.StatusList)
             {
-                var source = status.SourceId == Player.Object.ObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
+                var source = status.SourceId == Player.Object.GameObjectId ? "You" : Svc.Objects.SearchById(status.SourceId) == null ? "None" : "Others";
                 ImGui.Text($"{status.GameData.Name}: {status.StatusId} From: {source}");
             }
         }

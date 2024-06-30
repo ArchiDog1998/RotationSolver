@@ -6,6 +6,7 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
+using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Conditions;
@@ -17,14 +18,14 @@ namespace RotationSolver.Basic;
 
 internal static class DataCenter
 {
-    private static uint _hostileTargetId = GameObject.InvalidGameObjectId;
+    private static ulong _hostileTargetId = 0;
 
     public static bool IsActivated() => State || IsManual || Service.Config.TeachingMode;
 
-    internal static BattleChara? HostileTarget
+    internal static IBattleChara? HostileTarget
     {
-        get => Svc.Objects.SearchById(_hostileTargetId) as BattleChara;
-        set => _hostileTargetId = value?.ObjectId ?? GameObject.InvalidGameObjectId;
+        get => Svc.Objects.SearchById(_hostileTargetId) as IBattleChara;
+        set => _hostileTargetId = value?.GameObjectId ?? 0;
     }
 
     internal static List<uint> PrioritizedNameIds { get; set; } = new();
@@ -63,7 +64,7 @@ internal static class DataCenter
     /// </summary>
     public const int HP_RECORD_TIME = 240;
 
-    internal static Queue<(DateTime time, SortedList<uint, float> hpRatios)> RecordedHP { get; } =
+    internal static Queue<(DateTime time, SortedList<ulong, float> hpRatios)> RecordedHP { get; } =
         new(HP_RECORD_TIME + 1);
 
     public static ICustomRotation? RightNowRotation { get; internal set; }
@@ -90,7 +91,7 @@ internal static class DataCenter
     internal static Dictionary<ulong, uint> ApplyStatus { get; set; } = [];
     internal static uint MPGain { get; set; }
 
-    internal static bool HasApplyStatus(uint id, StatusID[] ids)
+    internal static bool HasApplyStatus(ulong id, StatusID[] ids)
     {
         if (InEffectTime && ApplyStatus.TryGetValue(id, out var statusId))
         {
@@ -290,13 +291,13 @@ internal static class DataCenter
 
     internal static TimelineItem[] TimelineItems { get; set; } = [];
 
-    public unsafe static BattleChara[] PartyMembers => AllianceMembers.Where(ObjectHelper.IsParty)
+    public unsafe static IBattleChara[] PartyMembers => AllianceMembers.Where(ObjectHelper.IsParty)
         .Where(b => b.Character()->CharacterData.OnlineStatus != 15 && b.IsTargetable).ToArray();
 
-    public unsafe static BattleChara[] AllianceMembers => AllTargets.Where(ObjectHelper.IsAlliance)
+    public unsafe static IBattleChara[] AllianceMembers => AllTargets.Where(ObjectHelper.IsAlliance)
         .Where(b => b.Character()->CharacterData.OnlineStatus != 15 && b.IsTargetable).ToArray();
 
-    public static BattleChara[] AllHostileTargets
+    public static IBattleChara[] AllHostileTargets
     {
         get
         {
@@ -315,12 +316,12 @@ internal static class DataCenter
         }
     }
 
-    public static BattleChara? InterruptTarget =>
+    public static IBattleChara? InterruptTarget =>
         AllHostileTargets.FirstOrDefault(ObjectHelper.CanInterrupt);
 
-    public static BattleChara? ProvokeTarget => AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke);
+    public static IBattleChara? ProvokeTarget => AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke);
 
-    public static BattleChara? DeathTarget
+    public static IBattleChara? DeathTarget
     {
         get
         {
@@ -361,32 +362,32 @@ internal static class DataCenter
         }
     }
 
-    public static BattleChara? DispelTarget
+    public static IBattleChara? DispelTarget
     {
         get
         {
-            var weakenPeople = DataCenter.PartyMembers.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
-            var dyingPeople = weakenPeople.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
+            var weakenPeople = DataCenter.PartyMembers.Where(o => o is IBattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
+            var dyingPeople = weakenPeople.Where(o => o is IBattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
 
             return dyingPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault()
                                       ?? weakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
         }
     }
 
-    public static BattleChara[] AllTargets => Svc.Objects.OfType<BattleChara>().GetObjectInRadius(30)
+    public static IBattleChara[] AllTargets => Svc.Objects.OfType<IBattleChara>().GetObjectInRadius(30)
         .Where(o => !o.IsDummy() || !Service.Config.DisableTargetDummys).ToArray();
 
-    public static uint[] TreasureCharas
+    public static ulong[] TreasureCharas
     {
         get
         {
-            List<uint> charas = new(5);
+            List<ulong> charas = new(5);
             //60687 - 60691 For treasure hunt.
             for (int i = 60687; i <= 60691; i++)
             {
                 var b = AllTargets.FirstOrDefault(obj => obj.GetNamePlateIcon() == i);
                 if (b == null || b.CurrentHp == 0) continue;
-                charas.Add(b.ObjectId);
+                charas.Add(b.GameObjectId);
             }
 
             return charas.ToArray();
@@ -439,7 +440,7 @@ internal static class DataCenter
     {
         get
         {
-            var mayPet = AllTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.ObjectId);
+            var mayPet = AllTargets.OfType<IBattleNpc>().Where(npc => npc.OwnerId == Player.Object.GameObjectId);
             return mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
         }
     }
@@ -450,16 +451,16 @@ internal static class DataCenter
 
     #region HP
 
-    public static Dictionary<uint, float> RefinedHP => PartyMembers
-        .ToDictionary(p => p.ObjectId, GetPartyMemberHPRatio);
+    public static Dictionary<ulong, float> RefinedHP => PartyMembers
+        .ToDictionary(p => p.GameObjectId, GetPartyMemberHPRatio);
     
-    private static Dictionary<uint, uint> _lastHp = [];
-    private static float GetPartyMemberHPRatio(BattleChara member)
+    private static Dictionary<ulong, uint> _lastHp = [];
+    private static float GetPartyMemberHPRatio(IBattleChara member)
     {
         if (member == null) return 0;
 
         if (!DataCenter.InEffectTime
-            || !DataCenter.HealHP.TryGetValue(member.ObjectId, out var hp))
+            || !DataCenter.HealHP.TryGetValue(member.GameObjectId, out var hp))
         {
             return (float)member.CurrentHp / member.MaxHp;
         }
@@ -467,11 +468,11 @@ internal static class DataCenter
         var rightHp = member.CurrentHp;
         if (rightHp > 0)
         {
-            if (!_lastHp.TryGetValue(member.ObjectId, out var lastHp)) lastHp = rightHp;
+            if (!_lastHp.TryGetValue(member.GameObjectId, out var lastHp)) lastHp = rightHp;
 
             if (rightHp - lastHp == hp)
             {
-                DataCenter.HealHP.Remove(member.ObjectId);
+                DataCenter.HealHP.Remove(member.GameObjectId);
                 return (float)member.CurrentHp / member.MaxHp;
             }
             return Math.Min(1, (hp + rightHp) / (float)member.MaxHp);
@@ -596,7 +597,7 @@ internal static class DataCenter
         {
             if (!s.Path.StartsWith("vfx/lockon/eff/tank_lockon")) return false;
             if (!Player.Available) return false;
-            if (Player.Object.IsJobCategory(JobRole.Tank) && s.ObjectId != Player.Object.ObjectId) return false;
+            if (Player.Object.IsJobCategory(JobRole.Tank) && s.ObjectId != Player.Object.GameObjectId) return false;
 
             return true;
         });
@@ -627,7 +628,7 @@ internal static class DataCenter
         return false;
     }
 
-    private static bool IsHostileCastingTank(BattleChara h)
+    private static bool IsHostileCastingTank(IBattleChara h)
     {
         return IsHostileCastingBase(h, (act) =>
         {
@@ -636,7 +637,7 @@ internal static class DataCenter
         });
     }
 
-    private static bool IsHostileCastingArea(BattleChara h)
+    private static bool IsHostileCastingArea(IBattleChara h)
     {
         return IsHostileCastingBase(h, (act) =>
         {
@@ -644,7 +645,7 @@ internal static class DataCenter
         });
     }
 
-    public static bool IsHostileCastingKnockback(BattleChara h)
+    public static bool IsHostileCastingKnockback(IBattleChara h)
     {
         return IsHostileCastingBase(h, (act) =>
         {
@@ -652,7 +653,7 @@ internal static class DataCenter
         });
     }
 
-    private static bool IsHostileCastingBase(BattleChara h, Func<Action, bool> check)
+    private static bool IsHostileCastingBase(IBattleChara h, Func<Action, bool> check)
     {
         if (!h.IsCasting) return false;
 

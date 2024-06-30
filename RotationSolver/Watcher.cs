@@ -33,16 +33,16 @@ public static class Watcher
         unsafe
         {
 #if DEBUG
-            _useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? EB 64 B1 01", UseActionDetour);
+            //_useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? EB 64 B1 01", UseActionDetour);
             //_useActionHook.Enable();
 #endif
             //From https://github.com/PunishXIV/Splatoon/blob/main/Splatoon/Memory/ObjectEffectProcessor.cs#L14
-            _processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B7 FA", ProcessObjectEffectDetour);
-            _processObjectEffectHook.Enable();
+            //_processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B7 FA", ProcessObjectEffectDetour);
+            //_processObjectEffectHook.Enable();
 
             //From https://github.com/0ceal0t/Dalamud-VFXEditor/blob/main/VFXEditor/Interop/Constants.cs#L12
-            _actorVfxCreateHook = Svc.Hook.HookFromSignature<ActorVfxCreate>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 0F 29 B4 24 ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B6 AC 24 ?? ?? ?? ?? 0F 28 F3 49 8B F8", ActorVfxNewHandler);
-            _actorVfxCreateHook.Enable();
+            //_actorVfxCreateHook = Svc.Hook.HookFromSignature<ActorVfxCreate>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 0F 29 B4 24 ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B6 AC 24 ?? ?? ?? ?? 0F 28 F3 49 8B F8", ActorVfxNewHandler);
+            //_actorVfxCreateHook.Enable();
         }
         IpcSubscriber = Svc.PluginInterface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
 
@@ -82,7 +82,7 @@ public static class Watcher
         {
             var obj = Svc.Objects.CreateObjectReference(a2);
 
-            if (obj is not PlayerCharacter 
+            if (obj is not IPlayerCharacter 
                 || !path.StartsWith("vfx/common/eff/", StringComparison.OrdinalIgnoreCase))
             {
                 if (DataCenter.VfxNewData.Count >= 64)
@@ -90,12 +90,12 @@ public static class Watcher
                     DataCenter.VfxNewData.TryDequeue(out _);
                 }
 
-                var effect = new VfxNewData(obj?.ObjectId ?? Dalamud.Game.ClientState.Objects.Types.GameObject.InvalidGameObjectId, path);
+                var effect = new VfxNewData(obj?.GameObjectId ?? 0, path);
                 DataCenter.VfxNewData.Enqueue(effect);
             }
 
 #if DEBUG
-            if(obj is PlayerCharacter)
+            if(obj is IPlayerCharacter)
             {
                 Svc.Log.Debug("Object: " + path);
             }
@@ -118,7 +118,7 @@ public static class Watcher
                 DataCenter.ObjectEffects.TryDequeue(out _);
             }
 
-            var effect = new ObjectEffectData(a1->ObjectID, a2, a3);
+            var effect = new ObjectEffectData(a1->GetGameObjectId(), a2, a3);
             DataCenter.ObjectEffects.Enqueue(effect);
 
             Svc.Objects.CreateObjectReference((nint)a1);
@@ -155,13 +155,13 @@ public static class Watcher
         //Check Source.
         var source = set.Source;
         if (source == null) return;
-        if (source is not BattleChara battle) return;
-        if (battle is PlayerCharacter) return;
+        if (source is not IBattleChara battle) return;
+        if (battle is IPlayerCharacter) return;
         if (battle.SubKind == 9) return; //Friend!
-        if (Svc.Objects.SearchById(battle.ObjectId) is PlayerCharacter) return;
+        if (Svc.Objects.SearchById(battle.GameObjectId) is IPlayerCharacter) return;
 
         var damageRatio = set.TargetEffects
-            .Where(e => e.TargetID == Player.Object.ObjectId)
+            .Where(e => e.TargetID == Player.Object.GameObjectId)
             .SelectMany(e => new EffectEntry[]
             {
                 e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]
@@ -175,7 +175,7 @@ public static class Watcher
 
         foreach (var effect in set.TargetEffects)
         {
-            if (effect.TargetID != Player.Object.ObjectId) continue;
+            if (effect.TargetID != Player.Object.GameObjectId) continue;
             if (effect.GetSpecificTypeEffect(ActionEffectType.Knockback, out var entry))
             {
                 var knock = Svc.Data.GetExcelSheet<Knockback>()?.GetRow(entry.value);
@@ -200,7 +200,7 @@ public static class Watcher
             if (type is ActionCate.Spell or ActionCate.Weaponskill or ActionCate.Ability)
             {
                 if (set.TargetEffects.Count(e =>
-                    DataCenter.PartyMembers.Any(p => p.ObjectId == e.TargetID)
+                    DataCenter.PartyMembers.Any(p => p.GameObjectId == e.TargetID)
                     && e.GetSpecificTypeEffect(ActionEffectType.Damage, out var effect)
                     && (effect.value > 0 || (effect.param0 & 6) == 6))
                     == DataCenter.PartyMembers.Length)
@@ -217,7 +217,7 @@ public static class Watcher
 
     private static void ActionFromSelf(ActionEffectSet set)
     {
-        if (set.Source.ObjectId != Player.Object.ObjectId) return;
+        if (set.Source.GameObjectId != Player.Object.GameObjectId) return;
         if (set.Header.ActionType != ActionType.Action && set.Header.ActionType != ActionType.Item) return;
         if (set.Action == null) return;
         if ((ActionCate)set.Action.ActionCategory.Value!.RowId == ActionCate.Autoattack) return;
@@ -245,7 +245,7 @@ public static class Watcher
         {
             DataCenter.ApplyStatus[effect.Key] = effect.Value;
         }
-        DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Player.Object.ObjectId).Sum(i => i.Value);
+        DataCenter.MPGain = (uint)set.GetSpecificTypeEffect(ActionEffectType.MpGain).Where(i => i.Key == Player.Object.GameObjectId).Sum(i => i.Value);
         DataCenter.EffectTime = DateTime.Now;
         DataCenter.EffectEndTime = DateTime.Now.AddSeconds(set.Header.AnimationLockTime + 1);
 

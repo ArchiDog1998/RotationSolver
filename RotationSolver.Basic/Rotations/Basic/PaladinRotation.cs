@@ -34,14 +34,14 @@ partial class PaladinRotation
 
     static partial void ModifyAtonementPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.SwordOath_1902];
+        setting.StatusNeed = [StatusID.SwordOath_1991];
     }
 
     static partial void ModifyShieldBashPvE(ref ActionSetting setting)
     {
         setting.CanTarget = o =>
         {
-            if (o is not BattleChara b) return false;
+            if (o is not IBattleChara b) return false;
 
             if (b.IsBossFromIcon() || IsMoving || b.CastActionId == 0) return false;
 

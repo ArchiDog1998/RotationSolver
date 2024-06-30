@@ -63,10 +63,10 @@ partial class SamuraiRotation
         setting.ActionCheck = () => MeditationStacks == 3;
     }
 
-    static partial void ModifyShohaIiPvE(ref ActionSetting setting)
-    {
-        setting.ActionCheck = () => MeditationStacks == 3;
-    }
+    // static partial void ModifyShohaIiPvE(ref ActionSetting setting)
+    // {
+    //     setting.ActionCheck = () => MeditationStacks == 3;
+    // }
 
     static partial void ModifyMangetsuPvE(ref ActionSetting setting)
     {
