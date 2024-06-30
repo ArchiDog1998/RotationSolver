@@ -103,7 +103,7 @@ partial class MachinistRotation
 
     static partial void ModifyHyperchargePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => !IsOverheated && Heat >= 50;
+        setting.ActionCheck = () => !IsOverheated && Heat >= 50 || Player.HasStatus(true, StatusID.Hypercharged);        
         setting.CreateConfig = () => new()
         {
             TimeToKill = 10,
