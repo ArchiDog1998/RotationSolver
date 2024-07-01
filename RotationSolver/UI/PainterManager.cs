@@ -179,11 +179,7 @@ internal static class PainterManager
 
                 if (DataCenter.State && Service.Config.ShowStateIcon)
                 {
-                    if (ImageLoader.GetTexture(61516, out var texture))
-                    {
-                        _stateImage.Image = texture;
-                        _stateImage.Size = Service.Config.StateIconSize;
-                    }
+                    _stateImage.Size = Service.Config.StateIconSize;
                 }
                 else
                 {
@@ -203,6 +199,14 @@ internal static class PainterManager
         foreach (var target in TargetDrawings)
         {
             target.Update();
+        }
+
+        if (_stateImage != null && _stateImage.Image == null)
+        {
+            if (ImageLoader.GetTexture(61516, out var texture))
+            {
+                _stateImage.Image = texture;
+            }
         }
 
         UpdateTargetTexts();
