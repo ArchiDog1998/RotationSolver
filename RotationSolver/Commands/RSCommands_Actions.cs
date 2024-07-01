@@ -58,7 +58,7 @@ public static partial class RSCommands
 
         if (nextAction is BaseAction act1 && act1.Info.IsPvP && !act1.Setting.IsFriendly
             && act1.TargetInfo.IsSingleTarget
-            && act1.Target.Target is PlayerCharacter p && p != Player.Object)
+            && act1.Target.Target is IPlayerCharacter p && p != Player.Object)
         {
             var hash = p.EncryptString();
 

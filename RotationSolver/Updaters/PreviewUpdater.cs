@@ -21,7 +21,7 @@ internal static class PreviewUpdater
         UpdateCancelCast();
     }
 
-    static DtrBarEntry? _dtrEntry;
+    static IDtrBarEntry? _dtrEntry;
     private static void UpdateEntry()
     {
         var showStr = RSCommands.EntryString;
@@ -72,7 +72,7 @@ internal static class PreviewUpdater
         if (!Player.Object.IsCasting) return;
 
         var tarDead = Service.Config.UseStopCasting
-            && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is BattleChara b
+            && Svc.Objects.SearchById(Player.Object.CastTargetObjectId) is IBattleChara b
             && b.IsEnemy() && b.CurrentHp == 0;
 
         var statusTimes = Player.Object.StatusTimes(false, [.. OtherConfiguration.NoCastingStatus.Select(i => (StatusID)i)]);
@@ -93,7 +93,7 @@ internal static class PreviewUpdater
         });
     }
 
-    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotBarSlot? hot, uint actionID)
+    private unsafe static bool IsActionSlotRight(ActionBarSlot slot, HotbarSlot? hot, uint actionID)
     {
         if (hot.HasValue)
         {
@@ -104,8 +104,8 @@ internal static class PreviewUpdater
         return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
     }
 
-    unsafe delegate bool ActionBarAction(ActionBarSlot bar, HotBarSlot? hot, uint highLightID);
-    unsafe delegate bool ActionBarPredicate(ActionBarSlot bar, HotBarSlot* hot);
+    unsafe delegate bool ActionBarAction(ActionBarSlot bar, HotbarSlot? hot, uint highLightID);
+    unsafe delegate bool ActionBarPredicate(ActionBarSlot bar, HotbarSlot* hot);
     private static unsafe void LoopAllSlotBar(ActionBarAction doingSomething)
     {
         var index = 0;
@@ -117,7 +117,7 @@ internal static class PreviewUpdater
         {
             if (intPtr == IntPtr.Zero) continue;
             var actionBar = (AddonActionBarBase*)intPtr;
-            var hotBar = Framework.Instance()->UIModule->GetRaptureHotbarModule()->HotBars[hotBarIndex];
+            var hotBar = Framework.Instance()->UIModule->GetRaptureHotbarModule()->Hotbars[hotBarIndex];
             var slotIndex = 0;
 
             foreach (var slot in actionBar->ActionBarSlotVector.AsSpan())
@@ -141,6 +141,6 @@ internal static class PreviewUpdater
 
     public unsafe static void Dispose()
     {
-        _dtrEntry?.Dispose();
+        _dtrEntry?.Remove();
     }
 }

@@ -143,10 +143,10 @@ internal class SocialUpdater
     }
 
     private static readonly ChatEntityComparer _comparer = new();
-    internal static readonly List<PlayerCharacter> _users = [];
+    internal static readonly List<IPlayerCharacter> _users = [];
     private static async void SayHelloToUsers()
     {
-        var players = DataCenter.AllianceMembers.OfType<PlayerCharacter>()
+        var players = DataCenter.AllianceMembers.OfType<IPlayerCharacter>()
             .Where(c => c.EntityId != Player.Object.EntityId)
             .Select(player => (player, player.EncryptString()));
 
@@ -201,9 +201,9 @@ internal class SocialUpdater
         }
     }
 
-    internal abstract class ChatEntity(PlayerCharacter character, string hash) : IDisposable
+    internal abstract class ChatEntity(IPlayerCharacter character, string hash) : IDisposable
     {
-        public readonly PlayerCharacter player = character;
+        public readonly IPlayerCharacter player = character;
 
         public string Hash => hash;
 
@@ -262,7 +262,7 @@ internal class SocialUpdater
             => obj.player.GetHashCode();
     }
 
-    internal class RotationAuthorChatEntity(PlayerCharacter character, string hash, string nameDesc) : ChatEntity(character, hash)
+    internal class RotationAuthorChatEntity(IPlayerCharacter character, string hash, string nameDesc) : ChatEntity(character, hash)
     {
         private readonly string name = nameDesc;
 
@@ -273,7 +273,7 @@ internal class SocialUpdater
             .Append(new SeString(new TextPayload(". So say hello to them!")));
     }
 
-    internal class ContributorChatEntity(PlayerCharacter character, string hash) 
+    internal class ContributorChatEntity(IPlayerCharacter character, string hash) 
         : ChatEntity(character, hash)
     {
         public override SeString GetMessage() =>
@@ -283,7 +283,7 @@ internal class SocialUpdater
             .Append(new SeString(new TextPayload(". So say hello to them!")));
     }
 
-    internal class UserChatEntity(PlayerCharacter character, string hash) 
+    internal class UserChatEntity(IPlayerCharacter character, string hash) 
         : ChatEntity(character, hash)
     {
         public override BitmapFontIcon Icon => BitmapFontIcon.NewAdventurer;

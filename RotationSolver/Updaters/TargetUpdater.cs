@@ -11,13 +11,13 @@ namespace RotationSolver.Updaters;
 
 internal static partial class TargetUpdater
 {
-    static readonly ObjectListDelay<BattleChara> 
+    static readonly ObjectListDelay<IBattleChara> 
         _raisePartyTargets = new(() => Service.Config.RaiseDelay),
         _raiseAllTargets = new(() => Service.Config.RaiseDelay);
 
     internal unsafe static void UpdateTarget()
     {
-        var battles = Svc.Objects.OfType<BattleChara>();
+        var battles = Svc.Objects.OfType<IBattleChara>();
         DataCenter.AllTargets.Delay(battles.GetObjectInRadius(30));
         UpdateHostileTargets(DataCenter.AllTargets);
         UpdateFriends(DataCenter.AllTargets
@@ -29,7 +29,7 @@ internal static partial class TargetUpdater
 
     private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;
     private static readonly TimeSpan _timeToKillSpan = TimeSpan.FromSeconds(0.5);
-    private static void UpdateTimeToKill(IEnumerable<BattleChara> allTargets)
+    private static void UpdateTimeToKill(IEnumerable<IBattleChara> allTargets)
     {
         var now = DateTime.Now;
         if (now - _lastUpdateTimeToKill < _timeToKillSpan) return;
@@ -45,7 +45,7 @@ internal static partial class TargetUpdater
 
     internal static void ClearTarget()
     {
-        var empty = Array.Empty<BattleChara>();
+        var empty = Array.Empty<IBattleChara>();
         DataCenter.AllHostileTargets
         = DataCenter.PartyMembers
         = DataCenter.AllianceMembers
@@ -81,7 +81,7 @@ internal static partial class TargetUpdater
         _defenseAreaDelay = new(() => Service.Config.DefenseAreaDelay),
         _provokeDelay = new(() => Service.Config.ProvokeDelay);
 
-    private unsafe static void UpdateHostileTargets(IEnumerable<BattleChara> allTargets)
+    private unsafe static void UpdateHostileTargets(IEnumerable<IBattleChara> allTargets)
     {
         allTargets = allTargets.Where(b =>
         {
@@ -101,7 +101,7 @@ internal static partial class TargetUpdater
         {
             if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
 
-            if (b is PlayerCharacter p)
+            if (b is IPlayerCharacter p)
             {
                 var hash = p.EncryptString();
 
@@ -171,7 +171,7 @@ internal static partial class TargetUpdater
         return false;
     }
 
-    private static bool IsHostileCastingTank(BattleChara h)
+    private static bool IsHostileCastingTank(IBattleChara h)
     {
         return IsHostileCastingBase(h, (act) =>
         {
@@ -180,7 +180,7 @@ internal static partial class TargetUpdater
         });
     }
 
-    private static bool IsHostileCastingArea(BattleChara h)
+    private static bool IsHostileCastingArea(IBattleChara h)
     {
         return IsHostileCastingBase(h, (act) =>
         {
@@ -188,7 +188,7 @@ internal static partial class TargetUpdater
         });
     }
 
-    private static bool IsHostileCastingKnockback(BattleChara h)
+    private static bool IsHostileCastingKnockback(IBattleChara h)
     {
         return IsHostileCastingBase(h, (act) =>
         {
@@ -196,7 +196,7 @@ internal static partial class TargetUpdater
         });
     }
 
-    private static bool IsHostileCastingBase(BattleChara h, Func<Action, bool> check)
+    private static bool IsHostileCastingBase(IBattleChara h, Func<Action, bool> check)
     {
         if (!h.IsCasting) return false;
 
@@ -215,20 +215,20 @@ internal static partial class TargetUpdater
     #region Friends
     private static Dictionary<uint, uint> _lastHp = [];
     private static uint _lastMp = 0;
-    private unsafe static void UpdateFriends(IEnumerable<BattleChara> allTargets)
+    private unsafe static void UpdateFriends(IEnumerable<IBattleChara> allTargets)
     {
         DataCenter.AllianceMembers = allTargets.Where(ObjectHelper.IsAlliance).ToArray();
         DataCenter.PartyMembers = DataCenter.AllianceMembers.Where(ObjectHelper.IsParty).ToArray();
 
-        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.EntityId);
+        var mayPet = allTargets.OfType<IBattleNpc>().Where(npc => npc.OwnerId == Player.Object.EntityId);
         DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
 
         _raiseAllTargets.Delay(DataCenter.AllianceMembers.GetDeath());
         _raisePartyTargets.Delay(DataCenter.PartyMembers.GetDeath());
         DataCenter.DeathTarget = GetDeathTarget(_raiseAllTargets, _raisePartyTargets);
 
-        var weakenPeople = DataCenter.PartyMembers.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
-        var dyingPeople = weakenPeople.Where(o => o is BattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
+        var weakenPeople = DataCenter.PartyMembers.Where(o => o is IBattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
+        var dyingPeople = weakenPeople.Where(o => o is IBattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
 
         DataCenter.DispelTarget = dyingPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault()
             ?? weakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
@@ -268,7 +268,7 @@ internal static partial class TargetUpdater
         _lastMp = Player.Object.CurrentMp;
     }
 
-    private static BattleChara? GetDeathTarget(IEnumerable<BattleChara> deathAll, IEnumerable<BattleChara> deathParty)
+    private static IBattleChara? GetDeathTarget(IEnumerable<IBattleChara> deathAll, IEnumerable<IBattleChara> deathParty)
     {
         if (deathParty.Any())
         {
@@ -302,7 +302,7 @@ internal static partial class TargetUpdater
         return null;
     }
 
-    private static float GetPartyMemberHPRatio(BattleChara member)
+    private static float GetPartyMemberHPRatio(IBattleChara member)
     {
         if (member == null) return 0;
 
@@ -328,7 +328,7 @@ internal static partial class TargetUpdater
     }
     #endregion
 
-    private static void UpdateNamePlate(IEnumerable<BattleChara> allTargets)
+    private static void UpdateNamePlate(IEnumerable<IBattleChara> allTargets)
     {
         List<uint> charas = new(5);
         //60687 - 60691 For treasure hunt.

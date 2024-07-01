@@ -47,7 +47,7 @@ internal static class ImGuiHelperRS
 
             Status[] statusList = [];
 
-            if (Svc.Targets.Target is BattleChara battle)
+            if (Svc.Targets.Target is IBattleChara battle)
             {
                 statusList = [..battle.StatusList.Select(s => s.GameData)];
             }

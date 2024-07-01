@@ -99,7 +99,7 @@ public unsafe class DebugItem : ConfigWindowItemRS
         ImGui.Text($"Your character combat: {Player.Object.InCombat()}");
         foreach (var p in Svc.Party)
         {
-            if (p.GameObject is not BattleChara b) continue;
+            if (p.GameObject is not IBattleChara b) continue;
             ImGui.Text($"In Combat: {b.InCombat()}");
         }
     }
@@ -117,7 +117,7 @@ public unsafe class DebugItem : ConfigWindowItemRS
                 ImGui.Text("Owner: " + owner.Name.ToString());
             }
         }
-        if (Svc.Targets.Target is BattleChara b)
+        if (Svc.Targets.Target is IBattleChara b)
         {
             ImGui.Text("HP: " + b.CurrentHp + " / " + b.MaxHp);
             ImGui.Text("Is Boss TTK: " + b.IsBossFromTTK().ToString());

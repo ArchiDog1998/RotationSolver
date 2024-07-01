@@ -37,7 +37,7 @@ internal static partial class RaidTimeUpdater
         if (DataCenter.TimelineItems.Length == 0) return;
         foreach (var obj in DataCenter.AllTargets)
         {
-            if (obj is PlayerCharacter) continue;
+            if (obj is IPlayerCharacter) continue;
             var id = obj.EntityId;
             var newInCombat = obj.InCombat();
 
@@ -346,7 +346,7 @@ internal static partial class RaidTimeUpdater
     private static string GetNameFromObjectId(uint id)
     {
         var obj = Svc.Objects.SearchById(id);
-        var nameId = obj is BattleChara battle ? battle.NameId : 0;
+        var nameId = obj is IBattleChara battle ? battle.NameId : 0;
         var name = Svc.Data.GetExcelSheet<BNpcName>()?.GetRow(nameId)?.Singular.RawString;
 
         if (!string.IsNullOrEmpty(name)) return name;

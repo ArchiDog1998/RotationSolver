@@ -1,4 +1,4 @@
-﻿using Dalamud.Interface.Internal;
+﻿using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
 using XIVConfigUI;
 

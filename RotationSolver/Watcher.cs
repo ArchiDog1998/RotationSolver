@@ -35,16 +35,16 @@ public static class Watcher
         unsafe
         {
 #if DEBUG
-            _useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? EB 64 B1 01", UseActionDetour);
+            _useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? B0 01 EB B6", UseActionDetour);
             //_useActionHook.Enable();
 #endif
-            //From https://github.com/PunishXIV/Splatoon/blob/main/Splatoon/Memory/ObjectEffectProcessor.cs#L14
-            _processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B7 FA", ProcessObjectEffectDetour);
-            _processObjectEffectHook.Enable();
-
             //From https://github.com/0ceal0t/Dalamud-VFXEditor/blob/main/VFXEditor/Interop/Constants.cs#L12
             _actorVfxCreateHook = Svc.Hook.HookFromSignature<ActorVfxCreate>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 0F 29 B4 24 ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B6 AC 24 ?? ?? ?? ?? 0F 28 F3 49 8B F8", ActorVfxNewHandler);
             _actorVfxCreateHook.Enable();
+
+            ////From https://github.com/PunishXIV/Splatoon/blob/main/Splatoon/Memory/ObjectEffectProcessor.cs#L14
+            //_processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B7 FA", ProcessObjectEffectDetour);
+            //_processObjectEffectHook.Enable();
         }
         IpcSubscriber = Svc.PluginInterface.GetIpcSubscriber<object, object>("PingPlugin.Ipc");
         IpcSubscriber.Subscribe(UpdateRTTDetour);
@@ -149,10 +149,10 @@ public static class Watcher
         //Check Source.
         var source = set.Source;
         if (source == null) return;
-        if (source is not BattleChara battle) return;
-        if (battle is PlayerCharacter) return;
+        if (source is not IBattleChara battle) return;
+        if (battle is IPlayerCharacter) return;
         if (battle.SubKind == 9) return; //Friend!
-        if (Svc.Objects.SearchById(battle.EntityId) is PlayerCharacter) return;
+        if (Svc.Objects.SearchById(battle.EntityId) is IPlayerCharacter) return;
 
         Recorder.Enqueue(new ActionEffectSetData(set));
 
