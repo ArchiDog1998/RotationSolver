@@ -65,7 +65,7 @@ public static partial class RSCommands
 
         if (Service.Config.KeyBoardNoise)
         {
-            //PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
+            PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
         }
 
         if (nextAction.Use())
@@ -77,8 +77,8 @@ public static partial class RSCommands
 
             if (nextAction is BaseAction act)
             {
-                //if (Service.Config.KeyBoardNoise)
-                    //Task.Run(() => PulseSimulation(nextAction.AdjustedID));
+                if (Service.Config.KeyBoardNoise)
+                    Task.Run(() => PulseSimulation(nextAction.AdjustedID));
 
                 if (act.Setting.EndSpecial) ResetSpecial();
 #if DEBUG
