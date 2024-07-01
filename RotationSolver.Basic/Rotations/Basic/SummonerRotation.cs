@@ -14,6 +14,11 @@ partial class SummonerRotation
     /// 
     /// </summary>
     public static bool InBahamut => Service.GetAdjustedActionId(ActionID.AstralFlowPvE) == ActionID.DeathflarePvE;
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public static bool InSolarBahamut => Service.GetAdjustedActionId(ActionID.AstralFlowPvE) == ActionID.SunflarePvE;
 
     /// <summary>
     /// 
@@ -172,9 +177,29 @@ partial class SummonerRotation
         setting.ActionCheck = () => InBahamut || InPhoenix;
     }
 
+    static partial void ModifyEnkindleSolarBahamutPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => InSolarBahamut;
+    }
+
     static partial void ModifyDeathflarePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InBahamut;
+    }
+
+    static partial void ModifySunflarePvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => InSolarBahamut;
+    }
+
+    static partial void ModifySearingFlashPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.RefulgentLux];
+    }
+
+    static partial void ModifyLuxSolarisPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.RefulgentLux];
     }
 
     static partial void ModifyRekindlePvE(ref ActionSetting setting)
@@ -232,7 +257,12 @@ partial class SummonerRotation
     {
         setting.ActionCheck = () => HasAetherflowStacks;
     }
-
+    
+    static partial void ModifyNecrotizePvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => HasAetherflowStacks;
+    }
+    
     static partial void ModifyEnergySiphonPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.FurtherRuin];
