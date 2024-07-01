@@ -1,4 +1,4 @@
-﻿using Dalamud.Interface.Colors;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using RotationSolver.Updaters;
@@ -75,7 +75,7 @@ internal class NextActionWindow : Window
         if (drawTittle)
         {
             var str = $"{remain:F2}s / {total:F2}s";
-            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + width / 2 - ImGui.CalcTextSize(str).X / 2);
+            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (width / 2) - (ImGui.CalcTextSize(str).X / 2));
             ImGui.Text(str);
         }
 
@@ -91,7 +91,7 @@ internal class NextActionWindow : Window
 
             if (value > DataCenter.CastingTotal)
             {
-                var pt = cursor + new Vector2(width, 0) * value / total;
+                var pt = cursor + (new Vector2(width, 0) * value / total);
 
                 ImGui.GetWindowDrawList().AddLine(pt, pt + new Vector2(0, height),
                     ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudRed), 2);

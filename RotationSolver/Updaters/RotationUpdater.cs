@@ -1,4 +1,4 @@
-﻿using ECommons.DalamudServices;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameHelpers;
 using Lumina.Excel.GeneratedSheets;
@@ -234,7 +234,6 @@ internal static class RotationUpdater
         return [.. result];
     }
 
-
     /// <summary>
     /// Downloads rotation files from a remote server and saves them to a local folder.
     /// The download list is obtained from a JSON file on the remote server.
@@ -457,7 +456,6 @@ internal static class RotationUpdater
                return "Item";
            }
            return string.Empty;
-
        }).Where(g => !string.IsNullOrEmpty(g.Key)).OrderBy(g => g.Key);
 
     public static void UpdateRotation()

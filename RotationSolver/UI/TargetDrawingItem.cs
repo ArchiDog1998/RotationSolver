@@ -1,4 +1,4 @@
-﻿using XIVConfigUI;
+using XIVConfigUI;
 using XIVDrawer.Element3D;
 
 namespace RotationSolver.UI;
@@ -47,7 +47,6 @@ internal abstract class TargetDrawingItem
 
             var iconId = GetIcon(obj);
             if (!ImageLoader.GetTexture(iconId, out var icon)) continue;
-
 
             item.Enable = true;
             item.Image = icon;

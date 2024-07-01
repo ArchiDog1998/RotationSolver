@@ -1,4 +1,4 @@
-﻿using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Localization;
 using System.Linq;
 using XIVConfigUI;
@@ -86,7 +86,6 @@ internal class AutoHealCheckBox(PropertyInfo property, object obj,  params Searc
             ImGui.TableNextColumn();
 
             _healthAreaSpell?.Draw();
-
 
             ImGui.TableNextColumn();
 

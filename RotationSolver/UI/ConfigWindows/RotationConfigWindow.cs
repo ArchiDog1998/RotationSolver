@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.Internal;
@@ -210,7 +210,7 @@ public class RotationConfigWindow : ConfigWindow
     private IDalamudTextureWrap? lastTexture = null;
     protected override bool GetLogo(out IDalamudTextureWrap texture)
     {
-        var frame = Environment.TickCount / 34 % FRAME_COUNT;
+        var frame = (Environment.TickCount / 34) % FRAME_COUNT;
         if (frame <= 0) frame += FRAME_COUNT;
 
         var result = GetLocalImage(Service.Config.DrawIconAnimation
@@ -258,7 +258,7 @@ public class RotationConfigWindow : ConfigWindow
         const string slash = " - ";
         var gameVersionSize = ImGui.CalcTextSize(slash + rot.GameVersion).X + ImGui.GetStyle().ItemSpacing.X;
         var gameVersion = UiString.ConfigWindow_Helper_GameVersion.Local() + ": ";
-        var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rot.GameVersion).X + iconSize + ImGui.GetStyle().ItemSpacing.X * 3 < wholeWidth;
+        var drawCenter = ImGui.CalcTextSize(slash + gameVersion + rot.GameVersion).X + iconSize + (ImGui.GetStyle().ItemSpacing.X * 3) < wholeWidth;
         if (drawCenter) gameVersionSize += ImGui.CalcTextSize(gameVersion).X + ImGui.GetStyle().ItemSpacing.X;
 
         var horizonalWholeWidth = Math.Max(comboSize, gameVersionSize) + iconSize + ImGui.GetStyle().ItemSpacing.X;

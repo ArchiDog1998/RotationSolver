@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
@@ -121,7 +121,6 @@ public static partial class RSCommands
                     }
                 }
             }
-
         }
         else
         {
@@ -141,7 +140,7 @@ public static partial class RSCommands
             {
                 PreviewUpdater.PulseActionBar(id);
                 var time = Service.Config.ClickingDelay.X +
-                    new Random().NextDouble() * (Service.Config.ClickingDelay.Y - Service.Config.ClickingDelay.X);
+                    (new Random().NextDouble() * (Service.Config.ClickingDelay.Y - Service.Config.ClickingDelay.X));
                 await Task.Delay((int)(time * 1000));
             }
         }

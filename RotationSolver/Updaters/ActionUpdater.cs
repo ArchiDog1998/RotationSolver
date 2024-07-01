@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
@@ -280,8 +280,8 @@ internal static class ActionUpdater
             || Svc.Condition[ConditionFlag.SufferingStatusAffliction2]
             || Svc.Condition[ConditionFlag.RolePlaying]
             || Svc.Condition[ConditionFlag.InFlight]
-            || ActionManager.Instance()->ActionQueued && NextAction != null
-                && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
+            || (ActionManager.Instance()->ActionQueued && NextAction != null
+                && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID)
             || Player.Object.CurrentHp == 0) return false;
 
         var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);

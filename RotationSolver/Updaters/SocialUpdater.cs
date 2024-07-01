@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -272,7 +272,6 @@ internal class SocialUpdater
             .Append(RotationSolver)
             .Append(new SeString(new TextPayload(". So say hello to them!")));
     }
-
 
     internal class ContributorChatEntity(IPlayerCharacter character, string hash) 
         : ChatEntity(character, hash)

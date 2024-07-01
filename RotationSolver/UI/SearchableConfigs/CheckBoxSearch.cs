@@ -1,4 +1,4 @@
-﻿using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Configuration.Condition;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
@@ -54,7 +54,6 @@ internal class CheckBoxSearchCondition(PropertyInfo property, object obj, params
             get => _condition.Disable;
             set => _condition.Disable = value;
         }
-
 
         protected override ConditionSet GetCondition()
         {

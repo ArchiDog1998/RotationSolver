@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.Gui.Dtr;
+using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using ECommons.DalamudServices;
@@ -84,7 +84,6 @@ internal static class PreviewUpdater
             UIState.Instance()->Hotbar.CancelCast();
         }
     }
-
 
     internal static unsafe void PulseActionBar(uint actionID)
     {
