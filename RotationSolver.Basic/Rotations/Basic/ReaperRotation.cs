@@ -143,8 +143,15 @@ partial class ReaperRotation
         setting.UnlockedByQuestID = 69614;
     }
 
+    static partial void ModifySacrificiumPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Enshrouded, StatusID.Oblatio];
+
+    }
+
     static partial void ModifyCommunioPvE(ref ActionSetting setting)
     {
+        setting.StatusProvide = [StatusID.PerfectioParata];
         setting.StatusNeed = [StatusID.Enshrouded];
         setting.ActionCheck = () => LemureShroud == 1;
     }
