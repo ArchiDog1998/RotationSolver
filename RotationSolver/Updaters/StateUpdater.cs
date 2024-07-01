@@ -203,7 +203,7 @@ internal static class StateUpdater
 
         return status;
     }
-    static float GetHealingOfTimeRatio(BattleChara target, params StatusID[] statusIds)
+    static float GetHealingOfTimeRatio(IBattleChara target, params StatusID[] statusIds)
     {
         const float buffWholeTime = 15;
 
@@ -214,7 +214,7 @@ internal static class StateUpdater
 
     static int ShouldHealSingle(StatusID[] hotStatus, float healSingle, float healSingleHot) => DataCenter.PartyMembers.Count(p => ShouldHealSingle(p, hotStatus, healSingle, healSingleHot));
 
-    static bool ShouldHealSingle(BattleChara target, StatusID[] hotStatus, float healSingle, float healSingleHot)
+    static bool ShouldHealSingle(IBattleChara target, StatusID[] hotStatus, float healSingle, float healSingleHot)
     {
         if (target == null) return false;
 

@@ -150,10 +150,10 @@ public static class Watcher
         //Check Source.
         var source = set.Source;
         if (source == null) return;
-        if (source is not BattleChara battle) return;
-        if (battle is PlayerCharacter) return;
+        if (source is not IBattleChara battle) return;
+        if (battle is IPlayerCharacter) return;
         if (battle.SubKind == 9) return; //Friend!
-        if (Svc.Objects.SearchById(battle.EntityId) is PlayerCharacter) return;
+        if (Svc.Objects.SearchById(battle.EntityId) is IPlayerCharacter) return;
 
         Recorder.Enqueue(new ActionEffectSetData(set));
 

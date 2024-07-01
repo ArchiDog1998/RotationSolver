@@ -5,7 +5,7 @@ namespace RotationSolver.UI;
 internal abstract class TargetDrawingItem
 {
     public abstract bool Show { get; }
-    public abstract GameObject[] Targets { get; }
+    public abstract IGameObject[] Targets { get; }
 
     readonly Drawing3DImage[] Drawings = new Drawing3DImage[64];
 
@@ -24,7 +24,7 @@ internal abstract class TargetDrawingItem
         }
     }
 
-    protected abstract uint GetIcon(GameObject gameObject);
+    protected abstract uint GetIcon(IGameObject IGameObject);
 
     public void Update()
     {
