@@ -99,7 +99,7 @@ public unsafe class DebugItem : ConfigWindowItemRS
         ImGui.Text($"Your character combat: {Player.Object.InCombat()}");
         foreach (var p in Svc.Party)
         {
-            if (p.IGameObject is not IBattleChara b) continue;
+            if (p.GameObject is not IBattleChara b) continue;
             ImGui.Text($"In Combat: {b.InCombat()}");
         }
     }

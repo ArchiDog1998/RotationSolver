@@ -221,7 +221,7 @@ internal static partial class TargetUpdater
         DataCenter.AllianceMembers = allTargets.Where(ObjectHelper.IsAlliance).ToArray();
         DataCenter.PartyMembers = DataCenter.AllianceMembers.Where(ObjectHelper.IsParty).ToArray();
 
-        var mayPet = allTargets.OfType<BattleNpc>().Where(npc => npc.OwnerId == Player.Object.EntityId);
+        var mayPet = allTargets.OfType<IBattleNpc>().Where(npc => npc.OwnerId == Player.Object.EntityId);
         DataCenter.HasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
 
         _raiseAllTargets.Delay(DataCenter.AllianceMembers.GetDeath());
