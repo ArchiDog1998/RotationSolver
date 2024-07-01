@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+﻿using System.Security;
+
+namespace RotationSolver.Basic.Rotations.Basic;
 
 partial class DancerRotation
 {
@@ -149,7 +151,7 @@ partial class DancerRotation
     static partial void ModifyFlourishPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.StandardFinish];
-        setting.StatusProvide = [StatusID.ThreefoldFanDance, StatusID.FourfoldFanDance];
+        setting.StatusProvide = [StatusID.ThreefoldFanDance, StatusID.FourfoldFanDance, StatusID.FinishingMoveReady];
         setting.ActionCheck = () => InCombat;
     }
 
@@ -161,7 +163,7 @@ partial class DancerRotation
 
     static partial void ModifyDoubleTechnicalFinishPvE(ref ActionSetting setting)
     {
-        setting.StatusProvide = [StatusID.StandardStep, StatusID.TechnicalStep];
+        setting.StatusProvide = [StatusID.StandardStep, StatusID.TechnicalStep, StatusID.DanceOfTheDawnReady];
         setting.CreateConfig = () => new()
         {
             TimeToKill = 20,
@@ -171,13 +173,28 @@ partial class DancerRotation
     static partial void ModifyDoubleStandardFinishPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.StandardStep];
+        setting.StatusProvide = [StatusID.LastDanceReady];
         setting.ActionCheck = () => IsDancing && CompletedSteps == 2 && Service.GetAdjustedActionId(ActionID.StandardStepPvE) == ActionID.DoubleStandardFinishPvE;
     }
 
     static partial void ModifyQuadrupleTechnicalFinishPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.TechnicalStep];
+        setting.StatusProvide = [StatusID.DanceOfTheDawnReady];
         setting.ActionCheck = () => IsDancing && CompletedSteps == 4 && Service.GetAdjustedActionId(ActionID.TechnicalStepPvE) == ActionID.QuadrupleTechnicalFinishPvE;
+    }
+
+    static partial void ModifyFinishingMovePvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.FinishingMoveReady];
+        setting.StatusProvide = [StatusID.LastDanceReady];
+        //setting.ActionCheck = () => !IsDancing
+    }
+
+    static partial void ModifyDanceOfTheDawnPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.DanceOfTheDawnReady];
+        //setting.ActionCheck = () => !IsDancing
     }
 
     static partial void ModifyEmboitePvE(ref ActionSetting setting)
