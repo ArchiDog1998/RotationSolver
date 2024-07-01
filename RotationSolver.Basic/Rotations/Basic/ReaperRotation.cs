@@ -15,6 +15,21 @@ partial class ReaperRotation
     /// </summary>
     public static bool HasSoulReaver => Player.HasStatus(true, StatusID.SoulReaver);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public static bool HasIdealHost => Player.HasStatus(true, StatusID.IdealHost);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static bool HasOblatio => Player.HasStatus(true, StatusID.Oblatio);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static bool HasPerfectioParata => Player.HasStatus(true, StatusID.PerfectioParata);
+
     #region JobGauge
     /// <summary>
     /// 
@@ -145,8 +160,7 @@ partial class ReaperRotation
 
     static partial void ModifySacrificiumPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.Enshrouded, StatusID.Oblatio];
-
+        setting.ActionCheck = () => HasEnshrouded && HasOblatio;
     }
 
     static partial void ModifyCommunioPvE(ref ActionSetting setting)
@@ -154,6 +168,11 @@ partial class ReaperRotation
         setting.StatusProvide = [StatusID.PerfectioParata];
         setting.StatusNeed = [StatusID.Enshrouded];
         setting.ActionCheck = () => LemureShroud == 1;
+    }
+
+    static partial void ModifyPerfectioPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => HasPerfectioParata;
     }
 
     static partial void ModifyLemuresSlicePvE(ref ActionSetting setting)

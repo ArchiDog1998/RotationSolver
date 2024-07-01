@@ -103,7 +103,7 @@ partial class MachinistRotation
 
     static partial void ModifyHyperchargePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => !IsOverheated && Heat >= 50 || Player.HasStatus(true, StatusID.Hypercharged);        
+        setting.ActionCheck = () => !IsOverheated && (Heat >= 50 || Player.HasStatus(true, StatusID.Hypercharged));        
         setting.CreateConfig = () => new()
         {
             TimeToKill = 10,
@@ -152,7 +152,7 @@ partial class MachinistRotation
 
     static partial void ModifyExcavatorPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.ExcavatorReady];
+        setting.ActionCheck = () => Player.HasStatus(true, StatusID.ExcavatorReady);
         setting.CreateConfig = () => new ActionConfig()
         {
             AoeCount = 1,
@@ -161,7 +161,7 @@ partial class MachinistRotation
 
     static partial void ModifyFullMetalFieldPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.FullMetalMachinist];
+        setting.ActionCheck = () => Player.HasStatus(true, StatusID.FullMetalMachinist);
         setting.CreateConfig = () => new ActionConfig()
         {
             AoeCount = 1,
