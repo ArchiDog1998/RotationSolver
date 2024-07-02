@@ -53,6 +53,7 @@ partial class WarriorRotation
     static partial void ModifyPrimalRendPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.PrimalRendReady];
+        setting.StatusProvide = [StatusID.PrimalRuinationReady];
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
@@ -158,6 +159,7 @@ partial class WarriorRotation
     static partial void ModifyFellCleavePvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 66124;
+        setting.StatusProvide = [StatusID.BurgeoningFury];
     }
 
     static partial void ModifyEquilibriumPvE(ref ActionSetting setting)
@@ -168,6 +170,11 @@ partial class WarriorRotation
     static partial void ModifyDecimatePvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 66137;
+    }
+
+    static partial void ModifyPrimalWrathPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Wrathful];
     }
 
     /// <inheritdoc/>
