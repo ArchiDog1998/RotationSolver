@@ -415,6 +415,15 @@ internal partial class Configs : IPluginConfiguration
         Filter = BasicTimer)]
     private static readonly bool _overrideActionAheadTimer = false;
 
+    [ConditionBool, UI("Allow overriding safety features (DANGEROUS)",
+         Description = "Allows configuration of various safety features.\nBe warned that all of these options are unsupported and potentially dangerous!",
+         Filter = Extra)]
+    private static readonly bool _allowSafetyOverrides = false;
+
+    [ConditionBool, UI("Set active target (Lettuce Mode)",
+         Description = "Enabled: RSR will set the enemy it is attacking as your active target\nDisabled: RSR will attack and heal without setting your active target",
+         Parent = nameof(AllowSafetyOverrides))]
+    private static readonly bool _setActiveTarget = true;
 
     [UI("Use additional conditions", Filter = BasicParams)]
     public bool UseAdditionalConditions { get; set; } = false;

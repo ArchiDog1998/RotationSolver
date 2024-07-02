@@ -100,7 +100,7 @@ public static partial class RSCommands
                 if (tar != null && tar != Player.Object && tar.IsEnemy())
                 {
                     DataCenter.HostileTarget = tar;
-                    if (!DataCenter.IsManual) Svc.Targets.Target = tar;
+                    if (!DataCenter.IsManual && Service.Config.SetActiveTarget) Svc.Targets.Target = tar;
                 }
             }
 
