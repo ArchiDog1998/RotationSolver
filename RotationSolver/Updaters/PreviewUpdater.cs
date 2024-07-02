@@ -117,7 +117,7 @@ internal static class PreviewUpdater
                     var iconAddon = slot.Icon;
                     if ((IntPtr)iconAddon == IntPtr.Zero) continue;
                     if (!iconAddon->AtkResNode.IsVisible()) continue;
-                    //actionBar->PulseActionBarSlot(slotIndex);
+                    actionBar->PulseActionBarSlot(slotIndex);
                     UIModule.PlaySound(12, 0, 0, 0);
                 }
                 slotIndex++;
