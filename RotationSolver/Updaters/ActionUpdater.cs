@@ -124,7 +124,7 @@ internal static class ActionUpdater
 
                 NextAction = newAction;
 
-                if(gcdAction == null)
+                if (gcdAction == null)
                 {
                     NextGCDAction = null;
                 }

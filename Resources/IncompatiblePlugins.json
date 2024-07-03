@@ -1,19 +1,5 @@
 [
   {
-    "Name": "XIV Combo",
-    "Icon": "https://raw.githubusercontent.com/daemitus/XIVComboPlugin/master/res/icon.png",
-    "Url": "https://github.com/daemitus/XIVComboPlugin",
-    "Features": "Rotation",
-    "Type": 2
-  },
-  {
-    "Name": "XIV Sloth Combo",
-    "Icon": "https://raw.githubusercontent.com/Nik-Potokar/XIVSlothCombo/main/res/plugin/xivslothcombo.png",
-    "Url": "https://github.com/Nik-Potokar/XIVSlothCombo",
-    "Features": "Rotation",
-    "Type": 2
-  },
-  {
     "Name": "BossMod",
     "Icon": "https://raw.githubusercontent.com/awgil/ffxiv_bossmod/master/Data/icon.png",
     "Url": "https://github.com/awgil/ffxiv_bossmod",

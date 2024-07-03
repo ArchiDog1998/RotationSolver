@@ -11,6 +11,10 @@
     "AST": {
       "Timeline": {},
       "Trigger": []
+    },
+    "PLD": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [
