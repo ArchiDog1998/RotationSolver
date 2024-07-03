@@ -265,7 +265,7 @@ partial class ReaperRotation
     [RotationDesc(ActionID.FeintPvE)]
     protected sealed override bool DefenseAreaAbility(IAction nextGCD, out IAction? act)
     {
-        if (!HasSoulReaver && !HasEnshrouded && FeintPvE.CanUse(out act)) return true;
+        if (!HasSoulReaver && !HasEnshrouded && !HasExecutioner && FeintPvE.CanUse(out act)) return true;
         return base.DefenseAreaAbility(nextGCD, out act);
     }
 
@@ -273,7 +273,7 @@ partial class ReaperRotation
     [RotationDesc(ActionID.ArcaneCrestPvE)]
     protected override bool DefenseSingleAbility(IAction nextGCD, out IAction? act)
     {
-        if (!HasSoulReaver && !HasEnshrouded && ArcaneCrestPvE.CanUse(out act)) return true;
+        if (!HasSoulReaver && !HasEnshrouded && !HasExecutioner && ArcaneCrestPvE.CanUse(out act)) return true;
         return base.DefenseSingleAbility(nextGCD, out act);
     }
 
