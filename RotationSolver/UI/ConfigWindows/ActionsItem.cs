@@ -241,8 +241,8 @@ public class ActionsItem : ConfigWindowItemRS
 
 #if DEBUG
                     ImGui.Text("Is Real GCD: " + action.Info.IsRealGCD.ToString());
-                    ImGui.Text("Resources: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->CheckActionResources(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
-                    ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.AdjustedID).ToString());
+                    ImGui.Text("Resources: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->CheckActionResources(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.ID).ToString());
+                    ImGui.Text("Status: " + FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance()->GetActionStatus(FFXIVClientStructs.FFXIV.Client.Game.ActionType.Action, action.ID).ToString());
                     ImGui.Text("Cast Time: " + action.Info.CastTime.ToString());
                     ImGui.Text("MP: " + action.Info.MPNeed.ToString());
 #endif

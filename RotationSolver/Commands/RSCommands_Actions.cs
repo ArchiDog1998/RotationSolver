@@ -78,20 +78,20 @@ public static partial class RSCommands
 
         if (Service.Config.KeyBoardNoise)
         {
-            PreviewUpdater.PulseActionBar(nextAction.AdjustedID);
+            PreviewUpdater.PulseActionBar(nextAction.ID);
         }
 
         if (nextAction.Use())
         {
             OtherConfiguration.RotationSolverRecord.ClickingCount++;
 
-            _lastActionID = nextAction.AdjustedID;
+            _lastActionID = nextAction.ID;
             _lastUsedTime = DateTime.Now;
 
             if (nextAction is BaseAction act)
             {
                 if (Service.Config.KeyBoardNoise)
-                    Task.Run(() => PulseSimulation(nextAction.AdjustedID));
+                    Task.Run(() => PulseSimulation(nextAction.ID));
 
                 if (act.Setting.EndSpecial) ResetSpecial();
 #if DEBUG
@@ -124,7 +124,7 @@ public static partial class RSCommands
         }
         else
         {
-            Svc.Log.Error($"Failed to use the action {nextAction} ({nextAction.AdjustedID})");
+            Svc.Log.Error($"Failed to use the action {nextAction} ({nextAction.ID})");
         }
     }
 

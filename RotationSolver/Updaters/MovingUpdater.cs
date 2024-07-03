@@ -50,7 +50,7 @@ internal static class MovingUpdater
             //Action
             var action = DateTime.Now - RSCommands._lastUsedTime < TimeSpan.FromMilliseconds(100)
                 ? (ActionID)RSCommands._lastActionID
-                : doNextAction ? (ActionID)(ActionUpdater.NextAction?.AdjustedID ?? 0) : 0;
+                : doNextAction ? (ActionID)(ActionUpdater.NextAction?.ID ?? 0) : 0;
 
             var specialActions = ActionManager.GetAdjustedCastTime(ActionType.Action, (uint)action) > 0
                 || actionList.Any(id => Service.GetAdjustedActionId(id) == action);

@@ -57,7 +57,7 @@ internal static class MajorUpdater
             if (Service.Config.TeachingMode && ActionUpdater.NextAction != null)
             {
                 //Sprint action id is 3 however the id in hot bar is 4.
-                var id = ActionUpdater.NextAction.AdjustedID;
+                var id = ActionUpdater.NextAction.ID;
                 PainterManager.ActionIds.Add(id == (uint)ActionID.SprintPvE ? 4 : id);
             }
             ActionUpdater.UpdateActionInfo();

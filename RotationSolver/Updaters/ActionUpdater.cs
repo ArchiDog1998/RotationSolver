@@ -23,7 +23,7 @@ internal static class ActionUpdater
         {
             if (_nextAction == value) return;
             _nextAction = value;
-            Service.NextActionID = value?.AdjustedID ?? 0;
+            Service.NextActionID = value?.ID ?? 0;
         }
     }
 
@@ -161,7 +161,7 @@ internal static class ActionUpdater
 
     internal unsafe static void UpdateActionInfo()
     {
-        SetAction(NextGCDAction?.AdjustedID ?? 0);
+        SetAction(NextGCDAction?.ID ?? 0);
         UpdateWeaponTime();
         UpdateCombatTime();
         UpdateSlots();
@@ -281,7 +281,7 @@ internal static class ActionUpdater
             || Svc.Condition[ConditionFlag.RolePlaying]
             || Svc.Condition[ConditionFlag.InFlight]
             || (ActionManager.Instance()->ActionQueued && NextAction != null
-                && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID)
+                && ActionManager.Instance()->QueuedActionId != NextAction.ID)
             || Player.Object.CurrentHp == 0) return false;
 
         var maxAhead = Math.Max(DataCenter.MinAnimationLock - DataCenter.Ping, 0.08f);
