@@ -191,6 +191,12 @@ partial class DancerRotation
         //setting.ActionCheck = () => !IsDancing
     }
 
+    static partial void ModifyLastDancePvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.LastDanceReady];
+        //setting.ActionCheck = () => !IsDancing
+    }
+
     static partial void ModifyDanceOfTheDawnPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.DanceOfTheDawnReady];
