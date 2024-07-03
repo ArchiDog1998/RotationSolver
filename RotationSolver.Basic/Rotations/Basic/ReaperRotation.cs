@@ -18,6 +18,11 @@ partial class ReaperRotation
     /// <summary>
     /// 
     /// </summary>
+    public static bool HasExecutioner => Player.HasStatus(true, StatusID.Executioner);
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static bool HasIdealHost => Player.HasStatus(true, StatusID.IdealHost);
 
     /// <summary>
@@ -108,14 +113,29 @@ partial class ReaperRotation
         setting.StatusNeed = [StatusID.SoulReaver];
     }
 
+    static partial void ModifyExecutionersGibbetPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Executioner];
+    }
+
     static partial void ModifyGallowsPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.SoulReaver];
     }
 
+    static partial void ModifyExecutionersGallowsPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Executioner];
+    }
+
     static partial void ModifyGuillotinePvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.SoulReaver];
+    }
+
+    static partial void ModifyExecutionersGuillotinePvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Executioner];
     }
 
     static partial void ModifyBloodStalkPvE(ref ActionSetting setting)
