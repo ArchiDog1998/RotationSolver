@@ -2258,6 +2258,10 @@ public partial class RotationConfigWindow : Window
             if (ImGui.Button(UiString.ConfigWindow_List_AddPosition.Local()) && Player.Available) unsafe
                 {
                     var point = Player.Object.Position;
+                    var pointMathed = point + Vector3.UnitY * 5;
+                    var direction = Vector3.UnitY;
+                    Vector3* directionPtr = &direction;
+                    Vector3* pointPtr = &pointMathed;
                     int* unknown = stackalloc int[] { 0x4000, 0, 0x4000, 0 };
 
                     RaycastHit hit = default;
@@ -2267,7 +2271,7 @@ public partial class RotationConfigWindow : Window
                     [
                         .. pts,
                         Framework.Instance()->BGCollisionModule
-                            ->RaycastMaterialFilter(&hit, point + Vector3.UnitY * 5, -Vector3.UnitY, 20, 1, unknown) ? hit.Point : point,
+                            ->RaycastMaterialFilter(&hit, pointPtr, directionPtr, 20, 1, unknown) ? hit.Point : point,
                     ];
                     OtherConfiguration.SaveBeneficialPositions();
                 }

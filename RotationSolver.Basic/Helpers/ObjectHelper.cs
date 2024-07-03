@@ -384,7 +384,7 @@ public static class ObjectHelper
         RaycastHit hit = default;
 
         return !FFXIVClientStructs.FFXIV.Client.System.Framework.Framework.Instance()->BGCollisionModule
-            ->RaycastMaterialFilter(&hit, point, direction, direction.Length(), 1, unknown);
+            ->RaycastMaterialFilter(&hit, &point, &direction, direction.Length(), 1, unknown);
     }
 
     /// <summary>
