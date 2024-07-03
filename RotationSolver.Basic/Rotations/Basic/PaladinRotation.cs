@@ -34,7 +34,19 @@ partial class PaladinRotation
 
     static partial void ModifyAtonementPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.SwordOath_1991];
+        setting.StatusNeed = [StatusID.AtonementReady];
+        setting.StatusProvide = [StatusID.SupplicationReady];
+    }
+
+    static partial void ModifySupplicationPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.SupplicationReady];
+        setting.StatusProvide = [StatusID.SepulchreReady];
+    }
+
+    static partial void ModifySepulchrePvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.SepulchreReady];
     }
 
     static partial void ModifyShieldBashPvE(ref ActionSetting setting)
@@ -72,6 +84,18 @@ partial class PaladinRotation
             TimeToKill = 0,
         };
     }
+
+    static partial void ModifyConfiteorPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.ConfiteorReady];
+        setting.StatusProvide = [StatusID.SupplicationReady];
+    }
+
+    static partial void ModifyBladeOfHonorPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.BladeOfHonorReady];
+    }
+
 
     static partial void ModifyFightOrFlightPvE(ref ActionSetting setting)
     {
@@ -122,6 +146,7 @@ partial class PaladinRotation
     static partial void ModifyProminencePvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 66593;
+        setting.StatusProvide = [StatusID.DivineMight];
     }
 
     static partial void ModifyHallowedGroundPvE(ref ActionSetting setting)
@@ -132,6 +157,7 @@ partial class PaladinRotation
     static partial void ModifyGoringBladePvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 67570;
+        setting.StatusNeed = [StatusID.GoringBladeReady];
     }
 
     static partial void ModifyDivineVeilPvE(ref ActionSetting setting)
@@ -147,6 +173,8 @@ partial class PaladinRotation
     static partial void ModifyRoyalAuthorityPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 67573;
+        setting.StatusProvide = [StatusID.DivineMight];
+        setting.StatusProvide = [StatusID.AtonementReady];
     }
 
     static partial void ModifyPassageOfArmsPvE(ref ActionSetting setting)
