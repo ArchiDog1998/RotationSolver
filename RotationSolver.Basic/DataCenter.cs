@@ -482,8 +482,8 @@ internal static class DataCenter
 
     public static IEnumerable<float> PartyMembersHP => RefinedHP.Values.Where(r => r > 0);
     public static float PartyMembersMinHP => PartyMembersHP.Any() ? PartyMembersHP.Min() : 0;
-    public static float PartyMembersAverHP => PartyMembersHP.Average();
-    public static float PartyMembersDifferHP => (float)Math.Sqrt(PartyMembersHP.Average(d => Math.Pow(d - PartyMembersAverHP, 2)));
+    public static float PartyMembersAverHP => PartyMembersHP.Any() ? PartyMembersHP.Average() : 0;
+    public static float PartyMembersDifferHP => PartyMembersHP.Any() ? (float)Math.Sqrt(PartyMembersHP.Average(d => Math.Pow(d - PartyMembersAverHP, 2))) : 0;
 
     public static bool HPNotFull => PartyMembersMinHP < 1;
 
