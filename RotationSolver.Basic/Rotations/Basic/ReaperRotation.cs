@@ -152,7 +152,7 @@ partial class ReaperRotation
 
     static partial void ModifyGluttonyPvE(ref ActionSetting setting)
     {
-        setting.StatusProvide = [StatusID.SoulReaver];
+        setting.StatusProvide = [StatusID.SoulReaver, StatusID.Executioner];
         setting.ActionCheck = () => !HasEnshrouded && !HasSoulReaver && Soul >= 50;
     }
 

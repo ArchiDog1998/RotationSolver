@@ -88,7 +88,6 @@ partial class PaladinRotation
     static partial void ModifyConfiteorPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.ConfiteorReady];
-        setting.StatusProvide = [StatusID.SupplicationReady];
     }
 
     static partial void ModifyBladeOfHonorPvE(ref ActionSetting setting)
@@ -103,6 +102,7 @@ partial class PaladinRotation
         {
             TimeToKill = 0,
         };
+        setting.StatusProvide = [StatusID.GoringBladeReady];
     }
 
     static partial void ModifySentinelPvE(ref ActionSetting setting)
@@ -131,11 +131,6 @@ partial class PaladinRotation
     static partial void ModifyHolySheltronPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => OathGauge >= 50 && Player.IsTargetOnSelf();
-    }
-
-    static partial void ModifyIntervenePvP(ref ActionSetting setting)
-    {
-        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     static partial void ModifySpiritsWithinPvE(ref ActionSetting setting)
@@ -180,6 +175,11 @@ partial class PaladinRotation
     static partial void ModifyPassageOfArmsPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 68111;
+    }
+
+    static partial void ModifyIntervenePvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     /// <inheritdoc/>
