@@ -251,6 +251,7 @@ public class ActionsItem : ConfigWindowItemRS
                     ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
                     ImGui.Text("Has One:" + action.CD.HasOneCharge.ToString());
                     ImGui.Text("Recast One: " + action.CD.RecastTimeOneChargeRaw.ToString());
+                    ImGui.Text("Recast One Remain: " + action.CD.RecastTimeRemainOneCharge.ToString());
                     ImGui.Text("Recast Elapsed: " + action.CD.RecastTimeElapsedRaw.ToString());
                     ImGui.Text($"Charges: {action.CD.CurrentCharges} / {action.CD.MaxCharges}");
 
