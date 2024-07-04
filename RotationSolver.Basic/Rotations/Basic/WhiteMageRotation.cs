@@ -1,4 +1,4 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+namespace RotationSolver.Basic.Rotations.Basic;
 
 partial class WhiteMageRotation
 {
@@ -98,16 +98,6 @@ partial class WhiteMageRotation
         setting.ActionCheck = () => BloodLily == 3;
     }
 
-    static partial void ModifyPresenceOfMindPvE(ref ActionSetting setting)
-    {
-        setting.ActionCheck = () => !IsMoving;
-        setting.CreateConfig = () => new()
-        {
-            TimeToKill = 10,
-        };
-        setting.UnlockedByQuestID = 66615;
-    }
-
     static partial void ModifyCureIiiPvP(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.CureIiiReady];
@@ -147,6 +137,7 @@ partial class WhiteMageRotation
     static partial void ModifyTetragrammatonPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 67261;
+
     }
 
     static partial void ModifyPlenaryIndulgencePvE(ref ActionSetting setting)
@@ -157,5 +148,39 @@ partial class WhiteMageRotation
     static partial void ModifySeraphStrikePvP(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    // Dawntrail changes below
+
+    static partial void ModifyPresenceOfMindPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => !IsMoving;
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+        setting.UnlockedByQuestID = 66615;
+        setting.StatusProvide = [StatusID.SacredSight];
+    }
+
+    static partial void ModifyAetherialShiftPvE(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
+    }
+
+    static partial void ModifyTemperencePvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.Temperance];
+        setting.StatusProvide = [StatusID.DivineGrace];
+    }
+
+    static partial void ModifyGlareivPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.SacredSight];
+    }
+
+    static partial void ModifyDivineCaressPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.DivineGrace];
     }
 }
