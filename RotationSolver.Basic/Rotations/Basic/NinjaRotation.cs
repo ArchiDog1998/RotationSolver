@@ -22,11 +22,6 @@ partial class NinjaRotation
         setting.UnlockedByQuestID = 67221;
     }
 
-    static partial void ModifyAeolianEdgePvE(ref ActionSetting setting)
-    {
-        setting.ActionCheck = () => Kazematoi > 0;
-    }
-
     static partial void ModifyPhantomKamaitachiPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.PhantomKamaitachiReady];
@@ -49,7 +44,7 @@ partial class NinjaRotation
 
     static partial void ModifyMeisuiPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.Suiton];
+        setting.StatusNeed = [StatusID.ShadowWalker];
         setting.ActionCheck = () => Ninki <= 50;
     }
 
@@ -73,7 +68,7 @@ partial class NinjaRotation
 
     static partial void ModifyTrickAttackPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.Suiton, StatusID.Hidden];
+        setting.StatusNeed = [StatusID.ShadowWalker, StatusID.Hidden];
         setting.CreateConfig = () => new ActionConfig()
         {
             TimeToKill = 10,
@@ -165,6 +160,10 @@ partial class NinjaRotation
     static partial void ModifyHutonPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.ShadowWalker];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
     static partial void ModifyShukuchiPvP(ref ActionSetting setting)
