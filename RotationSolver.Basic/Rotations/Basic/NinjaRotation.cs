@@ -7,45 +7,25 @@ partial class NinjaRotation
 
     #region Job Gauge
     /// <summary>
-    /// 
+    /// Current Ninki
     /// </summary>
-    public static byte Ninki => JobGauge.Ninki;
-
-    static float HutonTimeRaw => JobGauge.HutonTimer / 1000f;
+    public static byte Kazematoi => JobGauge.Ninki;
 
     /// <summary>
-    /// 
+    /// Number of charges of Kazematoi
     /// </summary>
-    public static float HutonTime => HutonTimeRaw - DataCenter.DefaultGCDRemain;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="time"></param>
-    /// <returns></returns>
-    protected static bool HutonEndAfter(float time) => HutonTime <= time;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="gctCount"></param>
-    /// <param name="offset"></param>
-    /// <returns></returns>
-    protected static bool HutonEndAfterGCD(uint gctCount = 0, float offset = 0)
-        => HutonEndAfter(GCDTime(gctCount, offset));
+    public static byte Ninki => ((byte)(JobGauge.HutonTimer * 1000f));
     #endregion
 
     static partial void ModifyArmorCrushPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => HutonEndAfter(25) && !HutonEndAfterGCD();
         setting.UnlockedByQuestID = 67221;
     }
 
-    // static partial void ModifyHuraijinPvE(ref ActionSetting setting)
-    // {
-    //     setting.ActionCheck = () => HutonEndAfterGCD();
-    //     setting.UnlockedByQuestID = 67224;
-    // }
+    static partial void ModifyAeolianEdgePvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => Kazematoi > 0;
+    }
 
     static partial void ModifyPhantomKamaitachiPvE(ref ActionSetting setting)
     {
@@ -75,7 +55,16 @@ partial class NinjaRotation
 
     static partial void ModifyMugPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => JobGauge.Ninki <= 60 && IsLongerThan(10);
+        setting.ActionCheck = () => IsLongerThan(10);
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+    }
+
+    static partial void ModifyDokumoriPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => Ninki <= 60 && IsLongerThan(10);
         setting.CreateConfig = () => new()
         {
             TimeToKill = 10,
@@ -99,7 +88,6 @@ partial class NinjaRotation
     static partial void ModifyTenChiJinPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.Kassatsu, StatusID.TenChiJin];
-        setting.ActionCheck = () => !HutonEndAfterGCD(2);
         setting.UnlockedByQuestID = 68488;
     }
 
@@ -107,11 +95,6 @@ partial class NinjaRotation
     {
         setting.StatusProvide = [StatusID.Kassatsu, StatusID.TenChiJin];
         setting.UnlockedByQuestID = 65770;
-    }
-
-    static partial void ModifyHutonPvE(ref ActionSetting setting)
-    {
-        setting.ActionCheck = () => HutonEndAfterGCD();
     }
 
     static partial void ModifyDotonPvE(ref ActionSetting setting)
@@ -174,6 +157,16 @@ partial class NinjaRotation
         };
     }
 
+    static partial void ModifySuitonPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.ShadowWalker];
+    }
+
+    static partial void ModifyHutonPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.ShadowWalker];
+    }
+
     static partial void ModifyShukuchiPvP(ref ActionSetting setting)
     {
         setting.SpecialType = SpecialActionType.MovingForward;
@@ -203,11 +196,6 @@ partial class NinjaRotation
         return base.DefenseSingleAbility(nextGCD, out act);
     }
 
-    //static partial void ModifySuitonPvE(ref ActionSetting setting)
-    //{
-    //    setting.StatusProvide = [StatusID.Suiton];
-    //}
-
     static partial void ModifyFleetingRaijuPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.RaijuReady];
@@ -216,5 +204,20 @@ partial class NinjaRotation
     static partial void ModifyForkedRaijuPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.RaijuReady];
+    }
+
+    static partial void ModifyDeathfrogMediumPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Higi];
+    }
+
+    static partial void ModifyZeshoMeppoPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Higi];
+    }
+
+    static partial void ModifyTenriJindoPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.TenriJindoReady];
     }
 }
