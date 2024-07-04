@@ -14,7 +14,7 @@ partial class NinjaRotation
     /// <summary>
     /// Number of charges of Kazematoi
     /// </summary>
-    public static byte Ninki => ((byte)(JobGauge.HutonTimer * 1000f));
+    public static byte Ninki => (byte)JobGauge.HutonTimer;
     #endregion
 
     static partial void ModifyArmorCrushPvE(ref ActionSetting setting)
