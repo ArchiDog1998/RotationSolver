@@ -168,13 +168,13 @@ partial class WhiteMageRotation
         setting.SpecialType = SpecialActionType.MovingForward;
     }
 
-    static partial void ModifyTemperencePvE(ref ActionSetting setting)
+    static partial void ModifyTemperancePvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.Temperance];
         setting.StatusProvide = [StatusID.DivineGrace];
     }
 
-    static partial void ModifyGlareivPvE(ref ActionSetting setting)
+    static partial void ModifyGlareIvPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.SacredSight];
     }
