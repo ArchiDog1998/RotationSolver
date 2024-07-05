@@ -111,23 +111,23 @@ partial class BlackMageRotation
 
     static partial void ModifyThunderPvE(ref ActionSetting setting)
     {
-        setting.MPOverride = () => HasThunder ? 0 : null;
+        setting.StatusNeed = [StatusID.Thunderhead];
     }
 
     static partial void ModifyThunderIiPvE(ref ActionSetting setting)
     {
-        setting.MPOverride = () => HasThunder ? 0 : null;
+        setting.StatusNeed = [StatusID.Thunderhead];
     }
 
     static partial void ModifyThunderIiiPvE(ref ActionSetting setting)
     {
-        setting.MPOverride = () => HasThunder ? 0 : null;
+        setting.StatusNeed = [StatusID.Thunderhead];
         setting.UnlockedByQuestID = 66612;
     }
 
     static partial void ModifyThunderIvPvE(ref ActionSetting setting)
     {
-        setting.MPOverride = () => HasThunder ? 0 : null;
+        setting.StatusNeed = [StatusID.Thunderhead];
     }
 
     static partial void ModifyFireIiiPvE(ref ActionSetting setting)
