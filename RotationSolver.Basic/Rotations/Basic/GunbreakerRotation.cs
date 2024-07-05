@@ -78,14 +78,19 @@ partial class GunbreakerRotation
         setting.SpecialType = SpecialActionType.MeleeRange;
     }
 
+    static partial void ModifyReignOfBeastsPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.ReadyToReign];
+    }
+
     static partial void ModifyNobleBloodPvE(ref ActionSetting setting)
     {
-        setting.ComboIds = [ActionID.ReignOfBeastsPvE];
+        setting.ActionCheck = () => Service.GetAdjustedActionId(ActionID.ReignOfBeastsPvE) == ActionID.NobleBloodPvE;
     }
 
     static partial void ModifyLionHeartPvE(ref ActionSetting setting)
     {
-        setting.ComboIds = [ActionID.NobleBloodPvE];
+        setting.ActionCheck = () => Service.GetAdjustedActionId(ActionID.ReignOfBeastsPvE) == ActionID.LionHeartPvE;
     }
 
     static partial void ModifyFatedCirclePvE(ref ActionSetting setting)
