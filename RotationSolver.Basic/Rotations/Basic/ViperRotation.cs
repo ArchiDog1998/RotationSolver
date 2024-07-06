@@ -1,6 +1,3 @@
-using Dalamud.Game.ClientState.JobGauge.Enums;
-using System.Collections.Generic;
-
 namespace RotationSolver.Basic.Rotations.Basic;
 
 public partial class ViperRotation
