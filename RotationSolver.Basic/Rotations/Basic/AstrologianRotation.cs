@@ -2,6 +2,8 @@
 
 partial class AstrologianRotation
 {
+    #region JobGauge
+
     /// <summary>
     /// 
     /// </summary>
@@ -10,7 +12,7 @@ partial class AstrologianRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static CardType DrawnCard => JobGauge.DrawnCard;
+    protected static CardType[] DrawnCard => JobGauge.DrawnCards;
 
     /// <summary>
     /// 
@@ -20,11 +22,14 @@ partial class AstrologianRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static SealType[] Seals => JobGauge.Seals;
+    protected static DrawType ActiveDraw => JobGauge.ActiveDraw;
+
+    #endregion
+
 
     private sealed protected override IBaseAction? Raise => AscendPvE;
 
-    private static readonly StatusID[] CombustStatus = 
+    private static readonly StatusID[] CombustStatus =
     [
         StatusID.Combust,
         StatusID.CombustIi,
@@ -68,27 +73,6 @@ partial class AstrologianRotation
         setting.UnlockedByQuestID = 67560;
     }
 
-    // static partial void ModifyAstrodynePvE(ref ActionSetting setting)
-    // {
-    //     setting.ActionCheck = () => !Seals.Contains(SealType.NONE);
-    //     setting.CreateConfig = () => new()
-    //     {
-    //         TimeToKill = 10,
-    //     };
-    // }
-    //
-    // static partial void ModifyDrawPvE(ref ActionSetting setting)
-    // {
-    //     setting.ActionCheck = () => DrawnCard == CardType.NONE;
-    // }
-    //
-    // static partial void ModifyRedrawPvE(ref ActionSetting setting)
-    // {
-    //     setting.StatusNeed = [StatusID.ClarifyingDraw];
-    //     setting.ActionCheck = () => DrawnCard != CardType.NONE && Seals.Contains(GetCardSeal(DrawnCard));
-    //     setting.UnlockedByQuestID = 67551;
-    // }
-
     static partial void ModifyMinorArcanaPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InCombat;
@@ -130,53 +114,53 @@ partial class AstrologianRotation
         setting.UnlockedByQuestID = 67553;
     }
 
-    static partial void ModifyTheArrowPvE(ref ActionSetting setting)
-    {
-        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.StatusFromSelf = false;
-        setting.TargetType = TargetType.Melee;
-        setting.ActionCheck = () => DrawnCard == CardType.ARROW;
-    }
+      /*static partial void ModifyTheArrowPvE(ref ActionSetting setting)
+      {
+          setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+          setting.StatusFromSelf = false;
+          setting.TargetType = TargetType.Melee;
+          setting.ActionCheck = () => DrawnCard == CardType.ARROW;
+      }
 
-    static partial void ModifyTheBalancePvE(ref ActionSetting setting)
-    {
-        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.StatusFromSelf = false;
-        setting.TargetType = TargetType.Melee;
-        setting.ActionCheck = () => DrawnCard == CardType.BALANCE;
-    }
-    
-    static partial void ModifyTheBolePvE(ref ActionSetting setting)
-    {
-        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.StatusFromSelf = false;
-        setting.TargetType = TargetType.Range;
-        setting.ActionCheck = () => DrawnCard == CardType.BOLE;
-    }
+      static partial void ModifyTheBalancePvE(ref ActionSetting setting)
+      {
+          setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+          setting.StatusFromSelf = false;
+          setting.TargetType = TargetType.Melee;
+          setting.ActionCheck = () => DrawnCard == CardType.BALANCE;
+      }
 
-    static partial void ModifyTheEwerPvE(ref ActionSetting setting)
-    {
-        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.StatusFromSelf = false;
-        setting.TargetType = TargetType.Range;
-        setting.ActionCheck = () => DrawnCard == CardType.EWER;
-    }
+      static partial void ModifyTheBolePvE(ref ActionSetting setting)
+      {
+          setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+          setting.StatusFromSelf = false;
+          setting.TargetType = TargetType.Range;
+          setting.ActionCheck = () => DrawnCard == CardType.BOLE;
+      }
 
-    static partial void ModifyTheSpearPvE(ref ActionSetting setting)
-    {
-        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.StatusFromSelf = false;
-        setting.TargetType = TargetType.Melee;
-        setting.ActionCheck = () => DrawnCard == CardType.SPEAR;
-    }
+      static partial void ModifyTheEwerPvE(ref ActionSetting setting)
+      {
+          setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+          setting.StatusFromSelf = false;
+          setting.TargetType = TargetType.Range;
+          setting.ActionCheck = () => DrawnCard == CardType.EWER;
+      }
 
-    static partial void ModifyTheSpirePvE(ref ActionSetting setting)
-    {
-        setting.TargetStatusProvide = StatusHelper.AstCardStatus;
-        setting.StatusFromSelf = false;
-        setting.TargetType = TargetType.Range;
-        setting.ActionCheck = () => DrawnCard == CardType.SPIRE;
-    }
+      static partial void ModifyTheSpearPvE(ref ActionSetting setting)
+      {
+          setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+          setting.StatusFromSelf = false;
+          setting.TargetType = TargetType.Melee;
+          setting.ActionCheck = () => DrawnCard == CardType.SPEAR;
+      }
+
+      static partial void ModifyTheSpirePvE(ref ActionSetting setting)
+      {
+          setting.TargetStatusProvide = StatusHelper.AstCardStatus;
+          setting.StatusFromSelf = false;
+          setting.TargetType = TargetType.Range;
+          setting.ActionCheck = () => DrawnCard == CardType.SPIRE;
+      }*/
 
     static partial void ModifyLightspeedPvE(ref ActionSetting setting)
     {
@@ -203,44 +187,23 @@ partial class AstrologianRotation
     {
         setting.UnlockedByQuestID = 67558;
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="act"></param>
-    /// <returns></returns>
-    protected bool PlayCard(out IAction? act)
-    {
-        act = null;
-        if (!Seals.Contains(SealType.NONE)) return false;
-
-        if (TheBalancePvE.CanUse(out act)) return true;
-        if (TheArrowPvE.CanUse(out act)) return true;
-        if (TheSpearPvE.CanUse(out act)) return true;
-        if (TheBolePvE.CanUse(out act)) return true;
-        if (TheEwerPvE.CanUse(out act)) return true;
-        if (TheSpirePvE.CanUse(out act)) return true;
-
-        return false;
-    }
-
-    static SealType GetCardSeal(CardType card)
+   /* static  GetCardSeal(CardType card)
     {
         return card switch
         {
-            CardType.BALANCE or CardType.BOLE => SealType.SUN,
-            CardType.ARROW or CardType.EWER => SealType.MOON,
-            CardType.SPEAR or CardType.SPIRE => SealType.CELESTIAL,
-            _ => SealType.NONE,
+         CardType.BALANCE or CardType.BOLE => SealType.SUN,
+         CardType.ARROW or CardType.EWER => SealType.MOON,
+         CardType.SPEAR or CardType.SPIRE => SealType.CELESTIAL,
+         _ => SealType.NONE,
         };
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public override void DisplayStatus()
-    {
-        ImGui.Text($"Card: {DrawnCard} : {GetCardSeal(DrawnCard)}");
-        ImGui.Text(string.Join(", ", Seals.Select(i => i.ToString())));
-    }
+ /// <summary>
+ ///
+ /// </summary>
+ public override void DisplayStatus()
+ {
+     ImGui.Text($"Card: {DrawnCard} : {GetCardSeal(DrawnCard)}");
+     ImGui.Text(string.Join(", ", Seals.Select(i => i.ToString())));
+ }*/
 }

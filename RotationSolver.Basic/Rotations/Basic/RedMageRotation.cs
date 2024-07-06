@@ -60,17 +60,17 @@ partial class RedMageRotation
 
     static partial void ModifyRipostePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => BlackMana >= 20 && WhiteMana >= 20;
+        setting.ActionCheck = () => (BlackMana >= 20 && WhiteMana >= 20)  || Player.HasStatus(true, StatusID.MagickedSwordplay);
     }
 
     static partial void ModifyZwerchhauPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => BlackMana >= 15 && WhiteMana >= 15;
+        setting.ActionCheck = () => (BlackMana >= 15 && WhiteMana >= 15)  || Player.HasStatus(true, StatusID.MagickedSwordplay);
     }
 
     static partial void ModifyRedoublementPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => BlackMana >= 15 && WhiteMana >= 15;
+        setting.ActionCheck = () => (BlackMana >= 15 && WhiteMana >= 15)  || Player.HasStatus(true, StatusID.MagickedSwordplay);
     }
 
     static partial void ModifyScatterPvE(ref ActionSetting setting)
@@ -172,5 +172,22 @@ partial class RedMageRotation
         if (AddlePvE.CanUse(out act)) return true;
         if (MagickBarrierPvE.CanUse(out act, skipAoeCheck: true)) return true;
         return base.DefenseAreaAbility(nextGCD, out act);
+    }
+    
+    //DT Changes
+
+    static partial void ModifyViceOfThornsPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.ThornedFlourish];
+    }
+    
+    static partial void ModifyGrandImpactPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.GrandImpactReady];
+    }
+    
+    static partial void ModifyPrefulgencePvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.PrefulgenceReady];
     }
 }
