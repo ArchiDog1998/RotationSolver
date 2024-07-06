@@ -224,7 +224,7 @@ internal static class DataCenter
     public static float CalculatedActionAhead => DefaultGCDTotal * 0.25f;
 
     public static float GCDTime(uint gcdCount = 0, float offset = 0)
-        => ActionManagerHelper.GetDefaultRecastTime();
+        => ActionManagerHelper.GetDefaultRecastTime() * gcdCount + offset;
 
     #endregion
 
