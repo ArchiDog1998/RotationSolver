@@ -465,5 +465,6 @@
   "RotationSolver.Data.UiString.ConfigWindow_Auto_HealingCondition": "Healing Condition",
   "RotationSolver.Data.UiString.ConfigWindow_Auto_HealingCondition_Description": "How RSR should use healing abilities",
   "RotationSolver.Data.UiString.ConfigWindow_About_Warnings_Time": "Warning Time",
-  "RotationSolver.Data.UiString.ConfigWindow_About_Warnings_Warning": "Warning Message"
+  "RotationSolver.Data.UiString.ConfigWindow_About_Warnings_Warning": "Warning Message",
+  "RotationSolver.Data.UiString.CommandsChangeSettingsValue": "Modify {0} to {1}"
 }
