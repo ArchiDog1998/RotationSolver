@@ -17,10 +17,10 @@ internal class RotationGetter(Lumina.GameData gameData, ClassJob job)
         var jobName = job.Name.ToString();
 
         var jobs = $"Job.{job.Abbreviation}";
-        // if (job.RowId != 28 && job.RowId != job.ClassJobParent.Row)
-        // {
-        //     jobs += $", Job.{job.ClassJobParent.Value?.Abbreviation ?? "ADV"}";
-        // }
+        if (job.RowId != 28 && job.RowId != job.ClassJobParent.Row)
+        {
+            jobs += $", Job.{job.ClassJobParent.Value?.Abbreviation ?? "ADV"}";
+        }
 
         var jobGauge = job.Abbreviation == "BLU" ? string.Empty : $"static {job.Abbreviation}Gauge JobGauge => Svc.Gauges.Get<{job.Abbreviation}Gauge>();";
 
