@@ -107,7 +107,7 @@ partial class BlackMageRotation
     /// <summary>
     /// 
     /// </summary>
-    protected static bool HasThunder => Player.HasStatus(true, StatusID.Thundercloud);
+    protected static bool HasThunder => Player.HasStatus(true, StatusID.Thunderhead);
 
     static partial void ModifyThunderPvE(ref ActionSetting setting)
     {
