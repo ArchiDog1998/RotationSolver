@@ -1,5 +1,48 @@
 # Changelog
 
+## [5.1.0](https://github.com/ArchiDog1998/RotationSolver/compare/v5.0.3...v5.1.0) (2024-07-04)
+
+
+### Features
+
+* A new Target System. ([113a2f6](https://github.com/ArchiDog1998/RotationSolver/commit/113a2f6faadfa6b3da996b7b206e314ccdb5b12e))
+* add more target conditions for you to customize the target. ([80d4eda](https://github.com/ArchiDog1998/RotationSolver/commit/80d4edae18e946c1cd51d832e8a01ab3f45d1285))
+
+
+### Bug Fixes
+
+* add remind me option. ([282debf](https://github.com/ArchiDog1998/RotationSolver/commit/282debf892ca16af4bfe8c1e3b809c4dce3db71b))
+* add target condition for all territory configs. ([7804794](https://github.com/ArchiDog1998/RotationSolver/commit/7804794538558aacb8afbc2ad66ad4549d2428c7))
+* add territory condition. ([c98fd5f](https://github.com/ArchiDog1998/RotationSolver/commit/c98fd5f44202e9c55bbb83fa1b7c270aa85842cd))
+* api 10. ([3fd017c](https://github.com/ArchiDog1998/RotationSolver/commit/3fd017cffb26d30e9d6a1139b7f361d37fd4ba11))
+* api 10. ([6d07e1e](https://github.com/ArchiDog1998/RotationSolver/commit/6d07e1ee07b54dee0bae157d28082c484691cfa3))
+* api update. ([70db9c6](https://github.com/ArchiDog1998/RotationSolver/commit/70db9c6cf286474aa244a934f1542f8db68f75da))
+* api. ([f034c04](https://github.com/ArchiDog1998/RotationSolver/commit/f034c042e39bcd927c1570301885ee0b4e5a74b6))
+* better action ui. ([522a1b5](https://github.com/ArchiDog1998/RotationSolver/commit/522a1b5f69890e76d9d7b70a118cdc9d898d50c6))
+* better compatibility. ([e1cce62](https://github.com/ArchiDog1998/RotationSolver/commit/e1cce62e4cf3d77584ff2b9c9d789b73ab505c62))
+* better json converter. ([e01b901](https://github.com/ArchiDog1998/RotationSolver/commit/e01b901732ce915737b834509645c4b646be38ef))
+* better pngs. ([042a6fb](https://github.com/ArchiDog1998/RotationSolver/commit/042a6fb18ffee9c7197c1a25a5fd4f291a644e45))
+* better tooltips. ([4d4899e](https://github.com/ArchiDog1998/RotationSolver/commit/4d4899e3f425e809f5163225c6e51bb1e210ab86))
+* change the adjust id to id. ([14daa05](https://github.com/ArchiDog1998/RotationSolver/commit/14daa05f161f056a9801dfa9d99fd723b5ee9594))
+* condition set fix and json fix. ([5c72e9d](https://github.com/ArchiDog1998/RotationSolver/commit/5c72e9df55e34221691200dbd981e32bb007a1b3))
+* drawing fix and loc fix. ([4eb58fa](https://github.com/ArchiDog1998/RotationSolver/commit/4eb58fa562a2cf367e48aaff38fbf77518e5fb3c))
+* json fix. ([69ef4d8](https://github.com/ArchiDog1998/RotationSolver/commit/69ef4d86079780f43c34f734b5a39d38aa503434))
+* list drawing in imgui. ([daed659](https://github.com/ArchiDog1998/RotationSolver/commit/daed659dcd2ce13200be6c27fce0deae9a115517))
+* loc fix. ([e47983b](https://github.com/ArchiDog1998/RotationSolver/commit/e47983b3146550fada4dd0641930b1fc7a9895ba))
+* local fix. ([3edc27c](https://github.com/ArchiDog1998/RotationSolver/commit/3edc27c3d997154a9769c7f34f0db4bd6d2e748d))
+* make it almost work. ([b0f4945](https://github.com/ArchiDog1998/RotationSolver/commit/b0f4945e9550b9d983525ba636d3c15163f75ab6))
+* make it work, and wait for the sig updates. ([455f0e8](https://github.com/ArchiDog1998/RotationSolver/commit/455f0e803c7be9566db2fbce606cbafc3c3db5c3))
+* merge. ([9d641f7](https://github.com/ArchiDog1998/RotationSolver/commit/9d641f7777f41b6c27bcab40ccf9730d5bdaa993))
+* naming. ([fddd784](https://github.com/ArchiDog1998/RotationSolver/commit/fddd78416ce9602a5cfb7eaa838cc1b5a5c1f7b3))
+* remove mp timer. good bye 6.0 ([1005a9d](https://github.com/ArchiDog1998/RotationSolver/commit/1005a9dfaa612636b07a715fe91d6ba0404c7a1b))
+* simplify the ui. ([358c98c](https://github.com/ArchiDog1998/RotationSolver/commit/358c98c650be94f6c85f5fd9aad0dffc1ae86ccb))
+* trying to add the conditions for the target system. ([904a9a6](https://github.com/ArchiDog1998/RotationSolver/commit/904a9a6c498737c0a104f77528188520df2ade69))
+* ui fix. ([1c947ef](https://github.com/ArchiDog1998/RotationSolver/commit/1c947efb3044c74838148158636ab5d42ff1b7d7))
+* ui. ([f156f8e](https://github.com/ArchiDog1998/RotationSolver/commit/f156f8e20309950739364e14500267b528c1efca))
+* update submodule. ([b68ec32](https://github.com/ArchiDog1998/RotationSolver/commit/b68ec321ecbadd023d40638278506a36b9596c57))
+* update submodules. ([8fccfcc](https://github.com/ArchiDog1998/RotationSolver/commit/8fccfccf84414d27f73e98b0da96acd1e67c0e59))
+* update submodules. ([20dae6d](https://github.com/ArchiDog1998/RotationSolver/commit/20dae6d0973fcf25a3bf65257a25b420b848984a))
+
 ## [5.0.3](https://github.com/ArchiDog1998/RotationSolver/compare/v5.0.2...v5.0.3) (2024-06-13)
 
 
