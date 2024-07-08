@@ -127,9 +127,20 @@ public class ListItem : ConfigWindowItemRS
                 var popUpKey = $"ActionPopup{group.GetHashCode()}{j}";
                 ImGuiHelperRS.ActionSelectorPopUp(popUpKey, _actionGrpActionsList, DataCenter.RightNowRotation, item => actions[j] = item.ID);
 
+                float height = -1;
                 if (((ActionID)action).GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
                 {
                     ImGui.SameLine();
+
+                    if (height == -1)
+                    {
+                        height = ImGui.GetCursorPosY();
+                    }
+                    else
+                    {
+                        ImGui.SetCursorPosY(height);
+                    }
+
                     var cursor = ImGui.GetCursorPos();
 
                     var key = $"ActionPopupActionDelete{group.GetHashCode()}{j}";
@@ -466,8 +477,8 @@ public class ListItem : ConfigWindowItemRS
 
     private static readonly CollapsingHeaderGroup? _targetHeader = new(new()
     {
-         { () => UiString.ConfigWindow_Target_Priority.Local(), () => DrawTargetPriority() },
-         { () => UiString.ConfigWindow_Target_Cant.Local(), () => DrawTargetCant() },
+         { () => UiString.ConfigWindow_Target_Priority.Local(), DrawTargetPriority },
+         { () => UiString.ConfigWindow_Target_Cant.Local(), DrawTargetCant },
     })
     {
         HeaderSize = FontSize.Fourth,
