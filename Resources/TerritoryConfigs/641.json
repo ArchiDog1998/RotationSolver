@@ -23,6 +23,10 @@
     "WHM": {
       "Timeline": {},
       "Trigger": []
+    },
+    "SAM": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [
