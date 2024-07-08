@@ -58,6 +58,11 @@ partial class RedMageRotation
         setting.StatusNeed = SwiftcastStatus;
     }
 
+    static partial void ModifyReprisePvE(ref ActionSetting setting)
+    {
+        
+    }
+
     static partial void ModifyRipostePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => (BlackMana >= 20 && WhiteMana >= 20)  || Player.HasStatus(true, StatusID.MagickedSwordplay);
@@ -124,8 +129,27 @@ partial class RedMageRotation
 
     static partial void ModifyManaficationPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0;
-        setting.ComboIdsNot = [ActionID.RipostePvE, ActionID.ZwerchhauPvE, ActionID.ScorchPvE, ActionID.VerflarePvE, ActionID.VerholyPvE];
+        setting.ActionCheck = () => WhiteMana <= 50 && BlackMana <= 50 && InCombat && ManaStacks == 0 && !IsLastGCD(
+            ActionID.RipostePvE, 
+            ActionID.EnchantedRipostePvE, 
+            ActionID.EnchantedRipostePvE_27055, 
+            ActionID.EnchantedRipostePvE_24918, 
+            ActionID.ZwerchhauPvE, 
+            ActionID.EnchantedZwerchhauPvE, 
+            ActionID.EnchantedZwerchhauPvE_27056, 
+            ActionID.EnchantedZwerchhauPvE_24919, 
+            ActionID.ScorchPvE, 
+            ActionID.ScorchPvE_24831, 
+            ActionID.ScorchPvE_24898, 
+            ActionID.EnchantedZwerchhauPvE_24919, 
+            ActionID.VerflarePvE, 
+            ActionID.VerholyPvE, 
+            ActionID.VerholyPvE_21923, 
+            ActionID.VerholyPvE_27059, 
+            ActionID.VerflarePvE_20532, 
+            ActionID.VerflarePvE_27052
+        );
+        ;
 
         setting.CreateConfig = () => new()
         {
@@ -184,6 +208,10 @@ partial class RedMageRotation
     static partial void ModifyGrandImpactPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.GrandImpactReady];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
     }
     
     static partial void ModifyPrefulgencePvE(ref ActionSetting setting)
