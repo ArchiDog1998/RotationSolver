@@ -30,7 +30,7 @@ partial class SummonerRotation
     /// <summary>
     /// 
     /// </summary>
-    public static bool HasAetherflowStacks => JobGauge.HasAetherflowStacks;
+    public static bool HasAetherflowStacks => (JobGauge.AetherFlags.HasFlag((Enum) FFXIVClientStructs.FFXIV.Client.Game.Gauge.AetherFlags.Aetherflow1) || JobGauge.AetherFlags.HasFlag((Enum) FFXIVClientStructs.FFXIV.Client.Game.Gauge.AetherFlags.Aetherflow2));
 
     /// <summary>
     /// 
@@ -166,6 +166,12 @@ partial class SummonerRotation
         setting.ActionCheck = () => InCombat && HasSummon;
     }
 
+    static partial void ModifySummonSolarBahamutPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => InCombat && SummonTime <= WeaponRemain;
+        setting.UnlockedByQuestID = 68165;
+    }
+    
     static partial void ModifySummonBahamutPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => InCombat && SummonTime <= WeaponRemain;
@@ -194,7 +200,7 @@ partial class SummonerRotation
 
     static partial void ModifySearingFlashPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.RefulgentLux];
+        setting.StatusNeed = [StatusID.RubysGlimmer];
     }
 
     static partial void ModifyLuxSolarisPvE(ref ActionSetting setting)
