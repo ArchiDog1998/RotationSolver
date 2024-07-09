@@ -543,5 +543,6 @@
   "System.ConsoleModifiers.Shift": "Shift",
   "System.ConsoleModifiers.Control": "Control",
   "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItem": "Timeline Item",
-  "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItemDescription": "The icon means if it is in period.\nClick to show the action."
+  "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItemDescription": "The icon means if it is in period.\nClick to show the action.",
+  "RotationSolver.Basic.Data.OtherCommandType.NextAction": "Do the next action"
 }
