@@ -30,7 +30,8 @@ public class ActionsItem : ConfigWindowItemRS
             if (DataCenter.RightNowRotation != null && RotationUpdater.AllGroupedActions != null)
             {
                 var size = 30 * Scale;
-                var count = Math.Max(1, (int)MathF.Floor(ImGui.GetColumnWidth() / ((size * 1.1f) + ImGui.GetStyle().ItemSpacing.X)));
+                var xSpacing = ImGui.GetStyle().ItemSpacing.X;
+                var count = Math.Max(1, (int)MathF.Floor((ImGui.GetColumnWidth() - xSpacing * 1.5f) / ((size * 88 / 82) + xSpacing)));
                 foreach (var pair in RotationUpdater.AllGroupedActions)
                 {
                     _actionsList.AddCollapsingHeader(() => pair.Key, () =>
@@ -43,6 +44,10 @@ public class ActionsItem : ConfigWindowItemRS
                             if (index++ % count != 0)
                             {
                                 ImGui.SameLine();
+                            }
+                            else
+                            {
+                                ImGui.SetCursorPosX(ImGui.GetCursorPosX() + xSpacing);
                             }
 
                             ImGui.BeginGroup();
