@@ -1,12 +1,9 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
-using ECommons.DalamudServices;
 using RotationSolver.Updaters;
 using System.ComponentModel;
-using System.Drawing;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
-using static FFXIVClientStructs.FFXIV.Client.UI.Misc.GroupPoseModule;
 
 namespace RotationSolver.UI.ConfigWindows;
 [Description("Actions")]
@@ -54,7 +51,11 @@ public class ActionsItem : ConfigWindowItemRS
                             {
                                 _activeAction = item;
                             }
-                            ImGuiHelper.DrawActionOverlay(cursor, size, _activeAction == item ? 1 : 0);
+                            ImGuiHelper.DrawActionOverlay(cursor, size, 1);
+                            if (_activeAction == item)
+                            {
+                                ImGui.GetWindowDrawList().DrawSlotHighlight(ImGui.GetWindowPos() + cursor, size);
+                            }
 
                             if (ImageLoader.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
                             {
