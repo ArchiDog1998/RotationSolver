@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.1.2](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.1...v5.1.2) (2024-07-10)
+
+
+### Bug Fixes
+
+* action group height. ([5d3967b](https://github.com/ArchiDog1998/RotationSolver/commit/5d3967b109548fd96d56441fd8980c589350281e))
+* action item ui fix. ([e3dbc11](https://github.com/ArchiDog1998/RotationSolver/commit/e3dbc11663a9e28df938e141de7a56487fdd6ddb))
+* add notice territory action. ([bc503d7](https://github.com/ArchiDog1998/RotationSolver/commit/bc503d73ee1db91f7b36015457af16491de40945))
+* ui fix. ([498c771](https://github.com/ArchiDog1998/RotationSolver/commit/498c77127eaf8a38f06df0f41e54017dbf287c1b))
+* ui highlight fix. ([6f1f86c](https://github.com/ArchiDog1998/RotationSolver/commit/6f1f86c9643024206d821779a92f8c3aefc99311))
+
 ## [5.1.1](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.0...v5.1.1) (2024-07-07)
 
 
