@@ -150,15 +150,18 @@ internal static class PainterManager
 
             movingTarget.From = playerPos;
 
-            if (!Service.Config.ShowMoveTarget || !Player.Available || !tar.HasValue || Vector3.Distance(tar.Value, playerPos) < 0.01f)
+            if (!Service.Config.UseOverlayWindow || !Service.Config.ShowMoveTarget || !Player.Available 
+                || !tar.HasValue || Vector3.Distance(tar.Value, playerPos) < 0.01f)
             {
                 movingTarget.Radius = 0;
                 movingTarget.To = playerPos;
+                movingTarget.Enable = false;
                 return;
             }
 
             movingTarget.Radius = 0.5f;
             movingTarget.To = tar.Value;
+            movingTarget.Enable = true;
         };
 
         _stateImage = new Drawing3DImage(null, default, 0)
