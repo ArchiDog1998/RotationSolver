@@ -225,6 +225,10 @@ internal static class ActionUpdater
             || Svc.Condition[ConditionFlag.SufferingStatusAffliction2]
             || Svc.Condition[ConditionFlag.RolePlaying]
             || Svc.Condition[ConditionFlag.InFlight]
+            || Svc.Condition[ConditionFlag.Diving]
+            || Svc.Condition[ConditionFlag.Swimming]
+            || Svc.Condition[ConditionFlag.Unconscious]
+            || Svc.Condition[ConditionFlag.MeldingMateria]
             || ActionManager.Instance()->ActionQueued && NextAction != null
                 && ActionManager.Instance()->QueuedActionId != NextAction.AdjustedID
             || Player.Object.CurrentHp == 0) return false;
