@@ -19,6 +19,12 @@ internal static class ConfigurationHelper
         {ActionID.GallowsPvE, EnemyPositional.Rear },
         {ActionID.GekkoPvE, EnemyPositional.Rear},
         {ActionID.KashaPvE, EnemyPositional.Flank },
+        {ActionID.FlankstingStrikePvE, EnemyPositional.Flank},
+        {ActionID.FlanksbaneFangPvE, EnemyPositional.Flank},
+        {ActionID.HindstingStrikePvE, EnemyPositional.Rear},
+        {ActionID.HindsbaneFangPvE, EnemyPositional.Rear},
+        {ActionID.HuntersCoilPvE, EnemyPositional.Flank},
+        {ActionID.SwiftskinsCoilPvE, EnemyPositional.Rear}
     };
 
     public static readonly uint[] BadStatus =
