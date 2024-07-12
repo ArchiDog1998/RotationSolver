@@ -4,7 +4,6 @@ using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
-using ECommons;
 using ECommons.Automation;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
@@ -14,9 +13,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
-using RotationSolver.Helpers;
 using RotationSolver.UI;
-using System.Runtime.InteropServices;
 using XIVConfigUI;
 using XIVDrawer.ElementSpecial;
 

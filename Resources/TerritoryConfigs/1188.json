@@ -3,6 +3,10 @@
     "WAR": {
       "Timeline": {},
       "Trigger": []
+    },
+    "ADV": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],

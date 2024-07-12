@@ -544,19 +544,5 @@
   "System.ConsoleModifiers.Control": "Control",
   "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItem": "Timeline Item",
   "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItemDescription": "The icon means if it is in period.\nClick to show the action.",
-  "RotationSolver.Basic.Data.OtherCommandType.NextAction": "Do the next action",
-  "RotationSolver.Basic.Data.AutoStatus.DefenseSingle, HealSingleAbility": "DefenseSingle, HealSingleAbility",
-  "RotationSolver.Basic.Data.AutoStatus.HealSingleAbility, HealAreaAbility": "HealSingleAbility, HealAreaAbility",
-  "RotationSolver.Basic.Data.AutoStatus.Provoke, HealSingleAbility": "Provoke, HealSingleAbility",
-  "RotationSolver.Basic.Data.AutoStatus.Provoke, DefenseSingle, HealSingleAbility": "Provoke, DefenseSingle, HealSingleAbility",
-  "RotationSolver.Basic.Data.AutoStatus.Provoke, DefenseSingle": "Provoke, DefenseSingle",
-  "RotationSolver.Basic.Data.AutoStatus.DefenseSingle, HealSingleAbility, HealSingleSpell": "DefenseSingle, HealSingleAbility, HealSingleSpell",
-  "RotationSolver.Basic.Data.AutoStatus.HealSingleAbility, HealSingleSpell, Raise": "HealSingleAbility, HealSingleSpell, Raise",
-  "RotationSolver.Basic.Data.AutoStatus.HealAreaAbility, Raise": "HealAreaAbility, Raise",
-  "RotationSolver.Basic.Data.AutoStatus.HealAreaAbility, HealAreaSpell, Raise": "HealAreaAbility, HealAreaSpell, Raise",
-  "RotationSolver.Basic.Data.AutoStatus.HealSingleAbility, HealAreaAbility, HealAreaSpell, Raise": "HealSingleAbility, HealAreaAbility, HealAreaSpell, Raise",
-  "RotationSolver.Basic.Data.AutoStatus.HealSingleAbility, HealSingleSpell, HealAreaAbility, HealAreaSpell, Raise": "HealSingleAbility, HealSingleSpell, HealAreaAbility, HealAreaSpell, Raise",
-  "RotationSolver.Basic.Data.AutoStatus.HealSingleAbility, HealAreaAbility, Raise": "HealSingleAbility, HealAreaAbility, Raise",
-  "RotationSolver.Basic.Data.AutoStatus.HealSingleAbility, Raise": "HealSingleAbility, Raise",
-  "RotationSolver.Basic.Data.AutoStatus.DefenseArea, HealSingleAbility, Raise": "DefenseArea, HealSingleAbility, Raise"
+  "RotationSolver.Basic.Data.OtherCommandType.NextAction": "Do the next action"
 }
