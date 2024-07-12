@@ -68,8 +68,8 @@ internal static class PainterManager
         protected override uint GetIcon(IGameObject IGameObject) => 61501;
     }
 
-    static DrawingHighlightHotbar? _highLight;
-    static Drawing3DImage? _stateImage;
+    private static DrawingHighlightHotbar? _highLight;
+    private static Drawing3DImage? _stateImage;
     public static HashSet<HotbarID> HotbarIDs => _highLight?.HotbarIDs ?? [];
 
     public static Vector4 HighlightColor
@@ -82,22 +82,22 @@ internal static class PainterManager
         }
     }
 
-    readonly static Drawing3DCircularSector _target = new (default, 0, 0, 3)
+    private readonly static Drawing3DCircularSector _target = new (default, 0, 0, 3)
     {
         IsFill = false,
         Enable = false,
     };
-    readonly static Drawing3DImage _targetImage = new (null, default, 0)
+    private readonly static Drawing3DImage _targetImage = new (null, default, 0)
     {
         MustInViewRange = true,
         Enable = false,
     };
-    const float targetRadius = 0.15f;
-    const float beneficialRadius = 0.6f;
+    private const float targetRadius = 0.15f;
+    private const float beneficialRadius = 0.6f;
 
-    readonly static Drawing3DCircularSector[] BeneficialItems = new Drawing3DCircularSector[64];
-    readonly static Drawing3DText[] TargetTexts = new Drawing3DText[64];
-    readonly static List<TargetDrawingItem> TargetDrawings = [];
+    private readonly static Drawing3DCircularSector[] BeneficialItems = new Drawing3DCircularSector[64];
+    private readonly static Drawing3DText[] TargetTexts = new Drawing3DText[64];
+    private readonly static List<TargetDrawingItem> TargetDrawings = [];
 
     public static void Init()
     {
@@ -130,8 +130,9 @@ internal static class PainterManager
 
         annulus.UpdateEveryFrame = () =>
         {
-            if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) && (Svc.Targets.Target?.IsEnemy() ?? false) && Service.Config.DrawMeleeOffset
-            && ActionUpdater.NextGCDAction == null)
+            if (Service.Config.UseOverlayWindow && Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) 
+                && (Svc.Targets.Target?.IsEnemy() ?? false) && Service.Config.DrawMeleeOffset
+                && ActionUpdater.NextGCDAction == null)
             {
                 annulus.Target = Svc.Targets.Target;
             }
