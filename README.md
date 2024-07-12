@@ -12,12 +12,11 @@ https://raw.githubusercontent.com/ArchiDog1998/DalamudPlugins/main/pluginmaster.
 ```
 [![Discord](https://discordapp.com/api/guilds/1228953752585637908/embed.png?style=banner2)](https://discord.gg/9D4E8eZW5g)
 
-> [! IMPORTANT]
+> [!IMPORTANT]
 >
 > This plugin will not be fully open source, so the base library will not be fully public.
 > 
 > If you really want to see the source code of it, please contact me in [Discord](https://discord.gg/9D4E8eZW5g).
->
 
 
 There will be 2 versions:
