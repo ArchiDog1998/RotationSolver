@@ -93,9 +93,9 @@ public static class JobRoleExtension
         {
             JobRole.Tank => [Job.WAR, Job.PLD, Job.DRK, Job.GNB],
             JobRole.Healer => [Job.WHM, Job.SCH, Job.AST, Job.SGE],
-            JobRole.Melee => [Job.MNK, Job.DRG, Job.NIN, Job.SAM, Job.RPR],
+            JobRole.Melee => [Job.MNK, Job.DRG, Job.NIN, Job.SAM, Job.RPR, Job.VPR],
             JobRole.RangedPhysical => [Job.BRD, Job.MCH, Job.DNC],
-            JobRole.RangedMagical => [Job.BLM, Job.SMN, Job.RDM, Job.BLU],
+            JobRole.RangedMagical => [Job.BLM, Job.SMN, Job.RDM, Job.BLU, Job.PCT],
             _ => [],
         };
     }
