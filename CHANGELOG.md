@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.1.3](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.2...v5.1.3) (2024-07-12)
+
+
+### Bug Fixes
+
+* add listen to action time line thing! ([b2027df](https://github.com/ArchiDog1998/RotationSolver/commit/b2027dfb398429dc92f6d8a3deb05fea878fa8af))
+* better highlight. ([396d1cc](https://github.com/ArchiDog1998/RotationSolver/commit/396d1cc6917c3cec265f22697727114f1de06701))
+* local fix. ([0de953e](https://github.com/ArchiDog1998/RotationSolver/commit/0de953e67e8510e3993cf5fc81d09631573295d4))
+* movement draw fix... ([86cdc96](https://github.com/ArchiDog1998/RotationSolver/commit/86cdc964e325dabb74800c567148790c0c2e0a36))
+
 ## [5.1.2](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.1...v5.1.2) (2024-07-10)
 
 
