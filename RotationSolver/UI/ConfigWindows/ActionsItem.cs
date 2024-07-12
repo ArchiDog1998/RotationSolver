@@ -59,7 +59,7 @@ public class ActionsItem : ConfigWindowItemRS
                             ImGuiHelper.DrawActionOverlay(cursor, size, 1);
                             if (_activeAction == item)
                             {
-                                ImGui.GetWindowDrawList().DrawSlotHighlight(ImGui.GetWindowPos() + cursor, size);
+                                ImGui.GetWindowDrawList().DrawSlotHighlight(ImGui.GetWindowPos() - new Vector2(ImGui.GetScrollX(), ImGui.GetScrollY()) + cursor, size);
                             }
 
                             if (ImageLoader.GetTexture("ui/uld/readycheck_hr1.tex", out var texture))
