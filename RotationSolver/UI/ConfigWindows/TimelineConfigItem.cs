@@ -15,7 +15,6 @@ namespace RotationSolver.UI.ConfigWindows;
 public class TimelineConfigItem : ConfigWindowItemRS
 {
     internal static uint _territoryId = 0;
-    private static string _territorySearch = string.Empty;
     public override uint Icon => 73;
     public override string Description => UiString.Item_Timeline.Local();
 

@@ -4,6 +4,7 @@ using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
+using ECommons;
 using ECommons.Automation;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
@@ -11,11 +12,13 @@ using ECommons.ImGuiMethods;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
 using RotationSolver.Helpers;
 using RotationSolver.UI;
 using System.Runtime.InteropServices;
 using XIVConfigUI;
+using XIVDrawer.ElementSpecial;
 
 namespace RotationSolver.Updaters;
 
@@ -33,7 +36,7 @@ internal static class MajorUpdater
 
     private unsafe static void FrameworkUpdate(IFramework framework)
     {
-        PainterManager.ActionIds.Clear();
+        PainterManager.HotbarIDs.Clear();
         RotationSolverPlugin.UpdateDisplayWindow();
         if (!IsValid)
         {
@@ -53,13 +56,7 @@ internal static class MajorUpdater
         {
             SocialUpdater.UpdateSocial();
             PreviewUpdater.UpdatePreview();
-
-            if (Service.Config.TeachingMode && ActionUpdater.NextAction != null)
-            {
-                //Sprint action id is 3 however the id in hot bar is 4.
-                var id = ActionUpdater.NextAction.ID;
-                PainterManager.ActionIds.Add(id == (uint)ActionID.SprintPvE ? 4 : id);
-            }
+            UpdateHighlight();
             ActionUpdater.UpdateActionInfo();
 
             var canDoAction = ActionUpdater.CanDoAction();
@@ -97,6 +94,37 @@ internal static class MajorUpdater
         catch (Exception ex)
         {
             Svc.Log.Error(ex, "Worker Exception");
+        }
+    }
+
+    private static void UpdateHighlight()
+    {
+        if (!Service.Config.TeachingMode || ActionUpdater.NextAction is not IAction action) return;
+            HotbarID? hotbar = null;
+
+        if (action is IBaseItem item)
+        {
+            hotbar = new(FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.HotbarSlotType.Item, item.ID);
+        }
+        else if (action is IBaseAction baseAction)
+        {
+            if (baseAction.Action.ActionCategory.Row is 10 or 11)//System Action.
+            {
+                var gAct = Svc.Data.GetExcelSheet<GeneralAction>()?.FirstOrDefault(g => g.Action.Row == baseAction.ID);
+
+                if (gAct != null)
+                {
+                    hotbar = new(FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.HotbarSlotType.GeneralAction, gAct.RowId);
+                }
+            }
+            else
+            {
+                hotbar = new(FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.HotbarSlotType.Action, baseAction.ID);
+            }
+        }
+        if (hotbar.HasValue)
+        {
+            PainterManager.HotbarIDs.Add(hotbar.Value);
         }
     }
 

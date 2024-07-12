@@ -246,7 +246,7 @@ internal static class ImGuiHelperRS
         {
             territoryName += $" ({DataCenter.ContentFinderName})";
         }
-        var icon = DataCenter.ContentFinder?.ContentType?.Value?.Icon ?? 23;
+        var icon = contentFinder?.ContentType?.Value?.Icon ?? 23;
         if (icon == 0) icon = 23;
         var getIcon = ImageLoader.GetTexture(icon, out var texture);
         ImGuiHelper.DrawItemMiddle(() =>

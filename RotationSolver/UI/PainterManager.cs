@@ -59,7 +59,7 @@ internal static class PainterManager
     {
         public override bool Show => Service.Config.ShowUsersIcons;
 
-        public override IGameObject[] Targets => SocialUpdater._users.ToArray();
+        public override IGameObject[] Targets => [.. SocialUpdater._users];
 
         public override float Height => Service.Config.UserIconHeight;
 
@@ -70,7 +70,7 @@ internal static class PainterManager
 
     static DrawingHighlightHotbar? _highLight;
     static Drawing3DImage? _stateImage;
-    public static HashSet<uint> ActionIds => _highLight?.ActionIds ?? [];
+    public static HashSet<HotbarID> HotbarIDs => _highLight?.HotbarIDs ?? [];
 
     public static Vector4 HighlightColor
     {
@@ -122,8 +122,6 @@ internal static class PainterManager
 
         _highLight = new();
         UpdateSettings();
-
-        HighlightColor = Service.Config.TeachingModeColor;
 
         var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2)
         {
@@ -196,12 +194,14 @@ internal static class PainterManager
         XIVDrawerMain.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
         XIVDrawerMain.ViewPadding = Service.Config.WindowPadding;
 
+        HighlightColor = Service.Config.TeachingModeColor;
+
         foreach (var target in TargetDrawings)
         {
             target.Update();
         }
 
-        if (_stateImage != null && _stateImage.Image == null)
+        if (_stateImage != null)
         {
             if (ImageLoader.GetTexture(61516, out var texture))
             {
@@ -247,6 +247,7 @@ internal static class PainterManager
             if (index >= TargetTexts.Length) break;
         }
     }
+
     private static void UpdateTarget()
     {
         _target.Enable = _targetImage.Enable = false;
