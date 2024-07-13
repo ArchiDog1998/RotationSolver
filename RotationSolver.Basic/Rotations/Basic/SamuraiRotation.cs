@@ -68,11 +68,6 @@ partial class SamuraiRotation
     //     setting.ActionCheck = () => MeditationStacks == 3;
     // }
     
-    static partial void ModifyThirdEyePvE(ref ActionSetting setting)
-    {
-        setting.ComboIds = [ActionID.TengetsuPvE];
-    }
-    
     static partial void ModifyJinpuPvE(ref ActionSetting setting)
     {
         setting.ComboIds = [ActionID.HakazePvE, ActionID.GyofuPvE];
