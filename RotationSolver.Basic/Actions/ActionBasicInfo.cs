@@ -193,6 +193,11 @@ public readonly struct ActionBasicInfo
         {
             if (!CheckForCombo()) return false;
         }
+        
+        if (_action.Action.IsRoleAction)
+        {
+            if (!_action.Action.ClassJobCategory.Value?.DoesJobMatchCategory(DataCenter.Job) ?? false) return false;
+        }
 
         //Need casting.
         if (CastTime > 0 && !player.HasStatus(true, 
