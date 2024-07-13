@@ -7,7 +7,7 @@ internal abstract class TargetDrawingItem
     public abstract bool Show { get; }
     public abstract IGameObject[] Targets { get; }
 
-    readonly Drawing3DImage[] Drawings = new Drawing3DImage[64];
+    readonly Drawing3DImage[] Drawings = new Drawing3DImage[32];
 
     public abstract float Height { get; }
     public abstract float Size { get; }

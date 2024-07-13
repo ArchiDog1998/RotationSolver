@@ -2,6 +2,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Internal;
 using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility.Raii;
+using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.ImGuiMethods;
 using RotationSolver.Commands;
@@ -119,10 +120,9 @@ internal class ControlWindow : CtrlWindow
         ImGui.Columns(1);
     }
 
-    private static void DrawAOe() { }
-
     private static void DrawSpecials()
     {
+        var iconSize = Vector2.One * ImGui.CalcTextSize("A").Y;
         var rotation = DataCenter.RightNowRotation;
 
         DrawCommandAction(rotation?.ActionHealAreaGCD, rotation?.ActionHealAreaAbility,
@@ -206,8 +206,25 @@ internal class ControlWindow : CtrlWindow
         {
             if (group)
             {
+                iconSize *= 1.5f;
                 ImGui.TextWrapped(DataCenter.RightNowTargetToHostileType.Local());
-                ImGui.TextWrapped("Auto: " + DataCenter.AutoStatus.Local());
+
+                ImGui.Text("Auto:");
+
+                var status = DataCenter.AutoStatus;
+
+                foreach (var statusItem in Enum.GetValues<AutoStatus>())
+                {
+                    if (statusItem.GetAttribute<IconAttribute>() is not IconAttribute iconAttr) continue;
+                    if (!status.HasFlag(statusItem)) continue;
+                    if (!ImageLoader.GetTexture(iconAttr.Icon, out var texture)) continue;
+
+                    ImGui.SameLine();
+
+                    ImGui.Image(texture.ImGuiHandle, iconSize);
+
+                    ImGuiHelper.HoveredTooltip(statusItem.Local());
+                }
             }
         }
 
@@ -297,17 +314,17 @@ internal class ControlWindow : CtrlWindow
             ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudGrey), 5, ImDrawFlags.RoundCornersAll, thickness);
     }
 
-    static void DrawCommandAction(IAction? ability, SpecialCommandType command, Vector4 color)
+    private static void DrawCommandAction(IAction? ability, SpecialCommandType command, Vector4 color)
     {
         if (ability.GetTexture(out var texture)) DrawCommandAction(texture, command, color, ability?.ToString() ?? "");
     }
 
-    static void DrawCommandAction(uint iconId, SpecialCommandType command, Vector4 color)
+    private static void DrawCommandAction(uint iconId, SpecialCommandType command, Vector4 color)
     {
         if (ImageLoader.GetTexture(iconId, out var texture)) DrawCommandAction(texture, command, color);
     }
 
-    static void DrawCommandAction(IDalamudTextureWrap texture, SpecialCommandType command, Vector4 color, string helpAddition = "")
+    private static void DrawCommandAction(IDalamudTextureWrap texture, SpecialCommandType command, Vector4 color, string helpAddition = "")
     {
         var abilityW = Service.Config.ControlWindow0GCDSize;
         var width = abilityW + (ImGui.GetStyle().ItemInnerSpacing.X * 2);
@@ -334,6 +351,7 @@ internal class ControlWindow : CtrlWindow
                 string baseId = "ImgButton" + command.ToString();
 
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Math.Max(0, (strWidth / 2) - (width / 2)));
+
                 if (texture != null) DrawIAction(texture.ImGuiHandle, baseId, abilityW, command, help);
             }
         }
