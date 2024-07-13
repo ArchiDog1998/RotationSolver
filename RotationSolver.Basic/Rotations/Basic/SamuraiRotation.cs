@@ -67,12 +67,54 @@ partial class SamuraiRotation
     // {
     //     setting.ActionCheck = () => MeditationStacks == 3;
     // }
-
+    
+    static partial void ModifyJinpuPvE(ref ActionSetting setting)
+    {
+        setting.ComboIds = [ActionID.HakazePvE, ActionID.GyofuPvE];
+    }
+    
+    static partial void ModifyShifuPvE(ref ActionSetting setting)
+    {
+        setting.ComboIds = [ActionID.HakazePvE, ActionID.GyofuPvE];
+    }
+    
+    static partial void ModifyYukikazePvE(ref ActionSetting setting)
+    {
+        setting.ComboIds = [ActionID.HakazePvE, ActionID.GyofuPvE];
+    }
+    
+    static partial void ModifyTendoSetsugekkaPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Tendo];
+    }
+    
+    static partial void ModifyTendoKaeshiSetsugekkaPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => (byte)Kaeshi == 6; // Temporary until Dalamud enums are updated
+    }
+    
+    static partial void ModifyTendoKaeshiGokenPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => (byte)Kaeshi == 5; // Temporary until Dalamud enums are updated
+    }
+    
+    static partial void ModifyTendoGokenPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.Tendo];
+        setting.IsFriendly = false;
+    }
+    
     static partial void ModifyMangetsuPvE(ref ActionSetting setting)
     {
         setting.ComboIds = [ActionID.FugaPvE, ActionID.FukoPvE];
     }
-
+    
+    static partial void ModifyZanshinPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.ZanshinReady];
+        setting.ActionCheck = () => Kenki >= 50;
+    }
+    
     static partial void ModifyOkaPvE(ref ActionSetting setting)
     {
         setting.ComboIds = [ActionID.FugaPvE, ActionID.FukoPvE];
@@ -138,6 +180,7 @@ partial class SamuraiRotation
     static partial void ModifyIkishotenPvE(ref ActionSetting setting)
     {
         setting.StatusProvide = [StatusID.OgiNamikiriReady];
+        setting.StatusProvide = [StatusID.ZanshinReady];
         setting.ActionCheck = () => InCombat;
     }
 
@@ -198,6 +241,7 @@ partial class SamuraiRotation
     [RotationDesc(ActionID.ThirdEyePvE)]
     protected override bool DefenseSingleAbility(IAction nextGCD, out IAction? act)
     {
+        if (TengetsuPvE.CanUse(out act)) return true;
         if (ThirdEyePvE.CanUse(out act)) return true;
         return base.DefenseSingleAbility(nextGCD, out act);
     }
