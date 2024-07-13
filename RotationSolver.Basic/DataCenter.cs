@@ -436,12 +436,27 @@ internal static class DataCenter
 
     public static bool IsHostileCastingToTank => IsCastingTankVfx() || AllHostileTargets.Any(IsHostileCastingTank);
 
+    private static DateTime _petLastSeen = DateTime.MinValue;
+
     public static bool HasPet
     {
         get
         {
             var mayPet = AllTargets.OfType<IBattleNpc>().Where(npc => npc.OwnerId == Player.Object.GameObjectId);
-            return mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
+            var hasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
+            if (hasPet)
+            {
+                _petLastSeen = DateTime.Now;
+                return true;
+            }
+            else if (!hasPet && _petLastSeen.AddSeconds(1) < DateTime.Now)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 

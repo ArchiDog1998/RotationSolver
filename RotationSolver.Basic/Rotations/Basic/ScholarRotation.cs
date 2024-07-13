@@ -89,8 +89,7 @@ partial class ScholarRotation
 
     static partial void ModifySummonEosPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => !DataCenter.HasPet && (!Player.HasStatus(true, StatusID.Dissipation)// || Dissipation.WillHaveOneCharge(30) && Dissipation.EnoughLevel
-        );
+        setting.ActionCheck = () => !DataCenter.HasPet && !Player.HasStatus(true, StatusID.Dissipation);
     }
 
     static partial void ModifyWhisperingDawnPvE(ref ActionSetting setting)
