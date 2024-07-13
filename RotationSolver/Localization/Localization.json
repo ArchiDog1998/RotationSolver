@@ -574,5 +574,11 @@
   "RotationSolver.Basic.Data.CanUseOption.OnLastAbility": "Is it on the last ability",
   "RotationSolver.Basic.Data.CanUseOption.SkipClippingCheck": "Skip clipping Check",
   "RotationSolver.Basic.Data.CanUseOption.SkipAoeCheck": "Skip aoe Check",
-  "RotationSolver.Basic.Configuration.TerritoryAction.ActionActionName.CanUseOption": "Can Use Option"
+  "RotationSolver.Basic.Configuration.TerritoryAction.ActionActionName.CanUseOption": "Can Use Option",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSetName.Conditions": "Conditions",
+  "RotationSolver.Basic.Configuration.Timeline.TimelineCondition.TimelineConditionSetName.Type": "Type",
+  "RotationSolver.Basic.Data.LogicalType.All": "&&",
+  "RotationSolver.Basic.Data.LogicalType.Any": " | | ",
+  "RotationSolver.Basic.Data.LogicalType.NotAll": "!&&",
+  "RotationSolver.Basic.Data.LogicalType.NotAny": "! | | "
 }

@@ -263,7 +263,7 @@ public class ActionsItem : ConfigWindowItemRS
 
                     ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
                     ImGui.Text($"Why Can't: {action.WhyCant.Local()} ");
-                    ImGui.Text("IgnoreCastCheck:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true).ToString());
+                    ImGui.Text("IgnoreCastCheck/Use Up:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true, usedUp: true).ToString());
                     ImGui.Text($"Why Can't: {action.WhyCant.Local()} ");
                     ImGui.Text("Target Name: " + action.Target.Target?.Name ?? string.Empty);
                 }

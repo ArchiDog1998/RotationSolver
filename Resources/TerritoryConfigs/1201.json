@@ -2,21 +2,7 @@
   "_jobConfigs": {
     "WAR": {
       "Timeline": {
-        "16": [
-          {
-            "ActionAction": {
-              "ID": 38,
-              "TargetType": 0,
-              "CanUseOption": 0
-            },
-            "Time": 3.0,
-            "Duration": 3.0,
-            "Condition": {
-              "Conditions": [],
-              "Type": 0
-            }
-          }
-        ],
+        "16": [],
         "26.3": [],
         "37.3": [],
         "38.4": [],
