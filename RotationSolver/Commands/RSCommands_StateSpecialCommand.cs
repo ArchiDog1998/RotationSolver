@@ -54,6 +54,7 @@ public static partial class RSCommands
             case StateCommandType.Off:
                 DataCenter.State = false;
                 DataCenter.IsManual = false;
+                ActionUpdater.NextAction = ActionUpdater.NextGCDAction = null;
                 break;
 
             case StateCommandType.Auto:
