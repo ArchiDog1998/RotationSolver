@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.1.4](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.3...v5.1.4) (2024-07-13)
+
+
+### Bug Fixes
+
+* better command. ([c85806b](https://github.com/ArchiDog1998/RotationSolver/commit/c85806b7f70c34da9863496093d350ca04928201))
+* cd fix for charging abilities! ([756c275](https://github.com/ArchiDog1998/RotationSolver/commit/756c27526fccb292ee375076d5fbf4ccdc332f66))
+* highlight fix in action item. ([84e0dd8](https://github.com/ArchiDog1998/RotationSolver/commit/84e0dd8457ad3772e111b348ca4f3a2360849e3a))
+
 ## [5.1.3](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.2...v5.1.3) (2024-07-12)
 
 
