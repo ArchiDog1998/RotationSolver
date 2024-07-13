@@ -196,7 +196,7 @@ internal class ControlWindow : CtrlWindow
             if (group)
             {
                 ImGui.Text("CMD:");
-                DrawIAction(DataCenter.CommandNextAction?.Action, Service.Config.ControlWindow0GCDSize, 1);
+                DrawIAction(DataCenter.CommandNextAction?.Act, Service.Config.ControlWindow0GCDSize, 1);
             }
         }
 
@@ -448,7 +448,7 @@ internal class ControlWindow : CtrlWindow
             }
             else if(action != null)
             {
-                DataCenter.AddCommandAction(action, 5, TargetType.None);
+                DataCenter.AddCommandAction(new(action, TargetType.None, CanUseOption.None), 5);
             }
         }
         var size = ImGui.GetItemRectSize();

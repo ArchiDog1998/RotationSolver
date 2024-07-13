@@ -30,7 +30,7 @@ internal class ActionSequencerUpdater
 
                 if (!(conditionPair.Value.IsTrue() ?? false)) continue;
 
-                DataCenter.ActionSequencerAction = nextAct;
+                DataCenter.ActionSequencerAction = new(nextAct, Basic.Actions.TargetType.None, CanUseOption.None);
                 find = true;
                 break;
             }

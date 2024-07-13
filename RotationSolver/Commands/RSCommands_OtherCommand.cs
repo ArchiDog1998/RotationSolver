@@ -77,7 +77,7 @@ public static partial class RSCommands
         if (strs != null && strs.Length >= 2 && double.TryParse(strs[1], out var time))
         {
             var type = TargetType.None;
-            if(strs.Length == 3)
+            if (strs.Length == 3)
             {
                 if(Enum.TryParse<TargetType>(strs[2], out var t))
                 {
@@ -90,7 +90,7 @@ public static partial class RSCommands
             {
                 if (actName == iAct.Name)
                 {
-                    DataCenter.AddCommandAction(iAct, time, type);
+                    DataCenter.AddCommandAction(new(iAct, type, CanUseOption.None), time);
 
                     if (Service.Config.ShowToastsAboutDoAction)
                     {
