@@ -141,7 +141,6 @@ partial class RedMageRotation
             ActionID.ScorchPvE, 
             ActionID.ScorchPvE_24831, 
             ActionID.ScorchPvE_24898, 
-            ActionID.EnchantedZwerchhauPvE_24919, 
             ActionID.VerflarePvE, 
             ActionID.VerholyPvE, 
             ActionID.VerholyPvE_21923, 
