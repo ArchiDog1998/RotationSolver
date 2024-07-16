@@ -165,7 +165,7 @@ public partial class PictomancerRotation
 
     static partial void ModifySubtractivePalettePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => PaletteGauge >= 50;
+        setting.ActionCheck = () => PaletteGauge >= 50 || Player.HasStatus(true, StatusID.SubtractiveSpectrum);
     }
 
     static partial void ModifyStoneInYellowPvE(ref ActionSetting setting)
