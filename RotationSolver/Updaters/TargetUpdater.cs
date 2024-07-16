@@ -25,6 +25,11 @@ internal static partial class TargetUpdater
             && b.IsTargetable //Removed the one can't target.
             ));
         UpdateNamePlate(battles);
+
+        if (Service.Config.MakeSoftTargetAsTarget && Svc.Targets.Target == null && Svc.Targets.SoftTarget != null)
+        {
+            Svc.Targets.Target = Svc.Targets.SoftTarget;
+        }
     }
 
     private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;

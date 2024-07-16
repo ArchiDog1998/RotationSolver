@@ -111,6 +111,8 @@ public unsafe class DebugItem : ConfigWindowItemRS
             ImGui.Text("Height: " + Svc.Targets.Target.Struct()->Height.ToString());
             ImGui.Text("Kind: " + Svc.Targets.Target.GetObjectKind().ToString());
             ImGui.Text("SubKind: " + Svc.Targets.Target.GetBattleNPCSubKind().ToString());
+            ImGui.Text("Data Id: " + Svc.Targets.Target.DataId.ToString());
+            ImGui.Text("Name Plate: " + Svc.Targets.Target.Struct()->NamePlateIconId);
             var owner = Svc.Objects.SearchById(Svc.Targets.Target.OwnerId);
             if (owner != null)
             {
