@@ -449,7 +449,7 @@ internal static class DataCenter
                 _petLastSeen = DateTime.Now;
                 return true;
             }
-            else if (!hasPet && _petLastSeen.AddSeconds(1) < DateTime.Now)
+            else if (!hasPet && _petLastSeen.AddSeconds(3) < DateTime.Now)
             {
                 return false;
             }
