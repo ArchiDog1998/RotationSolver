@@ -46,97 +46,65 @@ partial class MonkRotation
     public static int CoeurlFury => JobGauge.CoeurlFury;
     #endregion
 
-    static partial void ModifyLeapingOpoPvE(ref ActionSetting setting)
+    static partial void ModifyBootshinePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => OpoOpoFury == 1;
+        setting.StatusNeed = [StatusID.OpoopoForm];
+        setting.StatusProvide = [StatusID.RaptorForm];
     }
-    static partial void ModifyRisingRaptorPvE(ref ActionSetting setting)
+
+    static partial void ModifyTrueStrikePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => RaptorFury == 1;
+        setting.StatusNeed = [StatusID.RaptorForm];
+        setting.StatusProvide = [StatusID.CoeurlForm];
     }
-    static partial void ModifyPouncingCoeurlPvE(ref ActionSetting setting)
+
+    static partial void ModifySnapPunchPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => CoeurlFury >= 1;
+        setting.StatusNeed = [StatusID.CoeurlForm];
+        setting.StatusProvide = [StatusID.OpoopoForm];
     }
-    static partial void ModifyDemolishPvE(ref ActionSetting setting)
+
+    static partial void ModifySteeledMeditationPvE(ref ActionSetting setting)
     {
-        setting.UnlockedByQuestID = 66103;
+
     }
 
     static partial void ModifySteelPeakPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => InCombat && Chakra == 5;
+        setting.ActionCheck = () => InCombat && Chakra >= 5;
         setting.UnlockedByQuestID = 66094;
     }
 
-    static partial void ModifyHowlingFistPvE(ref ActionSetting setting)
+    static partial void ModifyTwinSnakesPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => InCombat && Chakra == 5;
-        setting.UnlockedByQuestID = 66599;
+        setting.StatusNeed = [StatusID.RaptorForm];
+        setting.StatusProvide = [StatusID.CoeurlForm];
     }
 
-    static partial void ModifyMantraPvE(ref ActionSetting setting)
+    static partial void ModifyArmOfTheDestroyerPvE(ref ActionSetting setting)
     {
+        setting.StatusNeed = [StatusID.CoeurlForm];
+        setting.StatusProvide = [StatusID.RaptorForm];
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 10,
+            AoeCount = 2,
         };
     }
 
-    static partial void ModifyRiddleOfEarthPvE(ref ActionSetting setting)
+    static partial void ModifyDemolishPvE(ref ActionSetting setting)
     {
-        setting.StatusProvide = [StatusID.RiddleOfEarth];
-        setting.StatusProvide = [StatusID.EarthsRumination];
+        setting.StatusNeed = [StatusID.CoeurlForm];
+        setting.StatusProvide = [StatusID.OpoopoForm];
     }
 
-    static partial void ModifyRiddleOfWindPvE(ref ActionSetting setting)
+    static partial void ModifyRockbreakerPvE(ref ActionSetting setting)
     {
-        setting.StatusProvide = [StatusID.WindsRumination];
+        setting.UnlockedByQuestID = 66597;
+        setting.StatusNeed = [StatusID.CoeurlForm];
+        setting.StatusProvide = [StatusID.OpoopoForm];
         setting.CreateConfig = () => new()
         {
-            TimeToKill = 10,
-        };
-    }
-    static partial void ModifyWindsReplyPvE(ref ActionSetting setting)
-    {
-        setting.StatusNeed = [StatusID.WindsRumination];
-    }
-    static partial void ModifyEarthsReplyPvE(ref ActionSetting setting)
-    {
-        setting.StatusNeed = [StatusID.EarthsRumination];
-    }
-    static partial void ModifyFiresReplyPvE(ref ActionSetting setting)
-    {
-        setting.StatusNeed = [StatusID.FiresRumination];
-        setting.StatusProvide = [StatusID.FormlessFist];
-    }
-    static partial void ModifyPerfectBalancePvE(ref ActionSetting setting)
-    {
-        setting.ActionCheck = () => InCombat && IsLongerThan(5);
-        setting.UnlockedByQuestID = 66602;
-    }
-
-    static partial void ModifyFormShiftPvE(ref ActionSetting setting)
-    {
-        setting.StatusProvide = [StatusID.FormlessFist];
-        setting.UnlockedByQuestID = 67563;
-    }
-
-    static partial void ModifyBrotherhoodPvE(ref ActionSetting setting)
-    {
-        setting.CreateConfig = () => new()
-        {
-            TimeToKill = 10,
-        };
-        setting.UnlockedByQuestID = 67966;
-    }
-
-    static partial void ModifyRiddleOfFirePvE(ref ActionSetting setting)
-    {
-        setting.StatusProvide = [StatusID.FiresRumination];
-        setting.CreateConfig = () => new()
-        {
-            TimeToKill = 10,
+            AoeCount = 2,
         };
     }
 
@@ -146,42 +114,255 @@ partial class MonkRotation
         setting.UnlockedByQuestID = 66598;
     }
 
-    static partial void ModifyThunderclapPvP(ref ActionSetting setting)
-    {
-        setting.SpecialType = SpecialActionType.MovingForward;
-    }
     static partial void ModifyInspiritedMeditationPvE(ref ActionSetting setting)
     {
+
+    }
+
+    static partial void ModifyHowlingFistPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => InCombat && Chakra >= 5;
         setting.UnlockedByQuestID = 66599;
-    }
-    static partial void ModifySteeledMeditationPvE(ref ActionSetting setting)
-    {
-        setting.UnlockedByQuestID = 66094;
-    }
-
-    static partial void ModifyForbiddenMeditationPvE(ref ActionSetting setting)
-    {
-         setting.UnlockedByQuestID = 67564;
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
     }
 
-    static partial void ModifyRockbreakerPvE(ref ActionSetting setting)
+    static partial void ModifyMantraPvE(ref ActionSetting setting)
     {
-        setting.UnlockedByQuestID = 66597;
+        setting.StatusProvide = [StatusID.Mantra];
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
     }
 
     static partial void ModifyFourpointFuryPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 66600;
+        setting.StatusNeed = [StatusID.RaptorForm];
+        setting.StatusProvide = [StatusID.CoeurlForm];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 2,
+        };
+    }
+
+    static partial void ModifyDragonKickPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.OpoopoForm];
+        setting.StatusProvide = [StatusID.RaptorForm];
+    }
+
+    static partial void ModifyPerfectBalancePvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => InCombat && IsLongerThan(5);
+        setting.UnlockedByQuestID = 66602;
+        setting.StatusProvide = [StatusID.PerfectBalance];
+    }
+
+    static partial void ModifyFormShiftPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.FormlessFist];
+        setting.UnlockedByQuestID = 67563;
+    }
+
+    static partial void ModifyForbiddenMeditationPvE(ref ActionSetting setting)
+    {
+
     }
 
     static partial void ModifyTheForbiddenChakraPvE(ref ActionSetting setting)
     {
+        setting.ActionCheck = () => InCombat && Chakra >= 5;
         setting.UnlockedByQuestID = 67564;
     }
 
     static partial void ModifyMasterfulBlitzPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 67567;
+    }
+
+    static partial void ModifyTornadoKickPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => HasSolar && HasLunar && BeastChakras.Any(chakra => chakra != BeastChakra.NONE);
+        setting.StatusProvide = [StatusID.FormlessFist];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyElixirFieldPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => BeastChakras.Distinct().Count() == 1 && BeastChakras.Any(chakra => chakra != BeastChakra.NONE);
+        setting.StatusProvide = [StatusID.FormlessFist];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyCelestialRevolutionPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => BeastChakras.Distinct().Count() == 2 && BeastChakras.Any(chakra => chakra != BeastChakra.NONE);
+        setting.StatusProvide = [StatusID.FormlessFist];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyFlintStrikePvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => BeastChakras.Distinct().Count() == 3 && BeastChakras.Any(chakra => chakra != BeastChakra.NONE);
+        setting.StatusProvide = [StatusID.FormlessFist];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyRiddleOfEarthPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.RiddleOfEarth, StatusID.EarthsRumination];
+    }
+
+    static partial void ModifyEarthsReplyPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.EarthsRumination];
+    }
+
+    static partial void ModifyRiddleOfFirePvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.RiddleOfFire, StatusID.FiresRumination];
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+    }
+
+    static partial void ModifyBrotherhoodPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.Brotherhood, StatusID.MeditativeBrotherhood];
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+        setting.UnlockedByQuestID = 67966;
+    }
+
+    static partial void ModifyRiddleOfWindPvE(ref ActionSetting setting)
+    {
+        setting.StatusProvide = [StatusID.RiddleOfWind, StatusID.WindsRumination];
+        setting.CreateConfig = () => new()
+        {
+            TimeToKill = 10,
+        };
+    }
+
+    static partial void ModifyEnlightenedMeditationPvE(ref ActionSetting setting)
+    {
+
+    }
+
+    static partial void ModifyEnlightenmentPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => InCombat && Chakra >= 5;
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifySixsidedStarPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => InCombat && Chakra >= 5;
+        setting.StatusProvide = [StatusID.SixsidedStar];
+    }
+
+    static partial void ModifyShadowOfTheDestroyerPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.OpoopoForm];
+        setting.StatusProvide = [StatusID.RaptorForm];
+    }
+
+    static partial void ModifyRisingPhoenixPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => BeastChakras.Distinct().Count() == 3 && BeastChakras.Any(chakra => chakra != BeastChakra.NONE);
+        setting.StatusProvide = [StatusID.FormlessFist];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyPhantomRushPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => HasSolar && HasLunar && BeastChakras.Any(chakra => chakra != BeastChakra.NONE);
+        setting.StatusProvide = [StatusID.FormlessFist];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyLeapingOpoPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.OpoopoForm];
+        setting.StatusProvide = [StatusID.RaptorForm];
+        setting.ActionCheck = () => OpoOpoFury >= 1;
+    }
+
+    static partial void ModifyRisingRaptorPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.RaptorForm];
+        setting.StatusProvide = [StatusID.CoeurlForm];
+        setting.ActionCheck = () => RaptorFury >= 1;
+    }
+
+    static partial void ModifyPouncingCoeurlPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.CoeurlForm];
+        setting.StatusProvide = [StatusID.OpoopoForm];
+        setting.ActionCheck = () => CoeurlFury >= 1;
+    }
+
+    static partial void ModifyElixirBurstPvE(ref ActionSetting setting)
+    {
+        setting.ActionCheck = () => BeastChakras.Distinct().Count() == 1 && BeastChakras.Any(chakra => chakra != BeastChakra.NONE);
+        setting.StatusProvide = [StatusID.FormlessFist];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyWindsReplyPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.WindsRumination];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+    static partial void ModifyFiresReplyPvE(ref ActionSetting setting)
+    {
+        setting.StatusNeed = [StatusID.FiresRumination];
+        setting.StatusProvide = [StatusID.FormlessFist];
+        setting.CreateConfig = () => new()
+        {
+            AoeCount = 1,
+        };
+    }
+
+
+    // PvP
+    static partial void ModifyThunderclapPvP(ref ActionSetting setting)
+    {
+        setting.SpecialType = SpecialActionType.MovingForward;
     }
 
     /// <inheritdoc/>
