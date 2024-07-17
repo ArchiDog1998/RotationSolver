@@ -48,7 +48,6 @@ partial class MonkRotation
 
     static partial void ModifyBootshinePvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.OpoopoForm];
         setting.StatusProvide = [StatusID.RaptorForm];
     }
 
@@ -84,7 +83,6 @@ partial class MonkRotation
 
     static partial void ModifyArmOfTheDestroyerPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.CoeurlForm];
         setting.StatusProvide = [StatusID.RaptorForm];
         setting.CreateConfig = () => new()
         {
@@ -153,7 +151,6 @@ partial class MonkRotation
 
     static partial void ModifyDragonKickPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.OpoopoForm];
         setting.StatusProvide = [StatusID.RaptorForm];
         setting.ActionCheck = () => OpoOpoFury == 0;
     }
@@ -287,7 +284,6 @@ partial class MonkRotation
 
     static partial void ModifyShadowOfTheDestroyerPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.OpoopoForm];
         setting.StatusProvide = [StatusID.RaptorForm];
     }
 
@@ -313,7 +309,6 @@ partial class MonkRotation
 
     static partial void ModifyLeapingOpoPvE(ref ActionSetting setting)
     {
-        setting.StatusNeed = [StatusID.OpoopoForm];
         setting.StatusProvide = [StatusID.RaptorForm];
         setting.ActionCheck = () => OpoOpoFury >= 1;
     }
