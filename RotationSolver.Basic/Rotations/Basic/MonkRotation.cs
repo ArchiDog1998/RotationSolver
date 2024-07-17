@@ -79,6 +79,7 @@ partial class MonkRotation
     {
         setting.StatusNeed = [StatusID.RaptorForm];
         setting.StatusProvide = [StatusID.CoeurlForm];
+        setting.ActionCheck = () => RaptorFury == 0;
     }
 
     static partial void ModifyArmOfTheDestroyerPvE(ref ActionSetting setting)
@@ -95,6 +96,7 @@ partial class MonkRotation
     {
         setting.StatusNeed = [StatusID.CoeurlForm];
         setting.StatusProvide = [StatusID.OpoopoForm];
+        setting.ActionCheck = () => OpoOpoFury == 0;
     }
 
     static partial void ModifyRockbreakerPvE(ref ActionSetting setting)
@@ -153,6 +155,7 @@ partial class MonkRotation
     {
         setting.StatusNeed = [StatusID.OpoopoForm];
         setting.StatusProvide = [StatusID.RaptorForm];
+        setting.ActionCheck = () => OpoOpoFury == 0;
     }
 
     static partial void ModifyPerfectBalancePvE(ref ActionSetting setting)
