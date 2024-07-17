@@ -309,7 +309,7 @@ internal static class DataCenter
                 if (b.CurrentHp <= 1) return false;
 
                 if (!b.IsTargetable) return false;
-                
+
                 if (b.StatusList.Any(StatusHelper.IsInvincible)) return false;
                 return true;
             }).ToArray();
@@ -327,7 +327,7 @@ internal static class DataCenter
         {
             var deathAll = AllianceMembers.GetDeath();
             var deathParty = PartyMembers.GetDeath();
-            
+
             if (deathParty.Any())
             {
                 var deathT = deathParty.GetJobCategory(JobRole.Tank);
@@ -358,7 +358,6 @@ internal static class DataCenter
             }
 
             return null;
-
         }
     }
 
@@ -366,11 +365,13 @@ internal static class DataCenter
     {
         get
         {
-            var weakenPeople = DataCenter.PartyMembers.Where(o => o is IBattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
-            var dyingPeople = weakenPeople.Where(o => o is IBattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
+            var weakenPeople =
+                DataCenter.PartyMembers.Where(o => o is IBattleChara b && b.StatusList.Any(StatusHelper.CanDispel));
+            var dyingPeople =
+                weakenPeople.Where(o => o is IBattleChara b && b.StatusList.Any(StatusHelper.IsDangerous));
 
             return dyingPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault()
-                                      ?? weakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
+                   ?? weakenPeople.OrderBy(ObjectHelper.DistanceToPlayer).FirstOrDefault();
         }
     }
 
@@ -400,18 +401,19 @@ internal static class DataCenter
     public static int NumberOfHostilesInMaxRange => AllHostileTargets.Count(o => o.DistanceToPlayer() <= 25);
     public static int NumberOfAllHostilesInRange => AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange);
     public static int NumberOfAllHostilesInMaxRange => AllHostileTargets.Count(o => o.DistanceToPlayer() <= 25);
+
     public static bool MobsTime => AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
                                    >= Service.Config.AutoDefenseNumber;
 
     public static bool AreHostilesCastingKnockback => AllHostileTargets.Any(IsHostileCastingKnockback);
-    
+
     public static float JobRange
     {
         get
         {
             float radius = 25;
             if (!Player.Available) return radius;
-           
+
             switch (DataCenter.Role)
             {
                 case JobRole.Tank:
@@ -419,6 +421,7 @@ internal static class DataCenter
                     radius = 3;
                     break;
             }
+
             return radius;
         }
     }
@@ -428,7 +431,7 @@ internal static class DataCenter
         get
         {
             var validTimes = AllHostileTargets.Select(b => b.GetTimeToKill()).Where(v => !float.IsNaN(v)).ToList();
-            return validTimes.Any() ? validTimes.Average() : 0; 
+            return validTimes.Any() ? validTimes.Average() : 0;
         }
     }
 
@@ -444,19 +447,28 @@ internal static class DataCenter
         {
             var mayPet = AllTargets.OfType<IBattleNpc>().Where(npc => npc.OwnerId == Player.Object.GameObjectId);
             var hasPet = mayPet.Any(npc => npc.BattleNpcKind == BattleNpcSubKind.Pet);
-            if (hasPet)
+            if (hasPet ||
+                Svc.Condition[ConditionFlag.Mounted] ||
+                Svc.Condition[ConditionFlag.Mounted2] ||
+                Svc.Condition[ConditionFlag.BetweenAreas] ||
+                Svc.Condition[ConditionFlag.BetweenAreas51] ||
+                Svc.Condition[ConditionFlag.BeingMoved] ||
+                Svc.Condition[ConditionFlag.WatchingCutscene] ||
+                Svc.Condition[ConditionFlag.OccupiedInEvent] ||
+                Svc.Condition[ConditionFlag.Occupied33] ||
+                Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] ||
+                Svc.Condition[ConditionFlag.Jumping61])
             {
                 _petLastSeen = DateTime.Now;
                 return true;
             }
-            else if (!hasPet && _petLastSeen.AddSeconds(3) < DateTime.Now)
+
+            if (!hasPet && _petLastSeen.AddSeconds(3) < DateTime.Now)
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
     }
 
@@ -468,8 +480,9 @@ internal static class DataCenter
 
     public static Dictionary<ulong, float> RefinedHP => PartyMembers
         .ToDictionary(p => p.GameObjectId, GetPartyMemberHPRatio);
-    
+
     private static Dictionary<ulong, uint> _lastHp = [];
+
     private static float GetPartyMemberHPRatio(IBattleChara member)
     {
         if (member == null) return 0;
@@ -490,15 +503,20 @@ internal static class DataCenter
                 DataCenter.HealHP.Remove(member.GameObjectId);
                 return (float)member.CurrentHp / member.MaxHp;
             }
+
             return Math.Min(1, (hp + rightHp) / (float)member.MaxHp);
         }
+
         return (float)member.CurrentHp / member.MaxHp;
     }
 
     public static IEnumerable<float> PartyMembersHP => RefinedHP.Values.Where(r => r > 0);
     public static float PartyMembersMinHP => PartyMembersHP.Any() ? PartyMembersHP.Min() : 0;
     public static float PartyMembersAverHP => PartyMembersHP.Any() ? PartyMembersHP.Average() : 0;
-    public static float PartyMembersDifferHP => PartyMembersHP.Any() ? (float)Math.Sqrt(PartyMembersHP.Average(d => Math.Pow(d - PartyMembersAverHP, 2))) : 0;
+
+    public static float PartyMembersDifferHP => PartyMembersHP.Any()
+        ? (float)Math.Sqrt(PartyMembersHP.Average(d => Math.Pow(d - PartyMembersAverHP, 2)))
+        : 0;
 
     public static bool HPNotFull => PartyMembersMinHP < 1;
 
@@ -605,8 +623,8 @@ internal static class DataCenter
     #endregion
 
     internal static SortedList<string, string> AuthorHashes { get; set; } = [];
-    
-        private static bool IsCastingTankVfx()
+
+    private static bool IsCastingTankVfx()
     {
         return IsCastingVfx(s =>
         {
@@ -617,6 +635,7 @@ internal static class DataCenter
             return true;
         });
     }
+
     private static bool IsCastingAreaVfx()
     {
         return IsCastingVfx(s => s.Path.StartsWith("vfx/lockon/eff/coshare"));
@@ -637,7 +656,6 @@ internal static class DataCenter
         }
         catch
         {
-
         }
 
         return false;
@@ -648,24 +666,19 @@ internal static class DataCenter
         return IsHostileCastingBase(h, (act) =>
         {
             return OtherConfiguration.HostileCastingTank.Contains(act.RowId)
-                || h.CastTargetObjectId == h.TargetObjectId;
+                   || h.CastTargetObjectId == h.TargetObjectId;
         });
     }
 
     private static bool IsHostileCastingArea(IBattleChara h)
     {
-        return IsHostileCastingBase(h, (act) =>
-        {
-            return OtherConfiguration.HostileCastingArea.Contains(act.RowId);
-        });
+        return IsHostileCastingBase(h, (act) => { return OtherConfiguration.HostileCastingArea.Contains(act.RowId); });
     }
 
     public static bool IsHostileCastingKnockback(IBattleChara h)
     {
-        return IsHostileCastingBase(h, (act) =>
-        {
-            return OtherConfiguration.HostileCastingKnockback.Contains(act.RowId);
-        });
+        return IsHostileCastingBase(h,
+            (act) => { return OtherConfiguration.HostileCastingKnockback.Contains(act.RowId); });
     }
 
     private static bool IsHostileCastingBase(IBattleChara h, Func<Action, bool> check)
@@ -677,11 +690,10 @@ internal static class DataCenter
         var t = last - DataCenter.DefaultGCDTotal;
 
         if (!(h.TotalCastTime > 2.5 &&
-            t > 0 && t < DataCenter.GCDTime(2))) return false;
+              t > 0 && t < DataCenter.GCDTime(2))) return false;
 
         var action = Service.GetSheet<Action>().GetRow(h.CastActionId);
         if (action == null) return false;
         return check?.Invoke(action) ?? false;
     }
-
 }
