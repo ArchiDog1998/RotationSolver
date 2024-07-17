@@ -103,6 +103,7 @@ partial class DragoonRotation
 
     static partial void ModifyWingedGlidePvE(ref ActionSetting setting)
     {
+        setting.SpecialType = SpecialActionType.MovingForward;
         setting.UnlockedByQuestID = 66607;
     }
 

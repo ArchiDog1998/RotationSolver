@@ -5,6 +5,7 @@ partial class BlackMageRotation
     /// <inheritdoc/>
     public override MedicineType MedicineType => MedicineType.Intelligence;
 
+    // Umbral Soul level 35 now
     #region Job Gauge
     /// <summary>
     /// 
