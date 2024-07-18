@@ -536,5 +536,6 @@
   "XIVConfigUI.Attributes.ConfigUnitType.Degree": "Angle Unit, in degrees.",
   "XIVConfigUI.Attributes.ConfigUnitType.Yalms": "Distance Unit, in yalms.",
   "XIVConfigUI.Attributes.ConfigUnitType.Percent": "Ratio Unit, as percentage.",
-  "XIVConfigUI.Attributes.ConfigUnitType.Pixels": "Display Unit, in pixels."
+  "XIVConfigUI.Attributes.ConfigUnitType.Pixels": "Display Unit, in pixels.",
+  "RotationSolver.Basic.Configuration.ConfigsName.MakeSoftTargetAsTarget": "Make SoftTarget As Target"
 }
