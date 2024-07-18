@@ -53,6 +53,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
 
         PainterManager.Init();
+        _ = new Ipc();
 
         MajorUpdater.Enable();
         Watcher.Enable();
