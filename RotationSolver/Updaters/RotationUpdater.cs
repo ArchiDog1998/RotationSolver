@@ -314,38 +314,43 @@ internal static class RotationUpdater
         {
             var fileName = url.Split('/').LastOrDefault();
             if (string.IsNullOrEmpty(fileName)) return false;
-            //if (Path.GetExtension(fileName) != ".dll") continue;
             var filePath = Path.Combine(relayFolder, fileName);
 
-            //Download
-            using (HttpResponseMessage response = await client.GetAsync(url))
-            {
-                if (File.Exists(filePath) && !mustDownload)
-                {
-                    var fileInfo = new FileInfo(filePath);
-                    var header = response.Content.Headers;
-                    if (header.LastModified.HasValue && header.LastModified.Value.UtcDateTime < fileInfo.LastWriteTimeUtc
-                        && fileInfo.Length == header.ContentLength)
-                    {
-                        return false;
-                    }
-                    File.Delete(filePath);
-                }
+            // Check if the file needs to be downloaded
+            HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+            var fileInfo = new FileInfo(filePath);
+            var header = response.Content.Headers;
+            bool shouldDownload = mustDownload || !File.Exists(filePath) ||
+                                  !header.LastModified.HasValue ||
+                                  header.LastModified.Value.UtcDateTime >= fileInfo.LastWriteTimeUtc ||
+                                  fileInfo.Length != header.ContentLength;
 
-                using var stream = new FileStream(filePath, File.Exists(filePath)
-                    ? FileMode.Open : FileMode.CreateNew);
+            if (!shouldDownload)
+            {
+                return false; // No need to download
+            }
+
+            // If reaching here, either the local file doesn't exist, or it's outdated. Proceed to download.
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath); // Delete the old local file
+            }
+
+            using (var stream = new FileStream(filePath, FileMode.CreateNew))
+            {
                 await response.Content.CopyToAsync(stream);
             }
 
-            Svc.Log.Information($"Successfully download the {filePath}");
+            Svc.Log.Information($"Successfully downloaded {filePath}");
             return true;
         }
         catch (Exception ex)
         {
-            Svc.Log.Error(ex, $"failed to download from {url}");
+            Svc.Log.Error(ex, $"Failed to download from {url}");
         }
         return false;
     }
+
 
     private static void PrintLoadedAssemblies(IEnumerable<string>? assemblies)
     {
