@@ -184,9 +184,9 @@ public struct ActionTargetInfo(IBaseAction action)
                 return false;
             }
         }
-        else if(action.Info.Aspect != Aspect.Piercing) // Physic
+        else if(action.Info.Aspect != Aspect.Piercing) // Physical
         {
-            if (IGameObject.HasStatus(false, StatusHelper.PhysicResistancec))
+            if (IGameObject.HasStatus(false, StatusHelper.PhysicalResistance))
             {
                 return false;
             }
@@ -198,6 +198,7 @@ public struct ActionTargetInfo(IBaseAction action)
                 return false;
             }
         }
+
 
         return true;
     }
