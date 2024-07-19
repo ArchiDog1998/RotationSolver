@@ -15,8 +15,9 @@ using RotationSolver.Data;
 using RotationSolver.Helpers;
 using RotationSolver.Localization;
 using RotationSolver.UI;
+using RotationSolver.UI.HighlightTeachingMode;
+using RotationSolver.UI.HighlightTeachingMode.ElementSpecial;
 using RotationSolver.Updaters;
-using System.Xml.Linq;
 using WelcomeWindow = RotationSolver.UI.WelcomeWindow;
 
 namespace RotationSolver;
@@ -30,9 +31,11 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
     static NextActionWindow? _nextActionWindow;
     static CooldownWindow? _cooldownWindow;
     static WelcomeWindow? _changelogWindow;
+    static OverlayWindow? _overlayWindow;
 
     static readonly List<IDisposable> _dis = [];
     public static string Name => "Rotation Solver Reborn";
+    internal static readonly List<DrawingHighlightHotbarBase> _drawingElements = [];
 
     public static DalamudLinkPayload OpenLinkPayload { get; private set; } = null!;
     public static DalamudLinkPayload? HideWarningLinkPayload { get; private set; }
@@ -68,6 +71,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         _nextActionWindow = new();
         _cooldownWindow = new();
         _changelogWindow = new();
+        _overlayWindow = new();
 
         windowSystem = new WindowSystem(Name);
         windowSystem.AddWindow(_rotationConfigWindow);
@@ -75,10 +79,15 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
         windowSystem.AddWindow(_nextActionWindow);
         windowSystem.AddWindow(_cooldownWindow);
         windowSystem.AddWindow(_changelogWindow);
+        windowSystem.AddWindow(_overlayWindow);
+        Notify.Success("Overlay Window was added!");
 
         Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.OpenMainUi += OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw += OnDraw;
+
+        //HotbarHighlightDrawerManager.Init();
+        HotbarHighlightManager.Init();
 
         MajorUpdater.Enable();
         Watcher.Enable();
@@ -143,6 +152,8 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         LocalizationManager.Dispose();
         MajorUpdater.Dispose();
+        //HotbarHighlightDrawerManager.Dispose();
+        HotbarHighlightManager.Dispose();
         await OtherConfiguration.Save();
 
         ECommonsMain.Dispose();
@@ -180,5 +191,6 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 
         _controlWindow!.IsOpen = isValid && Service.Config.ShowControlWindow;
         _cooldownWindow!.IsOpen = isValid && Service.Config.ShowCooldownWindow;
+        _overlayWindow!.IsOpen = isValid && Service.Config.TeachingMode;
     }
 }
