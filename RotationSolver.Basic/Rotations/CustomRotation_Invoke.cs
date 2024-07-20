@@ -158,7 +158,7 @@ partial class CustomRotation
         IBaseAction.IgnoreClipping = true;
 
         var countDown = Service.CountDownTime;
-        if (countDown > 0)
+        if (countDown > 0 && !DataCenter.InCombat)
         {
             gcdAction = null;
             return CountDownAction(countDown);
