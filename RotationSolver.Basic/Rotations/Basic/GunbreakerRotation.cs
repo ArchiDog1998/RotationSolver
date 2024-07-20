@@ -86,11 +86,13 @@ partial class GunbreakerRotation
     static partial void ModifyNobleBloodPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Service.GetAdjustedActionId(ActionID.ReignOfBeastsPvE) == ActionID.NobleBloodPvE;
+        setting.ComboIds = [ActionID.ReignOfBeastsPvE];
     }
 
     static partial void ModifyLionHeartPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Service.GetAdjustedActionId(ActionID.ReignOfBeastsPvE) == ActionID.LionHeartPvE;
+        setting.ComboIds = [ActionID.NobleBloodPvE];
     }
 
     static partial void ModifyFatedCirclePvE(ref ActionSetting setting)
