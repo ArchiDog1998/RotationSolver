@@ -157,7 +157,7 @@ partial class MonkRotation
 
     static partial void ModifyPerfectBalancePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => InCombat && IsLongerThan(5);
+        setting.ActionCheck = () => InCombat;
         setting.UnlockedByQuestID = 66602;
         setting.StatusProvide = [StatusID.PerfectBalance];
     }

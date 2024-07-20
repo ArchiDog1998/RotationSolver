@@ -1,4 +1,6 @@
-﻿namespace RotationSolver.Basic.Rotations.Basic;
+﻿using FFXIVClientStructs.FFXIV.Client.UI.Shell;
+
+namespace RotationSolver.Basic.Rotations.Basic;
 
 partial class RedMageRotation
 {
@@ -71,11 +73,13 @@ partial class RedMageRotation
     static partial void ModifyZwerchhauPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => (BlackMana >= 15 && WhiteMana >= 15)  || Player.HasStatus(true, StatusID.MagickedSwordplay);
+        setting.ComboIds = [ActionID.RipostePvE];
     }
 
     static partial void ModifyRedoublementPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => (BlackMana >= 15 && WhiteMana >= 15)  || Player.HasStatus(true, StatusID.MagickedSwordplay);
+        setting.ComboIds = [ActionID.ZwerchhauPvE];
     }
 
     static partial void ModifyScatterPvE(ref ActionSetting setting)
@@ -104,7 +108,12 @@ partial class RedMageRotation
 
     static partial void ModifyScorchPvE(ref ActionSetting setting)
     {
-        setting.ComboIds = [ActionID.VerholyPvE];
+        setting.ComboIds = [ActionID.VerholyPvE, ActionID.VerfirePvE];
+    }
+
+    static partial void ModifyResolutionPvE(ref ActionSetting setting)
+    {
+        setting.ComboIds = [ActionID.ScorchPvE];
     }
 
     private protected sealed override IBaseAction Raise => VerraisePvE;
