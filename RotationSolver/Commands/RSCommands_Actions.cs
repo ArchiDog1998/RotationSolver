@@ -184,12 +184,14 @@ public static partial class RSCommands
         {
             CancelState();
         }
-        //Cancel when pull
-        else if (Service.CountDownTime == 0 && _lastCountdownTime > 0.2f)
+
+        //Holds state if countdown is running and setting is enabled
+        else if (Service.Config.StartOnCountdown && Service.CountDownTime == 0 && _lastCountdownTime > 0.2f)
         {
             _lastCountdownTime = 0;
             CancelState();
         }
+
         //Auto manual on being attacked by someone.
         else if (Service.Config.StartOnAttackedBySomeone
             && target != null
@@ -200,7 +202,8 @@ public static partial class RSCommands
                 DoStateCommandType(StateCommandType.Manual);
             }
         }
-        //Auto start at count Down.
+
+        //Auto start at count down.
         else if (Service.Config.StartOnCountdown
             && Service.CountDownTime > 0)
         {
@@ -213,6 +216,7 @@ public static partial class RSCommands
                     DoStateCommandType(StateCommandType.Auto);
             }
         }
+
         //Cancel when after combat.
         else if (ActionUpdater.AutoCancelTime != DateTime.MinValue
             && DateTime.Now > ActionUpdater.AutoCancelTime)
