@@ -189,6 +189,11 @@ partial class MachinistRotation
         setting.UnlockedByQuestID = 68445;
     }
 
+    static partial void ModifyBioblasterPvE(ref ActionSetting setting)
+    {
+        setting.TargetStatusProvide = [StatusID.Bioblaster, StatusID.Bioblaster_2019];
+    }
+
     static partial void ModifyDrillPvE(ref ActionSetting setting)
     {
         setting.UnlockedByQuestID = 67246;
