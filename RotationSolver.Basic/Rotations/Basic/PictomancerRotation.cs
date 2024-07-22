@@ -53,6 +53,7 @@ public partial class PictomancerRotation
 
     static partial void ModifyFireInRedPvE(ref ActionSetting setting)
     {
+        setting.ActionCheck = () => !Player.HasStatus(true, StatusID.SubtractivePalette);
         setting.StatusProvide = [StatusID.Aetherhues];
     }
 
@@ -79,6 +80,7 @@ public partial class PictomancerRotation
 
     static partial void ModifyFireIiInRedPvE(ref ActionSetting setting)
     {
+        setting.ActionCheck = () => !Player.HasStatus(true, StatusID.SubtractivePalette);
         setting.StatusProvide = [StatusID.Aetherhues];
     }
 
@@ -145,7 +147,7 @@ public partial class PictomancerRotation
 
     static partial void ModifyHammerMotifPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => !WeaponMotifDrawn;
+        setting.ActionCheck = () => !Player.HasStatus(true, StatusID.HammerTime) && !WeaponMotifDrawn;
     }
 
     static partial void ModifyStrikingMusePvE(ref ActionSetting setting)
@@ -206,7 +208,7 @@ public partial class PictomancerRotation
 
     static partial void ModifyStarrySkyMotifPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => !LandscapeMotifDrawn;
+        setting.ActionCheck = () => !Player.HasStatus(true, StatusID.StarryMuse) && !LandscapeMotifDrawn;
     }
 
     static partial void ModifyStarryMusePvE(ref ActionSetting setting)
@@ -217,7 +219,7 @@ public partial class PictomancerRotation
 
     static partial void ModifyHolyInWhitePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Paint > 0;
+        setting.ActionCheck = () => Paint > 0 && !Player.HasStatus(true, StatusID.MonochromeTones);
     }
 
     static partial void ModifyHammerBrushPvE(ref ActionSetting setting)
