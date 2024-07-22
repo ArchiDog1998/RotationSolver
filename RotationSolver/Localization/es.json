@@ -537,5 +537,6 @@
   "XIVConfigUI.Attributes.ConfigUnitType.Yalms": "Distance Unit, in yalms.",
   "XIVConfigUI.Attributes.ConfigUnitType.Percent": "Unidad de Ratio, como porcentaje.",
   "XIVConfigUI.Attributes.ConfigUnitType.Pixels": "Display Unit, in pixels.",
-  "RotationSolver.Basic.Configuration.ConfigsName.MakeSoftTargetAsTarget": "Make SoftTarget As Target"
+  "RotationSolver.Basic.Configuration.ConfigsName.MakeSoftTargetAsTarget": "Make SoftTarget As Target",
+  "RotationSolver.Basic.Data.TargetHostileType.AllTargetsWhenSolo": "All targets when solo, or previously engaged."
 }
