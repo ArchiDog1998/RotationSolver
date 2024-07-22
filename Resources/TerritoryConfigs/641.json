@@ -27,6 +27,14 @@
     "SAM": {
       "Timeline": {},
       "Trigger": []
+    },
+    "DRG": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "RDM": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [

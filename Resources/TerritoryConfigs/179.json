@@ -1,9 +1,5 @@
 {
   "_jobConfigs": {
-    "WAR": {
-      "Timeline": {},
-      "Trigger": []
-    },
     "ADV": {
       "Timeline": {},
       "Trigger": []

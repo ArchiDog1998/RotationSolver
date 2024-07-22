@@ -89,7 +89,7 @@ internal static class ImGuiHelperRS
                 if (DataCenter.RightNowRotation == null) return null;
 
                 var popUpKey = $"Action Finder{obj.GetHashCode()}";
-                ImGuiHelperRS.ActionSelectorPopUp(popUpKey, _territoryActionsList, DataCenter.RightNowRotation, item => property.SetValue(obj, (ActionID)item.ID));
+                ActionSelectorPopUp(popUpKey, _territoryActionsList, DataCenter.RightNowRotation, item => property.SetValue(obj, (ActionID)item.ID));
 
                 if (value.GetTexture(out var icon) || ImageLoader.GetTexture(4, out icon))
                 {

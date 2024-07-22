@@ -1,10 +1,10 @@
 {
   "_jobConfigs": {
-    "WAR": {
+    "ADV": {
       "Timeline": {},
       "Trigger": []
     },
-    "ADV": {
+    "RDM": {
       "Timeline": {},
       "Trigger": []
     }
