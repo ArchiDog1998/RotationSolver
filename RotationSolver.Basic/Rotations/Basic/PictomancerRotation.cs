@@ -41,12 +41,12 @@ public partial class PictomancerRotation
     public static bool MadeenPortraitReady => JobGauge.MadeenPortraitReady;
 
     /// <summary>
-    /// Which creature flags are present.
+    /// Which creature flags are present. Pom = 1, Wings = 2, Claw = 4, MooglePortait = 0x10, MadeenPortrait = 0x20, these are the small paintings above Maw/Pom
     /// </summary>
     public static CreatureFlags CreatureFlags => JobGauge.CreatureFlags;
 
     /// <summary>
-    /// Which canvas flags are present.
+    /// Which canvas flags are present.  Pom = 1, Wing = 2, Claw = 4, Maw = 8, Weapon = 0x10, Landscape = 0x20, these are the motif flags
     /// </summary>
     public static CanvasFlags CanvasFlags => JobGauge.CanvasFlags;
 
@@ -64,7 +64,7 @@ public partial class PictomancerRotation
 
     static partial void ModifyTemperaCoatPvE(ref ActionSetting setting)
     {
-        
+        setting.StatusProvide = [StatusID.TemperaCoat];
     }
 
     static partial void ModifyWaterInBluePvE(ref ActionSetting setting)
@@ -135,7 +135,7 @@ public partial class PictomancerRotation
 
     static partial void ModifySteelMusePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => WeaponMotifDrawn;
+        setting.ActionCheck = () => WeaponMotifDrawn && InCombat;
     }
 
     static partial void ModifyHammerStampPvE(ref ActionSetting setting)
@@ -150,7 +150,7 @@ public partial class PictomancerRotation
 
     static partial void ModifyStrikingMusePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => WeaponMotifDrawn;
+        setting.ActionCheck = () => WeaponMotifDrawn && InCombat;
     }
 
     static partial void ModifyBlizzardInCyanPvE(ref ActionSetting setting)
@@ -201,7 +201,7 @@ public partial class PictomancerRotation
 
     static partial void ModifyScenicMusePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => LandscapeMotifDrawn;
+        setting.ActionCheck = () => LandscapeMotifDrawn && InCombat;
     }
 
     static partial void ModifyStarrySkyMotifPvE(ref ActionSetting setting)
@@ -212,6 +212,7 @@ public partial class PictomancerRotation
     static partial void ModifyStarryMusePvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => LandscapeMotifDrawn;
+        setting.StatusProvide = [StatusID.Starstruck, StatusID.SubtractiveSpectrum];
     }
 
     static partial void ModifyHolyInWhitePvE(ref ActionSetting setting)
@@ -221,23 +222,26 @@ public partial class PictomancerRotation
 
     static partial void ModifyHammerBrushPvE(ref ActionSetting setting)
     {
+        setting.ComboIds = [ActionID.HammerStampPvE];
         setting.StatusNeed = [StatusID.HammerTime];
     }
 
     static partial void ModifyPolishingHammerPvE(ref ActionSetting setting)
     {
+        setting.ComboIds = [ActionID.PolishingHammerPvE];
         setting.StatusNeed = [StatusID.HammerTime];
     }
 
     static partial void ModifyTemperaGrassaPvE(ref ActionSetting setting)
     {
         setting.StatusNeed = [StatusID.TemperaCoat];
+        setting.StatusProvide = [StatusID.TemperaGrassa];
     }
 
     static partial void ModifyCometInBlackPvE(ref ActionSetting setting)
     {
         setting.ActionCheck = () => Paint > 0;
-        setting.StatusNeed = [StatusID.MonochromeTones];
+        setting.StatusNeed = [StatusID.MonochromeTones, StatusID.BlackPaint];
     }
 
     static partial void ModifyRainbowDripPvE(ref ActionSetting setting)
@@ -257,12 +261,12 @@ public partial class PictomancerRotation
 
     static partial void ModifyClawedMusePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => CreatureMotifDrawn;
+        setting.ActionCheck = () => CreatureMotifDrawn && CanvasFlags == CanvasFlags.Claw;
     }
 
     static partial void ModifyFangedMusePvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => CreatureMotifDrawn;
+        setting.ActionCheck = () => CreatureMotifDrawn && CanvasFlags == CanvasFlags.Maw;
     }
 
     static partial void ModifyRetributionOfTheMadeenPvE(ref ActionSetting setting)
