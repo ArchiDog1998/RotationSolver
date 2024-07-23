@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Keys;
+using Dalamud.Game.ClientState.Keys;
 using ECommons.ExcelServices;
 using Lumina.Excel.GeneratedSheets;
 
@@ -14,11 +14,14 @@ internal static class ConfigurationHelper
         { ActionID.ChaoticSpringPvE, EnemyPositional.Rear },
         { ActionID.DemolishPvE, EnemyPositional.Rear },
         { ActionID.SnapPunchPvE, EnemyPositional.Flank },
+        { ActionID.PouncingCoeurlPvE, EnemyPositional.Flank },
         { ActionID.TrickAttackPvE, EnemyPositional.Rear },
         { ActionID.AeolianEdgePvE, EnemyPositional.Rear },
         { ActionID.ArmorCrushPvE, EnemyPositional.Flank },
         { ActionID.GibbetPvE, EnemyPositional.Flank },
+        { ActionID.ExecutionersGibbetPvE, EnemyPositional.Flank },
         { ActionID.GallowsPvE, EnemyPositional.Rear },
+        { ActionID.ExecutionersGallowsPvE, EnemyPositional.Rear },
         { ActionID.GekkoPvE, EnemyPositional.Rear },
         { ActionID.KashaPvE, EnemyPositional.Flank },
         { ActionID.FlankstingStrikePvE, EnemyPositional.Flank },
