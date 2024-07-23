@@ -255,7 +255,7 @@
   "RotationSolver.Basic.Configuration.ConfigsName.ControlWindowUnlockBg": "Unlocked control window's background.",
   "RotationSolver.Basic.Configuration.ConfigsName.NextWindowBg": "Next action window's background.",
   "RotationSolver.Basic.Configuration.ConfigsName.TTKTextColor": "The text color of the time to kill indicator.",
-  "RotationSolver.Basic.Configuration.ConfigsName.PoslockModifier": "The modifier key to unlock movement temporary",
+  "RotationSolver.Basic.Configuration.ConfigsName.PoslockModifier": "The modifier keyboard key to unlock movement temporary",
   "RotationSolver.Basic.Configuration.ConfigsDescription.PoslockModifier": "RB is for gamepad player",
   "RotationSolver.Basic.Configuration.ConfigsName.LessMPNoRaise": "Never ressurect players if MP is less than the set value",
   "RotationSolver.Basic.Configuration.ConfigsName.KeyboardNoise": "Effect times",
@@ -538,5 +538,6 @@
   "XIVConfigUI.Attributes.ConfigUnitType.Percent": "比率单位，按百分比计算。",
   "XIVConfigUI.Attributes.ConfigUnitType.Pixels": "Display Unit, in pixels.",
   "RotationSolver.Basic.Configuration.ConfigsName.MakeSoftTargetAsTarget": "Make SoftTarget As Target",
-  "RotationSolver.Basic.Data.TargetHostileType.AllTargetsWhenSolo": "All targets when solo, or previously engaged."
+  "RotationSolver.Basic.Data.TargetHostileType.AllTargetsWhenSolo": "All targets when solo, or previously engaged.",
+  "RotationSolver.Basic.Configuration.ConfigsName.PoslockGamepadButton": "The modifier gamepad key to unlock movement temporary"
 }
