@@ -254,22 +254,13 @@ partial class GunbreakerRotation
 
     static partial void ModifyNobleBloodPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Service.GetAdjustedActionId(ActionID.ReignOfBeastsPvE) == ActionID.NobleBloodPvE;
-        setting.ComboIds = [ActionID.ReignOfBeastsPvE];
-        setting.CreateConfig = () => new ActionConfig()
-        {
-            AoeCount = 1,
-        };
+        //setting.ComboIds = [ActionID.ReignOfBeastsPvE];
+        // TODO: Having configs here breaks the rotation, investigate why
     }
 
     static partial void ModifyLionHeartPvE(ref ActionSetting setting)
     {
-        setting.ActionCheck = () => Service.GetAdjustedActionId(ActionID.ReignOfBeastsPvE) == ActionID.LionHeartPvE;
-        setting.ComboIds = [ActionID.NobleBloodPvE];
-        setting.CreateConfig = () => new ActionConfig()
-        {
-            AoeCount = 1,
-        };
+        //setting.ComboIds = [ActionID.NobleBloodPvE];
     }
 
     // PVP
