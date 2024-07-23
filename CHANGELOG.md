@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.6](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.5...v5.1.6) (2024-07-23)
+
+
+### Bug Fixes
+
+* update submodules. ([bf29f83](https://github.com/ArchiDog1998/RotationSolver/commit/bf29f83e9e4270c6026fe18db6a724c6bcfb75f3))
+
 ## [5.1.5](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.4...v5.1.5) (2024-07-22)
 
 
