@@ -53,7 +53,7 @@ internal static class MovingUpdater
                 : doNextAction ? (ActionID)(ActionUpdater.NextAction?.ID ?? 0) : 0;
 
             var specialActions = ActionManager.GetAdjustedCastTime(ActionType.Action, (uint)action) > 0
-                || actionList.Any(id => Service.GetAdjustedActionId(id) == action);
+                || actionList.Any(id => CombatData.AdjustId(id) == action);
 
             //Status
             var specialStatus = Player.Object.HasStatus(true, [.. statusList]);

@@ -101,7 +101,7 @@ internal static class PreviewUpdater
             if (hot.Value.ApparentSlotType != HotbarSlotType.CraftAction && hot.Value.ApparentSlotType != HotbarSlotType.Action) return false;
         }
 
-        return Service.GetAdjustedActionId((uint)slot.ActionId) == actionID;
+        return CombatData.AdjustId((uint)slot.ActionId) == actionID;
     }
 
     unsafe delegate bool ActionBarAction(ActionBarSlot bar, HotbarSlot? hot, uint highLightID);
