@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.1.5](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.4...v5.1.5) (2024-07-22)
+
+
+### Bug Fixes
+
+* add ipc? huh? ([59d7e09](https://github.com/ArchiDog1998/RotationSolver/commit/59d7e097919b57398a71ad54a2501da727f2af2e))
+* add status icon! ([caa4792](https://github.com/ArchiDog1998/RotationSolver/commit/caa4792a1a12ba5b3174a177c68b2e0b73f9374a))
+* add the set softtarget as target feature. ([1111aae](https://github.com/ArchiDog1998/RotationSolver/commit/1111aaee47db6c427bea2bc08eb6e6d74b2cae99))
+* update game data, changed the way of tank ranged actions. ([21b994f](https://github.com/ArchiDog1998/RotationSolver/commit/21b994f49ee3c847d19d34c6f0ed917ccecae69b))
+
 ## [5.1.4](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.3...v5.1.4) (2024-07-13)
 
 
