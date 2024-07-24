@@ -30,12 +30,13 @@ public class ActionSetting()
     internal SpecialActionType SpecialType { get; set; }
 
     /// <summary>
-    /// Is this status is added by the plyer.
+    /// Is this status only ever added by the caster/player. 
+    /// By default true, if false, it can be added by other sources and prevents the action from being used in case of overlapping statuses.
     /// </summary>
     public bool StatusFromSelf { get; set; } = true;
     
     /// <summary>
-    /// The status that it provides to the target.
+    /// The status that is provided to the target of the ability.
     /// </summary>
     public StatusID[]? TargetStatusProvide { get; set; } = null;
 
