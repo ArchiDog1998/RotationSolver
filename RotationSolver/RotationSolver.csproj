@@ -49,7 +49,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\RotationSolver.Basic\ECommons\ECommons\ECommons.csproj" />
-		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic\RotationSolver.Basic.csproj" >
+		<ProjectReference Include="..\RotationSolver.Basic\RotationSolver.Basic\RotationSolver.Basic.csproj">
 			<PrivateAssets>all</PrivateAssets>
 		</ProjectReference>
 		

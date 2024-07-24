@@ -39,6 +39,14 @@
     "PCT": {
       "Timeline": {},
       "Trigger": []
+    },
+    "SMN": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "SGE": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [

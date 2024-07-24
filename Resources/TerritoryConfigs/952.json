@@ -1,17 +1,5 @@
 {
   "_jobConfigs": {
-    "ADV": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "RDM": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "SMN": {
-      "Timeline": {},
-      "Trigger": []
-    },
     "PCT": {
       "Timeline": {},
       "Trigger": []
