@@ -47,6 +47,10 @@
     "SGE": {
       "Timeline": {},
       "Trigger": []
+    },
+    "MNK": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [

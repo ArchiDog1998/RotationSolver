@@ -134,33 +134,6 @@ internal static partial class RaidTimeUpdater
     {
         var name = GetNameFromObjectId((uint)timestamp);
 
-#if DEBUG
-        Svc.Log.Debug(sender.TextValue.ToString());
-#endif
-
-        foreach (var item in DataCenter.TimelineItems)
-        {
-            if (!item.IsInWindow) continue;
-            if (item.Type is not TimelineType.GameLog) continue;
-
-            var typeString = ((uint)type).ToString("X4");
-            if (!item["code", typeString]) continue;
-            if (!item["name", name]) continue;
-            if (!item["line", message.TextValue]) continue;
-
-            item.UpdateRaidTimeOffset();
-            break;
-        }
-    }
-
-    private static void Chat_ChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref Dalamud.Game.Text.SeStringHandling.SeString sender, ref Dalamud.Game.Text.SeStringHandling.SeString message, ref bool isHandled)
-    {
-        var name = GetNameFromObjectId(senderId);
-
-#if DEBUG
-        //Svc.Log.Debug(sender.TextValue.ToString());
-#endif
-
         foreach (var item in DataCenter.TimelineItems)
         {
             if (!item.IsInWindow) continue;

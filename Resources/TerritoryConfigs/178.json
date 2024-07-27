@@ -1,14 +1,10 @@
 {
   "_jobConfigs": {
-    "WAR": {
+    "WHM": {
       "Timeline": {},
       "Trigger": []
     },
-    "ADV": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "PCT": {
+    "MNK": {
       "Timeline": {},
       "Trigger": []
     }

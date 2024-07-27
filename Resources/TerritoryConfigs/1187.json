@@ -7,6 +7,10 @@
     "ADV": {
       "Timeline": {},
       "Trigger": []
+    },
+    "SMN": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],
