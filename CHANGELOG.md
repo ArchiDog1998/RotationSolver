@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.1.7](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.6...v5.1.7) (2024-07-28)
+
+
+### Bug Fixes
+
+* fixed some bugs, and fix VPR base rotation. ([c1611d1](https://github.com/ArchiDog1998/RotationSolver/commit/c1611d1fcd52e49bcd08d3d50c4df9098aef8f23))
+* update submodules. ([5b18c55](https://github.com/ArchiDog1998/RotationSolver/commit/5b18c5517420b15f44af39372482dd94edab6deb))
+
 ## [5.1.6](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.5...v5.1.6) (2024-07-23)
 
 
