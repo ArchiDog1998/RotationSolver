@@ -15,6 +15,10 @@
     "PCT": {
       "Timeline": {},
       "Trigger": []
+    },
+    "AST": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],

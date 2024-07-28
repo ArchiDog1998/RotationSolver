@@ -7,6 +7,14 @@
     "MNK": {
       "Timeline": {},
       "Trigger": []
+    },
+    "ADV": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "AST": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],

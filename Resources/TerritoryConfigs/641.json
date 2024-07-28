@@ -51,6 +51,14 @@
     "MNK": {
       "Timeline": {},
       "Trigger": []
+    },
+    "VPR": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "RPR": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [
