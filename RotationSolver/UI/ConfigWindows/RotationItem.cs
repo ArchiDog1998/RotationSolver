@@ -431,7 +431,7 @@ public class RotationItem : ConfigWindowItemRS
     {
         var hasTexture = ImageLoader.GetTexture(link.Url, out var texture);
 
-        if (hasTexture && ImGuiHelper.TextureButton(texture, wholeWidth, wholeWidth))
+        if (hasTexture && ImGuiHelper.TextureButton(texture, wholeWidth, wholeWidth, link.Url))
         {
             Util.OpenLink(link.Url);
         }
