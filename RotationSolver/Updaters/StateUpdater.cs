@@ -4,6 +4,7 @@ using RotationSolver.Basic.Configuration.Condition;
 using System.Runtime.CompilerServices;
 
 namespace RotationSolver.Updaters;
+
 internal static class StateUpdater
 {
     private static bool CanUseHealAction =>
@@ -42,9 +43,8 @@ internal static class StateUpdater
         if (DataCenter.Role is JobRole.Melee && ActionUpdater.NextGCDAction != null
             && Service.Config.AutoUseTrueNorth)
         {
-            var id = ActionUpdater.NextGCDAction.ID;
-            if (ConfigurationHelper.ActionPositional.TryGetValue((ActionID)id, out var positional)
-                && positional != ActionUpdater.NextGCDAction.Target.Target?.FindEnemyPositional()
+            var positional = ActionUpdater.NextGCDAction.Setting.EnemyPositional;
+            if (positional != ActionUpdater.NextGCDAction.Target.Target?.FindEnemyPositional()
                 && (ActionUpdater.NextGCDAction.Target.Target?.HasPositional() ?? false))
             {
                 status |= AutoStatus.Positional;
