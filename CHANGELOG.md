@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.1.9](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.8...v5.1.9) (2024-07-30)
+
+
+### Bug Fixes
+
+* add positional drawing. ([96bd1d3](https://github.com/ArchiDog1998/RotationSolver/commit/96bd1d3212b4ce2bd0f4f4cf3f56259e7b541fff))
+* positional drawing fix. ([747788b](https://github.com/ArchiDog1998/RotationSolver/commit/747788bb8711785da3422c99911b142a4c3f068b))
+
 ## [5.1.8](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.7...v5.1.8) (2024-07-29)
 
 
