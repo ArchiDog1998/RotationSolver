@@ -147,7 +147,7 @@ internal static class ActionUpdater
 
                 line.Owner = enemy;
                 scale.X = Service.Config.PositionalLineWidth;
-                scale.Z = Service.Config.PositionalLineLength + enemy.HitboxRadius + 3 + player.HitboxRadius;
+                scale.Z = Service.Config.PositionalLineLength + enemy.HitboxRadius + player.HitboxRadius;
 
                 line.UpdateScale(scale);
                 if (isLeft)
