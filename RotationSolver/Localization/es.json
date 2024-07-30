@@ -541,5 +541,12 @@
   "RotationSolver.Basic.Data.TargetHostileType.AllTargetsWhenSolo": "All targets when solo, or previously engaged.",
   "RotationSolver.Basic.Configuration.ConfigsName.PoslockGamepadButton": "The modifier gamepad key to unlock movement temporary",
   "RotationSolver.Basic.Data.WhyActionCantUse.Highlight": "This action isn't highlighted.",
-  "RotationSolver.Basic.Configuration.NamedItem": "Named Item"
+  "RotationSolver.Basic.Configuration.NamedItem": "Named Item",
+  "DefaultRotations.Melee.MNK_DefaultName.AutoFormShift": "Use Form Shift",
+  "DefaultRotations.Melee.MNK_DefaultName.BlueChakra": "Blue Chakra",
+  "DefaultRotations.Melee.MNK_DefaultDescription.BlueChakra": "I Love blue!",
+  "RotationSolver.Basic.Rotations.Basic.MonkRotationName.BlueChakra": "Blue Chakra",
+  "RotationSolver.Basic.Rotations.Basic.MonkRotationDescription.BlueChakra": "I Love blue!",
+  "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItem": "Timeline Item",
+  "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItemDescription": "The icon means if it is in period.\nClick to show the action."
 }
