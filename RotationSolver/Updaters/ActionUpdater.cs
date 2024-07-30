@@ -16,8 +16,8 @@ internal static class ActionUpdater
     static RandomDelay _GCDDelay = new(() => Service.Config.WeaponDelay);
 
     private static IAction? _nextAction;
-    internal static IAction? NextAction 
-    { 
+    internal static IAction? NextAction
+    {
         get => _nextAction;
         set
         {
@@ -27,15 +27,16 @@ internal static class ActionUpdater
         }
     }
 
-    private static StaticVfx? circle, sector, rectangle;
+    private static StaticVfx? circle, sector, rectangle, positionalSect, line;
     private static IBaseAction? _nextGCDAction;
-    const float gcdHeight = 5;
-    internal static IBaseAction? NextGCDAction 
+    const float gcdHeight = 5, positionalHeight = 1;
+    internal static IBaseAction? NextGCDAction
     {
         get => _nextGCDAction;
         set
         {
             UpdateOmen(value);
+            UpdatePositional(value);
             if (_nextGCDAction == value) return;
             _nextGCDAction = value;
         }
@@ -81,6 +82,79 @@ internal static class ActionUpdater
                 rectangle.Target = target;
                 rectangle.UpdateScale(size);
                 rectangle.Enable = true;
+                break;
+        }
+    }
+
+    private static void UpdatePositional(IBaseAction? value)
+    {
+        var player = Player.Object;
+        if (player == null) return;
+
+        line ??= new(GroundOmenFriendly.BasicRectangle.Omen(), player, new Vector3(Service.Config.PositionalLineWidth, positionalHeight, 0));
+        positionalSect ??= new(GroundOmenFriendly.BasicFan090.Omen(), player, new Vector3(0, positionalHeight, 0));
+
+        positionalSect.Enable = line.Enable = false;
+        positionalSect.Owner = line.Owner = player;
+
+        if (!Service.Config.UseOverlayWindow) return;
+        if (!Service.Config.ShowPositional) return;
+        if (value == null) return;
+        if (!player.IsJobCategory(JobRole.Melee)) return;
+        if (value.Target.Target is not IBattleChara enemy) return;
+
+        Vector3 pPosition = enemy.Position;
+        Vector2 faceVec = enemy.GetFaceVector();
+
+        Vector3 dir = player.Position - pPosition;
+        Vector2 dirVec = new(dir.Z, dir.X);
+
+        bool isLeft = faceVec.X * dirVec.Y > faceVec.Y * dirVec.X;
+
+        var scale = new Vector3(0, positionalHeight, enemy.HitboxRadius + 3);
+        switch (value.Setting.EnemyPositional)
+        {
+            case EnemyPositional.Rear:
+                positionalSect.Owner = enemy;
+                scale.X = scale.Z;
+                positionalSect.UpdateScale(scale);
+
+                positionalSect.RotateAddition = MathF.PI;
+
+                positionalSect.Enable = true;
+                break;
+
+            case EnemyPositional.Flank:
+                positionalSect.Owner = enemy;
+                scale.X = scale.Z;
+                positionalSect.UpdateScale(scale);
+
+                if (isLeft)
+                {
+                    positionalSect.RotateAddition = MathF.PI / 2;
+                }
+                else
+                {
+                    positionalSect.RotateAddition = -MathF.PI / 2;
+                }
+
+                positionalSect.Enable = true;
+                break;
+
+            default:
+                line.Owner = enemy;
+                scale.X = Service.Config.PositionalLineWidth;
+                line.UpdateScale(scale);
+                if (isLeft)
+                {
+                    line.RotateAddition = MathF.PI * 3 / 4;
+                }
+                else
+                {
+                    line.RotateAddition = -MathF.PI * 3 / 4;
+                }
+                line.Enable = true;
+
                 break;
         }
     }
@@ -299,10 +373,6 @@ internal static class ActionUpdater
         if (nextAction == null) return false;
 
         var timeToNext = DataCenter.AnimationLocktime;
-
-        ////No time to use 0gcd
-        //if (timeToNext + nextAction.AnimationLockTime
-        //    > DataCenter.WeaponRemain) return false;
 
         //Skip when casting
         if (DataCenter.WeaponElapsed <= DataCenter.CastingTotal) return false;

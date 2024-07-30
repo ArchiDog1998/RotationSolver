@@ -82,16 +82,6 @@ internal static class PainterManager
         }
     }
 
-    private readonly static Drawing3DCircularSector _target = new (default, 0, 0, 3)
-    {
-        IsFill = false,
-        Enable = false,
-    };
-    private readonly static Drawing3DImage _targetImage = new (null, default, 0)
-    {
-        MustInViewRange = true,
-        Enable = false,
-    };
     private const float targetRadius = 0.15f;
     private const float beneficialRadius = 0.6f;
 
@@ -130,11 +120,12 @@ internal static class PainterManager
 
         annulus.UpdateEveryFrame = () =>
         {
+            var tar = DataCenter.HostileTarget;
             if (Service.Config.UseOverlayWindow && Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) 
-                && (Svc.Targets.Target?.IsEnemy() ?? false) && Service.Config.DrawMeleeOffset
+                && (tar?.IsEnemy() ?? false) && Service.Config.DrawMeleeOffset
                 && ActionUpdater.NextGCDAction == null)
             {
-                annulus.Target = Svc.Targets.Target;
+                annulus.Target = tar;
             }
             else
             {
@@ -252,6 +243,16 @@ internal static class PainterManager
         }
     }
 
+    private readonly static Drawing3DCircularSector _target = new(default, 0, 0, 3)
+    {
+        IsFill = false,
+        Enable = false,
+    };
+    private readonly static Drawing3DImage _targetImage = new(null, default, 0)
+    {
+        MustInViewRange = true,
+        Enable = false,
+    };
     private static void UpdateTarget()
     {
         _target.Enable = _targetImage.Enable = false;
