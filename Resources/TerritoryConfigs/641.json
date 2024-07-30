@@ -59,6 +59,10 @@
     "RPR": {
       "Timeline": {},
       "Trigger": []
+    },
+    "BRD": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [

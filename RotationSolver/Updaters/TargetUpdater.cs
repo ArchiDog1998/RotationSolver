@@ -18,7 +18,7 @@ internal static partial class TargetUpdater
     internal unsafe static void UpdateTarget()
     {
         var battles = Svc.Objects.OfType<IBattleChara>();
-        DataCenter.AllTargets.Delay(battles.GetObjectInRadius(30));
+        DataCenter.AllTargets.Delay(GetLessTargets(battles.GetObjectInRadius(30)));
         UpdateHostileTargets(DataCenter.AllTargets);
         UpdateFriends(DataCenter.AllTargets
             .Where(b => b.Character()->CharacterData.OnlineStatus != 15 //Removed the one watching cutscene.
@@ -30,6 +30,12 @@ internal static partial class TargetUpdater
         {
             Svc.Targets.Target = Svc.Targets.SoftTarget;
         }
+    }
+
+    internal static IEnumerable<IBattleChara> GetLessTargets(IEnumerable<IBattleChara> battles)
+    {
+        var removedPlayers = battles.OfType<IPlayerCharacter>().OrderBy(p => p.DistanceToPlayer()).Skip(30);
+        return battles.Where(b => !removedPlayers.Contains(b));
     }
 
     private static DateTime _lastUpdateTimeToKill = DateTime.MinValue;

@@ -152,11 +152,6 @@ internal static class MajorUpdater
                 Type = Dalamud.Game.Text.XivChatType.ErrorMessage,
             });
         }
-
-        if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "Avarice"))
-        {
-            UiString.AvariceWarning.Local().ShowWarning(0);
-        }
     }
 
     public static void Enable()

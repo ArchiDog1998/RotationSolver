@@ -91,7 +91,7 @@ internal static class ActionUpdater
         var player = Player.Object;
         if (player == null) return;
 
-        line ??= new(GroundOmenFriendly.BasicRectangle.Omen(), player, new Vector3(Service.Config.PositionalLineWidth, positionalHeight, 0));
+        line ??= new(GroundOmenFriendly.Rectangle.Omen(), player, new Vector3(Service.Config.PositionalLineWidth, positionalHeight, 0));
         positionalSect ??= new(GroundOmenFriendly.BasicFan090.Omen(), player, new Vector3(0, positionalHeight, 0));
 
         positionalSect.Enable = line.Enable = false;
@@ -111,7 +111,7 @@ internal static class ActionUpdater
 
         bool isLeft = faceVec.X * dirVec.Y > faceVec.Y * dirVec.X;
 
-        var scale = new Vector3(0, positionalHeight, enemy.HitboxRadius + 3);
+        var scale = new Vector3(0, positionalHeight, enemy.HitboxRadius + 3 + player.HitboxRadius);
         switch (value.Setting.EnemyPositional)
         {
             case EnemyPositional.Rear:
@@ -142,8 +142,13 @@ internal static class ActionUpdater
                 break;
 
             default:
+                if (enemy == player) break;
+                if (!Service.Config.ShowPositionalLine) break;
+
                 line.Owner = enemy;
                 scale.X = Service.Config.PositionalLineWidth;
+                scale.Z = Service.Config.PositionalLineLength + enemy.HitboxRadius + 3 + player.HitboxRadius;
+
                 line.UpdateScale(scale);
                 if (isLeft)
                 {
