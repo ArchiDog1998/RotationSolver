@@ -237,8 +237,14 @@ public static class Watcher
         ShowStrSelf = set.ToString();
 
         DataCenter.HealHP = set.GetSpecificTypeEffect(ActionEffectType.Heal);
-        DataCenter.ApplyStatus = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
-        foreach (var effect in set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectSource))
+
+        var targetEffects = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectTarget);
+        OtherConfiguration.TargetStatusProvide[action.RowId] = [..targetEffects.Values.Select(i => (StatusID)(ushort)i).ToHashSet()];
+        DataCenter.ApplyStatus = targetEffects;
+
+        var sourceEffects = set.GetSpecificTypeEffect(ActionEffectType.ApplyStatusEffectSource);
+        OtherConfiguration.StatusProvide[action.RowId] = [.. sourceEffects.Values.Select(i => (StatusID)(ushort)i).ToHashSet()];
+        foreach (var effect in sourceEffects)
         {
             DataCenter.ApplyStatus[effect.Key] = effect.Value;
         }

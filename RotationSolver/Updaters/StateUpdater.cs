@@ -41,7 +41,7 @@ internal static class StateUpdater
         }
 
         if (DataCenter.Role is JobRole.Melee && ActionUpdater.NextGCDAction != null
-            && Service.Config.AutoUseTrueNorth)
+            && Service.Config.AutoUseTrueNorth && !Player.Object.HasStatus(false, StatusHelper.NoPositionalStatus))
         {
             var positional = ActionUpdater.NextGCDAction.Setting.EnemyPositional;
             if (positional != EnemyPositional.None

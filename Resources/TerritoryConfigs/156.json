@@ -1,22 +1,6 @@
 {
   "_jobConfigs": {
-    "PCT": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "BRD": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "VPR": {
-      "Timeline": {},
-      "Trigger": []
-    },
     "ADV": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "MNK": {
       "Timeline": {},
       "Trigger": []
     }

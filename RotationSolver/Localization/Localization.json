@@ -553,5 +553,6 @@
   "DefaultRotations.Melee.MNK_DefaultName.GcdCountPB": "The GCD Count of Using Perfect Balance Before Brotherhood",
   "DefaultRotations.Melee.MNK_DefaultDescription.GcdCountPB": "It may miss one Masterful Blitz if it is set too big or small.",
   "RotationSolver.Basic.Configuration.ConfigsName.ShowPositionalLine": "Shows Positional Line",
-  "RotationSolver.Basic.Configuration.ConfigsName.PositionalLineLength": "Positional Line Length"
+  "RotationSolver.Basic.Configuration.ConfigsName.PositionalLineLength": "Positional Line Length",
+  "RotationSolver.Basic.Data.WhyActionCantUse.MaxLevel": "It is changed to another action!"
 }
