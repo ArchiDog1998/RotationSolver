@@ -410,7 +410,6 @@
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Condition_RotationNullWarning": "Rotation is null, please login or switch the job!",
   "RotationSolver.Basic.Data.UiString.ConfigWindow_Condition_TargetWarning": "You'd better not use it. Because this target isn't the action's target. Try to pick it from action.",
   "RotationSolver.Basic.Data.UiString.HighEndWarning": "Please separately keybind damage reduction / shield cooldowns in case RS fails at a crucial moment in {0}!",
-  "RotationSolver.Basic.Data.UiString.AvariceWarning": "Avarice addon was not detected, please install it if you want to get the positional indicators for Rotation Solver!",
   "RotationSolver.Basic.Data.UiString.ForcedEnableCondition": "Use Forced Enable Condition",
   "RotationSolver.Basic.Data.UiString.ForcedEnableConditionDesc": "The conditions of forced to make it true.",
   "RotationSolver.Basic.Data.UiString.ForcedDisableCondition": "Use Forced Disable Condition",
@@ -548,5 +547,12 @@
   "RotationSolver.Basic.Rotations.Basic.MonkRotationName.BlueChakra": "Blue Chakra",
   "RotationSolver.Basic.Rotations.Basic.MonkRotationDescription.BlueChakra": "I Love blue!",
   "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItem": "Timeline Item",
-  "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItemDescription": "The icon means if it is in period.\nClick to show the action."
+  "RotationSolver.Basic.Configuration.Timeline.BaseTimelineItemDescription": "The icon means if it is in period.\nClick to show the action.",
+  "RotationSolver.Basic.Configuration.ConfigsName.ShowPositional": "Shows Positional",
+  "RotationSolver.Basic.Configuration.ConfigsName.PositionalLineWidth": "Positional Line width",
+  "DefaultRotations.Melee.MNK_DefaultName.GcdCountPB": "The GCD Count of Using Perfect Balance Before Brotherhood",
+  "DefaultRotations.Melee.MNK_DefaultDescription.GcdCountPB": "It may miss one Masterful Blitz if it is set too big or small.",
+  "RotationSolver.Basic.Configuration.ConfigsName.ShowPositionalLine": "Shows Positional Line",
+  "RotationSolver.Basic.Configuration.ConfigsName.PositionalLineLength": "Positional Line Length",
+  "RotationSolver.Basic.Data.WhyActionCantUse.MaxLevel": "It is changed to another action!"
 }
