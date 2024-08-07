@@ -1,26 +1,6 @@
 {
   "_jobConfigs": {
-    "WAR": {
-      "Timeline": {},
-      "Trigger": []
-    },
     "ADV": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "SMN": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "PCT": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "AST": {
-      "Timeline": {},
-      "Trigger": []
-    },
-    "VPR": {
       "Timeline": {},
       "Trigger": []
     },

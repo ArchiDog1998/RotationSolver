@@ -19,6 +19,14 @@
     "MNK": {
       "Timeline": {},
       "Trigger": []
+    },
+    "DNC": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "RPR": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],

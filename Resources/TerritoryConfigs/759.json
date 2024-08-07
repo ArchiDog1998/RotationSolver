@@ -11,6 +11,10 @@
     "DRG": {
       "Timeline": {},
       "Trigger": []
+    },
+    "RPR": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],
