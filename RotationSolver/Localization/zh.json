@@ -481,7 +481,7 @@
   "RotationSolver.Basic.Data.WhyActionCantUse.NoMp": "Not enough MP.",
   "RotationSolver.Basic.Data.WhyActionCantUse.NoStatusNeed": "There are no statuses that the action need!",
   "RotationSolver.Basic.Data.WhyActionCantUse.HasTheStatus": "There are the statuses that this action provide!",
-  "RotationSolver.Basic.Data.WhyActionCantUse.HasThePenaltyStatus": "There are the pernalty statuses of this action!",
+  "RotationSolver.Basic.Data.WhyActionCantUse.HasThePenaltyStatus": "There are the penalty statuses of this action!",
   "RotationSolver.Basic.Data.WhyActionCantUse.LimitBreakPvP": "Not enough Enough Limit Level!",
   "RotationSolver.Basic.Data.WhyActionCantUse.Combo": "The combo doesn't meet.",
   "RotationSolver.Basic.Data.WhyActionCantUse.JobMeet": "The job for this action doesn't meet.",
@@ -554,5 +554,8 @@
   "DefaultRotations.Melee.MNK_DefaultDescription.GcdCountPB": "It may miss one Masterful Blitz if it is set too big or small.",
   "RotationSolver.Basic.Configuration.ConfigsName.ShowPositionalLine": "Shows Positional Line",
   "RotationSolver.Basic.Configuration.ConfigsName.PositionalLineLength": "Positional Line Length",
-  "RotationSolver.Basic.Data.WhyActionCantUse.MaxLevel": "It is changed to another action!"
+  "RotationSolver.Basic.Data.WhyActionCantUse.MaxLevel": "It is changed to another action!",
+  "RotationSolver.Basic.Data.WhyActionCantUse.Disabled": "This action was disabled by the user or not on the slot.",
+  "RotationSolver.Basic.Data.WhyActionCantUse.DisabledSequencer": "This action was disabled by the action sequencer!",
+  "DefaultRotations.Ranged.BRD_DefaultName.IronJawsGcdCount": "Iron Jaws Gcd Behind"
 }
