@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.11](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.10...v5.1.11) (2024-08-09)
+
+
+### Bug Fixes
+
+* rdm ready. ([0e4745b](https://github.com/ArchiDog1998/RotationSolver/commit/0e4745b2cdcceae25e256e2915377d463448750c))
+
 ## [5.1.10](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.9...v5.1.10) (2024-08-07)
 
 
