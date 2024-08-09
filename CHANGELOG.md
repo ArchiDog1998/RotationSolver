@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.1.10](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.9...v5.1.10) (2024-08-07)
+
+
+### Bug Fixes
+
+* add status auto check. ([8bec221](https://github.com/ArchiDog1998/RotationSolver/commit/8bec221e261870af48cc33c5aa2d66a1d3bbe6c7))
+* update submodule. and some action base update. ([3243e9d](https://github.com/ArchiDog1998/RotationSolver/commit/3243e9d5e875496c422cf03a79816fb6ca09541e))
+
 ## [5.1.9](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.8...v5.1.9) (2024-07-30)
 
 
