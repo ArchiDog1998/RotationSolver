@@ -19,6 +19,10 @@
     "MNK": {
       "Timeline": {},
       "Trigger": []
+    },
+    "RDM": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],

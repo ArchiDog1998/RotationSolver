@@ -31,6 +31,14 @@
     "RPR": {
       "Timeline": {},
       "Trigger": []
+    },
+    "SGE": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "RDM": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],
