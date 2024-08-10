@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.1.12](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.11...v5.1.12) (2024-08-10)
+
+
+### Bug Fixes
+
+* local. ([823d24e](https://github.com/ArchiDog1998/RotationSolver/commit/823d24e3d9f2b008766dc392fba55f71bcfade1e))
+* new rpr base file. ([a2b295f](https://github.com/ArchiDog1998/RotationSolver/commit/a2b295f1aa071cab93a7038874f92ac8331d3ad0))
+* use NRender to draw vfx. ([677162e](https://github.com/ArchiDog1998/RotationSolver/commit/677162e2bca91d7cf179dac29be9633d9a61c86a))
+
 ## [5.1.11](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.10...v5.1.11) (2024-08-09)
 
 
