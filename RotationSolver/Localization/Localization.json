@@ -628,5 +628,7 @@
   "RotationSolver.Basic.Configuration.PositionName.Y": "Y",
   "RotationSolver.Basic.Configuration.PositionName.Z": "Z",
   "RotationSolver.Basic.Configuration.PositionName.Pos": "Pos",
-  "RotationSolver.Basic.Configuration.PositionName.Draw": "Draw"
+  "RotationSolver.Basic.Configuration.PositionName.Draw": "Draw",
+  "RotationSolver.Basic.Configuration.Position": "Position",
+  "RotationSolver.Basic.Configuration.Drawing.ObjectLockOnGetterName.LockOnPath": "Path"
 }
