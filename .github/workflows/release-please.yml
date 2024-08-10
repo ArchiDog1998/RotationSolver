@@ -43,8 +43,8 @@ jobs:
                                
       - name: Build Plugin
         run: |
-          invoke-expression 'dotnet build --no-restore --configuration Release RotationSolver.SourceGenerators'
-          invoke-expression 'dotnet build --no-restore --configuration Release RotationSolver'
+          invoke-expression 'dotnet build /p:DebugType=None /p:GenerateDocumentationFile=false --no-restore --configuration Release RotationSolver.SourceGenerators'
+          invoke-expression 'dotnet build /p:DebugType=None /p:GenerateDocumentationFile=false --no-restore --configuration Release RotationSolver'
            
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
