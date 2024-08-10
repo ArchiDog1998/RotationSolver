@@ -43,8 +43,15 @@
 		  <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
 		  <Private>False</Private>
 	  </Reference>
+	  <Reference Include="NRender">
+	    <HintPath>..\Resources\NRender.dll</HintPath>
+	  </Reference>
 	  
-    <PackageReference Include="DalamudPackager" Version="2.1.12" />
+    <PackageReference Include="DalamudPackager" Version="2.1.13" />
+	  
+    <PackageReference Include="OpenTK.Mathematics" Version="4.8.2" />
+	  
+    <PackageReference Include="System.IO.Hashing" Version="8.0.0" />
   </ItemGroup>
 
 	<ItemGroup>

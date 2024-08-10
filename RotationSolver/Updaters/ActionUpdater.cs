@@ -4,8 +4,9 @@ using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using NRender;
 using RotationSolver.Commands;
-using XIVDrawer.Vfx;
+using RotationSolver.Vfx;
 
 namespace RotationSolver.Updaters;
 
@@ -47,14 +48,20 @@ internal static class ActionUpdater
         var player = Player.Object;
         if (player == null) return;
 
-        circle ??= new(GroundOmenFriendly.Circle.Omen(), player, new Vector3(0, gcdHeight, 0));
-        sector ??= new(GroundOmenFriendly.Fan120.Omen(), player, new Vector3(0, gcdHeight, 0));
-        rectangle ??= new(GroundOmenFriendly.Rectangle.Omen(), player, new Vector3(0, gcdHeight, 0));
+        circle ??= new StaticVfx(StaticOmen.Circle, default, player, Service.Config.TargetOmenColor);
+        sector ??= new StaticVfx(StaticOmen.Fan, default, player, Service.Config.TargetOmenColor)
+        {
+            Radian = MathF.PI * 2 / 3,
+            FixRotation = true,
+        };
+        rectangle ??= new StaticVfx(StaticOmen.Rect, default, player, Service.Config.TargetOmenColor)
+        {
+            FixRotation = true,
+        };
 
-        circle.Enable = sector.Enable = rectangle.Enable = false;
+        circle.Scale = sector.Scale = rectangle.Scale = default;
         circle.Owner = sector.Owner = rectangle.Owner = player;
 
-        if (!Service.Config.UseOverlayWindow) return;
         if (!Service.Config.ShowTarget) return;
         if (value == null) return;
 
@@ -62,26 +69,29 @@ internal static class ActionUpdater
 
         var range = value.Action.EffectRange;
         var size = new Vector3(range, gcdHeight, range);
+        var dir = target.Position - player.Position;
+        var rotation = MathF.Atan2(dir.X, dir.Z);
         switch (value.Action.CastType)
         {
             //case 1:
             case 2 when Service.Config.ShowCircleTarget:
                 circle.Owner = target;
-                circle.UpdateScale(size);
-                circle.Enable = true;
+                circle.Scale = size;
+                circle.Color = Service.Config.TargetOmenColor;
                 break;
 
             case 3 when Service.Config.ShowSectorTarget:
-                sector.Target = target;
-                sector.UpdateScale(size);
-                sector.Enable = true;
+                sector.Scale = size;
+                sector.Rotation = rotation;
+                sector.Color = Service.Config.TargetOmenColor;
+
                 break;
 
             case 4 when Service.Config.ShowRectangleTarget:
                 size.X = value.Action.XAxisModifier / 2;
-                rectangle.Target = target;
-                rectangle.UpdateScale(size);
-                rectangle.Enable = true;
+                rectangle.Scale = size;
+                rectangle.Rotation = rotation;
+                rectangle.Color = Service.Config.TargetOmenColor;
                 break;
         }
     }
@@ -91,13 +101,15 @@ internal static class ActionUpdater
         var player = Player.Object;
         if (player == null) return;
 
-        line ??= new(GroundOmenFriendly.Rectangle.Omen(), player, new Vector3(Service.Config.PositionalLineWidth, positionalHeight, 0));
-        positionalSect ??= new(GroundOmenFriendly.BasicFan090.Omen(), player, new Vector3(0, positionalHeight, 0));
+        line ??= new StaticVfx(StaticOmen.Rect, default, player, Service.Config.PositionalColor);
+        positionalSect ??= new StaticVfx(StaticOmen.Fan, default, player, Service.Config.PositionalColor)
+        {
+            Radian = MathF.PI / 2,
+        };
 
-        positionalSect.Enable = line.Enable = false;
+        positionalSect.Scale = line.Scale = default;
         positionalSect.Owner = line.Owner = player;
 
-        if (!Service.Config.UseOverlayWindow) return;
         if (!Service.Config.ShowPositional) return;
         if (value == null) return;
         if (!player.IsJobCategory(JobRole.Melee)) return;
@@ -112,33 +124,35 @@ internal static class ActionUpdater
         bool isLeft = faceVec.X * dirVec.Y > faceVec.Y * dirVec.X;
 
         var scale = new Vector3(0, positionalHeight, enemy.HitboxRadius + 3 + player.HitboxRadius);
+
+        var correct = enemy.FindEnemyPositional() == value.Setting.EnemyPositional;
+        line.Color = Service.Config.PositionalColor;
+        positionalSect.Color = correct ? Service.Config.PositionalCorrectColor : Service.Config.PositionalColor;
+
         switch (value.Setting.EnemyPositional)
         {
             case EnemyPositional.Rear:
                 positionalSect.Owner = enemy;
                 scale.X = scale.Z;
-                positionalSect.UpdateScale(scale);
-
-                positionalSect.RotateAddition = MathF.PI;
-
-                positionalSect.Enable = true;
+                positionalSect.Scale = scale;
+                positionalSect.Rotation = MathF.PI;
                 break;
 
             case EnemyPositional.Flank:
                 positionalSect.Owner = enemy;
                 scale.X = scale.Z;
-                positionalSect.UpdateScale(scale);
+
+                positionalSect.Scale = scale;
 
                 if (isLeft)
                 {
-                    positionalSect.RotateAddition = MathF.PI / 2;
+                    positionalSect.Rotation = MathF.PI / 2;
                 }
                 else
                 {
-                    positionalSect.RotateAddition = -MathF.PI / 2;
+                    positionalSect.Rotation = -MathF.PI / 2;
                 }
 
-                positionalSect.Enable = true;
                 break;
 
             default:
@@ -149,17 +163,15 @@ internal static class ActionUpdater
                 scale.X = Service.Config.PositionalLineWidth;
                 scale.Z = Service.Config.PositionalLineLength + enemy.HitboxRadius + player.HitboxRadius;
 
-                line.UpdateScale(scale);
+                line.Scale = scale;
                 if (isLeft)
                 {
-                    line.RotateAddition = MathF.PI * 3 / 4;
+                    line.Rotation = MathF.PI * 3 / 4;
                 }
                 else
                 {
-                    line.RotateAddition = -MathF.PI * 3 / 4;
+                    line.Rotation = -MathF.PI * 3 / 4;
                 }
-                line.Enable = true;
-
                 break;
         }
     }

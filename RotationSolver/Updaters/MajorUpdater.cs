@@ -14,8 +14,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using Lumina.Excel.GeneratedSheets;
 using RotationSolver.Commands;
 using RotationSolver.UI;
-using XIVConfigUI;
-using XIVDrawer.ElementSpecial;
+using XIVConfigUI.Overlay;
 
 namespace RotationSolver.Updaters;
 
@@ -189,7 +188,7 @@ internal static class MajorUpdater
             ActionUpdater.UpdateNextAction();
 
             RSCommands.UpdateRotationState();
-            PainterManager.UpdateSettings();
+            PainterManager.Update();
         }
         catch (Exception ex)
         {

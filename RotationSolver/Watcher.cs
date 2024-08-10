@@ -8,6 +8,7 @@ using ECommons.Hooks;
 using ECommons.Hooks.ActionEffectTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.GeneratedSheets;
+using NRender.Vfx;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Basic.Record;
 using System.Text.RegularExpressions;
@@ -25,8 +26,6 @@ public static class Watcher
     private unsafe delegate long ProcessObjectEffect(GameObject* a1, ushort a2, ushort a3, long a4);
     private static Hook<ProcessObjectEffect>? _processObjectEffectHook;
 
-    private delegate IntPtr ActorVfxCreate(string path, IntPtr a2, IntPtr a3, float a4, char a5, ushort a6, char a7);
-    private static Hook<ActorVfxCreate>? _actorVfxCreateHook;
 
     private static ICallGateSubscriber<object, object>? IpcSubscriber;
 
@@ -38,9 +37,7 @@ public static class Watcher
             _useActionHook = Svc.Hook.HookFromSignature<OnUseAction>("E8 ?? ?? ?? ?? B0 01 EB B6", UseActionDetour);
             //_useActionHook.Enable();
 #endif
-            //From https://github.com/0ceal0t/Dalamud-VFXEditor/blob/main/VFXEditor/Interop/Constants.cs#L12
-            _actorVfxCreateHook = Svc.Hook.HookFromSignature<ActorVfxCreate>("40 53 55 56 57 48 81 EC ?? ?? ?? ?? 0F 29 B4 24 ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 0F B6 AC 24 ?? ?? ?? ?? 0F 28 F3 49 8B F8", ActorVfxNewHandler);
-            _actorVfxCreateHook.Enable();
+            VfxManager.OnActorVfxCreateEvent += VfxManager_OnActorVfxCreateEvent;
 
             //From https://github.com/PunishXIV/Splatoon/blob/main/Splatoon/Memory/ObjectEffectProcessor.cs#L14
             _processObjectEffectHook = Svc.Hook.HookFromSignature<ProcessObjectEffect>("40 53 55 57 41 56 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 44 0F B7 F2", ProcessObjectEffectDetour);
@@ -58,38 +55,15 @@ public static class Watcher
         });
     }
 
-    public static void Disable()
+    private static void VfxManager_OnActorVfxCreateEvent(string path, ulong objectId)
     {
-#if DEBUG
-        _useActionHook?.Dispose();
-#endif
-        _processObjectEffectHook?.Dispose();
-        _actorVfxCreateHook?.Dispose();
+        var obj = Svc.Objects.SearchById(objectId);
 
-        IpcSubscriber?.Unsubscribe(UpdateRTTDetour);
-        MapEffect.Dispose();
-        ActionEffect.ActionEffectEvent -= ActionFromEnemy;
-        ActionEffect.ActionEffectEvent -= ActionFromSelf;
-    }
-
-    private static IntPtr ActorVfxNewHandler(string path, IntPtr a2, IntPtr a3, float a4, char a5, ushort a6, char a7)
-    {
-        try
+        if (NotFrom(path) && obj != null)
         {
-            var obj = Svc.Objects.CreateObjectReference(a2);
-
-            if (NotFrom(path) && obj != null)
-            {
-                var effect = new VfxNewData(obj, path);
-                Recorder.Enqueue(effect);
-            }
+            var effect = new VfxNewData(obj, path);
+            Recorder.Enqueue(effect);
         }
-        catch (Exception e)
-        {
-            Svc.Log.Warning(e, "Failed to load the vfx value!");
-        }
-
-        return _actorVfxCreateHook!.Original(path, a2, a3, a4, a5, a6, a7);
 
         static bool NotFrom(string path)
         {
@@ -100,6 +74,19 @@ public static class Watcher
                 return !path.StartsWith("vfx/common/eff/" + trail, StringComparison.OrdinalIgnoreCase);
             }
         }
+    }
+
+    public static void Disable()
+    {
+#if DEBUG
+        _useActionHook?.Dispose();
+#endif
+        _processObjectEffectHook?.Dispose();
+
+        IpcSubscriber?.Unsubscribe(UpdateRTTDetour);
+        MapEffect.Dispose();
+        ActionEffect.ActionEffectEvent -= ActionFromEnemy;
+        ActionEffect.ActionEffectEvent -= ActionFromSelf;
     }
 
     private static unsafe long ProcessObjectEffectDetour(GameObject* a1, ushort a2, ushort a3, long a4)

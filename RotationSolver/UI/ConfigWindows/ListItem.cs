@@ -14,8 +14,6 @@ namespace RotationSolver.UI.ConfigWindows;
 [Description("List")]
 public class ListItem : ConfigWindowItemRS
 {
-    public static Vector3 HoveredPosition { get; private set; } = Vector3.Zero;
-
     private CollapsingHeaderGroup? _idsHeader;
 
     public override uint Icon => 21;

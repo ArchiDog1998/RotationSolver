@@ -7,7 +7,6 @@ using RotationSolver.Basic.Configuration;
 using RotationSolver.Updaters;
 using System.ComponentModel;
 using XIVConfigUI;
-using XIVDrawer;
 
 namespace RotationSolver.UI.ConfigWindows;
 
@@ -35,7 +34,7 @@ public class TimelineConfigItem : ConfigWindowItemRS
         var rightTerritory = territory?.GetRow(_territoryId);
         var name = GetName(rightTerritory);
 
-        var imFont = DrawingExtensions.GetFont(21);
+        var imFont = ImGuiHelper.GetFont(21);
         float width = 0;
         using (var font = ImRaii.PushFont(imFont))
         {

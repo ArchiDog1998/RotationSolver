@@ -1,17 +1,20 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using Dalamud.Plugin.Services;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using NRender;
 using RotationSolver.Basic.Configuration;
 using RotationSolver.Commands;
 using RotationSolver.Data;
 using RotationSolver.UI;
 using RotationSolver.UI.ConfigWindows;
 using RotationSolver.Updaters;
+using RotationSolver.Vfx;
+using System.IO;
 using XIVConfigUI;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.GroupPoseModule;
 
 namespace RotationSolver;
 
@@ -35,7 +38,7 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
             typeof(Configs), typeof(UiString), typeof(TargetingType), typeof(WhyActionCantUse), typeof(AutoStatus));
         XIVConfigUIMain.ShowTooltip = () => Service.Config.ShowTooltips;
 
-        _dis.Add(new Service());
+        _dis.Add(new Service(GetDrawing));
         _rotationConfigWindow = new();
         _controlWindow = new();
         _actionGrpWindow = new();
@@ -82,13 +85,83 @@ public sealed class RotationSolverPlugin : IDalamudPlugin, IDisposable
 #if DEBUG
         if (Player.Available)
         {
-            unsafe
-            {
-                //Player.IGameObject->Highlight(FFXIVClientStructs.FFXIV.Client.Game.Object.ObjectHighlightColor.Orange);
-            }
-            //_ = XIVPainterMain.ShowOff();
         }
 #endif
+    }
+
+    private static IDisposable? GetDrawing(OmenData data)
+    {
+        if (data.Item != null) return data.Item;
+        if (string.IsNullOrEmpty(data.Path)) return null;
+
+        switch (data.Type)
+        {
+            case OmenDataType.Static:
+                switch (data.Path)
+                {
+                    case StaticOmen.Donut:
+                        var outerRadius = MathF.Max(data.Scale.X, data.Scale.Y);
+                        var innerRadius = MathF.Min(data.Scale.X, data.Scale.Y);
+
+                        var result = CreateStaticVfx(data.Location, data.Path, outerRadius, outerRadius, data.Color);
+                        result.Radian = innerRadius / outerRadius;
+                        return result;
+
+
+                    case StaticOmen.Fan:
+                        var angle = data.Scale.X / 180 * MathF.PI;
+                        var radius = data.Scale.Y;
+
+                        result = CreateStaticVfx(data.Location, data.Path, radius, radius, data.Color);
+                        result.Radian = angle;
+                        return result;
+
+                    default:
+                        result = CreateStaticVfx(data.Location, data.Path, data.Scale.X, data.Scale.Y, data.Color);
+                        return result;
+                }
+
+            case OmenDataType.LockOn:
+                var obj = data.Location.Object;
+                if (obj == null) return null;
+                return new ActorVfx(data.Path.LockOn(), obj, obj);
+
+            case OmenDataType.Channeling:
+                obj = data.Location.Object;
+                if (obj == null) return null;
+                return new ActorVfx(data.Path.Channeling(), obj, data.Location.Target ?? obj);
+        }
+
+        return null;
+    }
+
+    private static StaticVfx CreateStaticVfx(LocationDescription loc, string path, float size1, float size2, Vector4 color)
+    {
+        const float Height = 1f;
+
+        if (loc.Object != null)
+        {
+            var result = new StaticVfx(path, new Vector3(size1, Height, size2), loc.Object, color)
+            {
+                Offset = loc.Position,
+                Rotation = loc.Rotation,
+            };
+
+            if (loc.Target != null)
+            {
+                result.UpdateEveryFrame = () =>
+                {
+                    var dir = loc.Target.Position - loc.Object.Position;
+                    result.Rotation = MathF.Atan2(dir.X, dir.Z) + loc.Rotation;
+                };
+            }
+
+            return result;
+        }
+        else
+        {
+            return new StaticVfx(path, new Vector3(size1, Height, size2), loc.Position, color, loc.Rotation);
+        }
     }
 
     private void OnDraw()

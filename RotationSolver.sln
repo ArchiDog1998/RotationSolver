@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommons", "RotationSolver.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XIVConfigUI", "RotationSolver.Basic\XIVConfigUI\XIVConfigUI\XIVConfigUI.csproj", "{AA9FA813-B652-4BA1-9008-B2B6911DE38B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XIVDrawer", "RotationSolver.Basic\XIVDrawer\XIVDrawer\XIVDrawer.csproj", "{926AF806-69B3-442E-9A8E-EE051A9964EE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver.SourceGenerators", "RotationSolver.Basic\RotationSolver.SourceGenerators\RotationSolver.SourceGenerators.csproj", "{B777EA91-6BA3-4846-A16D-DAD3DA9C304A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RotationSolver.GameData", "RotationSolver.Basic\RotationSolver.GameData\RotationSolver.GameData.csproj", "{5D80B587-44D9-4755-AD2B-2E6AFEF2166A}"
@@ -65,14 +63,6 @@ Global
 		{AA9FA813-B652-4BA1-9008-B2B6911DE38B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA9FA813-B652-4BA1-9008-B2B6911DE38B}.Release|x64.ActiveCfg = Release|Any CPU
 		{AA9FA813-B652-4BA1-9008-B2B6911DE38B}.Release|x64.Build.0 = Release|Any CPU
-		{926AF806-69B3-442E-9A8E-EE051A9964EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{926AF806-69B3-442E-9A8E-EE051A9964EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{926AF806-69B3-442E-9A8E-EE051A9964EE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{926AF806-69B3-442E-9A8E-EE051A9964EE}.Debug|x64.Build.0 = Debug|Any CPU
-		{926AF806-69B3-442E-9A8E-EE051A9964EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{926AF806-69B3-442E-9A8E-EE051A9964EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{926AF806-69B3-442E-9A8E-EE051A9964EE}.Release|x64.ActiveCfg = Release|Any CPU
-		{926AF806-69B3-442E-9A8E-EE051A9964EE}.Release|x64.Build.0 = Release|Any CPU
 		{B777EA91-6BA3-4846-A16D-DAD3DA9C304A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B777EA91-6BA3-4846-A16D-DAD3DA9C304A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B777EA91-6BA3-4846-A16D-DAD3DA9C304A}.Debug|x64.ActiveCfg = Debug|Any CPU

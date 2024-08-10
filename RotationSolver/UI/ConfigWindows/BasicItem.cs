@@ -1,12 +1,9 @@
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
-using ECommons.ImGuiMethods;
 using RotationSolver.Basic.Configuration;
-using RotationSolver.Basic.Configuration.Condition;
 using System.ComponentModel;
 using XIVConfigUI;
 using XIVConfigUI.ConditionConfigs;
-using XIVDrawer;
 
 namespace RotationSolver.UI.ConfigWindows;
 [Description("Basic")]
@@ -90,7 +87,7 @@ public class BasicItem : ConfigWindowItemRS
         var wholeWidth = ImGui.GetWindowWidth();
         var ping = DataCenter.Ping;
 
-        ImGui.PushFont(DrawingExtensions.GetFont(14));
+        ImGui.PushFont(ImGuiHelper.GetFont(14));
         ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
         var infoText = $"GCD: {gcdTime:F2}s Ping: {ping:F2}s";
         var infoSize = ImGui.CalcTextSize(infoText);
@@ -131,7 +128,7 @@ public class BasicItem : ConfigWindowItemRS
         drawList.AddLine(lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime, -spacingHeight), lineStart + new Vector2((gcdTime + weaponDelay) * sizePerTime,
             (pingHeight * 2) + spacingHeight), IDEAL_CLICK_TIME_COLOR, 2);
 
-        ImGui.PushFont(DrawingExtensions.GetFont(20));
+        ImGui.PushFont(ImGuiHelper.GetFont(20));
         const string gcdText = "GCD";
         var size = ImGui.CalcTextSize(gcdText);
         ImGui.SetCursorPos(startCursorPt + new Vector2((sizePerTime * actionAhead) + ((gcdSize - size.X) / 2), (gcdSize - size.Y) / 2));
@@ -140,7 +137,7 @@ public class BasicItem : ConfigWindowItemRS
         ImGui.Text(gcdText);
         ImGui.PopFont();
 
-        ImGui.PushFont(DrawingExtensions.GetFont(14));
+        ImGui.PushFont(ImGuiHelper.GetFont(14));
         const string ogcdText = "Off-\nGCD";
         size = ImGui.CalcTextSize(ogcdText);
         ImGui.PopFont();
@@ -158,7 +155,7 @@ public class BasicItem : ConfigWindowItemRS
             ImGuiHelper.DrawActionOverlay(startCursorPt + new Vector2(sizePerTime * (actionAhead + time), 0), ogcdSize, 0);
             ImGui.SetCursorPos(startCursorPt + new Vector2((sizePerTime * (actionAhead + time)) + ((ogcdSize - size.X) / 2), (ogcdSize - size.Y) / 2));
 
-            ImGui.PushFont(DrawingExtensions.GetFont(14));
+            ImGui.PushFont(ImGuiHelper.GetFont(14));
             ImGui.Text(ogcdText);
             ImGui.PopFont();
 
@@ -200,7 +197,6 @@ public class BasicItem : ConfigWindowItemRS
         _autoSwitch?.Draw();
     }
 
-    private static readonly Dictionary<int, bool> _isOpen = [];
     private static void DrawBasicNamedConditions()
     {
         ConditionDrawer.Draw(DataCenter.RightSet.NamedConditions);

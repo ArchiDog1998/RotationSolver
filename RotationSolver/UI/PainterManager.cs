@@ -2,14 +2,11 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using RotationSolver.Basic.Configuration;
-using RotationSolver.UI.ConfigWindows;
+using NRender;
 using RotationSolver.Updaters;
+using RotationSolver.Vfx;
 using XIVConfigUI;
-using XIVDrawer;
-using XIVDrawer.Element3D;
-using XIVDrawer.ElementSpecial;
-using XIVDrawer.Vfx;
+using XIVConfigUI.Overlay;
 
 namespace RotationSolver.UI;
 
@@ -82,28 +79,19 @@ internal static class PainterManager
         }
     }
 
-    private const float targetRadius = 0.15f;
-    private const float beneficialRadius = 0.6f;
+    private const float omenHeight = 1;
 
-    private readonly static Drawing3DCircularSector[] BeneficialItems = new Drawing3DCircularSector[64];
+    private static StaticVfx? _meleeWarning, _movePosition;
     private readonly static Drawing3DText[] TargetTexts = new Drawing3DText[64];
     private readonly static List<TargetDrawingItem> TargetDrawings = [];
 
     public static void Init()
     {
-        XIVDrawerMain.Init(Svc.PluginInterface, "RotationSolverOverlay");
+        NRenderMain.Init(Svc.PluginInterface, "RotationSolverVfxDraw");
+
         for (int i = 0; i < TargetTexts.Length; i++)
         {
             TargetTexts[i] = new Drawing3DText(string.Empty, default);
-        }
-
-        for (int i = 0; i < BeneficialItems.Length; i++)
-        {
-            BeneficialItems[i] = new Drawing3DCircularSector(default, 0, 0, 3)
-            {
-                Enable = false,
-                IsFill = false,
-            };
         }
 
         TargetDrawings.Add(new AllianceDrawingItem());
@@ -111,50 +99,7 @@ internal static class PainterManager
         TargetDrawings.Add(new UsersDrawingItem());
 
         _highLight = new();
-        UpdateSettings();
-
-        var annulus = new Drawing3DAnnulusO(Player.Object, 3, 3 + Service.Config.MeleeRangeOffset, 0, 2)
-        {
-            InsideColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.3f, 0.2f, 0.15f))
-        };
-
-        annulus.UpdateEveryFrame = () =>
-        {
-            var tar = DataCenter.HostileTarget;
-            if (Service.Config.UseOverlayWindow && Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee)) 
-                && (tar?.IsEnemy() ?? false) && Service.Config.DrawMeleeOffset
-                && ActionUpdater.NextGCDAction == null)
-            {
-                annulus.Target = tar;
-            }
-            else
-            {
-                annulus.Target = null;
-            }
-        };
-
-        var movingTarget = new VfxHighlightLine(default, default, 0);
-        movingTarget.UpdateEveryFrame = () =>
-        {
-            var tar = CustomRotation.MoveTarget;
-
-            var playerPos = Player.Object?.Position ?? default;
-
-            movingTarget.From = playerPos;
-
-            if (!Service.Config.UseOverlayWindow || !Service.Config.ShowMoveTarget || !Player.Available 
-                || !tar.HasValue || Vector3.Distance(tar.Value, playerPos) < 0.01f)
-            {
-                movingTarget.Radius = 0;
-                movingTarget.To = playerPos;
-                movingTarget.Enable = false;
-                return;
-            }
-
-            movingTarget.Radius = 0.5f;
-            movingTarget.To = tar.Value;
-            movingTarget.Enable = true;
-        };
+        Update();
 
         _stateImage = new Drawing3DImage(null, default, 0)
         {
@@ -182,12 +127,10 @@ internal static class PainterManager
         };
     }
 
-    public static void UpdateSettings()
+    public static void Update()
     {
-        XIVDrawerMain.SampleLength = Service.Config.SampleLength;
-        XIVDrawerMain.UseTaskToAccelerate = Service.Config.UseTasksForOverlay;
-        XIVDrawerMain.Enable = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
-        XIVDrawerMain.ViewPadding = Service.Config.WindowPadding;
+        XIVConfigUIMain.UseOverlay = !Svc.Condition[ConditionFlag.OccupiedInCutSceneEvent] && Service.Config.UseOverlayWindow;
+        DrawingExtensions.ViewPadding = Service.Config.WindowPadding;
 
         HighlightColor = Service.Config.TeachingModeColor;
 
@@ -206,7 +149,72 @@ internal static class PainterManager
 
         UpdateTargetTexts();
         UpdateTarget();
-        UpdateBeneficial();
+        UpdateMeleeOffset();
+        UpdateMoveTarget();
+    }
+
+    private static void UpdateMoveTarget()
+    {
+        var tar = CustomRotation.MoveTarget;
+
+        var playerPos = Player.Object?.Position ?? default;
+
+        if (!Service.Config.ShowMoveTarget || !Player.Available
+            || !tar.HasValue || Vector3.Distance(tar.Value, playerPos) < 0.01f)
+        {
+            tar = null;
+        }
+
+        if (tar == null && _movePosition == null) return;
+        if (tar != null && _movePosition != null)
+        {
+            _movePosition.Position = tar.Value;
+            return;
+        }
+
+        _movePosition?.Dispose();
+        _movePosition = null;
+
+        if (tar == null) return;
+
+        _movePosition = new StaticVfx(StaticOmen.Circle, new Vector3(0.5f, omenHeight, 0.5f), tar.Value, Service.Config.MoveTargetColor, 0);
+    }
+
+    private static void UpdateMeleeOffset()
+    {
+        IBattleChara? tar = DataCenter.HostileTarget;
+        if (Player.Available && (Player.Object.IsJobCategory(JobRole.Tank) || Player.Object.IsJobCategory(JobRole.Melee))
+            && (tar?.IsEnemy() ?? false) && Service.Config.DrawMeleeOffset
+            && ActionUpdater.NextGCDAction == null
+            && tar.DistanceToPlayer() > 3 && tar.DistanceToPlayer() < 3 + Service.Config.MeleeRangeOffset)
+        {
+        }
+        else
+        {
+            tar = null;
+        }
+
+        if (tar != null)
+        {
+            if (!tar.IsValid()) tar = null;
+            else if (!tar.IsTargetable) tar = null;
+        }
+
+        if (tar == null && _meleeWarning == null) return;
+        if (tar != null && _meleeWarning != null) return;
+
+        _meleeWarning?.Dispose();
+        _meleeWarning = null;
+
+        if (tar == null) return;
+
+        var radius = tar.HitboxRadius + 3 + Player.Object.HitboxRadius;
+        var bigRadius = radius + Service.Config.MeleeRangeOffset;
+
+        _meleeWarning = new(StaticOmen.Donut, new Vector3(bigRadius, omenHeight, bigRadius), tar, Service.Config.MeleeOffsetColor)
+        {
+            Radian = radius / bigRadius,
+        };
     }
 
     private static void UpdateTargetTexts()
@@ -243,11 +251,6 @@ internal static class PainterManager
         }
     }
 
-    private readonly static Drawing3DCircularSector _target = new(default, 0, 0, 3)
-    {
-        IsFill = false,
-        Enable = false,
-    };
     private readonly static Drawing3DImage _targetImage = new(null, default, 0)
     {
         MustInViewRange = true,
@@ -255,68 +258,24 @@ internal static class PainterManager
     };
     private static void UpdateTarget()
     {
-        _target.Enable = _targetImage.Enable = false;
+        _targetImage.Enable = false;
         if (!Service.Config.ShowTarget) return;
 
         if (ActionUpdater.NextAction is not BaseAction act) return;
 
-        var d = DateTime.Now.Millisecond / 1000f;
-        var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
+        if (Service.Config.TargetIconSize <= 0) return;
 
-        if (Service.Config.TargetIconSize > 0)
+        _targetImage.Enable = true;
+        _targetImage.Position = act.Target.Position ?? Player.Object.Position;
+        if (act.GetTexture(out var texture, true))
         {
-            _targetImage.Enable = true;
-            _targetImage.Position = act.Target.Position ?? Player.Object.Position;
-            if (act.GetTexture(out var texture, true))
-            {
-                _targetImage.Image = texture;
-                _targetImage.Size = Service.Config.TargetIconSize;
-            }
-        }
-        else
-        {
-            _target.Enable = true;
-            _target.Color = ImGui.GetColorU32(Service.Config.TargetColor);
-            _target.Center = act.Target.Position ?? Player.Object.Position;
-            _target.Radius = targetRadius * ratio;
-        }
-    }
-
-    private static void UpdateBeneficial()
-    {
-        foreach (var item in BeneficialItems)
-        {
-            item.Enable = false;
-        }
-
-        if (!Service.Config.ShowBeneficialPositions
-            || Svc.ClientState == null || !Player.Available)
-        {
-            return;
-        }
-
-        var d = DateTime.Now.Millisecond / 1000f;
-        var ratio = (float)DrawingExtensions.EaseFuncRemap(EaseFuncType.None, EaseFuncType.Cubic)(d);
-
-        var color = ImGui.GetColorU32(Service.Config.BeneficialPositionColor);
-        var hColor = ImGui.GetColorU32(Service.Config.HoveredBeneficialPositionColor);
-
-        var pts = OtherConfiguration.TerritoryConfig.BeneficialPositions;
-
-        for (int i = 0; i < Math.Min(BeneficialItems.Length, pts.Count); i++)
-        {
-            var item = BeneficialItems[i];
-            var p = pts[i];
-
-            item.Center = p;
-            item.Radius = beneficialRadius * ratio;
-            item.Color = p == ListItem.HoveredPosition ? hColor : color;
-            item.Enable = true;
+            _targetImage.Image = texture;
+            _targetImage.Size = Service.Config.TargetIconSize;
         }
     }
 
     public static void Dispose()
     {
-        XIVDrawerMain.Dispose();
+        NRenderMain.Dispose();
     }
 }

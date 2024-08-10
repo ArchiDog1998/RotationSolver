@@ -8,7 +8,6 @@ using RotationSolver.Helpers;
 using System.Diagnostics;
 using XIVConfigUI;
 using XIVConfigUI.Attributes;
-using XIVDrawer;
 
 namespace RotationSolver.UI.ConfigWindows;
 public class RotationItem : ConfigWindowItemRS
@@ -34,7 +33,7 @@ public class RotationItem : ConfigWindowItemRS
         var desc = rotation.Description;
         if (!string.IsNullOrEmpty(desc))
         {
-            using var font = ImRaii.PushFont(DrawingExtensions.GetFont(15));
+            using var font = ImRaii.PushFont(ImGuiHelper.GetFont(15));
             ImGuiEx.TextWrappedCopy(desc);
         }
 
@@ -297,7 +296,7 @@ public class RotationItem : ConfigWindowItemRS
             ImGui.GetStyle().ItemSpacing = Vector2.Zero;
 
             var size = Vector2.Zero;
-            using (var font = ImRaii.PushFont(DrawingExtensions.GetFont(16)))
+            using (var font = ImRaii.PushFont(ImGuiHelper.GetFont(16)))
             {
                 using (var color = ImRaii.PushColor(ImGuiCol.Text, RatingColors[(int)(ratio1 * count)]))
                 {

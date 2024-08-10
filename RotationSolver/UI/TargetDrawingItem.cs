@@ -1,5 +1,5 @@
 using XIVConfigUI;
-using XIVDrawer.Element3D;
+using XIVConfigUI.Overlay;
 
 namespace RotationSolver.UI;
 internal abstract class TargetDrawingItem

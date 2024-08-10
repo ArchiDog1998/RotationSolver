@@ -12,7 +12,6 @@ using RotationSolver.Updaters;
 using XIVConfigUI;
 using XIVConfigUI.ConditionConfigs;
 using XIVConfigUI.SearchableConfigs;
-using XIVDrawer;
 
 namespace RotationSolver.UI;
 
@@ -235,7 +234,7 @@ internal static class ImGuiHelperRS
 
     internal static void DrawTerritoryHeader()
     {
-        using var font = ImRaii.PushFont(DrawingExtensions.GetFont(21));
+        using var font = ImRaii.PushFont(ImGuiHelper.GetFont(21));
 
         using var color = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
 

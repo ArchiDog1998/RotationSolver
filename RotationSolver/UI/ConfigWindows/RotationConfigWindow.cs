@@ -16,7 +16,6 @@ using RotationSolver.Updaters;
 using System.Diagnostics;
 using XIVConfigUI;
 using XIVConfigUI.SearchableConfigs;
-using XIVDrawer;
 using GAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RotationSolver.UI.ConfigWindows;
@@ -608,7 +607,7 @@ public class RotationConfigWindow : ConfigWindow
         ImGui.TextWrapped(UiString.ConfigWindow_About_ThanksToSupporters.Local());
 
         var width = ImGui.GetWindowWidth();
-        using var font = ImRaii.PushFont(DrawingExtensions.GetFont(12));
+        using var font = ImRaii.PushFont(ImGuiHelper.GetFont(12));
         using var color = ImRaii.PushColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(ImGuiColors.DalamudYellow));
 
         foreach (var name in DownloadHelper.Supporters)
