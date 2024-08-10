@@ -79,7 +79,7 @@ internal static class PainterManager
         }
     }
 
-    private const float omenHeight = 1;
+    private const float omenHeight = 5;
 
     private static StaticVfx? _meleeWarning, _movePosition;
     private readonly static Drawing3DText[] TargetTexts = new Drawing3DText[64];

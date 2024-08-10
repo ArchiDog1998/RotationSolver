@@ -23,6 +23,10 @@
     "RDM": {
       "Timeline": {},
       "Trigger": []
+    },
+    "RPR": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],

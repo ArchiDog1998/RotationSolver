@@ -261,6 +261,10 @@ public class ActionsItem : ConfigWindowItemRS
                     ImGui.Text("Recast Elapsed: " + action.CD.RecastTimeElapsedRaw.ToString());
                     ImGui.Text($"Charges: {action.CD.CurrentCharges} / {action.CD.MaxCharges}");
 
+                    ImGui.Text("Status Need: " + string.Join(", ", action.Info.TargetStatusNeed));
+                    ImGui.Text("Status Provide: " + string.Join(", ", action.Info.StatusProvide));
+                    ImGui.Text("Status Target Provide: " + string.Join(", ", action.Info.TargetStatusProvide));
+
                     ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
                     ImGui.Text($"Why Can't: {action.WhyCant.Local()} ");
                     ImGui.Text("IgnoreCastCheck/Use Up:" + action.CanUse(out _, skipClippingCheck: true, skipCastingCheck: true, usedUp: true).ToString());
