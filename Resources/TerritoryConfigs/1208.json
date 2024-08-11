@@ -3,6 +3,14 @@
     "WAR": {
       "Timeline": {},
       "Trigger": []
+    },
+    "ADV": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "SGE": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],

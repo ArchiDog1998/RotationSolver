@@ -88,6 +88,7 @@ internal static partial class TargetUpdater
     private static RandomDelay
         _interruptDelay = new(() => Service.Config.InterruptDelay),
         _knockbackDelay = new(() => Service.Config.AntiKnockbackDelay),
+        _defenseMeDelay = new(() => Service.Config.DefenseSingleDelay),
         _defenseSingleDelay = new(() => Service.Config.DefenseSingleDelay),
         _defenseAreaDelay = new(() => Service.Config.DefenseAreaDelay),
         _provokeDelay = new(() => Service.Config.ProvokeDelay);
@@ -141,20 +142,30 @@ internal static partial class TargetUpdater
         DataCenter.MobsTime = DataCenter.AllHostileTargets.Count(o => o.DistanceToPlayer() <= JobRange && o.CanSee())
             >= Service.Config.AutoDefenseNumber;
 
-        DataCenter.IsHostileCastingToTank = _defenseSingleDelay.Delay(IsCastingTankVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingTank));
+        DataCenter.IsHostileCastingToMe = _defenseMeDelay.Delay(IsCastingTankVfx(true) || DataCenter.AllHostileTargets.Any(t => IsHostileCastingTank(t, true)));
+        DataCenter.IsHostileCastingToOthers = _defenseSingleDelay.Delay(IsCastingTankVfx(false) || DataCenter.AllHostileTargets.Any(t => IsHostileCastingTank(t, false)));
+
         DataCenter.IsHostileCastingAOE = _defenseAreaDelay.Delay(IsCastingAreaVfx() || DataCenter.AllHostileTargets.Any(IsHostileCastingArea));
         DataCenter.IsHostileCastingKnockback = _knockbackDelay.Delay(DataCenter.AllHostileTargets.Any(IsHostileCastingKnockback));
 
         DataCenter.ProvokeTarget = _provokeDelay.Delay(DataCenter.AllHostileTargets.FirstOrDefault(ObjectHelper.CanProvoke));
     }
 
-    private static bool IsCastingTankVfx()
+    private static bool IsCastingTankVfx(bool isMe)
     {
         return IsCastingVfx(s =>
         {
             if (!s.Path.StartsWith("vfx/lockon/eff/tank_lockon")) return false;
             if (!Player.Available) return false;
-            if (Player.Object.IsJobCategory(JobRole.Tank) && s.Object?.EntityId != Player.Object.EntityId) return false;
+
+            if (isMe)
+            {
+                if (s.Object?.GameObjectId != Player.Object.GameObjectId) return false;
+            }
+            else
+            {
+                if (s.Object?.GameObjectId == Player.Object.GameObjectId) return false;
+            }
 
             return true;
         });
@@ -182,10 +193,21 @@ internal static partial class TargetUpdater
         return false;
     }
 
-    private static bool IsHostileCastingTank(IBattleChara h)
+    private static bool IsHostileCastingTank(IBattleChara h, bool isMe)
     {
         return IsHostileCastingBase(h, (act) =>
         {
+            if (!Player.Available) return false;
+
+            if (isMe)
+            {
+                if (h.CastTargetObjectId != Player.Object.GameObjectId) return false;
+            }
+            else
+            {
+                if (h.CastTargetObjectId == Player.Object.GameObjectId) return false;
+            }
+
             return OtherConfiguration.HostileCastingTank.Contains(act.RowId)
                 || h.CastTargetObjectId == h.TargetObjectId;
         });

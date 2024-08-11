@@ -63,6 +63,10 @@
     "BRD": {
       "Timeline": {},
       "Trigger": []
+    },
+    "BLM": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [

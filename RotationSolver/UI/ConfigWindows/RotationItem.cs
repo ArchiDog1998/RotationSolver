@@ -261,7 +261,7 @@ public class RotationItem : ConfigWindowItemRS
                         if (ImGui.Button($"{i}##My Rating Value"))
                         {
                             GithubRecourcesHelper.ModifyYourRate(rotation.GetType(), i);
-                            DownloadHelper.ModifyMyRate(i);
+                            DownloadHelper.ModifyMyRate(rotation.GetType(), i);
                             _nextChangeTime = DateTime.Now + TimeSpan.FromMinutes(1);
                             ImGui.CloseCurrentPopup();
                         }

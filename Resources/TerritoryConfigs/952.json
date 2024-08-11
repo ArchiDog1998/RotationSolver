@@ -27,6 +27,14 @@
     "RPR": {
       "Timeline": {},
       "Trigger": []
+    },
+    "PLD": {
+      "Timeline": {},
+      "Trigger": []
+    },
+    "BLM": {
+      "Timeline": {},
+      "Trigger": []
     }
   },
   "NoHostileNames": [],

@@ -124,20 +124,13 @@ internal static class StateUpdater
 
                 if (DataCenter.Role == JobRole.Healer || DataCenter.Job == ECommons.ExcelServices.Job.PLD) // Help defense.
                 {
-                    if (DataCenter.PartyMembers.Any((tank) =>
-                    {
-                        var attackingTankObj = DataCenter.AllHostileTargets.Where(t => t.TargetObjectId == tank.EntityId);
-
-                        if (attackingTankObj.Count() != 1) return false;
-
-                        return DataCenter.IsHostileCastingToTank;
-                    }))
+                    if (DataCenter.IsHostileCastingToOthers)
                     {
                         status |= AutoStatus.DefenseSingle;
                     }
                 }
 
-                if (DataCenter.Role == JobRole.Tank) // defense self.
+                if (DataCenter.Role == JobRole.Tank) // Defense self. TODO: maybe better
                 {
                     var movingHere = (float)DataCenter.NumberOfHostilesInRange / DataCenter.NumberOfHostilesInMaxRange > 0.3f;
 
@@ -156,7 +149,7 @@ internal static class StateUpdater
                     }
 
                     //Big damage casting action.
-                    if (DataCenter.IsHostileCastingToTank)
+                    if (DataCenter.IsHostileCastingToMe)
                     {
                         status |= AutoStatus.DefenseSingle;
                     }

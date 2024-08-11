@@ -189,7 +189,7 @@ public class ActionsItem : ConfigWindowItemRS
                 }
                 ImGuiHelper.HoveredTooltip(ConfigUnitType.Seconds.Local());
 
-                if (a.Setting.StatusProvide != null || a.Setting.TargetStatusProvide != null)
+                if (a.Info.StatusProvide.Length > 0 || a.Info.TargetStatusProvide.Length > 0)
                 {
                     var shouldStatus = config.ShouldCheckStatus;
                     if (ImGui.Checkbox($"{UiString.ConfigWindow_Actions_CheckStatus.Local()}##{a}", ref shouldStatus))
@@ -256,14 +256,19 @@ public class ActionsItem : ConfigWindowItemRS
                     ImGui.Text("AttackType: " + action.Info.AttackType.ToString());
                     ImGui.Text("Aspect: " + action.Info.Aspect.ToString());
                     ImGui.Text("Has One:" + action.CD.HasOneCharge.ToString());
-                    ImGui.Text("Recast One: " + action.CD.RecastTimeOneChargeRaw.ToString());
+                    ImGui.Text("Recast One: " + action.CD.RecastTime.ToString());
                     ImGui.Text("Recast One Remain: " + action.CD.RecastTimeRemainOneCharge.ToString());
                     ImGui.Text("Recast Elapsed: " + action.CD.RecastTimeElapsedRaw.ToString());
                     ImGui.Text($"Charges: {action.CD.CurrentCharges} / {action.CD.MaxCharges}");
 
+                    ImGui.Text("-----");
+
                     ImGui.Text("Status Need: " + string.Join(", ", action.Info.TargetStatusNeed));
                     ImGui.Text("Status Provide: " + string.Join(", ", action.Info.StatusProvide));
                     ImGui.Text("Status Target Provide: " + string.Join(", ", action.Info.TargetStatusProvide));
+                    ImGui.Text("Combo Actions: " + string.Join(", ", action.Info.ComboActions));
+
+                    ImGui.Text("-----");
 
                     ImGui.Text($"Can Use: {action.CanUse(out _, skipClippingCheck: true)} ");
                     ImGui.Text($"Why Can't: {action.WhyCant.Local()} ");
