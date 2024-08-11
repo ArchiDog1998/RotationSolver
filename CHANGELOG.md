@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.13](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.12...v5.1.13) (2024-08-11)
+
+
+### Bug Fixes
+
+* state update and defense fix. ([1d1ac56](https://github.com/ArchiDog1998/RotationSolver/commit/1d1ac56a31ff717d4df49754d80495e177b3e432))
+
 ## [5.1.12](https://github.com/ArchiDog1998/RotationSolver/compare/v5.1.11...v5.1.12) (2024-08-10)
 
 
