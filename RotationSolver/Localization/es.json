@@ -630,5 +630,8 @@
   "RotationSolver.Basic.Configuration.PositionName.Pos": "Pos",
   "RotationSolver.Basic.Configuration.PositionName.Draw": "Draw",
   "RotationSolver.Basic.Configuration.Position": "Position",
-  "RotationSolver.Basic.Configuration.Drawing.ObjectLockOnGetterName.LockOnPath": "Path"
+  "RotationSolver.Basic.Configuration.Drawing.ObjectLockOnGetterName.LockOnPath": "Path",
+  "RotationSolver.Basic.Configuration.ConfigsName.OnlyPartiesAreFriendly": "Only the players in party are friendly.",
+  "RotationSolver.Basic.Configuration.ConfigsName.DontTargetPetsAsFriendly": "Do not target pets as friendly",
+  "RotationSolver.Basic.Configuration.ConfigsName.DontTargetChocoboAsFriendly": "Do not target chocobos as friendly"
 }
